@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "jsxFactory": "m",
+  },
+  "tasks": {
+    "run": "deno run --unstable main.tsx",
+    "site-generate": "deno run --unstable --allow-read --allow-write website/generate.ts",
+    "site-serve": "deno run --unstable --allow-read --allow-net --watch website/serve.ts"
+  }
+}
