@@ -18,7 +18,6 @@ copy(`${rootdir}/public`, `${outpath}`, {overwrite: true});
 for await(const e of walk(pagedir, {
   includeDirs: false,
   exts: ['.md', '.tsx'],
-  followSymlinks: true,
 })) {
   if (e.isFile) {
     console.log(e.path);
