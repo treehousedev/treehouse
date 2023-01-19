@@ -13,23 +13,22 @@ function mkdirAll(path: string) {
 const outpath = "./website/out";
 
 mkdirAll(dirname(outpath));
-copy(`${rootdir}/public`, `${outpath}`, {overwrite: true});
+copy(`${rootdir}/static`, `${outpath}`, {overwrite: true});
 
 for await(const e of walk(pagedir, {
   includeDirs: false,
   exts: ['.md', '.tsx'],
 })) {
   if (e.isFile) {
-    console.log(e.path);
     const pathname = e.path
-      .replace(`${Deno.cwd()}/website`, "")
-      .replace("/pages", "")
+      .replace(`${Deno.cwd()}/website/pages`, "")
       .replace(extname(e.path), "");
     const out = await generate(pathname);
     if (out) {
       const target = `${outpath}${pathname}${pathname.endsWith("index")?"":"index"}.html`;
       mkdirAll(dirname(target));
       await Deno.writeTextFile(target, out);
+      console.log(target);
     }
   }
 }

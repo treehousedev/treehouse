@@ -7,6 +7,7 @@ export default {view: ({attrs, children}) => {
   <head>
     <meta charset="UTF-8" />
     <link href="/style.css" rel="stylesheet"></link>
+    <link rel="icon" href="/icon.png" type="image/x-icon" />
     <title>{attrs.page.title?`${attrs.page.title} - ${attrs.page.site}`:attrs.page.site}</title>
   </head>
   <body>

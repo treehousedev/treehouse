@@ -6,8 +6,11 @@ const Page: m.Component = {
     attrs.page.title = "Index"
     return m(layout, attrs,
       <main>
-        <div>Hello world</div>
-        <div><a href="/docs">Documentation</a></div>
+        <h1>Treehouse</h1>
+        <ul>
+          <li><a href="/docs">Documentation</a></li>
+          <li><a href="/demo">Demo</a></li>
+        </ul>
       </main>
     );
   }

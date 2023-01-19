@@ -15,9 +15,9 @@ await serve(async (req) => {
 
   const pathname = new URL(req.url).pathname;
 
-  if (pathname !== "/" && exists(`${rootdir}/public${pathname}`)) {
+  if (pathname !== "/" && exists(`${rootdir}/static${pathname}`)) {
     return serveDir(req, {
-      fsRoot: `${rootdir}/public`,
+      fsRoot: `${rootdir}/static`,
       urlRoot: ""
     });
   }
