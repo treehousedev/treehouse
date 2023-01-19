@@ -10,8 +10,7 @@ export const layoutdir = `${rootdir}layouts`;
 
 export function exists(pathname: string): boolean {
   try {
-    Deno.statSync(pathname);
-    return true;
+    return Deno.statSync(pathname).isFile;
   } catch(e) {
     if (e instanceof Deno.errors.NotFound)
       return false;

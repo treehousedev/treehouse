@@ -3,12 +3,27 @@ import layout from "../../layouts/default.tsx";
 
 const Page: m.Component = {
   view ({attrs}) {
-    attrs.page.title = "Demo"
     return m(layout, attrs,
-      <main>
-        <h2>Demo</h2>
-        <div>Nothing to see here.</div>
-      </main>
+
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link href="/style.css" rel="stylesheet"></link>
+    <link rel="icon" href="/icon.png" type="image/x-icon" />
+    <link rel="manifest" href="/demo/app.webmanifest" />
+    <title>Demo</title>
+  </head>
+  <body>
+  
+  <main>
+    <h2>Demo</h2>
+    <div>Nothing to see here.</div>
+  </main>
+
+  {(attrs.page.dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
+  </body>
+</html>
+      
     );
   }
 };
