@@ -1,6 +1,9 @@
 import { serve } from "https://deno.land/std/http/server.ts";
 import { refresh } from "https://deno.land/x/refresh/mod.ts";
 import { serveDir } from "https://deno.land/std/http/file_server.ts";
+
+import * as esbuild from "https://deno.land/x/esbuild@v0.17.2/mod.js";
+
 import { generate, rootdir, exists } from "./mod.ts";
 import site from "./globals.ts";
 
@@ -14,6 +17,17 @@ await serve(async (req) => {
   if (res) return res;
 
   const pathname = new URL(req.url).pathname;
+
+  if (pathname === "/lib/treehouse.min.js") {
+    await esbuild.build({
+      entryPoints: ["lib/mod.ts"],
+      bundle: true,
+      outfile: "website/static/lib/treehouse.min.js",
+      jsxFactory: "m",
+      format: "esm",
+      minify: true,
+    });
+  }
 
   if (pathname !== "/" && exists(`${rootdir}/static${pathname}`)) {
     return serveDir(req, {

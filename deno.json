@@ -5,6 +5,7 @@
   "tasks": {
     "run": "deno run --unstable main.tsx",
     "site-generate": "deno run --unstable --allow-read --allow-write website/generate.ts",
-    "site-serve": "deno run --unstable --allow-read --allow-net --watch website/serve.ts"
+    "site-serve": "deno run --unstable --allow-read --allow-write --allow-net --allow-run --allow-env --watch website/serve.ts",
+    "lib-bundle": "esbuild lib/mod.ts --bundle --outfile=website/static/demo/bundle.js --format=esm"
   }
 }
