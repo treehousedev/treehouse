@@ -56,7 +56,7 @@ export const Node: m.Component<Attrs, State> = {
             {state.expanded && <path style={{transform: "scale(0.6) translate(5px, 4px)"}} d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>}
             
           </svg>
-          <svg style={{width: "1rem", height: "1rem", marginRight: "0.5rem"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+          <svg style={{width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {(attrs.data.Linked.Children.length > 0)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>
@@ -67,7 +67,7 @@ export const Node: m.Component<Attrs, State> = {
           flexDirection: "row",
           paddingBottom: "0.25rem"
         }}>
-          <div style={{width: "1rem", marginRight: "0.25rem"}} onclick={toggle}>
+          <div style={{width: "1rem", marginRight: "0.25rem", display: "flex"}} onclick={toggle}>
             <div style={{borderLeft: "1px solid gray", height: "100%", marginLeft: "0.5rem"}}></div>
           </div>
           <div style={{flexGrow: "1"}}>{attrs.data.Linked.Children.map(id => <Node nodes={attrs.nodes} data={attrs.nodes[id]} />)}</div>
