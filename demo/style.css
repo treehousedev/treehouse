@@ -1,6 +1,7 @@
 body {
-  zoom: 1.5;
+  zoom: 1;
   background-color: white;
+  font-family: sans-serif;
 }
 
 .\? { border: 1px solid red !important; }
