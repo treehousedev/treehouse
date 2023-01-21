@@ -31,10 +31,13 @@ export const Node: m.Component<Attrs, State> = {
       e.stopPropagation();
     }
     return (
-      <div style={{paddingLeft: "1rem"}} onmouseover={hover} onmouseout={unhover}>
+      <div class="" style={{paddingLeft: "1rem"}} onmouseover={hover} onmouseout={unhover}>
         <div style={{
           display: "flex",
           flexDirection: "row",
+          alignItems: "center",
+          marginTop: "0.125rem",
+          marginBottom: "0.125rem"
         }} >
           <svg xmlns="http://www.w3.org/2000/svg"
               style={{
@@ -48,13 +51,14 @@ export const Node: m.Component<Attrs, State> = {
               onclick={toggle}
               fill="gray" 
               viewBox="0 0 16 16">
-            {!state.expanded && <path style={{transform: "scale(0.8) translate(2px, 2px)"}} d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>}
-            {state.expanded && <path style={{transform: "scale(0.8) translate(2px, 3px)"}} d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>}
-            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <circle cx="8" cy="7" r="7" fill="lightgray" />
+            {!state.expanded && <path style={{transform: "scale(0.6) translate(5px, 3px)"}} d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>}
+            {state.expanded && <path style={{transform: "scale(0.6) translate(5px, 4px)"}} d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>}
+            
           </svg>
-          <svg style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
-            {(attrs.data.Linked.Children.length > 0)?<circle cx="8" cy="8" r="6" fill="lightgray" />:null}
-            <circle cx="8" cy="8" r="3"/>
+          <svg style={{width: "1rem", height: "1rem", marginRight: "0.5rem"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+            {(attrs.data.Linked.Children.length > 0)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
+            <circle cx="8" cy="7" r="3"/>
           </svg>
           <span>{attrs.data.Name}</span>
         </div>
