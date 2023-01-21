@@ -10,7 +10,11 @@ import site from "./globals.ts";
 site.dev = true;
 
 const port = 9000;
-const middleware = refresh();
+const middleware = refresh({
+  debounce: 100,
+});
+
+let lastBuild = 0;
 
 await serve(async (req) => {
   const res = middleware(req);
@@ -18,15 +22,16 @@ await serve(async (req) => {
 
   const pathname = new URL(req.url).pathname;
 
-  if (pathname === "/lib/treehouse.min.js") {
+  if (pathname === "/lib/treehouse.min.js" && lastBuild < Date.now()-1000) {
     await esbuild.build({
       entryPoints: ["lib/mod.ts"],
       bundle: true,
       outfile: "website/static/lib/treehouse.min.js",
       jsxFactory: "m",
       format: "esm",
-      minify: true,
+      // minify: true,
     });
+    lastBuild = Date.now();
   }
 
   if (pathname !== "/" && exists(`${rootdir}/static${pathname}`)) {

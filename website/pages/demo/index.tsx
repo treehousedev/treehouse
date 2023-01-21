@@ -9,6 +9,7 @@ const Page: m.Component = {
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="/demo/style.css" rel="stylesheet"></link>
     <link rel="icon" href="/icon.png" type="image/x-icon" />
     <link rel="manifest" href="/demo/app.webmanifest" />
