@@ -7,23 +7,34 @@ export interface Binding {
 }
 
 export class KeyBindings {
-  bindings: {[index: string]: Binding};
+  bindings: Binding[];
 
   constructor() {
-    this.bindings = {};
+    this.bindings = [];
   }
 
   registerBinding(binding: Binding) {
-    this.bindings[binding.command] = binding;
+    this.bindings.push(binding);
   }
 
-  evaluateEvent(event: Event): Binding|null {
-    for (const b of Object.values(this.bindings)) {
-      // TODO: more robust than this
-      let [special, key] = b.key.split("+");
-      if (event[`${special}Key`] && key === event.key.toLowerCase()) {
-        return b;
+  evaluateEvent(event: KeyboardEvent): Binding|null {
+    bindings: for (const b of this.bindings) {
+      let modifiers: string[] = b.key.toLowerCase().split("+");
+      let key: string = modifiers.pop();
+      if (key !== event.key.toLowerCase()) {
+        continue;
       }
+      for (const mod of ["shift", "ctrl", "meta", "alt"]) {
+        // @ts-ignore
+        const modState = event[`${mod}Key`];
+        if (!modState && modifiers.includes(mod)) {
+          continue bindings;
+        }
+        if (modState && !modifiers.includes(mod)) {
+          continue bindings;
+        }
+      }
+      return b;
     }
     return null;
   }

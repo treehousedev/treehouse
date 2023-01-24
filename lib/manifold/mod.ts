@@ -11,6 +11,7 @@ export interface RawNode {
 export class Node {
   ID: string;
   module: Module;
+  isDestroyed: boolean;
 
   constructor(module: Module, id: string) {
     this.module = module;
@@ -18,52 +19,116 @@ export class Node {
   }
 
   changed() {
-    this.module.notify(this.module.nodes[this.ID]);
+    this.module.changed(this);
   }
 
-  get Name(): string {
-    return this.module.nodes[this.ID].Name;
+  get isDestroyed(): boolean {
+    return !this.module.nodes.hasOwnProperty(this.ID);
   }
 
-  set Name(val: string) {
-    this.module.nodes[this.ID].Name = val;
+  get raw(): RawNode {
+    return this.module.nodes[this.ID];
+  }
+
+  getName(): string {
+    return this.raw.Name;
+  }
+
+  setName(val: string) {
+    this.raw.Name = val;
     this.changed();
   }
 
-  get Value(): any {
-    return this.module.nodes[this.ID].Value;
+  getValue(): any {
+    return this.raw.Value;
   }
 
-  get Parent(): string|undefined {
-    return this.module.nodes[this.ID].Parent;
+  getParent(): Node|null {
+    if (!this.raw.Parent) return null;
+    return new Node(this.module, this.raw.Parent);
   }
 
-  get Linked(): {[index: string]: string[]} {
-    return this.module.nodes[this.ID].Linked;
+  setParent(n: Node) {
+    const p = this.getParent();
+    if (p !== null) {
+      p.raw.Linked.Children.splice(this.getSiblingIndex(), 1);
+    }
+    this.raw.Parent = n.ID;
+    n.raw.Linked.Children.push(this.ID);
+    this.changed();
   }
 
-  get Attrs(): {[index: string]: string} {
-    return this.module.nodes[this.ID].Attrs;
-  }
-
-  getParent(): Node|undefined {
-    if (!this.Parent) return undefined;
-    return new Node(this.module, this.Parent);
-  }
-  
   getChildren(): Node[] {
-    if (!this.Linked["Children"]) return [];
-    return this.Linked["Children"].map(id => new Node(this.module, id));
+    if (!this.raw.Linked.Children) return [];
+    return this.raw.Linked.Children.map(id => new Node(this.module, id));
   }
+
+  getAttr(name: string): string {
+    return this.raw.Attrs[name] || "";
+  }
+
+  setAttr(name: string, value: string) {
+    this.raw.Attrs[name] = value;
+    this.changed();
+  }
+
+  getSiblingIndex(): number {
+    const p = this.getParent();
+    if (p === null) return 0;
+    return p.raw.Linked.Children.findIndex(id => id === this.ID);
+  }
+
+  setSiblingIndex(i: number) {
+    const p = this.getParent();
+    if (p === null) return;
+    p.raw.Linked.Children.splice(this.getSiblingIndex(), 1);
+    p.raw.Linked.Children.splice(i, 0, this.ID);
+    p.changed();
+  }
+
+  getPrevSibling(): Node|null {
+    const p = this.getParent();
+    if (p === null) return null;
+    if (this.getSiblingIndex() === 0) return null;
+    return p.getChildren()[this.getSiblingIndex()-1];
+  }
+
+  getNextSibling(): Node|null {
+    const p = this.getParent();
+    if (p === null) return null;
+    if (this.getSiblingIndex() === p.getChildren().length-1) return null;
+    return p.getChildren()[this.getSiblingIndex()+1];
+  }
+
+  destroy() {
+    this.module.destroy(this);
+  }
+
+  // getAncestors
+  // getPath
+
+  // addComponent
+  // getComponent
+  // getComponents
+  // getComponentsInChildren
+  // getComponentsInParents
+
+  // walk
+  // duplicate?
 }
 
 
 export class Module {
   nodes: {[index: string]: RawNode};
-  observers: [(n: RawNode) => void];
+  observers: ((n: Node) => void)[];
 
   constructor() {
-    this.nodes = {};
+    this.nodes = {"@root": {
+      ID: "@root",
+      Name: "@root",
+      Linked: {Children: [], Components: []},
+      Attrs: {}
+    }};
     this.observers = [];
   }
 
@@ -81,12 +146,43 @@ export class Module {
     return nodes;
   }
 
+  new(name: string, value?: any): Node {
+    const id = (name.startsWith("@"))?name:uniqueId();
+    this.nodes[id] = {
+      ID: id,
+      Name: name,
+      Value: value,
+      Linked: {Children: [], Components: []},
+      Attrs: {}
+    };
+    return new Node(this, id);
+  }
+
+  destroy(n: Node) {
+    const p = n.getParent();
+    if (p !== null) {
+      p.raw.Linked.Children.splice(n.getSiblingIndex(), 1);
+    }
+    // TODO: walk children and destroy children
+    delete this.nodes[n.ID];
+  }
+
   roots(): Node[] {
     return Object.values(this.nodes).filter(n => n.Parent === undefined).map(n => new Node(this, n.ID));
   }
 
-  notify(n: RawNode) {
+  changed(n: Node) {
     this.observers.forEach(cb => cb(n));
+  }
+
+  find(name:string): Node|null {
+    // TODO: full paths instead of just name
+    for (const n of Object.values(this.nodes)) {
+      if (n.Name === name) {
+        return new Node(this, n.ID);
+      }
+    }
+    return null;
   }
 }
 

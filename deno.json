@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsxFactory": "m",
+    "lib": ["deno.ns", "dom"]
   },
   "tasks": {
     "bundle": "esbuild lib/mod.ts --bundle --outfile=website/static/lib/treehouse.min.js --jsx-factory=m --minify --format=esm",

@@ -22,14 +22,24 @@ export class Environment {
 export class Workspace {
   backend: Store;
   manifold: Module;
-  currentNode: Node;
+
+  // context
+  currentNode: Node|null;
+
+  //showMenu
+  //menu
 
   constructor(backend: Store) {
     this.backend = backend;
     this.manifold = new Module();
     const nodes = this.backend.loadAll();
+    const root = this.manifold.find("@root");
     if (nodes.length === 0) {
       for (const n of Object.values(generateNodeTree(1000))) {
+        if (n.Parent === undefined) {
+          n.Parent = "@root";
+          root?.raw.Linked.Children.push(n.ID);
+        }
         nodes.push(n);
       }
     }
@@ -38,5 +48,13 @@ export class Workspace {
       this.backend.saveAll(Object.values(this.manifold.nodes));
     }));
     
+  }
+
+  setCurrentNode(n: Node|null, pos: number = 0) {
+    this.currentNode = n;
+    if (n) {
+      document.getElementById(`input-${n.ID}`)?.focus();
+      document.getElementById(`input-${n.ID}`)?.setSelectionRange(pos,pos);
+    }
   }
 }
