@@ -127,7 +127,12 @@ document.addEventListener("keydown", (e) => {
 
 export const App: m.Component = {
   view (vnode) {
+    const reset = (e) => {
+      localStorage.clear();
+      location.reload();
+    };
     return <main>
+      <button onclick={reset}>Reset</button>
       {env.workspace.manifold.find("@root").getChildren().map(n => <OutlineNode key={n.ID} data={n} />)}
     </main>
   }
