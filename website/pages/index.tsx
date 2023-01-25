@@ -8,7 +8,9 @@ const Page: m.Component = {
       <main>
         <h1>Treehouse</h1>
         <ul>
+          <li><a href="https://github.com/treehousedev/treehouse">GitHub</a></li>
           <li><a href="/docs">Documentation</a></li>
+          <li><a href="https://deno.land/x/treehouse">API</a></li>
           <li><a href="/demo">Demo</a></li>
         </ul>
       </main>
