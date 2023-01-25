@@ -1,21 +1,20 @@
 
-export interface Menu {
-  id: string;
+export interface MenuItem {
   command: string;
-  alt?: string;
+  //alt?: string;
   //when
   //group
   //submenu
 }
 
 export class MenuRegistry {
-  menus: {[index: string]: Menu};
+  menus: {[index: string]: MenuItems[]};
 
   constructor() {
     this.menus = {};
   }
 
-  registerMenu(menu: Menu) {
-    this.menus[menu.id] = menu;
+  registerMenu(id: string, items: MenuItems[]) {
+    this.menus[id] = items;
   }
 }

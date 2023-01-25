@@ -1,77 +1,92 @@
 import { LocalStorageStore } from "../../backend/mod.ts";
-import { Environment } from "../../env/mod.ts";
+import { Environment, Context } from "../../env/mod.ts";
 import {OutlineNode} from "../outline/mod.tsx";
 import {Node} from "../../manifold/mod.tsx";
+import {Menu} from "../menu/mod.tsx";
 
 
 window.env = new Environment(new LocalStorageStore());
 env.commands.registerCommand({
   id: "expand",
-  action: (n: Node) => {
-    n.setAttr("expanded", JSON.stringify(true));
+  title: "Expand",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
+    ctx.node.setAttr("expanded", JSON.stringify(true));
     m.redraw();
   }
 });
 env.keybindings.registerBinding({command: "expand", key: "meta+arrowdown"});
 env.commands.registerCommand({
   id: "collapse",
-  action: (n: Node) => {
-    n.setAttr("expanded", JSON.stringify(false));
+  title: "Collapse",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
+    ctx.node.setAttr("expanded", JSON.stringify(false));
     m.redraw();
   }
 });
 env.keybindings.registerBinding({command: "collapse", key: "meta+arrowup"});
 env.commands.registerCommand({
   id: "indent",
-  action: (n: Node) => {
-    const prev = n.getPrevSibling();
+  title: "Indent",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
+    const prev = ctx.node.getPrevSibling();
     if (prev !== null) {
-      n.setParent(prev);
+      ctx.node.setParent(prev);
       prev.setAttr("expanded", JSON.stringify(true));
       m.redraw.sync();
-      env.workspace.setCurrentNode(n);
+      env.workspace.setCurrentNode(ctx.node);
     }
   }
 });
 env.keybindings.registerBinding({command: "indent", key: "tab"});
 env.commands.registerCommand({
   id: "outdent",
-  action: (n: Node) => {
-    const parent = n.getParent();
+  title: "Outdent",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
+    const parent = ctx.node.getParent();
     if (parent !== null && parent.ID !== "@root") {
-      n.setParent(parent.getParent());
-      n.setSiblingIndex(parent.getSiblingIndex()+1);
+      ctx.node.setParent(parent.getParent());
+      ctx.node.setSiblingIndex(parent.getSiblingIndex()+1);
       m.redraw.sync();
-      env.workspace.setCurrentNode(n);
+      env.workspace.setCurrentNode(ctx.node);
     }
   }
 });
 env.keybindings.registerBinding({command: "outdent", key: "shift+tab"});
 env.commands.registerCommand({
   id: "insert-child",
-  action: (n: Node, name: string = "") => {
+  title: "Insert Child",
+  action: (ctx: Context, name: string = "") => {
+    if (!ctx.node) return;
     const node = env.workspace.manifold.new(name);
-    node.setParent(n);
+    node.setParent(ctx.node);
     m.redraw.sync();
     env.workspace.setCurrentNode(node, name.length);
   }
 });
 env.commands.registerCommand({
   id: "insert-before",
-  action: () => {
+  title: "Insert Before",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
     const node = env.workspace.manifold.new("");
-    node.setParent(env.workspace.currentNode.getParent());
-    node.setSiblingIndex(env.workspace.currentNode.getSiblingIndex());
+    node.setParent(ctx.node.getParent());
+    node.setSiblingIndex(ctx.node.getSiblingIndex());
     m.redraw.sync();
     env.workspace.setCurrentNode(node);
   }
 });
 env.commands.registerCommand({
   id: "insert",
-  action: (name: string = "") => {
+  title: "Insert Node",
+  action: (ctx: Context, name: string = "") => {
+    if (!ctx.node) return;
     const node = env.workspace.manifold.new(name);
-    node.setParent(env.workspace.currentNode.getParent());
-    node.setSiblingIndex(env.workspace.currentNode.getSiblingIndex()+1);
+    node.setParent(ctx.node.getParent());
+    node.setSiblingIndex(ctx.node.getSiblingIndex()+1);
     m.redraw.sync();
     env.workspace.setCurrentNode(node);
   }
@@ -79,9 +94,11 @@ env.commands.registerCommand({
 env.keybindings.registerBinding({command: "insert", key: "shift+enter"});
 env.commands.registerCommand({
   id: "delete",
-  action: (n: Node) => {
-    const prev = n.getPrevSibling();
-    n.destroy();
+  title: "Delete node",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
+    const prev = ctx.node.getPrevSibling();
+    ctx.node.destroy();
     m.redraw.sync();
     if (prev) {
       env.workspace.setCurrentNode(prev);
@@ -91,38 +108,50 @@ env.commands.registerCommand({
 env.keybindings.registerBinding({command: "delete", key: "shift+meta+backspace"});
 env.commands.registerCommand({
   id: "prev",
-  action: (n: Node) => {
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
     // TODO: find previous/above node in expanded prev sibling
-    const prev = n.getPrevSibling();
+    const prev = ctx.node.getPrevSibling();
     if (prev !== null) {
       env.workspace.setCurrentNode(prev);
     } else {
-      env.workspace.setCurrentNode(n.getParent());
+      env.workspace.setCurrentNode(ctx.node.getParent());
     }
   }
 });
 env.keybindings.registerBinding({command: "prev", key: "arrowup"});
 env.commands.registerCommand({
   id: "next",
-  action: (n: Node) => {
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
     // TODO: go into children if n is expanded
-    const next = n.getNextSibling();
+    const next = ctx.node.getNextSibling();
     if (next !== null) {
       env.workspace.setCurrentNode(next);
     } else {
-      env.workspace.setCurrentNode(n.getParent().getNextSibling());
+      env.workspace.setCurrentNode(ctx.node.getParent().getNextSibling());
     }
   }
 });
 env.keybindings.registerBinding({command: "next", key: "arrowdown"});
 
+env.menus.registerMenu("node", [
+  {command: "indent"},
+  {command: "outdent"},
+  {command: "delete"},
+]);
+
 document.addEventListener("keydown", (e) => {
   const binding = env.keybindings.evaluateEvent(e);
-  if (binding && env.workspace.currentNode) {
-    env.commands.executeCommand(binding.command, env.workspace.currentNode);
+  if (binding && env.workspace.context.node) {
+    env.commands.executeCommand(binding.command, env.workspace.context);
     e.stopPropagation();
     e.preventDefault();
   }
+});
+
+document.addEventListener("click", (e) => {
+  env.workspace.hideMenu();
 });
 
 export const App: m.Component = {
@@ -134,6 +163,7 @@ export const App: m.Component = {
     return <main>
       <button onclick={reset}>Reset</button>
       {env.workspace.manifold.find("@root").getChildren().map(n => <OutlineNode key={n.ID} data={n} />)}
+      {env.workspace.menu && <Menu {...env.workspace.menu} />}
     </main>
   }
 };

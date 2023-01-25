@@ -17,6 +17,15 @@ export class KeyBindings {
     this.bindings.push(binding);
   }
 
+  getBinding(commandId: string): Binding|null {
+    for (const b of this.bindings) {
+      if (b.command === commandId) {
+        return b;
+      }
+    }
+    return null;
+  }
+
   evaluateEvent(event: KeyboardEvent): Binding|null {
     bindings: for (const b of this.bindings) {
       let modifiers: string[] = b.key.toLowerCase().split("+");

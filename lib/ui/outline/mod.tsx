@@ -27,14 +27,14 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
     const toggle = (e) => {
       if (expanded) {
-        env.commands.executeCommand("collapse", node);
+        env.commands.executeCommand("collapse", env.workspace.getContext({node}));
       } else {
-        env.commands.executeCommand("expand", node);
+        env.commands.executeCommand("expand", env.workspace.getContext({node}));
       }
       e.stopPropagation();
     }
     const startEdit = (e) => {
-      env.workspace.currentNode = node;
+      env.workspace.context.node = node;
       state.editing = true;
       state.buffer = node.getName();
     }
@@ -44,20 +44,28 @@ export const OutlineNode: m.Component<Attrs, State> = {
         node.setName(state.buffer);
       }
       state.buffer = undefined;
-      env.workspace.currentNode = undefined;
+      env.workspace.context.node = null;
     }
     const edit = (e) => {
       state.buffer = e.target.value;
     }
     const startNew = (e) => {
-      env.commands.executeCommand("insert-child", node, e.target.value);
+      env.commands.executeCommand("insert-child", env.workspace.getContext({node}), e.target.value);
       e.stopPropagation();
+    }
+    const showMenu = (e) => {
+      const trigger = e.target.closest("*[data-menu]");
+      const rect = trigger.getBoundingClientRect();
+      const x = document.body.scrollLeft+rect.x;
+      const y = document.body.scrollTop+rect.y+rect.height;
+      env.workspace.showMenu(trigger.dataset["menu"], x, y, env.workspace.getContext({node}));
+      e.preventDefault();
     }
     const checkCommands = (e) => {
       switch (e.key) {
       case "Backspace":
         if (e.target.value === "") {
-          env.commands.executeCommand("delete", node);
+          env.commands.executeCommand("delete", env.workspace.getContext({node}));
           // TODO: put cursor at end of new currentNode
           e.stopPropagation();
           return;
@@ -71,18 +79,18 @@ export const OutlineNode: m.Component<Attrs, State> = {
         break;
       case "Enter":
         if (e.target.selectionStart === e.target.value.length) {
-          env.commands.executeCommand("insert");
+          env.commands.executeCommand("insert", env.workspace.getContext({node}));
           e.stopPropagation();
           return;
         }
         if (e.target.selectionStart === 0) {
-          env.commands.executeCommand("insert-before");
+          env.commands.executeCommand("insert-before", env.workspace.getContext({node}));
           e.stopPropagation();
           return;
         }
         if (e.target.selectionStart > 0 && e.target.selectionStart < e.target.value.length) {
           state.buffer = e.target.value.slice(0, e.target.selectionStart);
-          env.commands.executeCommand("insert", e.target.value.slice(e.target.selectionStart));
+          env.commands.executeCommand("insert", env.workspace.getContext({node}), e.target.value.slice(e.target.selectionStart));
           e.stopPropagation();
           return;
         }
@@ -116,7 +124,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
             {expanded && <path style={{transform: "scale(0.6) translate(5px, 4px)"}} d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>}
             
           </svg>
-          <svg style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+          <svg oncontextmenu={showMenu} data-menu="node" style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {(node.getChildren().length > 0)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>
