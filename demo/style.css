@@ -4,4 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+.menu li:hover {
+  background: #555;
+  color: white;
+  cursor: pointer;
+}
+
 .\? { border: 1px solid red !important; }
