@@ -20,18 +20,20 @@ await serve(async (req) => {
   const res = middleware(req);
   if (res) return res;
 
-  const pathname = new URL(req.url).pathname;
+  let pathname = new URL(req.url).pathname;
 
-  if (pathname === "/lib/treehouse.min.js" && lastBuild < Date.now()-1000) {
-    await esbuild.build({
-      entryPoints: ["lib/mod.ts"],
-      bundle: true,
-      outfile: "website/static/lib/treehouse.min.js",
-      jsxFactory: "m",
-      format: "esm",
-      // minify: true,
-    });
-    lastBuild = Date.now();
+  if (pathname === "/lib/treehouse.min.js") {
+    if (lastBuild < Date.now()-1000) {
+      await esbuild.build({
+        entryPoints: ["lib/mod.ts"],
+        bundle: true,
+        outfile: "website/static/lib/treehouse.js",
+        jsxFactory: "m",
+        format: "esm",
+      });
+      lastBuild = Date.now();
+    }
+    Object.defineProperty(req, "url", {value: req.url.replace(".min", "")});
   }
 
   if (pathname !== "/" && exists(`${rootdir}/static${pathname}`)) {
