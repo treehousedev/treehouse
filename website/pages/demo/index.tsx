@@ -4,7 +4,7 @@ import layout from "../../layouts/default.tsx";
 
 const Page: m.Component = {
   view ({attrs}) {
-    return m(layout, attrs,
+    return (
 
 <html>
   <head>
