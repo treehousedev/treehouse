@@ -32,6 +32,7 @@ export class Workspace {
   context: Context;
 
   menu: any;
+  palette: any;
 
   constructor(env: Environment, backend: Store) {
     this.env = env;
@@ -76,6 +77,16 @@ export class Workspace {
 
   hideMenu() {
     this.menu = null;
+    m.redraw();
+  }
+
+  showPalette(x: number, y: number, ctx: Context) {
+    this.palette = {x, y, ctx: ctx};
+    m.redraw();
+  }
+
+  hidePalette() {
+    this.palette = null;
     m.redraw();
   }
 }

@@ -3,6 +3,7 @@ import { Environment, Context } from "../../env/mod.ts";
 import {OutlineNode} from "../outline/mod.tsx";
 import {Node} from "../../manifold/mod.tsx";
 import {Menu} from "../menu/mod.tsx";
+import { CommandPalette } from "../palette/mod.tsx";
 
 
 window.env = new Environment(new LocalStorageStore());
@@ -134,6 +135,18 @@ env.commands.registerCommand({
   }
 });
 env.keybindings.registerBinding({command: "next", key: "arrowdown"});
+env.commands.registerCommand({
+  id: "pick-command",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
+    const trigger = document.getElementById(`input-${ctx.node.ID}`);
+    const rect = trigger.getBoundingClientRect();
+    const x = document.body.scrollLeft+rect.x+200;
+    const y = document.body.scrollTop+rect.y;
+    env.workspace.showPalette(x, y, env.workspace.getContext({node: ctx.node}));
+  }
+});
+env.keybindings.registerBinding({command: "pick-command", key: "meta+k"});
 
 env.menus.registerMenu("node", [
   {command: "indent"},
@@ -164,6 +177,7 @@ export const App: m.Component = {
       <button onclick={reset}>Reset</button>
       {env.workspace.manifold.find("@root").getChildren().map(n => <OutlineNode key={n.ID} data={n} />)}
       {env.workspace.menu && <Menu {...env.workspace.menu} />}
+      {env.workspace.palette && <CommandPalette {...env.workspace.palette} />}
     </main>
   }
 };
