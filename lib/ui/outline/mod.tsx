@@ -165,7 +165,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
                   <path fill="#555" style={{transform: "translate(0px, -1px)"}} d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
                 </svg>
                 <div style={{flexGrow: "1", display: "flex"}}>
-                <input type="text" 
+                <input type="text"
                   oninput={startNew}
                   style={{
                     border: "0px",

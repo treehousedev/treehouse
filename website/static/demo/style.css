@@ -10,4 +10,9 @@ body {
   cursor: pointer;
 }
 
+.palette .selected {
+  background: #555;
+  color: white;
+}
+
 .\? { border: 1px solid red !important; }
