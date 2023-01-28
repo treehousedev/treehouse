@@ -1,4 +1,4 @@
 
 import {App} from "/lib/treehouse.min.js";
 
-m.mount(document.body.getElementsByTagName("main")[0], App);
+m.mount(document.body.getElementsByTagName("div")[0], App);
