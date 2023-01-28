@@ -1,9 +1,9 @@
+import { context } from "https://deno.land/x/esbuild@v0.17.2/mod.d.ts";
 import { LocalStorageStore } from "../../backend/mod.ts";
-import { Environment, Context } from "../../env/mod.ts";
-import {OutlineNode} from "../outline/mod.tsx";
-import {Node} from "../../manifold/mod.tsx";
+import { Environment, Context, panelNode } from "../../env/mod.ts";
 import {Menu} from "../menu/mod.tsx";
 import { CommandPalette } from "../palette/mod.tsx";
+import { Panel as PanelComponent } from "../panel/mod.tsx";
 
 // Run this only once, it's unlikely the OS will change without a reload of the page
 const osType = (() => {
@@ -36,7 +36,7 @@ env.commands.registerCommand({
   title: "Expand",
   action: (ctx: Context) => {
     if (!ctx.node) return;
-    ctx.node.setAttr("expanded", JSON.stringify(true));
+    env.workspace.setExpanded(ctx.node, true);
     m.redraw();
   }
 });
@@ -46,7 +46,7 @@ env.commands.registerCommand({
   title: "Collapse",
   action: (ctx: Context) => {
     if (!ctx.node) return;
-    ctx.node.setAttr("expanded", JSON.stringify(false));
+    env.workspace.setExpanded(ctx.node, false);
     m.redraw();
   }
 });
@@ -61,7 +61,7 @@ env.commands.registerCommand({
       ctx.node.setParent(prev);
       prev.setAttr("expanded", JSON.stringify(true));
       m.redraw.sync();
-      env.workspace.setCurrentNode(ctx.node);
+      env.workspace.focus(ctx.node);
     }
   }
 });
@@ -76,7 +76,7 @@ env.commands.registerCommand({
       ctx.node.setParent(parent.getParent());
       ctx.node.setSiblingIndex(parent.getSiblingIndex()+1);
       m.redraw.sync();
-      env.workspace.setCurrentNode(ctx.node);
+      env.workspace.focus(ctx.node);
     }
   }
 });
@@ -89,7 +89,7 @@ env.commands.registerCommand({
     const node = env.workspace.manifold.new(name);
     node.setParent(ctx.node);
     m.redraw.sync();
-    env.workspace.setCurrentNode(node, name.length);
+    env.workspace.focus(ctx.node, name.length);
   }
 });
 env.commands.registerCommand({
@@ -101,7 +101,7 @@ env.commands.registerCommand({
     node.setParent(ctx.node.getParent());
     node.setSiblingIndex(ctx.node.getSiblingIndex());
     m.redraw.sync();
-    env.workspace.setCurrentNode(node);
+    env.workspace.focus(panelNode(node, ctx.node.panel));
   }
 });
 env.commands.registerCommand({
@@ -113,7 +113,7 @@ env.commands.registerCommand({
     node.setParent(ctx.node.getParent());
     node.setSiblingIndex(ctx.node.getSiblingIndex()+1);
     m.redraw.sync();
-    env.workspace.setCurrentNode(node);
+    env.workspace.focus(panelNode(node, ctx.node.panel));
   }
 });
 env.keybindings.registerBinding({command: "insert", key: "shift+enter"});
@@ -126,7 +126,7 @@ env.commands.registerCommand({
     ctx.node.destroy();
     m.redraw.sync();
     if (prev) {
-      env.workspace.setCurrentNode(prev);
+      env.workspace.focus(panelNode(prev, ctx.node.panel));
     }
   }
 });
@@ -138,9 +138,9 @@ env.commands.registerCommand({
     // TODO: find previous/above node in expanded prev sibling
     const prev = ctx.node.getPrevSibling();
     if (prev !== null) {
-      env.workspace.setCurrentNode(prev);
+      env.workspace.focus(panelNode(prev, ctx.node.panel));
     } else {
-      env.workspace.setCurrentNode(ctx.node.getParent());
+      env.workspace.focus(panelNode(ctx.node.getParent(), ctx.node.panel));
     }
   }
 });
@@ -152,9 +152,9 @@ env.commands.registerCommand({
     // TODO: go into children if n is expanded
     const next = ctx.node.getNextSibling();
     if (next !== null) {
-      env.workspace.setCurrentNode(next);
+      env.workspace.focus(panelNode(next, ctx.node.panel));
     } else {
-      env.workspace.setCurrentNode(ctx.node.getParent().getNextSibling());
+      env.workspace.focus(panelNode(ctx.node.getParent().getNextSibling(), ctx.node.panel));
     }
   }
 });
@@ -163,16 +163,43 @@ env.commands.registerCommand({
   id: "pick-command",
   action: (ctx: Context) => {
     if (!ctx.node) return;
-    const trigger = document.getElementById(`input-${ctx.node.ID}`);
+    const trigger = env.workspace.getInput(ctx.node);
     const rect = trigger.getBoundingClientRect();
     const x = document.body.scrollLeft+rect.x+200;
     const y = document.body.scrollTop+rect.y;
-    env.workspace.showPalette(x, y, env.workspace.getContext({node: ctx.node}));
+    env.workspace.showPalette(x, y, env.workspace.newContext({node: ctx.node}));
   }
 });
 env.keybindings.registerBinding({command: "pick-command", key: "meta+k"});
+env.commands.registerCommand({
+  id: "new-panel",
+  title: "Open in New Panel",
+  action: (ctx: Context) => {
+    if (!ctx.node) return;
+    env.workspace.openNewPanel(ctx.node);
+    m.redraw();
+  }
+});
+env.commands.registerCommand({
+  id: "close-panel",
+  title: "Close Panel",
+  action: (ctx: Context, panel?: Panel) => {
+    env.workspace.closePanel(panel || ctx.node.panel);
+    m.redraw();
+  }
+});
+env.commands.registerCommand({
+  id: "zoom",
+  title: "Zoom",
+  action: (ctx: Context) => {
+    ctx.node.panel.history.push(ctx.node);
+    m.redraw();
+  }
+});
 
 env.menus.registerMenu("node", [
+  {command: "zoom"},
+  {command: "new-panel"},
   {command: "indent"},
   {command: "outdent"},
   {command: "delete"},
@@ -199,7 +226,10 @@ export const App: m.Component = {
     };
     return <main>
       <button onclick={reset}>Reset</button>
-      {env.workspace.manifold.find("@root").getChildren().map(n => <OutlineNode key={n.ID} data={n} />)}
+      {env.workspace.panels.map(row => (
+        <div style={{display: "flex"}}>{row.map(panel => <PanelComponent panel={panel} />)}</div>
+      ))}
+      
       {env.workspace.menu && <Menu {...env.workspace.menu} />}
       {env.workspace.palette && <CommandPalette {...env.workspace.palette} />}
     </main>

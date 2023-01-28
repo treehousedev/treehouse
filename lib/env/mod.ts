@@ -1,7 +1,7 @@
 import { Store } from "../backend/mod.ts";
 import { KeyBindings } from "../command/keybindings/mod.ts";
 import { CommandRegistry } from "../command/mod.ts";
-import { Module, Node, generateNodeTree } from "../manifold/mod.ts";
+import { Module, Node as ManifoldNode, generateNodeTree } from "../manifold/mod.ts";
 import { MenuRegistry } from "../menu/mod.ts";
 
 
@@ -24,6 +24,26 @@ export interface Context {
   nodes?: Node[];
 }
 
+export class Panel {
+  id: string;
+  history: Node[];
+
+  constructor(node: ManifoldNode) {
+    node.panel = this;
+    this.id = Math.random().toString(36).substring(2);
+    this.history = [node];
+  }
+}
+
+export function panelNode(node: ManifoldNode, panel: Panel): Node {
+  node.panel = panel;
+  return node;
+}
+
+export interface Node extends ManifoldNode {
+  panel: Panel;
+}
+
 export class Workspace {
   backend: Store;
   manifold: Module;
@@ -31,8 +51,10 @@ export class Workspace {
 
   context: Context;
 
+  panels: Panel[][]; // Panel[row][column]
   menu: any;
   palette: any;
+  expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
   constructor(env: Environment, backend: Store) {
     this.env = env;
@@ -54,24 +76,54 @@ export class Workspace {
       this.backend.saveAll(Object.values(this.manifold.nodes));
     }));
     this.context = {node: null};
+    this.panels = [[]];
+    this.expanded = {};
+
+    this.openNewPanel(this.manifold.find("@root"));
+    
   }
 
-  setCurrentNode(n: Node|null, pos: number = 0) {
+  open(n: ManifoldNode) {
+    this.panels[0][0] = new Panel(n);
+  }
+
+  openNewPanel(n: ManifoldNode) {
+    this.expanded[n.ID] = {};
+    const p = new Panel(n);
+    this.panels[0].push(p);
+  }
+
+  closePanel(panel: Panel) {
+    this.panels.forEach((row, ridx) => {
+      this.panels[ridx] = row.filter(p => p !== panel);
+    });
+  }
+
+  focus(n: Node, pos: number = 0) {
     this.context.node = n;
-    if (n) {
-      document.getElementById(`input-${n.ID}`)?.focus();
-      document.getElementById(`input-${n.ID}`)?.setSelectionRange(pos,pos);
-    }
+    document.getElementById(`input-${n.panel.id}-${n.ID}`)?.focus();
+    document.getElementById(`input-${n.panel.id}-${n.ID}`)?.setSelectionRange(pos,pos);
   }
 
-  getContext(ctx: any): Context {
+  getInput(n: Node): HTMLElement {
+    return document.getElementById(`input-${n.panel.id}-${n.ID}`);
+  }
+
+  executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {
+    return this.env.commands.executeCommand(id, this.newContext(ctx), ...rest);
+  }
+
+  newContext(ctx: any): Context {
     return Object.assign({}, this.context, ctx);
   }
 
-  showMenu(id: string, x: number, y: number, ctx: Context) {
+  showMenu(id: string, x: number, y: number, ctx: any) {
     const items = this.env.menus.menus[id];
     if (!items) return;
-    this.menu = {x, y, ctx: ctx, items: items.map(i => Object.assign(this.env.commands.commands[i.command], this.env.keybindings.getBinding(i.command)))};
+    this.menu = {x, y, 
+      ctx: this.newContext(ctx), 
+      items: items.map(i => Object.assign(this.env.commands.commands[i.command], this.env.keybindings.getBinding(i.command)))
+    };
     m.redraw();
   }
 
@@ -88,5 +140,17 @@ export class Workspace {
   hidePalette() {
     this.palette = null;
     m.redraw();
+  }
+
+  getExpanded(n: Node): boolean {
+    let expanded = this.expanded[n.panel.history[0].ID][n.ID];
+    if (expanded === undefined) {
+      expanded = false;
+    }
+    return expanded;
+  }
+
+  setExpanded(n: Node, b: boolean) {
+    this.expanded[n.panel.history[0].ID][n.ID] = b;
   }
 }

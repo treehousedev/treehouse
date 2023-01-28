@@ -1,9 +1,9 @@
 
-import { Environment } from "../../env/mod.ts";
-import {Node} from "../../manifold/mod.ts";
+import { Node, panelNode } from "../../env/mod.ts";
+import { Panel } from "../panel/mod.tsx";
 
 interface Attrs {
-  data: Node;
+  node: Node;
 }
 
 interface State {
@@ -13,10 +13,12 @@ interface State {
   buffer?: string;
 }
 
+
+
 export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
-    const node = attrs.data;
-    const expanded = (node.getAttr("expanded") !== "") ? JSON.parse(node.getAttr("expanded")) : false; 
+    const {node} = attrs;
+    const expanded = env.workspace.getExpanded(node); 
     const hover = (e) => {
       state.hover = true;
       e.stopPropagation();
@@ -27,9 +29,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
     const toggle = (e) => {
       if (expanded) {
-        env.commands.executeCommand("collapse", env.workspace.getContext({node}));
+        env.workspace.executeCommand("collapse", {node});
       } else {
-        env.commands.executeCommand("expand", env.workspace.getContext({node}));
+        env.workspace.executeCommand("expand", {node});
       }
       e.stopPropagation();
     }
@@ -50,7 +52,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       state.buffer = e.target.value;
     }
     const startNew = (e) => {
-      env.commands.executeCommand("insert-child", env.workspace.getContext({node}), e.target.value);
+      env.workspace.executeCommand("insert-child", {node}, e.target.value);
       e.stopPropagation();
     }
     const showMenu = (e) => {
@@ -58,14 +60,14 @@ export const OutlineNode: m.Component<Attrs, State> = {
       const rect = trigger.getBoundingClientRect();
       const x = document.body.scrollLeft+rect.x;
       const y = document.body.scrollTop+rect.y+rect.height;
-      env.workspace.showMenu(trigger.dataset["menu"], x, y, env.workspace.getContext({node}));
+      env.workspace.showMenu(trigger.dataset["menu"], x, y, {node});
       e.preventDefault();
     }
     const checkCommands = (e) => {
       switch (e.key) {
       case "Backspace":
         if (e.target.value === "") {
-          env.commands.executeCommand("delete", env.workspace.getContext({node}));
+          env.workspace.executeCommand("delete", {node});
           // TODO: put cursor at end of new currentNode
           e.stopPropagation();
           return;
@@ -79,18 +81,18 @@ export const OutlineNode: m.Component<Attrs, State> = {
         break;
       case "Enter":
         if (e.target.selectionStart === e.target.value.length) {
-          env.commands.executeCommand("insert", env.workspace.getContext({node}));
+          env.workspace.executeCommand("insert", {node});
           e.stopPropagation();
           return;
         }
         if (e.target.selectionStart === 0) {
-          env.commands.executeCommand("insert-before", env.workspace.getContext({node}));
+          env.workspace.executeCommand("insert-before", {node});
           e.stopPropagation();
           return;
         }
         if (e.target.selectionStart > 0 && e.target.selectionStart < e.target.value.length) {
           state.buffer = e.target.value.slice(0, e.target.selectionStart);
-          env.commands.executeCommand("insert", env.workspace.getContext({node}), e.target.value.slice(e.target.selectionStart));
+          env.workspace.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart));
           e.stopPropagation();
           return;
         }
@@ -129,7 +131,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
             <circle cx="8" cy="7" r="3"/>
           </svg>
           <div style={{flexGrow: "1", display: "flex"}}>
-            <input id={`input-${node.ID}`} type="text" value={(state.editing)?state.buffer:node.getName()} 
+            <input id={`input-${node.panel.id}-${node.ID}`} type="text" value={(state.editing)?state.buffer:node.getName()} 
               onfocus={startEdit}
               onblur={finishEdit}
               oninput={edit}
@@ -151,7 +153,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           </div>
           <div style={{flexGrow: "1"}}>
             {(node.getChildren().length > 0)
-              ?node.getChildren().map(n => <OutlineNode key={n.ID} data={n} />)
+              ?node.getChildren().map(n => <OutlineNode key={n.ID} node={panelNode(n, node.panel)} />)
               :<div style={{
                 display: "flex",
                 flexDirection: "row",

@@ -14,7 +14,7 @@ export const Menu: m.Component = {
       marginLeft: "1rem"
     };
     const onclick = (item) => (e) => {
-      env.commands.executeCommand(item.command, env.workspace.getContext(attrs.ctx));
+      env.workspace.executeCommand(item.id, attrs.ctx);
       env.workspace.hideMenu();
       e.stopPropagation();
     };
