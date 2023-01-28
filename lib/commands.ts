@@ -1,4 +1,3 @@
-import { AnalyzeMetafileOptions } from "https://deno.land/x/esbuild@v0.17.2/mod.d.ts";
 
 export interface Command {
   id: string;

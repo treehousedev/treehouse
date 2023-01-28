@@ -1,8 +1,8 @@
-import { Store } from "../backend/mod.ts";
-import { KeyBindings } from "../command/keybindings/mod.ts";
-import { CommandRegistry } from "../command/mod.ts";
-import { Module, Node as ManifoldNode, generateNodeTree } from "../manifold/mod.ts";
-import { MenuRegistry } from "../menu/mod.ts";
+import { Store } from "./backend.ts";
+import { KeyBindings } from "./keybinds.ts";
+import { CommandRegistry } from "./commands.ts";
+import { Module, Node as ManifoldNode, generateNodeTree } from "./manifold/mod.ts";
+import { MenuRegistry } from "./menus.ts";
 
 
 export class Environment {

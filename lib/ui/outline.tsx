@@ -1,6 +1,5 @@
 
-import { Node, panelNode } from "../../env/mod.ts";
-import { Panel } from "../panel/mod.tsx";
+import { Node, panelNode } from "../workspace.ts";
 
 interface Attrs {
   node: Node;

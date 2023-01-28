@@ -1,9 +1,8 @@
-import { context } from "https://deno.land/x/esbuild@v0.17.2/mod.d.ts";
-import { LocalStorageStore } from "../../backend/mod.ts";
-import { Environment, Context, panelNode } from "../../env/mod.ts";
-import {Menu} from "../menu/mod.tsx";
-import { CommandPalette } from "../palette/mod.tsx";
-import { Panel as PanelComponent } from "../panel/mod.tsx";
+import { LocalStorageStore } from "../backend.ts";
+import { Environment, Context, panelNode } from "../workspace.ts";
+import { Menu } from "./menu.tsx";
+import { CommandPalette } from "./palette.tsx";
+import { Panel as PanelComponent } from "./panel.tsx";
 
 // Run this only once, it's unlikely the OS will change without a reload of the page
 const osType = (() => {

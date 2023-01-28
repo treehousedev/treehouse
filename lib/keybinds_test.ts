@@ -1,6 +1,6 @@
 
 import { assertEquals } from "https://deno.land/std@0.173.0/testing/asserts.ts";
-import { KeyBindings } from "./mod.ts";
+import { KeyBindings } from "./keybinds.ts";
 
 Deno.test("binding registration", async () => {
   const bindings = new KeyBindings();

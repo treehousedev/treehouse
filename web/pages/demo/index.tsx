@@ -18,7 +18,7 @@ const Page: m.Component = {
   </head>
   <body>
   
-  <main></main>
+  <div></div>
 
   <script src="/demo/demo.js" type="module"></script>
   {(attrs.page.dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}

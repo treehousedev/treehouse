@@ -27,7 +27,7 @@ await serve(async (req) => {
       await esbuild.build({
         entryPoints: ["lib/mod.ts"],
         bundle: true,
-        outfile: "website/static/lib/treehouse.js",
+        outfile: "web/static/lib/treehouse.js",
         jsxFactory: "m",
         format: "esm",
       });

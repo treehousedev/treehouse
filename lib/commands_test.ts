@@ -1,6 +1,6 @@
 
 import { assertEquals } from "https://deno.land/std@0.173.0/testing/asserts.ts";
-import { CommandRegistry } from "./mod.ts";
+import { CommandRegistry } from "./commands.ts";
 
 Deno.test("command registration and execution", async () => {
   const r = new CommandRegistry();

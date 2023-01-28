@@ -10,7 +10,7 @@ function mkdirAll(path: string) {
   } catch {}
 }
 
-const outpath = "./website/out";
+const outpath = "./web/out";
 
 mkdirAll(dirname(outpath));
 copy(`${rootdir}/static`, `${outpath}`, {overwrite: true});
@@ -21,7 +21,7 @@ for await(const e of walk(pagedir, {
 })) {
   if (e.isFile) {
     const pathname = e.path
-      .replace(`${Deno.cwd()}/website/pages`, "")
+      .replace(`${Deno.cwd()}/web/pages`, "")
       .replace(extname(e.path), "");
     const out = await generate(pathname);
     if (out) {

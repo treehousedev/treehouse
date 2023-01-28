@@ -1,5 +1,5 @@
-import {OutlineNode} from "../outline/mod.tsx";
-import {panelNode} from "../../env/mod.ts";
+import {OutlineNode} from "./outline.tsx";
+import {panelNode} from "../workspace.ts";
 
 export const Panel = {
   view({attrs}) {
