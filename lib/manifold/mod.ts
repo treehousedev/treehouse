@@ -11,7 +11,6 @@ export interface RawNode {
 export class Node {
   ID: string;
   module: Module;
-  isDestroyed: boolean;
 
   constructor(module: Module, id: string) {
     this.module = module;

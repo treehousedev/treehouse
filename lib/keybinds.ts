@@ -28,8 +28,8 @@ export class KeyBindings {
 
   evaluateEvent(event: KeyboardEvent): Binding|null {
     bindings: for (const b of this.bindings) {
-      let modifiers: string[] = b.key.toLowerCase().split("+");
-      let key: string = modifiers.pop();
+      let modifiers = b.key.toLowerCase().split("+");
+      let key = modifiers.pop();
       if (key !== event.key.toLowerCase()) {
         continue;
       }

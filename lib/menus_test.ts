@@ -4,11 +4,10 @@ import { MenuRegistry } from "./menus.ts";
 
 Deno.test("menu registration", async () => {
   const menus = new MenuRegistry();
-  menus.registerMenu({
-    id: "test/test",
+  menus.registerMenu("test/test", [{
     command: "test"
-  })
+  }]);
   const ret = menus.menus["test/test"];
 
-  assertEquals(ret.command, "test");
+  assertEquals(ret[0].command, "test");
 });

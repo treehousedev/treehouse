@@ -8,13 +8,13 @@ export interface MenuItem {
 }
 
 export class MenuRegistry {
-  menus: {[index: string]: MenuItems[]};
+  menus: {[index: string]: MenuItem[]};
 
   constructor() {
     this.menus = {};
   }
 
-  registerMenu(id: string, items: MenuItems[]) {
+  registerMenu(id: string, items: MenuItem[]) {
     this.menus[id] = items;
   }
 }

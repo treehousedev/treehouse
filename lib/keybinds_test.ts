@@ -8,7 +8,7 @@ Deno.test("binding registration", async () => {
     command: "test",
     key: "shift+a"
   })
-  const ret = bindings.bindings["test"];
+  const ret = bindings.getBinding("test");
 
-  assertEquals(ret.key, "shift+a");
+  assertEquals(ret?.key, "shift+a");
 });

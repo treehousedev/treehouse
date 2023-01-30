@@ -21,9 +21,9 @@ Deno.test("node proxy", () => {
   ])
 
   const roots = m.roots();
-  assertEquals(roots.length, 1);
+  assertEquals(roots.length, 2);
  
-  const children = roots[0].getChildren();
+  const children = roots[1].getChildren();
   assertEquals(children.length, 1);
 
   assertEquals(children[0].getParent()?.getName(), "Root");
