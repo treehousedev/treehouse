@@ -1,7 +1,9 @@
 import { walkSync } from "https://deno.land/std/fs/mod.ts";
 import { extname, normalize } from "https://deno.land/std/path/mod.ts";
+import { createExtractor, Format, Parser } from "https://deno.land/std/encoding/front_matter/mod.ts";
+import { parse as parseYAML } from "https://deno.land/std/encoding/yaml.ts";
 
-import {m,render,pretty,showdown,matter} from "./deps.ts";
+import {m,render,pretty,highlightText,Marked} from "./deps.ts";
 import globals from "./globals.ts";
 
 export const rootdir = new URL('.', import.meta.url).pathname;
@@ -16,6 +18,17 @@ export function exists(pathname: string): boolean {
       return false;
     throw e;
   }
+}
+
+async function parseMarkdown(s: string): string {
+  let [ctx, i] = [{}, 0];
+  // hack to get around markdown library not supporting async hightlighting
+  Marked.setOptions({highlight: (code, lang) => {i++; const key = `{{${i}}}`; ctx[key] = {code, lang}; return key; }});
+  const out = Marked.parse(s);
+  for (const key in ctx) {
+    out.content = out.content.replace(key, await highlightText(ctx[key].code, ctx[key].lang));
+  }
+  return out.content;
 }
 
 function resolve(pathname: string): string|null {
@@ -36,17 +49,17 @@ export async function generate(path: string): string|null {
   const attrs = Object.assign({}, globals);
   switch (extname(pagepath)) {
   case ".md":
-    const page = matter(await Deno.readTextFile(normalize(pagepath)));
-    const converter = new showdown.Converter();
-    const layout = await loadLayout(page.data.layout||"default");
-    for (const key in page.data) {
-      attrs[key] = page.data[key];
+    const extract = createExtractor({ [Format.YAML]: parseYAML as Parser });
+    const page = extract(await Deno.readTextFile(normalize(pagepath)));
+    const layout = await loadLayout(page.attrs.layout||"default");
+    for (const key in page.attrs) {
+      attrs[key] = page.attrs[key];
     }
-    return pretty(render.sync(m(layout, {page: attrs}, 
-                                m.trust(converter.makeHtml(page.content)))));
+    return "<!DOCTYPE html>\n"+pretty(render.sync(m(layout, {page: attrs}, 
+                                m.trust(await parseMarkdown(page.body)))));
   case ".tsx":
     const mod = await import(normalize(pagepath));
-    return pretty(render.sync(m(mod.default, {page: attrs})));
+    return "<!DOCTYPE html>\n"+pretty(render.sync(m(mod.default, {page: attrs})));
   default:
     return null;
   }

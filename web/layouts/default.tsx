@@ -8,6 +8,7 @@ export default {view: ({attrs, children}) => {
     <meta charset="UTF-8" />
     <link href="/style.css" rel="stylesheet"></link>
     <link rel="icon" href="/icon.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speed-highlight/core/dist/themes/default.css"></link>
     <title>{attrs.page.title?`${attrs.page.title} - ${attrs.page.site}`:attrs.page.site}</title>
   </head>
   <body>
