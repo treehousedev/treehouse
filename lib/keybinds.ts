@@ -1,4 +1,30 @@
 
+const isMac = (navigator.userAgent.toLowerCase().indexOf("mac") !== -1);
+
+export function bindingSymbols(key?: string): string[] {
+  if (!key) return [];
+  const symbols = {
+    "backspace": "⌫",
+    "shift": "⇧",
+    "meta": "⌘",
+    "tab": "↹",
+    "ctrl": "⌃",
+    "uparrow": "↑",
+    "downarrow": "↓",
+    "leftarrow": "←",
+    "rightarrow": "→",
+    "enter": "⏎"
+  };
+  const keys = key.toLowerCase().split("+");
+  return keys.map(filterKeyForNonMacMeta).map(k => (Object.keys(symbols).includes(k)) ? symbols[k] : k);
+}
+
+// if key is meta and not on a mac, change it to ctrl,
+// otherwise return the key as is
+function filterKeyForNonMacMeta(key: string): string {
+  return (!isMac && key === "meta") ? "ctrl": key;
+}
+
 export interface Binding {
   command: string;
   key: string;
@@ -33,13 +59,20 @@ export class KeyBindings {
       if (key !== event.key.toLowerCase()) {
         continue;
       }
-      for (const mod of ["shift", "ctrl", "meta", "alt"]) {
+      for (const checkMod of ["shift", "ctrl", "alt", "meta"]) {
+        let hasMod = modifiers.includes(checkMod);
+        if (!isMac) {
+          if (checkMod === "meta") continue;
+          if (checkMod === "ctrl") {
+            hasMod = modifiers.includes("meta") || modifiers.includes("ctrl");
+          }
+        }
         // @ts-ignore
-        const modState = event[`${mod}Key`];
-        if (!modState && modifiers.includes(mod)) {
+        const modState = event[`${filterKeyForNonMacMeta(checkMod)}Key`];
+        if (!modState && hasMod) {
           continue bindings;
         }
-        if (modState && !modifiers.includes(mod)) {
+        if (modState && !hasMod) {
           continue bindings;
         }
       }

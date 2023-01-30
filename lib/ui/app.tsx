@@ -4,30 +4,6 @@ import { Menu } from "./menu.tsx";
 import { CommandPalette } from "./palette.tsx";
 import { Panel as PanelComponent } from "./panel.tsx";
 
-// Run this only once, it's unlikely the OS will change without a reload of the page
-const osType = (() => {
-  if (navigator.userAgent.toLowerCase().indexOf("win")   != -1) return "win";
-  if (navigator.userAgent.toLowerCase().indexOf("mac")   != -1) return "mac";
-  if (navigator.userAgent.toLowerCase().indexOf("linux") != -1) return "linux";
-  if (navigator.userAgent.toLowerCase().indexOf("x11")   != -1) return "unix";
-  return "unknown";
-})();
-
-// Returns an os-specific key from an object, the wildcard, or the first
-// Allows to define configurations that differ based on the OS the page is viewed from
-const osSpecific = function<T = unknown>(options: Record<string, T>): T {
-
-  // Sanity checking
-  const keys = Object.keys(options);
-  if (keys.length <= 0) {
-    throw new Error("Invalid options record object given, must contain at least one option");
-  }
-
-  // Return os-specific, fallback, or first, in that order of preference
-  if (keys.includes(osType)) return options[osType];
-  if (keys.includes("*")) return options["*"];
-  return options[keys[0]];
-};
 
 window.env = new Environment(new LocalStorageStore());
 env.commands.registerCommand({
@@ -39,7 +15,7 @@ env.commands.registerCommand({
     m.redraw();
   }
 });
-env.keybindings.registerBinding({command: "expand", key: osSpecific({ "mac": "meta+arrowdown", "*": "ctrl+arrowdown" }) });
+env.keybindings.registerBinding({command: "expand", key: "meta+arrowdown" });
 env.commands.registerCommand({
   id: "collapse",
   title: "Collapse",
@@ -49,7 +25,7 @@ env.commands.registerCommand({
     m.redraw();
   }
 });
-env.keybindings.registerBinding({command: "collapse", key: osSpecific({ "mac": "meta+arrowup", "*": "ctrl+arrowup" }) });
+env.keybindings.registerBinding({command: "collapse", key: "meta+arrowup" });
 env.commands.registerCommand({
   id: "indent",
   title: "Indent",
@@ -129,7 +105,7 @@ env.commands.registerCommand({
     }
   }
 });
-env.keybindings.registerBinding({command: "delete", key: osSpecific({ "mac": "shift+meta+backspace", "*": "shift+ctrl+backspace" }) });
+env.keybindings.registerBinding({command: "delete", key: "shift+meta+backspace" });
 env.commands.registerCommand({
   id: "prev",
   action: (ctx: Context) => {
@@ -195,6 +171,7 @@ env.commands.registerCommand({
     m.redraw();
   }
 });
+env.keybindings.registerBinding({command: "zoom", key: "ctrl+z"});
 
 env.menus.registerMenu("node", [
   {command: "zoom"},
