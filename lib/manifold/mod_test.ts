@@ -1,6 +1,7 @@
 
 import { assertEquals } from "https://deno.land/std@0.173.0/testing/asserts.ts";
 import { Module, Node } from "./mod.ts";
+import { component } from "./components.ts";
 
 Deno.test("node proxy", () => {
   const m = new Module();
@@ -54,5 +55,32 @@ Deno.test("child operations", () => {
 
   childD.destroy();
   assertEquals(childA.getChildren().length, 1);
+
+});
+
+@component
+class Foobar {
+  state: string;
+
+  constructor() {
+    this.state = "";
+  }
+}
+
+Deno.test("components", () => {
+  const m = new Module();
+  const root = m.roots()[0];
+
+  const f = new Foobar();
+  f.state = "hello";
+  root.addComponent(f);
+
+  assertEquals(root.hasComponent(Foobar), true);
+
+  const ff = root.getComponent(Foobar);
+  assertEquals(f, ff);
+
+  root.removeComponent(Foobar);
+  assertEquals(root.hasComponent(Foobar), false);
 
 });

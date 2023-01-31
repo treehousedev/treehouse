@@ -1,4 +1,6 @@
 
+import { componentName, getComponent } from "./components.ts";
+
 export interface RawNode {
   ID:        string;
 	Name:      string;
@@ -103,14 +105,45 @@ export class Node {
     this.module.destroy(this);
   }
 
-  // getAncestors
-  // getPath
+  addComponent(obj: any) {
+    const node = this.module.new(componentName(obj), obj);
+    node.raw.Parent = this.ID;
+    this.raw.Linked.Components.push(node.ID);
+    this.changed();
+  } 
 
-  // addComponent
-  // getComponent
-  // getComponents
+  removeComponent(type: any) {
+    const coms = this.getComponentNodes().filter(n => n.getName() === componentName(type));
+    if (coms.length > 0) {
+      coms[0].destroy();
+    }
+  }
+  
+  hasComponent(type: any): boolean {
+    const coms = this.getComponentNodes().filter(n => n.getName() === componentName(type));
+    if (coms.length > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  getComponent(type: any): any|null {
+    const coms = this.getComponentNodes().filter(n => n.getName() === componentName(type));
+    if (coms.length > 0) {
+      return coms[0].getValue();
+    }
+    return null;
+  }
+
+  getComponentNodes(): Node[] {
+    if (!this.raw.Linked.Components) return [];
+    return this.raw.Linked.Components.map(id => new Node(this.module, id));
+  }
+ 
   // getComponentsInChildren
   // getComponentsInParents
+  // getAncestors
+  // getPath
 
   // walk
   // duplicate?
@@ -160,7 +193,12 @@ export class Module {
   destroy(n: Node) {
     const p = n.getParent();
     if (p !== null) {
-      p.raw.Linked.Children.splice(n.getSiblingIndex(), 1);
+      if (p.raw.Linked.Children.includes(n.ID)) {
+        p.raw.Linked.Children.splice(n.getSiblingIndex(), 1);
+      }
+      if (p.raw.Linked.Components.includes(n.ID)) {
+        p.raw.Linked.Components.splice(n.getSiblingIndex(), 1);
+      }
     }
     // TODO: walk children and destroy children
     delete this.nodes[n.ID];
@@ -192,7 +230,7 @@ const uniqueId = () => {
 };
 
 export function newNode(name: string): RawNode {
-  return {ID: uniqueId(), Name: name, Linked: {Children: []}, Attrs: {}};
+  return {ID: uniqueId(), Name: name, Linked: {Children: [], Components: []}, Attrs: {}};
 }
 
 export function generateNodes(count: number): RawNode[] {
