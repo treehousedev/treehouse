@@ -5,20 +5,6 @@ import { Module, Node as ManifoldNode, generateNodeTree } from "./manifold/mod.t
 import { MenuRegistry } from "./menus.ts";
 
 
-export class Environment {
-  workspace: Workspace;
-  commands: CommandRegistry;
-  keybindings: KeyBindings;
-  menus: MenuRegistry;
-
-  constructor(backend: Store) {
-    this.workspace = new Workspace(this, backend);
-    this.commands = new CommandRegistry();
-    this.keybindings = new KeyBindings();
-    this.menus = new MenuRegistry();
-  }
-}
-
 export interface Context {
   node: Node|null;
   nodes?: Node[];
@@ -45,9 +31,12 @@ export interface Node extends ManifoldNode {
 }
 
 export class Workspace {
+  commands: CommandRegistry;
+  keybindings: KeyBindings;
+  menus: MenuRegistry;
+
   backend: Store;
-  manifold: Module;
-  env: Environment;
+  nodes: Module;
 
   context: Context;
 
@@ -56,12 +45,15 @@ export class Workspace {
   palette: any;
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
-  constructor(env: Environment, backend: Store) {
-    this.env = env;
+  constructor(backend: Store) {
+    this.commands = new CommandRegistry();
+    this.keybindings = new KeyBindings();
+    this.menus = new MenuRegistry();
+
     this.backend = backend;
-    this.manifold = new Module();
+    this.nodes = new Module();
     const nodes = this.backend.loadAll();
-    const root = this.manifold.find("@root");
+    const root = this.nodes.find("@root");
     if (nodes.length === 0) {
       for (const n of Object.values(generateNodeTree(1000))) {
         if (n.Parent === undefined) {
@@ -71,15 +63,15 @@ export class Workspace {
         nodes.push(n);
       }
     }
-    this.manifold.import(nodes);
-    this.manifold.observers.push((n => {
-      this.backend.saveAll(Object.values(this.manifold.nodes));
+    this.nodes.import(nodes);
+    this.nodes.observers.push((n => {
+      this.backend.saveAll(Object.values(this.nodes.nodes));
     }));
     this.context = {node: null};
     this.panels = [[]];
     this.expanded = {};
 
-    this.openNewPanel(this.manifold.find("@root"));
+    this.openNewPanel(this.nodes.find("@root"));
     
   }
 
@@ -110,7 +102,7 @@ export class Workspace {
   }
 
   executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {
-    return this.env.commands.executeCommand(id, this.newContext(ctx), ...rest);
+    return this.commands.executeCommand(id, this.newContext(ctx), ...rest);
   }
 
   newContext(ctx: any): Context {
@@ -118,11 +110,11 @@ export class Workspace {
   }
 
   showMenu(id: string, x: number, y: number, ctx: any) {
-    const items = this.env.menus.menus[id];
+    const items = this.menus.menus[id];
     if (!items) return;
     this.menu = {x, y, 
       ctx: this.newContext(ctx), 
-      items: items.map(i => Object.assign(this.env.commands.commands[i.command], this.env.keybindings.getBinding(i.command)))
+      items: items.map(i => Object.assign(this.commands.commands[i.command], this.keybindings.getBinding(i.command)))
     };
     m.redraw();
   }

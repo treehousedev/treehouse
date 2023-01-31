@@ -1,4 +1,4 @@
 
-import {App} from "/lib/treehouse.min.js";
+import {setup, LocalStorageStore} from "/lib/treehouse.min.js";
 
-m.mount(document.body.getElementsByTagName("div")[0], App);
+setup(document, document.body, new LocalStorageStore());

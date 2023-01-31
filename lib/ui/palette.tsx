@@ -12,8 +12,9 @@ export const CommandPalette: m.Component = {
   },
 
   view({attrs, state}) {
+    const workspace = attrs.workspace;
     state.filter = (state.filter === undefined) ? "" : state.filter;
-    const cmds = Object.values(env.commands.commands);
+    const cmds = Object.values(workspace.commands.commands);
     const filtered = cmds.filter(cmd => cmd.id.startsWith(state.filter));
     const onkeydown = (e) => {
       const mod = (a,b) => ((a % b) + b) % b;
@@ -34,13 +35,13 @@ export const CommandPalette: m.Component = {
       }
       if (e.key === "Enter") {
         if (state.selected !== undefined) {
-          env.commands.executeCommand(filtered[state.selected].id, attrs.ctx);
-          env.workspace.hidePalette();
+          workspace.commands.executeCommand(filtered[state.selected].id, attrs.ctx);
+          workspace.hidePalette();
         }
         return false;
       }
       if (e.key === "Escape") {
-        env.workspace.hidePalette();
+        workspace.hidePalette();
       }
     }
     const autocomplete = (e) => {

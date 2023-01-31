@@ -1,8 +1,9 @@
 
-import { Node, panelNode } from "../workspace.ts";
+import { Workspace, Node, panelNode } from "../workspace.ts";
 
 interface Attrs {
   node: Node;
+  workspace: Workspace;
 }
 
 interface State {
@@ -16,8 +17,8 @@ interface State {
 
 export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
-    const {node} = attrs;
-    const expanded = env.workspace.getExpanded(node); 
+    const {node, workspace} = attrs;
+    const expanded = workspace.getExpanded(node); 
     const hover = (e) => {
       state.hover = true;
       e.stopPropagation();
@@ -28,14 +29,14 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
     const toggle = (e) => {
       if (expanded) {
-        env.workspace.executeCommand("collapse", {node});
+        workspace.executeCommand("collapse", {node});
       } else {
-        env.workspace.executeCommand("expand", {node});
+        workspace.executeCommand("expand", {node});
       }
       e.stopPropagation();
     }
     const startEdit = (e) => {
-      env.workspace.context.node = node;
+      workspace.context.node = node;
       state.editing = true;
       state.buffer = node.getName();
     }
@@ -45,13 +46,13 @@ export const OutlineNode: m.Component<Attrs, State> = {
         node.setName(state.buffer);
       }
       state.buffer = undefined;
-      env.workspace.context.node = null;
+      workspace.context.node = null;
     }
     const edit = (e) => {
       state.buffer = e.target.value;
     }
     const startNew = (e) => {
-      env.workspace.executeCommand("insert-child", {node}, e.target.value);
+      workspace.executeCommand("insert-child", {node}, e.target.value);
       e.stopPropagation();
     }
     const showMenu = (e) => {
@@ -59,14 +60,14 @@ export const OutlineNode: m.Component<Attrs, State> = {
       const rect = trigger.getBoundingClientRect();
       const x = document.body.scrollLeft+rect.x;
       const y = document.body.scrollTop+rect.y+rect.height;
-      env.workspace.showMenu(trigger.dataset["menu"], x, y, {node});
+      workspace.showMenu(trigger.dataset["menu"], x, y, {node});
       e.preventDefault();
     }
     const checkCommands = (e) => {
       switch (e.key) {
       case "Backspace":
         if (e.target.value === "") {
-          env.workspace.executeCommand("delete", {node});
+          workspace.executeCommand("delete", {node});
           // TODO: put cursor at end of new currentNode
           e.stopPropagation();
           return;
@@ -80,18 +81,18 @@ export const OutlineNode: m.Component<Attrs, State> = {
         break;
       case "Enter":
         if (e.target.selectionStart === e.target.value.length) {
-          env.workspace.executeCommand("insert", {node});
+          workspace.executeCommand("insert", {node});
           e.stopPropagation();
           return;
         }
         if (e.target.selectionStart === 0) {
-          env.workspace.executeCommand("insert-before", {node});
+          workspace.executeCommand("insert-before", {node});
           e.stopPropagation();
           return;
         }
         if (e.target.selectionStart > 0 && e.target.selectionStart < e.target.value.length) {
           state.buffer = e.target.value.slice(0, e.target.selectionStart);
-          env.workspace.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart));
+          workspace.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart));
           e.stopPropagation();
           return;
         }
@@ -152,7 +153,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           </div>
           <div style={{flexGrow: "1"}}>
             {(node.getChildren().length > 0)
-              ?node.getChildren().map(n => <OutlineNode key={n.ID} node={panelNode(n, node.panel)} />)
+              ?node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)
               :<div style={{
                 display: "flex",
                 flexDirection: "row",

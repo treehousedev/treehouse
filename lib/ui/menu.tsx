@@ -2,6 +2,7 @@ import { bindingSymbols } from "../keybinds.ts";
 
 export const Menu: m.Component = {
   view({attrs}) {
+    const workspace = attrs.workspace;
     const liStyle = {
       margin: "0px",  
       listStyleType: "none",
@@ -15,8 +16,8 @@ export const Menu: m.Component = {
       marginLeft: "1rem"
     };
     const onclick = (item) => (e) => {
-      env.workspace.executeCommand(item.id, attrs.ctx);
-      env.workspace.hideMenu();
+      workspace.executeCommand(item.id, attrs.ctx);
+      workspace.hideMenu();
       e.stopPropagation();
     };
     return (

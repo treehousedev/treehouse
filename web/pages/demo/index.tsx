@@ -1,6 +1,4 @@
 import {m} from "../../deps.ts";
-import layout from "../../layouts/default.tsx";
-
 
 const Page: m.Component = {
   view ({attrs}) {
@@ -17,11 +15,8 @@ const Page: m.Component = {
     <title>Demo</title>
   </head>
   <body>
-  
-  <div></div>
-
-  <script src="/demo/demo.js" type="module"></script>
-  {(attrs.page.dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
+    <script src="/demo/demo.js" type="module"></script>
+    {(attrs.page.dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
   </body>
 </html>
       

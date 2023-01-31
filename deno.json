@@ -5,7 +5,7 @@
   },
   "tasks": {
     "bundle": "esbuild lib/mod.ts --bundle --outfile=web/static/lib/treehouse.min.js --jsx-factory=m --minify --format=esm",
-    "generate": "deno run --unstable --allow-read --allow-write web/generate.ts",
+    "generate": "deno run --unstable --allow-read --allow-net --allow-write web/generate.ts",
     "serve": "deno run --unstable -A --watch web/serve.ts",
   }
 }
