@@ -1,9 +1,5 @@
-import {m} from "../../deps.ts";
-
-const Page: m.Component = {
-  view ({attrs}) {
-    return (
-
+import {m,page} from "../../deps.ts";
+export default page({}, ({attrs: {dev}}) => (
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -16,12 +12,7 @@ const Page: m.Component = {
   </head>
   <body>
     <script src="/demo/demo.js" type="module"></script>
-    {(attrs.page.dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
+    {(dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
   </body>
 </html>
-      
-    );
-  }
-};
-
-export default Page;
+));

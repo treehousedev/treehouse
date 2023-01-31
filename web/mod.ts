@@ -55,11 +55,11 @@ export async function generate(path: string): string|null {
     for (const key in page.attrs) {
       attrs[key] = page.attrs[key];
     }
-    return "<!DOCTYPE html>\n"+pretty(render.sync(m(layout, {page: attrs}, 
+    return "<!DOCTYPE html>\n"+pretty(render.sync(m(layout, attrs, 
                                 m.trust(await parseMarkdown(page.body)))));
   case ".tsx":
     const mod = await import(normalize(pagepath));
-    return "<!DOCTYPE html>\n"+pretty(render.sync(m(mod.default, {page: attrs})));
+    return "<!DOCTYPE html>\n"+pretty(render.sync(m(mod.default, attrs)));
   default:
     return null;
   }
