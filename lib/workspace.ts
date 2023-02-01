@@ -55,10 +55,18 @@ export class Workspace {
     const nodes = this.backend.loadAll();
     const root = this.nodes.find("@root");
     if (nodes.length === 0) {
+      const ws = this.nodes.new("Workspace");
+      ws.setParent(root);
+      const cal = this.nodes.new("Calendar");
+      cal.setParent(ws);
+      const home = this.nodes.new("Home");
+      home.setParent(ws);
+      const random = this.nodes.new("Random");
+      random.setParent(ws);
       for (const n of Object.values(generateNodeTree(1000))) {
         if (n.Parent === undefined) {
-          n.Parent = "@root";
-          root?.raw.Linked.Children.push(n.ID);
+          n.Parent = random.ID;
+          random.raw.Linked.Children.push(n.ID);
         }
         nodes.push(n);
       }
@@ -71,11 +79,14 @@ export class Workspace {
     this.panels = [[]];
     this.expanded = {};
 
-    this.openNewPanel(this.nodes.find("@root"));
+    this.openNewPanel(root?.getChildren()[0]);
     
   }
 
   open(n: ManifoldNode) {
+    if (!this.expanded[n.ID]) {
+      this.expanded[n.ID] = {};
+    }
     this.panels[0][0] = new Panel(n);
   }
 
@@ -93,8 +104,10 @@ export class Workspace {
 
   focus(n: Node, pos: number = 0) {
     this.context.node = n;
-    document.getElementById(`input-${n.panel.id}-${n.ID}`)?.focus();
-    document.getElementById(`input-${n.panel.id}-${n.ID}`)?.setSelectionRange(pos,pos);
+    if (n) {
+      document.getElementById(`input-${n.panel.id}-${n.ID}`)?.focus();
+      document.getElementById(`input-${n.panel.id}-${n.ID}`)?.setSelectionRange(pos,pos);
+    }
   }
 
   getInput(n: Node): HTMLElement {

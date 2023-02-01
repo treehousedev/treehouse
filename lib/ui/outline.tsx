@@ -100,7 +100,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       }
     }
     return (
-      <div class="" style={{paddingLeft: "1rem"}} onmouseover={hover} onmouseout={unhover}>
+      <div style={{paddingLeft: "1rem"}} onmouseover={hover} onmouseout={unhover}>
         <div style={{
           display: "flex",
           flexDirection: "row",

@@ -1,4 +1,4 @@
-import { Workspace } from "./workspace.ts";
+import { Workspace, panelNode } from "./workspace.ts";
 import { App } from "./ui/app.tsx";
 import { Workspace } from "./workspace.ts";
 import { LocalStorageStore, Store } from "./backend.ts";
@@ -63,7 +63,7 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
     title: "Insert Child",
     action: (ctx: Context, name: string = "") => {
       if (!ctx.node) return;
-      const node = workspace.manifold.new(name);
+      const node = workspace.nodes.new(name);
       node.setParent(ctx.node);
       m.redraw.sync();
       workspace.focus(ctx.node, name.length);
@@ -74,7 +74,7 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
     title: "Insert Before",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const node = workspace.manifold.new("");
+      const node = workspace.nodes.new("");
       node.setParent(ctx.node.getParent());
       node.setSiblingIndex(ctx.node.getSiblingIndex());
       m.redraw.sync();
@@ -86,7 +86,7 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
     title: "Insert Node",
     action: (ctx: Context, name: string = "") => {
       if (!ctx.node) return;
-      const node = workspace.manifold.new(name);
+      const node = workspace.nodes.new(name);
       node.setParent(ctx.node.getParent());
       node.setSiblingIndex(ctx.node.getSiblingIndex()+1);
       m.redraw.sync();
