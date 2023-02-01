@@ -1,7 +1,8 @@
 body {
   zoom: 1;
-  background-color: white;
+  background-color: gray;
   font-family: sans-serif;
+  margin: 0;
 }
 
 .menu li:hover {
