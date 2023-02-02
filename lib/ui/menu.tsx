@@ -26,7 +26,7 @@ export const Menu: m.Component = {
   position: "absolute",
   left: `${attrs.x}px`,
   top: `${attrs.y}px`,
-  border: "1px solid #555",
+  border: "1px solid var(--dark)",
   borderRadius: "0.25rem",
   padding: "0.25rem 0 0.25rem 0",
   display: "inline-block",

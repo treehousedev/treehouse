@@ -24,15 +24,15 @@ export const Panel = {
       workspace.closePanel(panel);
       workspace.panels.unshift([panel]);
     }
-    return <div style={{flexGrow: "1", margin: "0.5rem", background: "white", borderRadius: "0.5rem", padding: "0.5rem"}}>
-      <div style={{display: "flex", color: "gray", marginBottom: "1rem"}}>
-        <div style={{width: "1rem"}}>
-          {(panel.history.length>1)?
+    return <div style={{flexGrow: "1", margin: "0.5rem", background: "white", borderRadius: "0.5rem", paddingBottom: "var(--padding)", height: "92vh"}}>
+      <div  style={{display: "flex", color: "gray", padding: "var(--padding)", gap: "var(--padding)", borderBottom: "4px solid var(--background)"}}>
+        {(panel.history.length>1)?
+          <div style={{rightPadding: "var(--padding)"}}>
             <svg onclick={goBack} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
             </svg>
-          :null}
-        </div>
+          </div>
+        :null}
         <div style={{flexGrow: "1"}}>
           {node.getParent()?.getName()}
         </div>
@@ -53,8 +53,8 @@ export const Panel = {
           </div>
         :null}
       </div>
-      <div>{node.getName()}</div>
-      <div>
+      <div style={{padding: "var(--padding)"}}>{node.getName()}</div>
+      <div style={{padding: "var(--padding)"}}>
         {node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)}
       </div>
     </div>

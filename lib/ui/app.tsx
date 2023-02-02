@@ -19,10 +19,10 @@ export const App: m.Component = {
       }
     }
     return (
-      <main style={{margin: "0"}}>
-        <div style={{display: "flex", borderBottom: "1px solid black"}}>
+      <main  style={{margin: "0", display: "flex", flexDirection: "column", position: "absolute", top: "0", bottom: "0", left: "0", right: "0"}}>
+        <div style={{display: "flex", borderBottom: "1px solid var(--dark)"}}>
           {state.open &&
-            <div style={{width: "200px", display: "flex", padding: "0.5rem"}}>
+            <div style={{width: "200px", display: "flex", padding: "var(--padding)"}}>
               <div style={{flexGrow: "1"}}></div>
               <svg onclick={toggle} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-sidebar" viewBox="0 0 16 16">
                 <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H5zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2V2z"/>
@@ -30,30 +30,30 @@ export const App: m.Component = {
             </div>
           }
           <div style={{flexGrow: "1", display: "flex"}}>
-            {!state.open && <svg onclick={toggle} style={{padding: "0.5rem", borderLeft: "1px solid black"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-sidebar" viewBox="0 0 16 16">
+            {!state.open && <svg onclick={toggle} style={{padding: "var(--padding)", borderLeft: "1px solid var(--dark)"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-sidebar" viewBox="0 0 16 16">
               <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H5zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2V2z"/>
             </svg>}
-            <div style={{borderLeft: "1px solid black"}}></div>
-            <div style={{padding: "0.5rem"}}>
+            <div style={{borderLeft: "1px solid var(--dark)"}}></div>
+            <div style={{padding: "var(--padding)"}}>
               Quick Add
             </div>
-            <div style={{borderLeft: "1px solid black"}}></div>
-            <div style={{flexGrow: "1", padding: "0.5rem", background: "gray"}}>
-              <input type="text" placeholder="Search" style={{width: "100%", marginRight: "0.5rem"}} />
+            <div style={{borderLeft: "1px solid var(--dark)"}}></div>
+            <div style={{flexGrow: "1", padding: "var(--padding)"}}>
+              <input type="text" placeholder="Search" style={{width: "99%", border: "0", outline: "0", background: "transparent", marginRight: "var(--padding)"}} />
             </div>
-            <div style={{borderLeft: "1px solid black"}}></div>
-            <div style={{padding: "0.5rem"}}>
+            <div style={{borderLeft: "1px solid var(--dark)"}}></div>
+            <div style={{padding: "var(--padding)"}}>
               <button onclick={reset}>Reset</button>
             </div>
           </div>
         </div>
-        <div style={{display: "flex"}}>
+        <div style={{display: "flex", flexGrow: "1"}}>
           {state.open &&
-            <div style={{width: "200px", padding: "0.5rem"}}>
+            <div style={{width: "200px", padding: "var(--padding)"}}>
               {workspace.nodes.roots()[0].getChildren().map(node => <NavNode node={node} workspace={workspace} />)}
             </div>
           }
-          <div style={{flexGrow: "1", borderLeft: "1px solid black"}}>
+          <div style={{flexGrow: "1", borderLeft: "1px solid var(--dark)"}}>
             {workspace.panels.map(row => (
               <div style={{display: "flex"}}>{row.map(panel => <PanelComponent workspace={workspace} panel={panel} />)}</div>
             ))}
