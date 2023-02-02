@@ -24,7 +24,7 @@ export const Panel = {
       workspace.closePanel(panel);
       workspace.panels.unshift([panel]);
     }
-    return <div style={{flexGrow: "1", margin: "0.5rem", background: "white", borderRadius: "0.5rem", paddingBottom: "var(--padding)", height: "92vh"}}>
+    return <div style={{flexGrow: "1", margin: "var(--padding)", background: "white", borderRadius: "0.5rem", paddingBottom: "var(--padding)", height: "92vh"}}>
       <div  style={{display: "flex", color: "gray", padding: "var(--padding)", gap: "var(--padding)", borderBottom: "4px solid var(--background)"}}>
         {(panel.history.length>1)?
           <div style={{rightPadding: "var(--padding)"}}>

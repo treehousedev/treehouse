@@ -23,7 +23,7 @@ export const App: m.Component = {
         <div style={{display: "flex", borderBottom: "1px solid var(--dark)"}}>
           {state.open &&
             <div style={{width: "200px", display: "flex", padding: "var(--padding)"}}>
-              <div style={{flexGrow: "1"}}></div>
+              <div style={{flexGrow: "1"}}><img src="/icon_transparent.png" style={{opacity: "70%", width: "16px", height: "16px"}} /></div>
               <svg onclick={toggle} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-sidebar" viewBox="0 0 16 16">
                 <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H5zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2V2z"/>
               </svg>
@@ -33,6 +33,10 @@ export const App: m.Component = {
             {!state.open && <svg onclick={toggle} style={{padding: "var(--padding)", borderLeft: "1px solid var(--dark)"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-layout-sidebar" viewBox="0 0 16 16">
               <path d="M0 3a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3zm5-1v12h9a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H5zM4 2H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h2V2z"/>
             </svg>}
+            <div style={{borderLeft: "1px solid var(--dark)"}}></div>
+            <div style={{padding: "var(--padding)"}}>
+              Today
+            </div>
             <div style={{borderLeft: "1px solid var(--dark)"}}></div>
             <div style={{padding: "var(--padding)"}}>
               Quick Add
