@@ -1,5 +1,5 @@
 
-import { assertEquals } from "https://deno.land/std@0.173.0/testing/asserts.ts";
+import { assertEquals, assert } from "https://deno.land/std@0.173.0/testing/asserts.ts";
 import { Module, Node } from "./mod.ts";
 import { component } from "./components.ts";
 
@@ -84,3 +84,19 @@ Deno.test("components", () => {
   assertEquals(root.hasComponent(Foobar), false);
 
 });
+
+Deno.test("new node using path", () => {
+  const m = new Module();
+  const root = m.getRoot();
+  if (!root) {
+    assert(root);
+    return;
+  }
+
+  const child = m.new("Child", true);
+  child.setParent(root);
+
+  const sub2 = m.new("Child/Sub1/Sub2");
+
+  assertEquals(sub2.getParent()?.getParent()?.getValue(), true);
+})

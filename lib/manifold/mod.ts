@@ -117,6 +117,7 @@ export class Node {
     if (coms.length > 0) {
       coms[0].destroy();
     }
+    this.changed();
   }
   
   hasComponent(type: any): boolean {
@@ -139,7 +140,21 @@ export class Node {
     if (!this.raw.Linked.Components) return [];
     return this.raw.Linked.Components.map(id => new Node(this.module, id));
   }
- 
+
+  getPath(): string {
+    let cur: Node|null = this;
+    const path = [];
+    while (cur) {
+      path.unshift(cur.getName());
+      cur = cur.getParent();
+    }
+    return path.join("/");
+  }
+
+  find(path: string): Node|null {
+    return this.module.find([this.getPath(), path].join("/"));
+  }
+
   // getComponentsInChildren
   // getComponentsInParents
   // getAncestors
@@ -179,6 +194,22 @@ export class Module {
   }
 
   new(name: string, value?: any): Node {
+    let parent: Node|null = null;
+    if (name.includes("/") && !name.startsWith("@")) {
+      const parts = name.split("/");
+      parent = this.getRoot();
+      for (let i = 0; i < parts.length-1; i++) {
+        if (parent === null) {
+          throw "unable to get root";
+        }
+        let child = parent.find(parts[i]);
+        if (!child) {
+          child = this.new(parts.slice(0, i+1).join("/"));
+        }
+        parent = child;
+      }
+      name = parts[parts.length-1];
+    }
     const id = (name.startsWith("@"))?name:uniqueId();
     this.nodes[id] = {
       ID: id,
@@ -187,7 +218,11 @@ export class Module {
       Linked: {Children: [], Components: []},
       Attrs: {}
     };
-    return new Node(this, id);
+    const node = new Node(this, id);
+    if (parent) {
+      node.setParent(parent)
+    }
+    return node;
   }
 
   destroy(n: Node) {
@@ -202,6 +237,9 @@ export class Module {
     }
     // TODO: walk children and destroy children
     delete this.nodes[n.ID];
+    if (p) {
+      this.changed(p);
+    }
   }
 
   roots(): Node[] {
@@ -212,14 +250,48 @@ export class Module {
     this.observers.forEach(cb => cb(n));
   }
 
-  find(name:string): Node|null {
-    // TODO: full paths instead of just name
-    for (const n of Object.values(this.nodes)) {
-      if (n.Name === name) {
-        return new Node(this, n.ID);
+  getRoot(name?: string): Node|null {
+    name = name || "@root"
+    const node = this.roots().find(root => root.getName() === name);
+    if (node === undefined) return null;
+    return node;
+  }
+
+  find(path:string): Node|null {
+    const parts = path.split("/");
+    let anchorName = "@root";
+    if (parts[0].startsWith("@")) {
+      anchorName = parts.shift() || "";
+      if (parts.length === 0) {
+        return this.getRoot(anchorName);
       }
     }
-    return null;
+    const findChild = (n: Node, name: string): Node|undefined => {
+      return n.getChildren().find(child => child.getName() === name);
+    }
+    let cur = this.getRoot(anchorName);
+    if (!cur) {
+      return null;
+    }
+    for (const name of parts) {
+      const child = findChild(cur, name);
+      if (!child) return null;
+      cur = child;
+    }
+    return cur;
+  }
+
+  walk(cb: (n: Node) => boolean) {
+    const walkChildren = (n: Node, cb: (n: Node) => boolean): boolean => {
+      if (cb(n)) return true;
+      for (const child of n.getChildren()) {
+        if (walkChildren(child, cb)) return true;
+      }
+      return false;
+    }
+    for (const root of this.roots()) {
+      if (walkChildren(root, cb)) return;
+    }
   }
 }
 
