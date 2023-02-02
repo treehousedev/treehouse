@@ -1,4 +1,4 @@
-import {OutlineNode} from "./outline.tsx";
+import {OutlineEditor} from "./outline.tsx";
 import {panelNode} from "../workspace.ts";
 
 export const Panel = {
@@ -54,9 +54,7 @@ export const Panel = {
         :null}
       </div>
       <div style={{padding: "var(--padding)"}}>{node.getName()}</div>
-      <div style={{padding: "var(--padding)"}}>
-        {node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)}
-      </div>
+      <OutlineEditor workspace={workspace} node={node} />
     </div>
   }
 };

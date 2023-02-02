@@ -2,11 +2,63 @@ import { Workspace, panelNode } from "./workspace.ts";
 import { App } from "./ui/app.tsx";
 import { Workspace } from "./workspace.ts";
 import { LocalStorageStore, Store } from "./backend.ts";
+import { component } from "./manifold/components.ts";
 
 export { LocalStorageStore };
 
+@component
+export class Checkbox {
+  checked: boolean;
+
+  constructor() {
+    this.checked = false;
+  }
+}
+
 export function setup(document: Document, target: HTMLElement, store: Store) {
   const workspace = new Workspace(store);
+
+  workspace.commands.registerCommand({
+    id: "add-checkbox",
+    title: "Add checkbox",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      const checkbox = new Checkbox();
+      ctx.node.addComponent(checkbox);
+    }
+  });
+
+  workspace.commands.registerCommand({
+    id: "remove-checkbox",
+    title: "Remove checkbox",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      ctx.node.removeComponent(Checkbox);
+    }
+  });
+
+  workspace.commands.registerCommand({
+    id: "mark-done",
+    title: "Mark done",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      if (ctx.node.hasComponent(Checkbox)) {
+        const checkbox = ctx.node.getComponent(Checkbox);
+        if (!checkbox.checked) {
+          checkbox.checked = true;
+          ctx.node.changed();
+        } else {
+          ctx.node.removeComponent(Checkbox);
+        }
+      } else {
+        const checkbox = new Checkbox();
+        ctx.node.addComponent(checkbox);
+      }
+    }
+  });
+  workspace.keybindings.registerBinding({command: "mark-done", key: "meta+enter" });
+
+
 
   workspace.commands.registerCommand({
     id: "expand",
@@ -66,7 +118,7 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
       const node = workspace.nodes.new(name);
       node.setParent(ctx.node);
       m.redraw.sync();
-      workspace.focus(ctx.node, name.length);
+      workspace.focus(panelNode(node, ctx.node.panel), name.length);
     }
   });
   workspace.commands.registerCommand({
@@ -131,7 +183,8 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
       if (next !== null) {
         workspace.focus(panelNode(next, ctx.node.panel));
       } else {
-        workspace.focus(panelNode(ctx.node.getParent().getNextSibling(), ctx.node.panel));
+        return;
+        //workspace.focus(panelNode(ctx.node.getParent().getNextSibling(), ctx.node.panel));
       }
     }
   });
@@ -180,6 +233,9 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
     {command: "indent"},
     {command: "outdent"},
     {command: "delete"},
+    {command: "add-checkbox"}, // example when condition
+    {command: "remove-checkbox"},
+    {command: "mark-done"},
   ]);
 
   document.addEventListener("keydown", (e) => {

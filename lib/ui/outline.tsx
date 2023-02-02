@@ -1,6 +1,8 @@
 
 import { Workspace, Node, panelNode } from "../workspace.ts";
 
+import { Checkbox } from "../mod.ts";
+
 interface Attrs {
   node: Node;
   workspace: Workspace;
@@ -12,8 +14,6 @@ interface State {
   editing: boolean;
   buffer?: string;
 }
-
-
 
 export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
@@ -80,6 +80,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         }
         break;
       case "Enter":
+        if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
         if (e.target.selectionStart === e.target.value.length) {
           workspace.executeCommand("insert", {node});
           e.stopPropagation();
@@ -98,6 +99,11 @@ export const OutlineNode: m.Component<Attrs, State> = {
         }
         break;
       }
+    }
+    const toggleCheckbox = (e) => {
+      const checkbox = node.getComponent(Checkbox);
+      checkbox.checked = !checkbox.checked;
+      node.changed();
     }
     return (
       <div style={{paddingLeft: "1rem"}} onmouseover={hover} onmouseout={unhover}>
@@ -131,7 +137,8 @@ export const OutlineNode: m.Component<Attrs, State> = {
             <circle cx="8" cy="7" r="3"/>
           </svg>
           <div style={{flexGrow: "1", display: "flex"}}>
-            <input id={`input-${node.panel.id}-${node.ID}`} type="text" value={(state.editing)?state.buffer:node.getName()} 
+            {(node.hasComponent(Checkbox)) ? <input type="checkbox" onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />:null}
+            <input id={`input-${node.panel?.id}-${node.ID}`} type="text" value={(state.editing)?state.buffer:node.getName()} 
               onfocus={startEdit}
               onblur={finishEdit}
               oninput={edit}
@@ -183,3 +190,45 @@ export const OutlineNode: m.Component<Attrs, State> = {
     )
   }
 };
+
+
+export const OutlineEditor: m.Component<Attrs> = {
+  view ({attrs, state}) {
+    const node = attrs.node;
+    const workspace = attrs.workspace;
+
+    const startNew = (e) => {
+      workspace.executeCommand("insert-child", {node}, e.target.value);
+      e.stopPropagation();
+    }
+
+    return (
+      <div style={{padding: "var(--padding)"}}>
+        {node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)}
+        <div style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                paddingLeft: "1rem",
+                marginTop: "0.125rem",
+                marginBottom: "0.125rem"
+              }} >
+                <svg style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+                  <circle cx="8" cy="7" r="7" fill="lightgray" />
+                  <path fill="#555" style={{transform: "translate(0px, -1px)"}} d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+                <div style={{flexGrow: "1", display: "flex"}}>
+                <input type="text"
+                  oninput={startNew}
+                  value={""}
+                  style={{
+                    border: "0px",
+                    flexGrow: "1",
+                    outline: "0px"
+                  }} />
+                </div>
+              </div>
+      </div>
+    )
+  }
+}

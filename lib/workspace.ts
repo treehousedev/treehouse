@@ -43,6 +43,7 @@ export class Workspace {
   panels: Panel[][]; // Panel[row][column]
   menu: any;
   palette: any;
+  quickadd: any;
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
   constructor(backend: Store) {
@@ -80,7 +81,50 @@ export class Workspace {
     this.expanded = {};
 
     this.openNewPanel(root?.getChildren()[0]);
-    
+  
+  }
+
+  closeQuickAdd() {
+    this.quickadd = null;
+    m.redraw();
+  }
+
+  openQuickAdd() {
+    let node = this.nodes.find("@quickadd");
+    if (!node) {
+      node = this.nodes.new("@quickadd");
+    }
+    this.quickadd = node;
+  }
+
+  commitQuickAdd() {
+    const node = this.nodes.find("@quickadd");
+    if (!node) return;
+    const today = this.todayNode();
+    node.getChildren().forEach(n => n.setParent(today));
+  }
+
+  clearQuickAdd() {
+    const node = this.nodes.find("@quickadd");
+    if (!node) return;
+    node.getChildren().forEach(n => n.destroy());
+  }
+
+  todayNode(): ManfioldNode {
+    const today = new Date();
+    const dayNode = today.toUTCString().split(today.getFullYear())[0];
+    const weekNode = `Week ${String(getWeekOfYear(today)).padStart(2, "0")}`;
+    const yearNode = `${today.getFullYear()}`;
+    const todayPath = ["Workspace", "Calendar", yearNode, weekNode, dayNode].join("/");
+    let todayNode = this.nodes.find(todayPath);
+    if (!todayNode) {
+      todayNode = this.nodes.new(todayPath);
+    }
+    return todayNode;
+  }
+
+  openToday() {
+    this.open(this.todayNode());
   }
 
   open(n: ManifoldNode) {
@@ -105,8 +149,8 @@ export class Workspace {
   focus(n: Node, pos: number = 0) {
     this.context.node = n;
     if (n) {
-      document.getElementById(`input-${n.panel.id}-${n.ID}`)?.focus();
-      document.getElementById(`input-${n.panel.id}-${n.ID}`)?.setSelectionRange(pos,pos);
+      //document.getElementById(`input-${n.panel.id}-${n.ID}`)?.focus();
+      //document.getElementById(`input-${n.panel.id}-${n.ID}`)?.setSelectionRange(pos,pos);
     }
   }
 
@@ -148,7 +192,14 @@ export class Workspace {
   }
 
   getExpanded(n: Node): boolean {
-    let expanded = this.expanded[n.panel.history[0].ID][n.ID];
+    let root = n.ID;
+    if (n.panel) {
+      root = n.panel.history[0].ID
+    }
+    if (!this.expanded[root]) {
+      this.expanded[root] = {};
+    }
+    let expanded = this.expanded[root][n.ID];
     if (expanded === undefined) {
       expanded = false;
     }
@@ -158,4 +209,13 @@ export class Workspace {
   setExpanded(n: Node, b: boolean) {
     this.expanded[n.panel.history[0].ID][n.ID] = b;
   }
+}
+
+
+function getWeekOfYear(date) {
+  var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+  var dayNum = d.getUTCDay() || 7;
+  d.setUTCDate(d.getUTCDate() + 4 - dayNum);
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
 }
