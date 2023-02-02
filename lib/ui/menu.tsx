@@ -35,7 +35,7 @@ export const Menu: m.Component = {
   fontSize: "14px",
   minWidth: "200px"
 }}>
-  {attrs.items.map(i => <li onclick={onclick(i)} style={liStyle}><div>{i.title}</div><div style={shortcutStyle}>{bindingSymbols(i.key).join("+")}</div></li>)}
+  {attrs.items.map(i => <li onclick={onclick(i)} style={liStyle}><div>{i.title}</div><div style={shortcutStyle}>{bindingSymbols(i.key).join(" ").toUpperCase()}</div></li>)}
 </ul>
     )  
   }

@@ -173,7 +173,6 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
       m.redraw();
     }
   });
-  workspace.keybindings.registerBinding({command: "zoom", key: "meta+z"});
 
   workspace.menus.registerMenu("node", [
     {command: "zoom"},
