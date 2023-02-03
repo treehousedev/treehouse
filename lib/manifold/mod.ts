@@ -263,6 +263,8 @@ export class Module {
   }
 
   find(path:string): Node|null {
+    const byId = this.nodes[path];
+    if (byId) return new Node(this, byId.ID);
     const parts = path.split("/");
     let anchorName = "@root";
     if (parts[0].startsWith("@")) {

@@ -2,6 +2,7 @@
   --dark: #e0e0e0;
   --padding: 1rem;
   --background: #fafbfb;
+  --font: 'Work Sans', sans-serif;
 }
 
 input::placeholder {
@@ -9,17 +10,17 @@ input::placeholder {
   color: var(--dark);
 }
 
-body, input {
+body, input, textarea {
   color: #444;
   font-size: 1rem;
+  font-family: var(--font);
 }
 
 body {
   zoom: 1;
-  /* font-family: sans-serif; */
   margin: 0;
   /* font-family: 'Recursive', sans-serif; */
-  font-family: 'Work Sans', sans-serif;
+  font-family: var(--font);
   color: #444;
   height: 100%;
   background: var(--background);
@@ -31,7 +32,7 @@ body {
   cursor: pointer;
 }
 
-.palette .selected {
+.palette .selected, .search .selected {
   background: #555;
   color: white;
 }

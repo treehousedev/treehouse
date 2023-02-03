@@ -10,6 +10,7 @@ export default page({}, ({attrs: {dev}}) => (
     <link href="https://fonts.googleapis.com/css?family=Work Sans" rel="stylesheet" type="text/css"></link>
     <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"></link>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mithril/2.0.3/mithril.min.js" integrity="sha512-NJfYo9jBx+EzVI27l/hbSs/6EEkmlG5YAEx0e7WxqBG6yNOwasjYr+xeoTFCfpczQ/dSgAKZAKy5YMTml99srg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/minisearch@6.0.1/dist/umd/index.min.js"></script>
     <title>Demo</title>
   </head>
   <body>

@@ -1,5 +1,6 @@
 import {OutlineEditor} from "./outline.tsx";
 import {panelNode} from "../workspace.ts";
+import {Page} from "../mod.ts";
 
 export const Panel = {
   view({attrs}) {
@@ -24,7 +25,17 @@ export const Panel = {
       workspace.closePanel(panel);
       workspace.panels.unshift([panel]);
     }
-    return <div style={{flexGrow: "1", margin: "var(--padding)", background: "white", borderRadius: "0.5rem", paddingBottom: "var(--padding)", height: "92vh"}}>
+    const editMarkdown = (e) => {
+      node.getComponent(Page).markdown = e.target.value;
+      node.changed();
+    }
+    function calcHeight(value="") {
+      let numberOfLineBreaks = (value.match(/\n/g) || []).length;
+      // min-height + lines x line-height + padding + border
+      let newHeight = 20 + numberOfLineBreaks * 20;
+      return newHeight;
+    }
+    return <div style={{display: "flex", flexDirection: "column", flexGrow: "1", margin: "var(--padding)", background: "white", borderRadius: "0.5rem", paddingBottom: "var(--padding)", height: "92vh"}}>
       <div  style={{display: "flex", color: "gray", padding: "var(--padding)", paddingTop: "0.5rem", paddingBottom: "0.5rem", gap: "var(--padding)", borderBottom: "4px solid var(--background)"}}>
         {(panel.history.length>1)?
           <div style={{rightPadding: "var(--padding)"}}>
@@ -53,7 +64,21 @@ export const Panel = {
           </div>
         :null}
       </div>
-      <div style={{padding: "var(--padding)", fontSize: "2rem"}}>{node.getName()}</div>
+      <div oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>{node.getName()}</div>
+      {(node.hasComponent(Page)) ? 
+        <textarea oninput={editMarkdown} 
+          value={node.getComponent(Page).markdown}
+          placeholder="Enter Markdown text here"
+          style={{
+            marginLeft: "var(--padding)",
+            padding: "var(--padding)",
+            outline: "0",
+            height: `${calcHeight(node.getComponent(Page).markdown)}px`,
+            border: "0",
+          }}>
+            {node.getComponent(Page).markdown}
+        </textarea>
+      :null}
       <OutlineEditor workspace={workspace} node={node} />
     </div>
   }

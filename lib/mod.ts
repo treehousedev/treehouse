@@ -15,8 +15,37 @@ export class Checkbox {
   }
 }
 
+@component
+export class Page {
+  markdown: string;
+
+  constructor() {
+    this.markdown = "";
+  }
+}
+
 export function setup(document: Document, target: HTMLElement, store: Store) {
   const workspace = new Workspace(store);
+  window.workspace = workspace;
+
+  workspace.commands.registerCommand({
+    id: "add-page",
+    title: "Add page",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      const page = new Page();
+      ctx.node.addComponent(page);
+    }
+  });
+
+  workspace.commands.registerCommand({
+    id: "remove-page",
+    title: "Remove page",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      ctx.node.removeComponent(Page);
+    }
+  });
 
   workspace.commands.registerCommand({
     id: "add-checkbox",
@@ -236,6 +265,8 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
     {command: "add-checkbox"}, // example when condition
     {command: "remove-checkbox"},
     {command: "mark-done"},
+    {command: "add-page"},
+    {command: "remove-page"},
   ]);
 
   document.addEventListener("keydown", (e) => {

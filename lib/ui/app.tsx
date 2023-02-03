@@ -2,7 +2,7 @@ import { Menu } from "./menu.tsx";
 import { CommandPalette } from "./palette.tsx";
 import { Panel as PanelComponent } from "./panel.tsx";
 import { QuickAdd } from "./quickadd.tsx";
-
+import { Search } from "./search.tsx";
 
 export const App: m.Component = {
   view ({attrs: {workspace}, state}) {
@@ -43,13 +43,14 @@ export const App: m.Component = {
               <div>Today</div>
             </div>
             <div style={{borderLeft: "1px solid var(--dark)"}}></div>
-            <div onclick={() => workspace.openQuickAdd()} style={{cursor: "pointer", padding: "var(--padding)"}}>
-              Quick Add
+            <div onclick={() => workspace.openQuickAdd()} style={{cursor: "pointer", padding: "var(--padding)", display: "flex", alignItems: "center"}}>
+              <svg style={{marginRight: "0.25rem", height: "1rem", width: "1rem"}} xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M11.251.068a.5.5 0 0 1 .227.58L9.677 6.5H13a.5.5 0 0 1 .364.843l-8 8.5a.5.5 0 0 1-.842-.49L6.323 9.5H3a.5.5 0 0 1-.364-.843l8-8.5a.5.5 0 0 1 .615-.09zM4.157 8.5H7a.5.5 0 0 1 .478.647L6.11 13.59l5.732-6.09H9a.5.5 0 0 1-.478-.647L9.89 2.41 4.157 8.5z"/>
+              </svg>
+              <div>Quick Add</div>
             </div>
             <div style={{borderLeft: "1px solid var(--dark)"}}></div>
-            <div style={{flexGrow: "1", padding: "var(--padding)"}}>
-              <input type="text" placeholder="Search" style={{width: "99%", border: "0", outline: "0", background: "transparent", marginRight: "var(--padding)"}} />
-            </div>
+            <Search workspace={workspace} />
             <div style={{borderLeft: "1px solid var(--dark)"}}></div>
             <div style={{padding: "var(--padding)"}}>
               <button onclick={reset}>Reset</button>
@@ -111,3 +112,7 @@ const NavNode: m.Component = {
     )
   }
 };
+
+//<div style={{flexGrow: "1", padding: "var(--padding)"}}>
+//              <input type="text" placeholder="Search" style={{width: "99%", border: "0", outline: "0", background: "transparent", marginRight: "var(--padding)"}} />
+//            </div>

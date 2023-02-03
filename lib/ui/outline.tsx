@@ -55,15 +55,6 @@ export const OutlineNode: m.Component<Attrs, State> = {
       workspace.executeCommand("insert-child", {node}, e.target.value);
       e.stopPropagation();
     }
-    const showMenu = (e) => {
-      const trigger = e.target.closest("*[data-menu]");
-      const rect = trigger.getBoundingClientRect();
-      const x = document.body.scrollLeft+rect.x;
-      const y = document.body.scrollTop+rect.y+rect.height;
-      workspace.showMenu(trigger.dataset["menu"], x, y, {node});
-      e.stopPropagation();
-      e.preventDefault();
-    }
     const checkCommands = (e) => {
       switch (e.key) {
       case "Backspace":
@@ -126,15 +117,15 @@ export const OutlineNode: m.Component<Attrs, State> = {
                 userSelect: "none",
                 display: (state.hover)?"block":"none"
               }}  
-              onclick={showMenu}
-              oncontextmenu={showMenu} 
+              onclick={(e) => workspace.showMenu(e, {node})}
+              oncontextmenu={(e) => workspace.showMenu(e, {node})} 
               data-menu="node"
               fill="lightgray" 
               viewBox="0 0 16 16">
             <path style={{transform: "translateX(-2px) translateY(-1px)"}} d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
             <path style={{transform: "translateX(2px) translateY(-1px)"}}d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
           </svg>
-          <svg onclick={toggle} oncontextmenu={showMenu} data-menu="node" style={{cursor: "pointer", flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+          <svg onclick={toggle} oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{cursor: "pointer", flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {(node.childCount() > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>

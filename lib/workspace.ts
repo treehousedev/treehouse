@@ -38,6 +38,8 @@ export class Workspace {
   backend: Store;
   nodes: Module;
 
+  search: any; // todo: define backend
+
   context: Context;
 
   panels: Panel[][]; // Panel[row][column]
@@ -50,6 +52,15 @@ export class Workspace {
     this.commands = new CommandRegistry();
     this.keybindings = new KeyBindings();
     this.menus = new MenuRegistry();
+
+    this.search = new MiniSearch({
+      idField: "ID",
+      fields: ['ID', 'Name', 'Value.markdown'], // fields to index for full-text search
+      storeFields: ['ID'], // fields to return with search results
+      extractField: (document, fieldName) => {
+        return fieldName.split('.').reduce((doc, key) => doc && doc[key], document);
+      }
+    });
 
     this.backend = backend;
     this.nodes = new Module();
@@ -75,12 +86,23 @@ export class Workspace {
     this.nodes.import(nodes);
     this.nodes.observers.push((n => {
       this.backend.saveAll(Object.values(this.nodes.nodes));
+      const index = (node) => {
+        if (this.search.has(node.ID)) {
+          this.search.replace(node.raw);  
+        } else {
+          this.search.add(node.raw);
+        }
+      }
+      index(n);
+      n.getComponentNodes().forEach(com => index(com));
     }));
+    this.search.addAll(Object.values(this.nodes.nodes));
     this.context = {node: null};
     this.panels = [[]];
     this.expanded = {};
 
-    this.openNewPanel(root?.getChildren()[0]);
+    const lastopen = localStorage.getItem("lastopen") || "@root"
+    this.openNewPanel(this.nodes.find(lastopen));
   
   }
 
@@ -131,11 +153,13 @@ export class Workspace {
     if (!this.expanded[n.ID]) {
       this.expanded[n.ID] = {};
     }
+    localStorage.setItem("lastopen", n.ID);
     this.panels[0][0] = new Panel(n);
   }
 
   openNewPanel(n: ManifoldNode) {
     this.expanded[n.ID] = {};
+    localStorage.setItem("lastopen", n.ID);
     const p = new Panel(n);
     this.panels[0].push(p);
   }
@@ -166,8 +190,14 @@ export class Workspace {
     return Object.assign({}, this.context, ctx);
   }
 
-  showMenu(id: string, x: number, y: number, ctx: any) {
-    const items = this.menus.menus[id];
+  showMenu(event: Event, ctx: any) {
+    event.stopPropagation();
+    event.preventDefault();
+    const trigger = event.target.closest("*[data-menu]");
+    const rect = trigger.getBoundingClientRect();
+    const x = document.body.scrollLeft+rect.x;
+    const y = document.body.scrollTop+rect.y+rect.height;
+    const items = this.menus.menus[trigger.dataset["menu"]];
     if (!items) return;
     this.menu = {x, y, 
       ctx: this.newContext(ctx), 
