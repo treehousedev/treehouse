@@ -61,6 +61,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       const x = document.body.scrollLeft+rect.x;
       const y = document.body.scrollTop+rect.y+rect.height;
       workspace.showMenu(trigger.dataset["menu"], x, y, {node});
+      e.stopPropagation();
       e.preventDefault();
     }
     const checkCommands = (e) => {
@@ -116,6 +117,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         }} >
           <svg xmlns="http://www.w3.org/2000/svg"
               style={{
+                cursor: "pointer",
                 flexShrink: "0",
                 width: "1rem", 
                 height: "1rem", 
@@ -124,16 +126,16 @@ export const OutlineNode: m.Component<Attrs, State> = {
                 userSelect: "none",
                 display: (state.hover)?"block":"none"
               }}  
-              onclick={toggle}
-              fill="gray" 
+              onclick={showMenu}
+              oncontextmenu={showMenu} 
+              data-menu="node"
+              fill="lightgray" 
               viewBox="0 0 16 16">
-            <circle cx="8" cy="7" r="7" fill="lightgray" />
-            {!expanded && <path style={{transform: "scale(0.6) translate(5px, 3px)"}} d="m12.14 8.753-5.482 4.796c-.646.566-1.658.106-1.658-.753V3.204a1 1 0 0 1 1.659-.753l5.48 4.796a1 1 0 0 1 0 1.506z"/>}
-            {expanded && <path style={{transform: "scale(0.6) translate(5px, 4px)"}} d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>}
-            
+            <path style={{transform: "translateX(-2px) translateY(-1px)"}} d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+            <path style={{transform: "translateX(2px) translateY(-1px)"}}d="M9.5 13a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zm0-5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
           </svg>
-          <svg oncontextmenu={showMenu} data-menu="node" style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
-            {(node.getChildren().length > 0)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
+          <svg onclick={toggle} oncontextmenu={showMenu} data-menu="node" style={{cursor: "pointer", flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+            {(node.childCount() > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>
           <div style={{flexGrow: "1", display: "flex"}}>
@@ -159,7 +161,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
             <div style={{borderLeft: "1px solid gray", height: "100%", marginLeft: "0.5rem"}}></div>
           </div>
           <div style={{flexGrow: "1"}}>
-            {(node.getChildren().length > 0)
+            {(node.childCount() > 0)
               ?node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)
               :<div style={{
                 display: "flex",

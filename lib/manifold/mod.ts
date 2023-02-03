@@ -64,6 +64,11 @@ export class Node {
     return this.raw.Linked.Children.map(id => new Node(this.module, id));
   }
 
+  childCount(): number {
+    if (!this.raw.Linked.Children) return 0;
+    return this.raw.Linked.Children.length;
+  }
+
   getAttr(name: string): string {
     return this.raw.Attrs[name] || "";
   }

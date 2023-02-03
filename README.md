@@ -12,7 +12,7 @@ Bring your own backend Tana-style frontend. Actively being developed.
 * [x] Keybindings
 * [x] Command palette
 * [x] Multi-view panels
-* [ ] Managed calendar pages
+* [x] Managed calendar pages
 * [ ] Full-text search
 * [ ] Mobile support via PWA
 * [ ] Desktop support via Apptron

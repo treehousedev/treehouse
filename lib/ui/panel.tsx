@@ -25,7 +25,7 @@ export const Panel = {
       workspace.panels.unshift([panel]);
     }
     return <div style={{flexGrow: "1", margin: "var(--padding)", background: "white", borderRadius: "0.5rem", paddingBottom: "var(--padding)", height: "92vh"}}>
-      <div  style={{display: "flex", color: "gray", padding: "var(--padding)", gap: "var(--padding)", borderBottom: "4px solid var(--background)"}}>
+      <div  style={{display: "flex", color: "gray", padding: "var(--padding)", paddingTop: "0.5rem", paddingBottom: "0.5rem", gap: "var(--padding)", borderBottom: "4px solid var(--background)"}}>
         {(panel.history.length>1)?
           <div style={{rightPadding: "var(--padding)"}}>
             <svg onclick={goBack} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -53,7 +53,7 @@ export const Panel = {
           </div>
         :null}
       </div>
-      <div style={{padding: "var(--padding)"}}>{node.getName()}</div>
+      <div style={{padding: "var(--padding)", fontSize: "2rem"}}>{node.getName()}</div>
       <OutlineEditor workspace={workspace} node={node} />
     </div>
   }

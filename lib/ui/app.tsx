@@ -1,5 +1,3 @@
-import { LocalStorageStore } from "../backend.ts";
-import { Environment, Context, panelNode } from "../workspace.ts";
 import { Menu } from "./menu.tsx";
 import { CommandPalette } from "./palette.tsx";
 import { Panel as PanelComponent } from "./panel.tsx";
@@ -61,7 +59,7 @@ export const App: m.Component = {
         <div style={{display: "flex", flexGrow: "1"}}>
           {state.open &&
             <div style={{width: "200px", padding: "var(--padding)"}}>
-              {workspace.nodes.roots()[0].getChildren().map(node => <NavNode node={node} workspace={workspace} />)}
+              {workspace.nodes.getRoot().getChildren().map(node => <NavNode node={node} expanded={true} workspace={workspace} />)}
             </div>
           }
           <div style={{flexGrow: "1", borderLeft: "1px solid var(--dark)"}}>
@@ -80,8 +78,8 @@ export const App: m.Component = {
 };
 
 const NavNode: m.Component = {
-  view ({attrs: {node, workspace}, state}) {
-    state.expanded = (state.expanded === undefined) ? false : state.expanded;
+  view ({attrs: {node, workspace, expanded}, state}) {
+    state.expanded = (state.expanded === undefined) ? expanded : state.expanded;
     const toggle = (e) => {
       if (state.expanded) {
         state.expanded = false;
@@ -96,11 +94,11 @@ const NavNode: m.Component = {
     return (
       <div>
         <div style={{display: "flex"}}>
-          <svg onclick={toggle} style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+          <svg onclick={toggle} style={{cursor: "pointer", flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {state.expanded && <path d="M3.204 5h9.592L8 10.481 3.204 5zm-.753.659 4.796 5.48a1 1 0 0 0 1.506 0l4.796-5.48c.566-.647.106-1.659-.753-1.659H3.204a1 1 0 0 0-.753 1.659z"/>}
             {!state.expanded && <path d="M6 12.796V3.204L11.481 8 6 12.796zm.659.753 5.48-4.796a1 1 0 0 0 0-1.506L6.66 2.451C6.011 1.885 5 2.345 5 3.204v9.592a1 1 0 0 0 1.659.753z"/>}
           </svg>
-          <div onclick={open} style={{flexGrow: "1", display: "flex"}}>
+          <div onclick={open} style={{cursor: "pointer", flexGrow: "1", display: "flex"}}>
             {node.getName()}
           </div>
         </div>
