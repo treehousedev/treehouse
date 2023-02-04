@@ -173,13 +173,13 @@ export class Workspace {
   focus(n: Node, pos: number = 0) {
     this.context.node = n;
     if (n) {
-      //document.getElementById(`input-${n.panel.id}-${n.ID}`)?.focus();
-      //document.getElementById(`input-${n.panel.id}-${n.ID}`)?.setSelectionRange(pos,pos);
+      document.getElementById(`input-${n.panel?.id}-${n.ID}`)?.focus();
+      document.getElementById(`input-${n.panel?.id}-${n.ID}`)?.setSelectionRange(pos,pos);
     }
   }
 
   getInput(n: Node): HTMLElement {
-    return document.getElementById(`input-${n.panel.id}-${n.ID}`);
+    return document.getElementById(`input-${n.panel?.id}-${n.ID}`);
   }
 
   executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {
