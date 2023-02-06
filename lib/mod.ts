@@ -224,8 +224,8 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
       if (!ctx.node) return;
       const trigger = workspace.getInput(ctx.node);
       const rect = trigger.getBoundingClientRect();
-      const x = document.body.scrollLeft+rect.x+200;
-      const y = document.body.scrollTop+rect.y;
+      const x = document.body.scrollLeft+rect.x+(trigger.selectionStart * 10)+20;
+      const y = document.body.scrollTop+rect.y-8;
       workspace.showPalette(x, y, workspace.newContext({node: ctx.node}));
     }
   });
@@ -255,6 +255,18 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
       m.redraw();
     }
   });
+  workspace.commands.registerCommand({
+    id: "generate-random",
+    title: "Generate Random Children",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      [...Array(100)].forEach(() => {
+        const node = workspace.nodes.new(generateName(8));
+        node.setParent(ctx.node);
+      });
+    }
+  });
+
 
   workspace.menus.registerMenu("node", [
     {command: "zoom"},
@@ -267,6 +279,7 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
     {command: "mark-done"},
     {command: "add-page"},
     {command: "remove-page"},
+    {command: "generate-random"},
   ]);
 
   document.addEventListener("keydown", (e) => {
@@ -284,4 +297,44 @@ export function setup(document: Document, target: HTMLElement, store: Store) {
 
 
   m.mount(target, {view: () => m(App, {workspace})});
+}
+
+
+
+function generateName(length = 10) {
+  const random = (min: any, max: any) => {
+    return Math.round(Math.random() * (max - min) + min)
+  };
+  const word = () => {
+    const words = [
+      'got',
+      'ability',
+      'shop',
+      'recall',
+      'fruit',
+      'easy',
+      'dirty',
+      'giant',
+      'shaking',
+      'ground',
+      'weather',
+      'lesson',
+      'almost',
+      'square',
+      'forward',
+      'bend',
+      'cold',
+      'broken',
+      'distant',
+      'adjective'
+    ];
+    return words[random(0, words.length - 1)];
+  };
+  const words = (length) => (
+    [...Array(length)]
+        .map((_, i) => word())
+        .join(' ')
+        .trim()
+  );
+  return words(random(2, length))
 }

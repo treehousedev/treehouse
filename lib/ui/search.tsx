@@ -69,19 +69,27 @@ export const Search: m.Component = {
       state.selected = 0;
     }
     return (
-      <div class="search" style={{position: "relative", flexGrow: "1", padding: "var(--padding)"}}>
-        <input type="text" placeholder="Search" value={state.query} onkeydown={onkeydown} oninput={autocomplete} style={{width: "99%", border: "0", outline: "0", background: "transparent", marginRight: "var(--padding)"}} />
-        {(results.length > 0)?
-          <div class="results" style={{
-              overflowY: "scroll",
-              maxHeight: "100px",
-              width: "90%",
-              position: "absolute",
-              background: "white"
+      <div class="search" style={{position: "relative", display: "flex", flexGrow: "1", padding: "calc(var(--padding)/2)"}}>
+        <div style={{
+            width: "95%",
+            padding: "calc(var(--padding)/2)",
+            borderRadius: "0.25rem",
+            border: (results.length > 0)?"1px solid var(--dark)":"none",
+            position: "absolute",
+            background: (results.length > 0)?"white":null
+          }}>
+          <input type="text" placeholder="Search" value={state.query} onkeydown={onkeydown} oninput={autocomplete} style={{width: "99%", border: "0", outline: "0", background: "transparent", marginRight: "var(--padding)"}} />
+          {(results.length > 0)?
+            <div class="results" style={{
+              marginTop: "0.25rem",
+              overflowX: "hidden",
+              overflowY: "auto",
+              maxHeight: "400px",
             }}>
-            {results.map((result, idx) => <div onclick={() => open(result)} class={(state.selected===idx)?"selected":""}>{result.getName()}</div>)}
-          </div>
-        :null}
+              {results.map((result, idx) => <div onclick={() => open(result)} class={(state.selected===idx)?"selected":""}>{result.getName()}</div>)}
+            </div>
+          :null}
+        </div>
       </div>
     )
   }

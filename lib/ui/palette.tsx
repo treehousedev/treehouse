@@ -54,20 +54,21 @@ export const CommandPalette: m.Component = {
         position: "absolute",
         left: `${attrs.x}px`,
         top: `${attrs.y}px`,
-        border: "1px solid #555",
+        border: "1px solid var(--dark)",
         borderRadius: "0.25rem",
-        padding: "0 0 0.25rem 0",
+        padding: "0.5rem",
         background: "white",
         fontSize: "14px",
-        minWidth: "200px"
+        minWidth: "400px"
       }}>
-        <div><input style={{width: "100%"}} type="text" onkeydown={onkeydown} oninput={autocomplete} placeholder="Enter command..." /></div>
+        <div><input style={{width: "98%", outline: "0", border: "0"}} type="text" onkeydown={onkeydown} oninput={autocomplete} placeholder="Enter command..." /></div>
         <div class="commands" style={{
+          margin: "0.25rem",
           overflowY: "scroll",
-          maxHeight: "100px",
+          maxHeight: "200px",
           position: "relative"
         }}>
-          {filtered.map((cmd, idx) => <div class={(state.selected===idx)?"selected":""}>{cmd.id}</div>)}
+          {filtered.map((cmd, idx) => <div style={{padding: "0.25rem"}} class={(state.selected===idx)?"selected":""}>{cmd.title||cmd.id}</div>)}
         </div>
       </div>
     )

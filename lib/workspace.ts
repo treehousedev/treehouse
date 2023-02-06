@@ -1,7 +1,7 @@
 import { Store } from "./backend.ts";
 import { KeyBindings } from "./keybinds.ts";
 import { CommandRegistry } from "./commands.ts";
-import { Module, Node as ManifoldNode, generateNodeTree } from "./manifold/mod.ts";
+import { Module, Node as ManifoldNode } from "./manifold/mod.ts";
 import { MenuRegistry } from "./menus.ts";
 
 
@@ -73,15 +73,6 @@ export class Workspace {
       cal.setParent(ws);
       const home = this.nodes.new("Home");
       home.setParent(ws);
-      const random = this.nodes.new("Random");
-      random.setParent(ws);
-      for (const n of Object.values(generateNodeTree(1000))) {
-        if (n.Parent === undefined) {
-          n.Parent = random.ID;
-          random.raw.Linked.Children.push(n.ID);
-        }
-        nodes.push(n);
-      }
     }
     this.nodes.import(nodes);
     this.nodes.observers.push((n => {

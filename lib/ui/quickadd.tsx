@@ -34,15 +34,12 @@ export const QuickAdd = {
           <hr />
           <OutlineEditor workspace={workspace} node={workspace.quickadd} />
           <hr />
-          <div>
-            <button onclick={() => {
+          <div style={{textAlign: "right"}}>
+            <button style={{padding: "0.5rem", margin: "0.25rem"}} onclick={() => {
               workspace.commitQuickAdd();
               workspace.closeQuickAdd();
             }}>Add to Today</button>
-            <button onclick={() => {
-              workspace.clearQuickAdd();
-              workspace.closeQuickAdd();
-            }}>Delete</button>
+            
           </div>
         </div>
       </div>
