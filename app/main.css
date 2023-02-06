@@ -10,7 +10,7 @@ input::placeholder {
   color: var(--dark);
 }
 
-body, input, textarea {
+body, input, textarea, button {
   color: #444;
   font-size: 1rem;
   font-family: var(--font);
@@ -27,14 +27,32 @@ body {
 }
 
 .menu li:hover {
-  background: #555;
+  background: #666;
   color: white;
   cursor: pointer;
 }
 
 .palette .selected, .search .selected {
-  background: #555;
+  background: #666;
   color: white;
+  border-radius: 0.25rem;
+}
+
+hr {
+  border: 0;
+  border-bottom: 1px solid var(--dark);
+}
+
+button {
+  border-radius: 0.25rem;
+  background-color: white;
+  border: 1px solid var(--dark);
+  cursor: pointer; 
+}
+
+.search .results > div {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
 }
 
 .\? { border: 1px solid red !important; }
