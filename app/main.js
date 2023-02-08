@@ -1,4 +1,9 @@
+import { Octokit } from "https://cdn.skypack.dev/@octokit/rest";
+import {setup, BrowserBackend, GitHubBackend} from "/lib/treehouse.min.js";
 
-import {setup, LocalStorageStore} from "/lib/treehouse.min.js";
+setup(document, document.body, {
+  "browser": new BrowserBackend(),
+  "github": new GitHubBackend(`${window.backend.url}?scope=repo`, Octokit)
+}[window.backend.name]);
 
-setup(document, document.body, new LocalStorageStore());
+
