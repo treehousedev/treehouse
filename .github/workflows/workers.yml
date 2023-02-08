@@ -5,6 +5,7 @@ on:
       - main
     paths:
       - '.github/workers/**'
+      - '.github/workflows/workers.yml'
 jobs:
   github-login:
     concurrency: ci-${{ github.ref }}
@@ -21,6 +22,6 @@ jobs:
           secrets: |
             CLIENT_ID
             CLIENT_SECRET
-          env:
-            CLIENT_ID: ${{ secrets.DEMO_CLIENT_ID }}
-            CLIENT_SECRET: ${{ secrets.DEMO_CLIENT_SECRET }}
+        env:
+          CLIENT_ID: ${{ secrets.DEMO_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.DEMO_CLIENT_SECRET }}
