@@ -20,8 +20,9 @@ async function handle(request) {
 
   // redirect GET requests to the OAuth login page on github.com
   if (request.method === "GET") {
+    const scope = new URL(request.url).searchParams.get("scope");
     return Response.redirect(
-      `https://github.com/login/oauth/authorize?client_id=${client_id}&scope=${new URL(request.url).searchParams.get("scope")}`,
+      `https://github.com/login/oauth/authorize?client_id=${client_id}&scope=${scope}`,
       302
     );
   }
