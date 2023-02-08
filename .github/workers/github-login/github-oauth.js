@@ -36,7 +36,6 @@ async function handle(request) {
         method: "POST",
         headers: {
           "content-type": "application/json",
-          "user-agent": "cloudflare-worker-github-oauth-login-demo",
           accept: "application/json",
         },
         body: JSON.stringify({ client_id, client_secret, code }),
