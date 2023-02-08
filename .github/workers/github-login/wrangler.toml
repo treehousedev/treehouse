@@ -1,0 +1,4 @@
+name = "treehouse-demo-login"
+workers_dev = true
+compatibility_date = "2023-02-08"
+main = "github-oauth.js"
