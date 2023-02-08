@@ -10,7 +10,7 @@ function mkdirAll(path: string) {
   } catch {}
 }
 
-const outpath = "./web/out";
+const outpath = "./local/out";
 
 mkdirAll(dirname(outpath));
 copy(`${rootdir}/static`, `${outpath}`, {overwrite: true});
