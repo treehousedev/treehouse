@@ -1,10 +1,11 @@
 import { Workspace, panelNode } from "./workspace.ts";
 import { App } from "./ui/app.tsx";
 import { Workspace } from "./workspace.ts";
-import { LocalStorageStore, Store } from "./backend.ts";
+import { Backend } from "./backend/mod.ts";
 import { component } from "./manifold/components.ts";
 
-export { LocalStorageStore };
+export { BrowserBackend, SearchIndex_MiniSearch} from "./backend/browser.ts";
+export { GitHubBackend } from "./backend/github.ts";
 
 @component
 export class Checkbox {
@@ -24,8 +25,13 @@ export class Page {
   }
 }
 
-export function setup(document: Document, target: HTMLElement, store: Store) {
-  const workspace = new Workspace(store);
+
+export async function setup(document: Document, target: HTMLElement, backend: Backend) {
+  if (backend.initialize) {
+    await backend.initialize();
+  }
+  const workspace = new Workspace(backend);
+  await workspace.initialize();
   window.workspace = workspace;
 
   workspace.commands.registerCommand({

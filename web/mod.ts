@@ -7,6 +7,7 @@ import {m,render,pretty,highlightText,Marked} from "./deps.ts";
 import globals from "./globals.ts";
 
 export const rootdir = new URL('.', import.meta.url).pathname;
+export const localdir = `${rootdir}../local`;
 export const pagedir = `${rootdir}pages`;
 export const layoutdir = `${rootdir}layouts`;
 
@@ -46,7 +47,11 @@ async function loadLayout(path: string): any {
 export async function generate(path: string): string|null {
   const pagepath = resolve(`${pagedir}/${path}`);
   if (!pagepath) return null;
-  const attrs = Object.assign({}, globals);
+  let localGlobals = {};
+  try {
+    localGlobals = (await import(`${localdir}/globals.ts`)).default;
+  } catch(e) {}
+  const attrs = Object.assign({}, globals, localGlobals);
   switch (extname(pagepath)) {
   case ".md":
     const extract = createExtractor({ [Format.YAML]: parseYAML as Parser });

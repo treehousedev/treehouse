@@ -1,4 +1,4 @@
-import { Store } from "./backend.ts";
+import { Backend } from "./backend/mod.ts";
 import { KeyBindings } from "./keybinds.ts";
 import { CommandRegistry } from "./commands.ts";
 import { Module, Node as ManifoldNode } from "./manifold/mod.ts";
@@ -35,10 +35,8 @@ export class Workspace {
   keybindings: KeyBindings;
   menus: MenuRegistry;
 
-  backend: Store;
+  backend: Backend;
   nodes: Module;
-
-  search: any; // todo: define backend
 
   context: Context;
 
@@ -48,23 +46,22 @@ export class Workspace {
   quickadd: any;
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
-  constructor(backend: Store) {
+  constructor(backend: Backend) {
     this.commands = new CommandRegistry();
     this.keybindings = new KeyBindings();
     this.menus = new MenuRegistry();
 
-    this.search = new MiniSearch({
-      idField: "ID",
-      fields: ['ID', 'Name', 'Value.markdown'], // fields to index for full-text search
-      storeFields: ['ID'], // fields to return with search results
-      extractField: (document, fieldName) => {
-        return fieldName.split('.').reduce((doc, key) => doc && doc[key], document);
-      }
-    });
-
     this.backend = backend;
     this.nodes = new Module();
-    const nodes = this.backend.loadAll();
+    this.context = {node: null};
+    this.panels = [[]];
+    this.expanded = {};
+
+    this.openNewPanel(this.nodes.find("@root"));
+  }
+
+  async initialize() {
+    const nodes = await this.backend.nodes.loadAll();
     const root = this.nodes.find("@root");
     if (nodes.length === 0) {
       const ws = this.nodes.new("Workspace");
@@ -75,26 +72,16 @@ export class Workspace {
       home.setParent(ws);
     }
     this.nodes.import(nodes);
+    
     this.nodes.observers.push((n => {
-      this.backend.saveAll(Object.values(this.nodes.nodes));
-      const index = (node) => {
-        if (this.search.has(node.ID)) {
-          this.search.replace(node.raw);  
-        } else {
-          this.search.add(node.raw);
-        }
-      }
-      index(n);
-      n.getComponentNodes().forEach(com => index(com));
+      this.backend.nodes.saveAll(Object.values(this.nodes.nodes));
+    
+      this.backend.index.index(n.raw);
+      n.getComponentNodes().forEach(com => this.backend.index.index(com.raw));
+    
     }));
-    this.search.addAll(Object.values(this.nodes.nodes));
-    this.context = {node: null};
-    this.panels = [[]];
-    this.expanded = {};
-
-    const lastopen = localStorage.getItem("lastopen") || "@root"
-    this.openNewPanel(this.nodes.find(lastopen));
-  
+    Object.values(this.nodes.nodes).forEach(n => this.backend.index.index(n));  
+    m.redraw();
   }
 
   closeQuickAdd() {

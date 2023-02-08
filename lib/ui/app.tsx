@@ -54,6 +54,12 @@ export const App: m.Component = {
             <div style={{borderLeft: "1px solid var(--dark)"}}></div>
             <div style={{padding: "var(--padding)"}}>
               <button onclick={reset}>Reset</button>
+              {(workspace.backend.auth)?
+                (workspace.backend.auth.currentUser())
+                  ?<button onclick={() => workspace.backend.auth.logout()}>Logout {workspace.backend.auth.currentUser().displayName()}</button>
+                  :<button onclick={() => workspace.backend.auth.login()}>Login</button>
+              :null}
+              
             </div>
           </div>
         </div>

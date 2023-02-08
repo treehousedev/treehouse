@@ -1,5 +1,5 @@
 import {m,page} from "../../deps.ts";
-export default page({}, ({attrs: {dev}}) => (
+export default page({}, ({attrs: {dev, backend}}) => (
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -14,6 +14,12 @@ export default page({}, ({attrs: {dev}}) => (
     <title>Treehouse</title>
   </head>
   <body>
+    <div style={{textAlign: "center", marginTop: "40vh"}}>
+      <div class="lds-ripple"><div></div><div></div></div>
+    </div>
+    <script>
+      window.backend = {JSON.stringify(backend)};
+    </script>
     <script src="/app/main.js" type="module"></script>
     {(dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
   </body>

@@ -14,22 +14,19 @@ export const Search: m.Component = {
     
     let results = [];
     if (state.query) {
-      state.suggestions = workspace.search.autoSuggest(state.query);
-      if (state.suggestions.length > 0) {
-        results = workspace.search.search(state.suggestions[0].suggestion).map(doc => {
-          let node = workspace.nodes.find(doc.ID);
-          if (!node) {
-            return undefined;
-          }
-          // if component value, get the parent
-          if (node.getValue()) {
-            node = node.getParent();
-            // parent might not actually exist
-            if (!node.raw) return;
-          }
-          return node;
-        }).filter(n => n !== undefined);
-      }
+      results = workspace.backend.index.search(state.query).map(id => {
+        let node = workspace.nodes.find(id);
+        if (!node) {
+          return undefined;
+        }
+        // if component value, get the parent
+        if (node.getValue()) {
+          node = node.getParent();
+          // parent might not actually exist
+          if (!node.raw) return;
+        }
+        return node;
+      }).filter(n => n !== undefined);
     }
 
     const open = (node) => {
