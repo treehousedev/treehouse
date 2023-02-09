@@ -50,6 +50,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
     const edit = (e) => {
       state.buffer = e.target.value;
+      node.setName(state.buffer);
     }
     const startNew = (e) => {
       workspace.executeCommand("insert-child", {node}, e.target.value);
