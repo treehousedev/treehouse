@@ -2,7 +2,7 @@
   --dark: #e0e0e0;
   --padding: 1rem;
   --background: #fafbfb;
-  --font: 'Work Sans', sans-serif;
+  --font: 'Rubik', sans-serif;
 }
 
 input::placeholder {
@@ -14,6 +14,7 @@ body, input, textarea, button {
   color: #444;
   font-size: 1rem;
   font-family: var(--font);
+  font-weight: 300;
 }
 
 body {
