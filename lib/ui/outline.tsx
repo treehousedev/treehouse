@@ -53,8 +53,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
       node.setName(state.buffer);
     }
     const startNew = (e) => {
-      workspace.executeCommand("insert-child", {node}, e.target.value);
       e.stopPropagation();
+      e.preventDefault();
+      workspace.executeCommand("insert-child", {node}, e.target.value);
     }
     const checkCommands = (e) => {
       switch (e.key) {
@@ -177,28 +178,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           <div style={{flexGrow: "1"}}>
             {(node.childCount() > 0)
               ?node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)
-              :<div style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                paddingLeft: "1rem",
-                marginTop: "0.125rem",
-                marginBottom: "0.125rem"
-              }} >
-                <svg style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
-                  <circle cx="8" cy="7" r="7" fill="lightgray" />
-                  <path fill="#555" style={{transform: "translate(0px, -1px)"}} d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-                <div style={{flexGrow: "1", display: "flex"}}>
-                <input type="text"
-                  oninput={startNew}
-                  style={{
-                    border: "0px",
-                    flexGrow: "1",
-                    outline: "0px"
-                  }} />
-                </div>
-              </div>
+              :<NewNode workspace={workspace} node={node} />
             }
           </div>
         </div>
@@ -207,43 +187,56 @@ export const OutlineNode: m.Component<Attrs, State> = {
   }
 };
 
-
-export const OutlineEditor: m.Component<Attrs> = {
-  view ({attrs, state}) {
-    const node = attrs.node;
-    const workspace = attrs.workspace;
-
+export const NewNode = {
+  view({attrs: {workspace, node}}) {
     const startNew = (e) => {
       workspace.executeCommand("insert-child", {node}, e.target.value);
-      e.stopPropagation();
     }
+    const tabNew = (e) => {
+      if (e.key === "Tab") {
+        e.stopPropagation();
+        e.preventDefault();
+        if (node.childCount() > 0) {
+          const lastchild = node.getChildren()[node.childCount()-1];
+          workspace.executeCommand("insert-child", {node: panelNode(lastchild, node.panel)});
+        }
+      }
+    }
+    return (
+      <div style={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        paddingLeft: "1rem",
+        marginTop: "0.125rem",
+        marginBottom: "0.125rem"
+      }} >
+        <svg style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+          <circle cx="8" cy="7" r="7" fill="lightgray" />
+          <path fill="#555" style={{transform: "translate(0px, -1px)"}} d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+        </svg>
+        <div style={{flexGrow: "1", display: "flex"}}>
+        <input type="text"
+          oninput={startNew}
+          onkeydown={tabNew}
+          value={""}
+          style={{
+            border: "0px",
+            flexGrow: "1",
+            outline: "0px"
+          }} />
+        </div>
+      </div>
+    )
+  }
+}
 
+export const OutlineEditor: m.Component<Attrs> = {
+  view ({attrs: {workspace, node}, state}) {
     return (
       <div style={{padding: "var(--padding)"}}>
         {node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)}
-        <div style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-                paddingLeft: "1rem",
-                marginTop: "0.125rem",
-                marginBottom: "0.125rem"
-              }} >
-                <svg style={{flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
-                  <circle cx="8" cy="7" r="7" fill="lightgray" />
-                  <path fill="#555" style={{transform: "translate(0px, -1px)"}} d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-                </svg>
-                <div style={{flexGrow: "1", display: "flex"}}>
-                <input type="text"
-                  oninput={startNew}
-                  value={""}
-                  style={{
-                    border: "0px",
-                    flexGrow: "1",
-                    outline: "0px"
-                  }} />
-                </div>
-              </div>
+        <NewNode workspace={workspace} node={node} />
       </div>
     )
   }
