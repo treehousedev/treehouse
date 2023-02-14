@@ -60,14 +60,24 @@ export const OutlineNode: m.Component<Attrs, State> = {
       switch (e.key) {
       case "Backspace":
         if (e.target.value === "") {
-          workspace.executeCommand("delete", {node});
-          // TODO: put cursor at end of new currentNode
+          e.preventDefault();
+          if (node.getParent().ID === node.panel.current.ID) {
+            workspace.executeCommand("delete", {node, event: e});
+          } else {
+            workspace.executeCommand("outdent", {node});
+          }
           e.stopPropagation();
           return;
         }
         if (e.target.value !== "" && e.target.selectionStart === 0) {
-          // TODO: append current node text to previous, delete current node, set focus on prev node with cursor at end of old text
-          console.log("TODO!");
+          e.preventDefault();
+          // TODO: make this work as a command?
+          const prev = node.getPrevSibling();
+          const oldName = prev.getName();
+          prev.setName(oldName+e.target.value);
+          node.destroy();
+          m.redraw.sync();
+          workspace.focus(panelNode(prev, node.panel), oldName.length);
           e.stopPropagation();
           return;
         }

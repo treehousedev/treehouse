@@ -8,6 +8,7 @@ import { MenuRegistry } from "./menus.ts";
 export interface Context {
   node: Node|null;
   nodes?: Node[];
+  event?: Event;
 }
 
 export class Panel {
@@ -18,6 +19,10 @@ export class Panel {
     node.panel = this;
     this.id = Math.random().toString(36).substring(2);
     this.history = [node];
+  }
+
+  get current(): Node {
+    return this.history[this.history.length-1];
   }
 }
 

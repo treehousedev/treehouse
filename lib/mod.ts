@@ -120,12 +120,14 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Indent",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const prev = ctx.node.getPrevSibling();
+      const prev = panelNode(ctx.node.getPrevSibling(), ctx.node.panel);
       if (prev !== null) {
         ctx.node.setParent(prev);
-        prev.setAttr("expanded", JSON.stringify(true));
+        workspace.setExpanded(prev, true);
+
+        const node = ctx.node; // redraw seems to unset ctx.node
         m.redraw.sync();
-        workspace.focus(ctx.node);
+        workspace.focus(node);
       }
     }
   });
@@ -135,12 +137,17 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Outdent",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const parent = ctx.node.getParent();
+      const parent = panelNode(ctx.node.getParent(), ctx.node.panel);
       if (parent !== null && parent.ID !== "@root") {
         ctx.node.setParent(parent.getParent());
         ctx.node.setSiblingIndex(parent.getSiblingIndex()+1);
+        if (parent.childCount() === 0) {
+          workspace.setExpanded(parent, false);
+        }
+        
+        const node = ctx.node; // redraw seems to unset ctx.node
         m.redraw.sync();
-        workspace.focus(ctx.node);
+        workspace.focus(node);
       }
     }
   });
@@ -190,7 +197,11 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       ctx.node.destroy();
       m.redraw.sync();
       if (prev) {
-        workspace.focus(panelNode(prev, ctx.node.panel));
+        let pos = 0;
+        if (ctx.event && ctx.event.key === "Backspace") {
+          pos = prev.getName().length;
+        }
+        workspace.focus(panelNode(prev, ctx.node.panel), pos);
       }
     }
   });
