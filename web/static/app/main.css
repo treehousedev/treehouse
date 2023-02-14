@@ -14,7 +14,7 @@ body, input, textarea, button {
   color: #444;
   font-size: 1rem;
   font-family: var(--font);
-  font-weight: 300;
+  font-weight: 400;
 }
 
 body {
@@ -27,9 +27,13 @@ body {
   background: var(--background);
 }
 
-.menu li:hover {
+.menu li:not(.disabled):hover {
   background: #666;
   color: white;
+  cursor: pointer;
+}
+.menu li.disabled {
+  color: #bbb;
   cursor: pointer;
 }
 

@@ -1,31 +1,29 @@
 import { bindingSymbols } from "../keybinds.ts";
 
 export const Menu: m.Component = {
-  view({attrs}) {
-    const workspace = attrs.workspace;
-    const liStyle = {
-      margin: "0px",  
-      listStyleType: "none",
-      padding: "0.25rem 0.5rem 0.25rem 0.5rem",
-      display: "flex"
-    };
-    const shortcutStyle = {
-      flexGrow: "1", 
-      textAlign:"right", 
-      color: "#888",
-      marginLeft: "1rem"
-    };
-    const onclick = (item) => (e) => {
-      workspace.executeCommand(item.id, attrs.ctx);
-      workspace.hideMenu();
+  view({attrs: {workspace, x, y, items, align, commands, ctx}}) {
+    const onclick = (item, cmd) => (e) => {
       e.stopPropagation();
+      if (item.disabled) {
+        return;
+      }
+      if (item.onclick) {
+        item.onclick();
+      }
+      if (cmd) {
+        workspace.executeCommand(cmd.id, ctx);
+      }
+      workspace.hideMenu();
     };
+    let posStyle = {left: `${x}px`};
+    if (align === "right") {
+      posStyle = {right: `${x}px`};
+    }
     return (
-<ul class="menu" style={{
+<ul class="menu" style={Object.assign(posStyle, {
   margin: "0",
   position: "absolute",
-  left: `${attrs.x}px`,
-  top: `${attrs.y}px`,
+  top: `${y}px`,
   border: "1px solid var(--dark)",
   borderRadius: "0.25rem",
   padding: "0.25rem 0 0.25rem 0",
@@ -34,8 +32,36 @@ export const Menu: m.Component = {
   filter: "drop-shadow(2px 2px 4px #5555)",
   fontSize: "14px",
   minWidth: "200px"
-}}>
-  {attrs.items.map(i => <li onclick={onclick(i)} style={liStyle}><div>{i.title}</div><div style={shortcutStyle}>{bindingSymbols(i.key).join(" ").toUpperCase()}</div></li>)}
+})}>
+  {items.filter(i => !i.when || i.when()).map(i => {
+    let title = "";
+    let binding = undefined;
+    let cmd = undefined;
+    if (i.command) {
+      cmd = commands.find(c => c.id === i.command);
+      binding = workspace.keybindings.getBinding(cmd.id);
+      title = cmd.title;
+    }
+    if (i.title) {
+      title = i.title();
+    }
+    return (
+      <li onclick={onclick(i, cmd)} class={(i.disabled)?"disabled":""} style={{
+        margin: "0px",  
+        listStyleType: "none",
+        padding: "0.25rem 0.5rem 0.25rem 0.5rem",
+        display: "flex"
+      }}>
+        <div>{title}</div>
+        {binding && <div style={{
+          flexGrow: "1", 
+          textAlign:"right", 
+          color: "#888",
+          marginLeft: "1rem"
+        }}>{bindingSymbols(binding.key).join(" ").toUpperCase()}</div>}
+      </li>
+    )
+  })}
 </ul>
     )  
   }

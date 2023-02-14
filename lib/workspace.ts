@@ -84,6 +84,10 @@ export class Workspace {
     m.redraw();
   }
 
+  authenticated(): boolean {
+    return this.backend.auth && this.backend.auth.currentUser();
+  }
+
   closeQuickAdd() {
     this.quickadd = null;
     m.redraw();
@@ -173,13 +177,20 @@ export class Workspace {
     event.preventDefault();
     const trigger = event.target.closest("*[data-menu]");
     const rect = trigger.getBoundingClientRect();
-    const x = document.body.scrollLeft+rect.x;
+    const align = trigger.dataset["align"] || "left";
+    let x = document.body.scrollLeft+rect.x;
+    if (align === "right") {
+      x = window.innerWidth - rect.right - rect.width;
+    }
     const y = document.body.scrollTop+rect.y+rect.height;
     const items = this.menus.menus[trigger.dataset["menu"]];
+    const cmds = items.filter(i => i.command).map(i => this.commands.commands[i.command]);
     if (!items) return;
     this.menu = {x, y, 
       ctx: this.newContext(ctx), 
-      items: items.map(i => Object.assign(this.commands.commands[i.command], this.keybindings.getBinding(i.command)))
+      items: items,
+      commands: cmds,
+      align: align
     };
     m.redraw();
   }

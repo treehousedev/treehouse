@@ -288,6 +288,17 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     {command: "generate-random"},
   ]);
 
+  workspace.menus.registerMenu("settings", [
+    {title: () => `${workspace.backend.auth?.currentUser()?.userID()} @ GitHub`, disabled: true, when: () => workspace.authenticated()},
+    {title: () => "Login with GitHub", when: () => !workspace.authenticated(), onclick: () => workspace.backend.auth.login()},
+    {title: () => "Reset Demo", when: () => !workspace.authenticated(), onclick: () => {
+      localStorage.clear();
+      location.reload();
+    }},
+    {title: () => "Submit Issue", onclick: () => window.open("https://github.com/treehousedev/treehouse/issues", "_blank")},
+    {title: () => "Logout", when: () => workspace.authenticated(), onclick: () => workspace.backend.auth.logout()},
+  ]);
+
   document.addEventListener("keydown", (e) => {
     const binding = workspace.keybindings.evaluateEvent(e);
     if (binding && workspace.context.node) {

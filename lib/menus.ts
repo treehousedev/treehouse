@@ -2,7 +2,10 @@
 export interface MenuItem {
   command: string;
   //alt?: string;
-  //when
+  when?: Function;
+  title?: Function;
+  onclick?: Function;
+  disabled?: boolean;
   //group
   //submenu
 }
