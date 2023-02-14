@@ -19,7 +19,9 @@ jobs:
           deno-version: v1.x
 
       - name: Build
-        run: deno task generate
+        run: |
+          deno task bundle
+          deno task generate
         env:
           BACKEND: github
           BACKEND_URL: https://treehouse-demo-login.proteco.workers.dev

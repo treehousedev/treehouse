@@ -4,7 +4,7 @@
     "lib": ["deno.ns", "dom"]
   },
   "tasks": {
-    "bundle": "esbuild lib/mod.ts --bundle --outfile=web/static/lib/treehouse.min.js --jsx-factory=m --minify --format=esm",
+    "bundle": "deno run --unstable -A web/bundle.ts",
     "generate": "deno run --unstable -A web/generate.ts",
     "serve": "deno run --unstable -A --watch web/serve.ts",
   }
