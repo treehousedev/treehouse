@@ -302,7 +302,15 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
   workspace.menus.registerMenu("settings", [
     {title: () => `${workspace.backend.auth?.currentUser()?.userID()} @ GitHub`, disabled: true, when: () => workspace.authenticated()},
-    {title: () => "Login with GitHub", when: () => !workspace.authenticated(), onclick: () => workspace.backend.auth.login()},
+    {title: () => "Login with GitHub", when: () => !workspace.authenticated(), onclick: () => {
+      if (!localStorage.getItem("github")) {
+        workspace.showNotice("github", () => {
+          workspace.backend.auth.login()
+        })
+      } else {
+        workspace.backend.auth.login()
+      }
+    }},
     {title: () => "Reset Demo", when: () => !workspace.authenticated(), onclick: () => {
       localStorage.clear();
       location.reload();

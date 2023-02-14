@@ -3,6 +3,7 @@ import { CommandPalette } from "./palette.tsx";
 import { Panel as PanelComponent } from "./panel.tsx";
 import { QuickAdd } from "./quickadd.tsx";
 import { Search } from "./search.tsx";
+import { Notice } from "./notices.tsx";
 
 export const App: m.Component = {
   view ({attrs: {workspace}, state}) {
@@ -71,6 +72,7 @@ export const App: m.Component = {
         {workspace.menu && <Menu workspace={workspace} {...workspace.menu} />}
         {workspace.palette && <CommandPalette workspace={workspace} {...workspace.palette} />}
         {workspace.quickadd && <QuickAdd workspace={workspace} />}
+        {workspace.notice && <Notice workspace={workspace} {...workspace.notice} />}
       </main>
     )
   }

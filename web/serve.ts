@@ -34,6 +34,7 @@ await serve(async (req) => {
       lastBuild = Date.now();
     }
     Object.defineProperty(req, "url", {value: req.url.replace(".min", "")});
+    pathname = new URL(req.url).pathname;
   }
 
   if (pathname !== "/" && exists(`${rootdir}/static${pathname}`)) {

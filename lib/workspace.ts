@@ -47,6 +47,7 @@ export class Workspace {
 
   panels: Panel[][]; // Panel[row][column]
   menu: any;
+  notice: any;
   palette: any;
   quickadd: any;
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
@@ -87,6 +88,12 @@ export class Workspace {
     }));
     Object.values(this.nodes.nodes).forEach(n => this.backend.index.index(n));  
     m.redraw();
+
+
+    if (!localStorage.getItem("firsttime")) {
+      this.showNotice('firsttime');
+    }
+    
   }
 
   authenticated(): boolean {
@@ -212,6 +219,16 @@ export class Workspace {
 
   hidePalette() {
     this.palette = null;
+    m.redraw();
+  }
+
+  showNotice(message, finished) {
+    this.notice = {message, finished};
+    m.redraw();
+  }
+
+  hideNotice() {
+    this.notice = null;
     m.redraw();
   }
 
