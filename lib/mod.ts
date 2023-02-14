@@ -266,7 +266,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
   workspace.commands.registerCommand({
     id: "zoom",
-    title: "Zoom",
+    title: "Open",
     action: (ctx: Context) => {
       ctx.node.panel.history.push(ctx.node);
       m.redraw();

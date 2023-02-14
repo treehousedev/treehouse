@@ -108,6 +108,19 @@ export const OutlineNode: m.Component<Attrs, State> = {
       checkbox.checked = !checkbox.checked;
       node.changed();
     }
+    const zoom = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      workspace.executeCommand("zoom", {node});
+      
+      // clear text selection that happens after from double click
+      if (document.selection && document.selection.empty) {
+        document.selection.empty();
+      } else if (window.getSelection) {
+        window.getSelection().removeAllRanges();
+      }
+    }
     return (
       <div style={{paddingLeft: "1rem"}} onmouseover={hover} onmouseout={unhover}>
         <div style={{
@@ -135,7 +148,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
               viewBox="0 0 16 16">
             <path style={{transform: "translateY(-1px)"}} fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
           </svg>
-          <svg onclick={toggle} oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{cursor: "pointer", flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+          <svg onclick={toggle} ondblclick={zoom} oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{cursor: "pointer", flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {(node.childCount() > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>
