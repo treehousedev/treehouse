@@ -252,6 +252,47 @@ export class Workspace {
   setExpanded(n: Node, b: boolean) {
     this.expanded[n.panel.history[0].ID][n.ID] = b;
   }
+
+  findAbove(n: Node): Node|null {
+    if (n.ID === n.panel.current.ID) {
+      return null;
+    }
+    const panel = n.panel;
+    let above = n.getPrevSibling();
+    if (!above) {
+      return panelNode(n.getParent(), panel);
+    }
+    const lastChildIfExpanded = (n: Node): Node => {
+      const expanded = this.getExpanded(panelNode(n, panel));
+      if (!expanded || n.childCount() === 0) {
+        return n;
+      }
+      const lastChild = n.getChildren()[n.childCount() - 1];
+      return lastChildIfExpanded(lastChild);
+    }
+    return panelNode(lastChildIfExpanded(above), panel);
+  }
+
+  findBelow(n: Node): Node|null {
+    // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
+    const panel = n.panel;
+    if (this.getExpanded(n) && n.childCount() > 0) {
+      return panelNode(n.getChildren()[0], panel);
+    }
+    const nextSiblingOrParentNextSibling = (n: Node): Node|null => {
+      const below = n.getNextSibling();
+      if (below) {
+        return panelNode(below, panel);
+      }
+      const parent = n.getParent();
+      if (!parent || parent.ID === panel.current.ID) {
+        return null;
+      }
+      return nextSiblingOrParentNextSibling(parent);
+    }
+    return nextSiblingOrParentNextSibling(n);
+  }
+
 }
 
 

@@ -211,12 +211,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "prev",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      // TODO: find previous/above node in expanded prev sibling
-      const prev = ctx.node.getPrevSibling();
-      if (prev !== null) {
-        workspace.focus(panelNode(prev, ctx.node.panel));
-      } else {
-        workspace.focus(panelNode(ctx.node.getParent(), ctx.node.panel));
+      const above = workspace.findAbove(ctx.node);
+      if (above) {
+        workspace.focus(panelNode(above, ctx.node.panel));
       }
     }
   });
@@ -225,13 +222,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "next",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      // TODO: go into children if n is expanded
-      const next = ctx.node.getNextSibling();
-      if (next !== null) {
-        workspace.focus(panelNode(next, ctx.node.panel));
-      } else {
-        return;
-        //workspace.focus(panelNode(ctx.node.getParent().getNextSibling(), ctx.node.panel));
+      const below = workspace.findBelow(ctx.node);
+      if (below) {
+        workspace.focus(panelNode(below, ctx.node.panel));
       }
     }
   });
