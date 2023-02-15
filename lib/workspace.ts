@@ -1,8 +1,8 @@
 import { Backend } from "./backend/mod.ts";
-import { KeyBindings } from "./keybinds.ts";
-import { CommandRegistry } from "./commands.ts";
+import { KeyBindings } from "./action/keybinds.ts";
+import { CommandRegistry } from "./action/commands.ts";
 import { Module, Node as ManifoldNode } from "./manifold/mod.ts";
-import { MenuRegistry } from "./menus.ts";
+import { MenuRegistry } from "./action/menus.ts";
 
 
 export interface Context {

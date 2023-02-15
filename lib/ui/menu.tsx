@@ -1,4 +1,4 @@
-import { bindingSymbols } from "../keybinds.ts";
+import { bindingSymbols } from "../action/keybinds.ts";
 
 export const Menu: m.Component = {
   view({attrs: {workspace, x, y, items, align, commands, ctx}}) {

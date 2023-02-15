@@ -162,21 +162,23 @@ export const OutlineNode: m.Component<Attrs, State> = {
             <NodeEditor workspace={workspace} node={node} onkeydown={checkCommands} />
           </div>
         </div>
-        <div style={{
-          display: (expanded)?"flex":"none",
-          flexDirection: "row",
-          paddingBottom: "0.25rem"
-        }}>
-          <div style={{width: "1rem", marginRight: "0.25rem", display: "flex"}} onclick={toggle}>
-            <div style={{borderLeft: "1px solid gray", height: "100%", marginLeft: "0.5rem"}}></div>
+        {(expanded === true) &&
+          <div style={{
+            display: "flex",
+            flexDirection: "row",
+            paddingBottom: "0.25rem"
+          }}>
+            <div style={{width: "1rem", marginRight: "0.25rem", display: "flex"}} onclick={toggle}>
+              <div style={{borderLeft: "1px solid gray", height: "100%", marginLeft: "0.5rem"}}></div>
+            </div>
+            <div style={{flexGrow: "1"}}>
+              {(node.childCount() > 0)
+                ?node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)
+                :<NewNode workspace={workspace} node={node} />
+              }
+            </div>
           </div>
-          <div style={{flexGrow: "1"}}>
-            {(node.childCount() > 0)
-              ?node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)
-              :<NewNode workspace={workspace} node={node} />
-            }
-          </div>
-        </div>
+        }
       </div>
     )
   }
