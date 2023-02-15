@@ -63,7 +63,6 @@ export class Workspace {
     this.panels = [[]];
     this.expanded = {};
 
-    this.openNewPanel(this.nodes.find("@root"));
   }
 
   async initialize() {
@@ -87,6 +86,9 @@ export class Workspace {
     
     }));
     Object.values(this.nodes.nodes).forEach(n => this.backend.index.index(n));  
+
+    this.openNewPanel(this.nodes.find("@root/Workspace"));
+
     m.redraw();
 
 

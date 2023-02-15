@@ -45,7 +45,7 @@ export const Panel = {
           </div>
         :null}
         <div style={{flexGrow: "1"}}>
-          {node.getParent() && <span style={{cursor: "pointer"}} onclick={() => workspace.open(node.getParent())}>{node.getParent().getName()}</span>}
+          {(node.getParent() && node.getParent().ID !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workspace.open(node.getParent())}>{node.getParent().getName()}</span> : null}
         </div>
         {(workspace.panels.flat().length>1)?
           <div style={{display: "flex", gap: "0.5rem"}}>
