@@ -70,7 +70,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           e.stopPropagation();
           return;
         }
-        if (e.target.value !== "" && e.target.selectionStart === 0) {
+        if (e.target.value !== "" && e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
           e.preventDefault();
           // TODO: make this work as a command?
           const prev = node.getPrevSibling();
