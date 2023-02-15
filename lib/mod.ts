@@ -31,8 +31,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     await backend.initialize();
   }
   const workspace = new Workspace(backend);
-  await workspace.initialize();
   window.workspace = workspace;
+  await workspace.initialize();
+  
 
   workspace.commands.registerCommand({
     id: "add-page",

@@ -1,4 +1,4 @@
-import {OutlineEditor} from "./outline.tsx";
+import {NodeEditor, OutlineEditor} from "./outline.tsx";
 import {panelNode} from "../workspace.ts";
 import {Page} from "../mod.ts";
 
@@ -65,7 +65,9 @@ export const Panel = {
         :null}
       </div>
       <div style={{background: "white", borderRadius: "0.5rem", display: "flex", flexDirection: "column"}}>
-        <div oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>{node.getName()}</div>
+        <div oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>
+          <NodeEditor workspace={workspace} node={node} disallowEmpty={true} />
+        </div>
         {(node.hasComponent(Page)) ? 
           <textarea oninput={editMarkdown} 
             value={node.getComponent(Page).markdown}

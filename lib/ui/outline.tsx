@@ -35,42 +35,36 @@ export const OutlineNode: m.Component<Attrs, State> = {
       }
       e.stopPropagation();
     }
-    const startEdit = (e) => {
-      workspace.context.node = node;
-      state.editing = true;
-      state.buffer = node.getName();
-    }
-    const finishEdit = (e) => {
-      state.editing = false;
-      if (!node.isDestroyed) {
-        node.setName(state.buffer);
-      }
-      state.buffer = undefined;
-      workspace.context.node = null;
-    }
-    const edit = (e) => {
-      state.buffer = e.target.value;
-      node.setName(state.buffer);
-    }
-    const startNew = (e) => {
-      e.stopPropagation();
-      e.preventDefault();
-      workspace.executeCommand("insert-child", {node}, e.target.value);
-    }
     const checkCommands = (e) => {
       switch (e.key) {
+      case "ArrowUp":
+        if (e.target.selectionStart !== 0) {
+          e.stopPropagation()
+        }
+        break;
+      case "ArrowDown":
+        if (e.target.selectionStart !== e.target.value.length && e.target.selectionStart !== 0) {
+          e.stopPropagation()
+        }
+        break;
       case "Backspace":
+        // cursor at beginning of empty text
         if (e.target.value === "") {
           e.preventDefault();
           e.stopPropagation();
           workspace.executeCommand("delete", {node, event: e});
           return;
         }
+        // cursor at beginning of non-empty text
         if (e.target.value !== "" && e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
           e.preventDefault();
           e.stopPropagation();
+          
           // TODO: make this work as a command?
           const prev = workspace.findAbove(node);
+          if (!prev) {
+            return;
+          }
           const oldName = prev.getName();
           prev.setName(oldName+e.target.value);
           node.destroy();
@@ -81,17 +75,21 @@ export const OutlineNode: m.Component<Attrs, State> = {
         }
         break;
       case "Enter":
+        e.preventDefault();
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
+        // cursor at end of text
         if (e.target.selectionStart === e.target.value.length) {
           workspace.executeCommand("insert", {node});
           e.stopPropagation();
           return;
         }
+        // cursor at beginning of text
         if (e.target.selectionStart === 0) {
           workspace.executeCommand("insert-before", {node});
           e.stopPropagation();
           return;
         }
+        // cursor in middle of text
         if (e.target.selectionStart > 0 && e.target.selectionStart < e.target.value.length) {
           state.buffer = e.target.value.slice(0, e.target.selectionStart);
           workspace.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart));
@@ -124,7 +122,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         <div style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "center",
+          alignItems: "start",
           marginTop: "0.125rem",
           marginBottom: "0.125rem"
         }} >
@@ -137,6 +135,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
                 position: "absolute", 
                 marginLeft: "-1rem", 
                 userSelect: "none",
+                marginTop: "0.1rem",
                 display: (state.hover)?"block":"none"
               }}  
               onclick={(e) => workspace.showMenu(e, {node})}
@@ -146,22 +145,21 @@ export const OutlineNode: m.Component<Attrs, State> = {
               viewBox="0 0 16 16">
             <path style={{transform: "translateY(-1px)"}} fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
           </svg>
-          <svg onclick={toggle} ondblclick={zoom} oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{cursor: "pointer", flexShrink: "0", width: "1rem", height: "1rem", marginRight: "0.5rem", paddingLeft: "1px"}} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+          <svg onclick={toggle} ondblclick={zoom} oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{
+              cursor: "pointer", 
+              flexShrink: "0", 
+              width: "1rem", 
+              height: "1rem", 
+              marginRight: "0.5rem", 
+              paddingLeft: "1px",
+              marginTop: "0.1rem"
+            }} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {(node.childCount() > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>
           <div style={{flexGrow: "1", display: "flex"}}>
             {(node.hasComponent(Checkbox)) ? <input type="checkbox" onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />:null}
-            <input id={`input-${node.panel?.id}-${node.ID}`} type="text" value={(state.editing)?state.buffer:node.getName()} 
-              onfocus={startEdit}
-              onblur={finishEdit}
-              oninput={edit}
-              onkeydown={checkCommands}
-              style={{
-                border: "0px",
-                flexGrow: "1",
-                outline: "0px"
-              }} />
+            <NodeEditor workspace={workspace} node={node} onkeydown={checkCommands} />
           </div>
         </div>
         <div style={{
@@ -234,6 +232,84 @@ export const OutlineEditor: m.Component<Attrs> = {
       <div style={{padding: "var(--padding)"}}>
         {node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)}
         <NewNode workspace={workspace} node={node} />
+      </div>
+    )
+  }
+}
+
+export const NodeEditor: m.Component = {
+  oncreate({dom}) {
+    const textarea = dom.querySelector("textarea");
+    const initialHeight = textarea.offsetHeight;
+    const span = dom.querySelector("span");
+    const updateHeight = () => {
+      span.style.width = `${Math.max(textarea.offsetWidth, 100)}px`;
+      span.innerHTML = textarea.value.replace("\n", "<br/>");
+      textarea.style.height = (span.offsetHeight > 0) ? `${span.offsetHeight}px` : `${initialHeight}px`;
+    }
+    textarea.addEventListener("input", () => updateHeight());
+    textarea.addEventListener("blur", () => span.innerHTML = "");
+    setTimeout(() => updateHeight(), 50);
+  },
+  view ({attrs: {workspace, node, onkeydown, disallowEmpty}, state}) {
+    const value = (state.editing)?state.buffer:node.getName();
+    
+    const defaultKeydown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+    const startEdit = (e) => {
+      state.initialValue = node.getName();
+      workspace.context.node = node;
+      state.editing = true;
+      state.buffer = node.getName();
+    }
+    const finishEdit = (e) => {
+      state.editing = false;
+      if (!node.isDestroyed) {
+        if (disallowEmpty && state.buffer.length === 0) {
+          node.setName(state.initialValue);
+        } else {
+          node.setName(state.buffer);
+        }
+      }
+      state.buffer = undefined;
+      workspace.context.node = null;
+    }
+    const edit = (e) => {
+      state.buffer = e.target.value;
+      if (disallowEmpty && state.buffer.length === 0) {
+        node.setName(state.initialValue);
+      } else {
+        node.setName(state.buffer);
+      }
+    }
+    
+    const style = {
+      outline: "none",
+      fontSize: "inherit",
+      fontFamily: "inherit",
+      padding: "0",
+      width: "100%",
+      boxSizing: "border-box",
+      resize: "none",
+      overflow: "hidden",
+      display: "block",
+      border: "none"
+    }
+    return (
+      <div style={{width: "100%"}}>
+        <textarea style={style} 
+          id={`input-${node.panel?.id}-${node.ID}`}
+          rows="1"
+          onfocus={startEdit}
+          onblur={finishEdit}
+          oninput={edit}
+          onkeydown={onkeydown||defaultKeydown}
+          value={value}>{value}</textarea>
+        <span style={Object.assign({visibility: "hidden", position: "fixed"}, style)}></span>
       </div>
     )
   }
