@@ -65,19 +65,19 @@ export default page({title: "Treehouse"}, () => (
         <div class="flex flex-col">
           <div class="bg-gray-400 image w-full h-64 mb-6">&nbsp;</div>
           <h3>Friendly Outliner Format</h3>
-          <p>Get started quickly with an intuitive outliner system like you're used to, and quickly convert pages to Markdown as needed.</p>
+          <p>Get started quickly with an intuitive outliner system like you're used to.</p>
         </div>
 
         <div class="flex flex-col">
           <div class="bg-gray-400 image w-full h-64 mb-6">&nbsp;</div>
-          <h3>Friendly Outliner Format</h3>
-          <p>Get started quickly with an intuitive outliner system like you're used to, and quickly convert pages to Markdown as needed.</p>
+          <h3>Quick Add and Daily Notes</h3>
+          <p>Jot an idea down quickly without having to worry about where to organize it. Our built-in “Daily Note” section automatically organizes your thoughts into a calendar structure.</p>
         </div>
 
         <div class="flex flex-col">
           <div class="bg-gray-400 image w-full h-64 mb-6">&nbsp;</div>
-          <h3>Friendly Outliner Format</h3>
-          <p>Get started quickly with an intuitive outliner system like you're used to, and quickly convert pages to Markdown as needed.</p>
+          <h3>Full-Text Search</h3>
+          <p>By default, we offer local-first indexing for quick, intuitive search.</p>
         </div>
 
 
@@ -132,7 +132,7 @@ export default page({title: "Treehouse"}, () => (
           </div>
           <div>
             <h3>Custom search</h3>
-            <p>Use Github or local storage to get up and running quickly, or build your own custom backend however you'd like.</p>
+            <p>Our pluggable backend API allows you to customize search to fit your needs.</p>
           </div>
         </div>
         <div class="flex flex-row gap-4">
@@ -155,7 +155,7 @@ export default page({title: "Treehouse"}, () => (
       <div>
         <div class="header">
           <h2>Learn about the project</h2>
-          <p>We include several backend options, but you can customize it however you like. Here is a little more.</p>
+          <p>Watch our short-form video series to follow along with the development process.</p>
         </div>
         <button class="secondary">View all devlogs</button>
       </div>
