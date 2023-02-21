@@ -269,16 +269,22 @@ export const NodeEditor: m.Component = {
       state.buffer = node.getName();
     }
     const finishEdit = (e) => {
-      state.editing = false;
-      if (!node.isDestroyed) {
-        if (disallowEmpty && state.buffer.length === 0) {
-          node.setName(state.initialValue);
-        } else {
-          node.setName(state.buffer);
+      // safari can trigger blur more than once
+      // for a given element, namely when clicking
+      // into devtools. this prevents the second 
+      // blur setting node name to undefined/empty.
+      if (state.editing) {
+        state.editing = false;
+        if (!node.isDestroyed) {
+          if (disallowEmpty && state.buffer.length === 0) {
+            node.setName(state.initialValue);
+          } else {
+            node.setName(state.buffer);
+          }
         }
+        state.buffer = undefined;
+        workspace.context.node = null;
       }
-      state.buffer = undefined;
-      workspace.context.node = null;
     }
     const edit = (e) => {
       state.buffer = e.target.value;
