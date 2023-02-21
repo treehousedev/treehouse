@@ -61,8 +61,13 @@ export class Workspace {
     this.nodes = new Module();
     this.context = {node: null};
     this.panels = [[]];
-    this.expanded = {};
-
+  
+    const expanded = localStorage.getItem(this.expandedStorageKey);
+    if (expanded) {
+      this.expanded = JSON.parse(expanded);
+    } else {
+      this.expanded = {};
+    }
   }
 
   async initialize() {
@@ -154,7 +159,9 @@ export class Workspace {
   }
 
   openNewPanel(n: ManifoldNode) {
-    this.expanded[n.ID] = {};
+    if (!this.expanded[n.ID]) {
+      this.expanded[n.ID] = {};
+    }
     localStorage.setItem("lastopen", n.ID);
     const p = new Panel(n);
     this.panels[0].push(p);
@@ -251,6 +258,15 @@ export class Workspace {
 
   setExpanded(n: Node, b: boolean) {
     this.expanded[n.panel.history[0].ID][n.ID] = b;
+    localStorage.setItem(this.expandedStorageKey, JSON.stringify(this.expanded));
+  }
+
+  get expandedStorageKey(): string {
+    if (this.authenticated()) {
+      return `treehouse-expanded-${this.backend.auth.currentUser().userID()}`;
+    } else {
+      return `treehouse-expanded`;
+    }
   }
 
   findAbove(n: Node): Node|null {
