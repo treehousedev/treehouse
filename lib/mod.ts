@@ -160,7 +160,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (!ctx.node) return;
       const node = workspace.nodes.new(name);
       node.setParent(ctx.node);
-      workspace.setExpanded(ctx.node, true);
+      if (ctx.node.panel) {
+        workspace.setExpanded(ctx.node, true);
+      }
       m.redraw.sync();
       workspace.focus(panelNode(node, ctx.node.panel), name.length);
     }
