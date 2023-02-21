@@ -62,19 +62,19 @@ export default page({title: "Treehouse"}, () => (
     <div class="mx-auto">
       <h2 class="header">Powerful note-taking out of the box</h2>
       <div class="flex gap-16">
-        <div class="flex flex-col">
+        <div class="flex flex-col flex-1">
           <div class="bg-gray-400 image w-full h-64 mb-6">&nbsp;</div>
           <h3>Friendly Outliner Format</h3>
           <p>Get started quickly with an intuitive outliner system like you're used to.</p>
         </div>
 
-        <div class="flex flex-col">
+        <div class="flex flex-col flex-1">
           <div class="bg-gray-400 image w-full h-64 mb-6">&nbsp;</div>
           <h3>Quick Add and Daily Notes</h3>
           <p>Jot an idea down quickly without having to worry about where to organize it. Our built-in “Daily Note” section automatically organizes your thoughts into a calendar structure.</p>
         </div>
 
-        <div class="flex flex-col">
+        <div class="flex flex-col flex-1">
           <div class="bg-gray-400 image w-full h-64 mb-6">&nbsp;</div>
           <h3>Full-Text Search</h3>
           <p>By default, we offer local-first indexing for quick, intuitive search.</p>
@@ -95,7 +95,7 @@ export default page({title: "Treehouse"}, () => (
         <div class="w-full">
           <h3>1. Clone the repository</h3>
           <p><a href="#">Open in GitHub</a> or use the command below to clone it with Git.</p>
-          <pre class="code">git clone https://github.com/treehousedev/treehouse.git</pre>
+          <pre class="code overflow-x-auto">git clone https://github.com/treehousedev/treehouse.git</pre>
         </div>
         <div class="w-full">
           <h3>2. Start the dev server</h3>
@@ -113,7 +113,7 @@ export default page({title: "Treehouse"}, () => (
         <p>We include several backend options, but you can customize it however you like.</p>
       </div>
       <div class="flex flex-row gap-16">
-        <div class="flex flex-row gap-4">
+        <div class="flex flex-row gap-4 flex-1">
           <div>
             <div class="rounded-full bg-black w-14 h-14 flex items-center justify-center text-white" style="border: 2px solid rgba(0,0,0,0.5); background: var(--teal);">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-database"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
@@ -124,7 +124,7 @@ export default page({title: "Treehouse"}, () => (
             <p>Use Github or local storage to get up and running quickly, or build your own custom backend however you'd like.</p>
           </div>
         </div>
-        <div class="flex flex-row gap-4">
+        <div class="flex flex-row gap-4 flex-1">
           <div>
             <div class="rounded-full bg-black w-14 h-14 flex items-center justify-center text-white" style="border: 2px solid rgba(0,0,0,0.5); background: var(--purple);">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -135,7 +135,7 @@ export default page({title: "Treehouse"}, () => (
             <p>Our pluggable backend API allows you to customize search to fit your needs.</p>
           </div>
         </div>
-        <div class="flex flex-row gap-4">
+        <div class="flex flex-row gap-4 flex-1">
           <div>
             <div class="rounded-full bg-black w-14 h-14 flex items-center justify-center text-white" style="border: 2px solid rgba(0,0,0,0.5); background: var(--ruby);">
               <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
@@ -172,7 +172,7 @@ export default page({title: "Treehouse"}, () => (
         <h2>Stay in touch</h2>
         <p>Sign up for our mailing list to receive updates on the project.</p>
       </div>
-      <div>
+      <div class="flex flex-row gap-4 justify-center">
         <input type="text" />
         <button class="primary">Subscribe</button>
       </div>
