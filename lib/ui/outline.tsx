@@ -135,7 +135,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
                 position: "absolute", 
                 marginLeft: "-1rem", 
                 userSelect: "none",
-                marginTop: "0.1rem",
+                marginTop: "0.25rem",
                 display: (state.hover)?"block":"none"
               }}  
               onclick={(e) => workspace.showMenu(e, {node})}
@@ -152,13 +152,13 @@ export const OutlineNode: m.Component<Attrs, State> = {
               height: "1rem", 
               marginRight: "0.5rem", 
               paddingLeft: "1px",
-              marginTop: "0.1rem"
+              marginTop: "0.25rem"
             }} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {(node.childCount() > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>
-          <div style={{flexGrow: "1", display: "flex"}}>
-            {(node.hasComponent(Checkbox)) ? <input type="checkbox" onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />:null}
+          <div style={{flexGrow: "1", display: "flex", alignItems: "start"}}>
+            {(node.hasComponent(Checkbox)) ? <input type="checkbox" style={{marginTop: "0.3rem", marginRight: "0.5rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />:null}
             <NodeEditor workspace={workspace} node={node} onkeydown={checkCommands} />
           </div>
         </div>
@@ -299,10 +299,11 @@ export const NodeEditor: m.Component = {
       resize: "none",
       overflow: "hidden",
       display: "block",
+      lineHeight: "1.45",
       border: "none"
     }
     return (
-      <div style={{width: "100%"}}>
+      <div style={{width: "100%", marginBottom: "0.5rem"}}>
         <textarea style={style} 
           id={`input-${node.panel?.id}-${node.ID}`}
           rows="1"
