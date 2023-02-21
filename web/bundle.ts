@@ -8,7 +8,7 @@ await esbuild.build({
   outfile: "web/static/lib/treehouse.min.js",
   jsxFactory: "m",
   format: "esm",
-  minify: true
+  minify: false
 });
 esbuild.stop();
 console.log("Finished!");
