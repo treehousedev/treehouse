@@ -19,6 +19,9 @@ export class CommandRegistry {
   }
 
   executeCommand<T>(id: string, ...rest: any): Promise<T> {
-    return this.commands[id].action(...rest);
+    return new Promise((resolve) => {
+      const ret = this.commands[id].action(...rest);
+      resolve(ret);
+    });
   }
 }

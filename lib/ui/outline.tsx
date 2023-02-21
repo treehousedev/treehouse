@@ -91,8 +91,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
         }
         // cursor in middle of text
         if (e.target.selectionStart > 0 && e.target.selectionStart < e.target.value.length) {
-          state.buffer = e.target.value.slice(0, e.target.selectionStart);
-          workspace.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart));
+          workspace.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart)).then(() => {
+            node.setName(e.target.value.slice(0, e.target.selectionStart));
+          });
           e.stopPropagation();
           return;
         }
