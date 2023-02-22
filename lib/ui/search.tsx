@@ -73,6 +73,7 @@ export const Search: m.Component = {
             borderRadius: "0.25rem",
             border: (results.length > 0)?"1px solid var(--dark)":"none",
             position: "absolute",
+            zIndex: "100",
             background: (results.length > 0)?"white":null
           }}>
           <input type="text" placeholder="Search" value={state.query} onkeydown={onkeydown} oninput={autocomplete} style={{width: "99%", border: "0", outline: "0", background: "transparent", marginRight: "var(--padding)"}} />
@@ -81,7 +82,7 @@ export const Search: m.Component = {
               marginTop: "0.25rem",
               overflowX: "hidden",
               overflowY: "auto",
-              maxHeight: "400px",
+              maxHeight: "400px"
             }}>
               {results.map((result, idx) => <div onclick={() => open(result)} class={(state.selected===idx)?"selected":""}>{result.getName()}</div>)}
             </div>
