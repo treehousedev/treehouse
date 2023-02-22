@@ -2,9 +2,11 @@
 
 Bring your own backend Tana-style frontend. Actively being developed.
 
+![Screenshot](https://treehouse.sh/photos/screenshot-small.png)
+
 * Outline editor and repurposable workspace shell.
-* Built with Deno toolchain. Zero Node.js utilization.
-* Minimal dependencies, mainly Mithril.js.
+* Built with [Deno](https://deno.land/) toolchain. Zero Node.js utilization.
+* Minimal dependencies, mainly [Mithril.js](https://mithril.js.org/).
 
 #### Prototype Release Status
 
@@ -13,11 +15,11 @@ Bring your own backend Tana-style frontend. Actively being developed.
 * [x] Command palette
 * [x] Multi-view panels
 * [x] Managed calendar pages
-* [x] Markdown pages
 * [x] Full-text search
-* [ ] Mobile support via PWA
+* [x] GitHub repository backend
+* [ ] Markdown pages
 * [ ] Desktop support via Apptron
-* [ ] GitHub repository backend
+
 
 ## Demo
 
