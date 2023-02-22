@@ -39,9 +39,9 @@
 
   color: var(--neutral-900);
 }
-a {
+a.hyperlink {
   font-weight: 700;
-  text-decoration: underline !important;
+  text-decoration: underline;
   color: var(--teal) !important;
 }
 h1, h2, h3 {
@@ -96,8 +96,12 @@ button {
   border-radius: 10px;
   border: 2px solid var(--neutral-900);
 }
+a button {
+  color: var(--neutral-900);
+  
+}
 button.primary {
-  color: white;
+  color: var(--neutral-0);
   background-color: var(--primary-color);
 }
 button.secondary {
