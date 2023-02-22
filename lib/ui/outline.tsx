@@ -245,14 +245,17 @@ export const NodeEditor: m.Component = {
     const textarea = dom.querySelector("textarea");
     const initialHeight = textarea.offsetHeight;
     const span = dom.querySelector("span");
-    const updateHeight = () => {
+    this.updateHeight = () => {
       span.style.width = `${Math.max(textarea.offsetWidth, 100)}px`;
       span.innerHTML = textarea.value.replace("\n", "<br/>");
       textarea.style.height = (span.offsetHeight > 0) ? `${span.offsetHeight}px` : `${initialHeight}px`;
     }
-    textarea.addEventListener("input", () => updateHeight());
+    textarea.addEventListener("input", () => this.updateHeight());
     textarea.addEventListener("blur", () => span.innerHTML = "");
-    setTimeout(() => updateHeight(), 50);
+    setTimeout(() => this.updateHeight(), 50);
+  },
+  onupdate() {
+    this.updateHeight();
   },
   view ({attrs: {workspace, node, onkeydown, disallowEmpty}, state}) {
     const value = (state.editing)?state.buffer:node.getName();
