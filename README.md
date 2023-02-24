@@ -42,7 +42,7 @@ demo, which you can use for development.
 ## Community
 
 * [Devstream](https://www.twitch.tv/progrium) - Majority of development is streamed live on Twitch
-* [Devlog](https://www.youtube.com/c/progrium) - Devlog videos coming soon on YouTube
+* [Devlog](https://github.com/treehousedev/treehouse/discussions/categories/devlog) - Devlog updates about development
 * [Forums](https://github.com/treehousedev/treehouse/discussions) - Basic discussion on GitHub
 
 ## License
