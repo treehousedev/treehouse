@@ -85,7 +85,7 @@ p {
   margin-top: 0.5rem !important;
   /* margin-bottom: 0.5rem; */
 }
-button {
+button, .button {
   border-radius: 10px;
   padding-left: 2rem !important;
   padding-right: 2rem !important;
@@ -100,7 +100,7 @@ a button {
   color: var(--neutral-900);
   
 }
-button.primary {
+button.primary, .button.primary {
   color: var(--neutral-0);
   background-color: var(--primary-color);
 }
@@ -124,7 +124,7 @@ pre.code {
   padding-bottom: 0.75rem;
   margin-top: 1.5rem;
 }
-section.subscribe input {
+section.subscribe input[type="email"] {
   border-radius: 10px;
   padding-left: 1rem !important;
   padding-right: 1rem !important;
