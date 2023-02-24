@@ -163,13 +163,13 @@ export default page({title: "Treehouse"}, () => (
       <div>
         <div class="header">
           <h2>Learn about the project</h2>
-          <p>Watch our devlog series to follow along with the development process.</p>
+          <p>Read our devlog series to follow along with the development process.</p>
         </div>
-        <button class="secondary">View all devlogs</button>
+        <a href="https://progrium.xyz/blog/2023/welcome-to-treehouse/"><button class="secondary">Read devlog</button></a>
       </div>
       
       <div>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/XU-vrmA7j4U" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        
       </div>
     </div>
   </section>
@@ -181,8 +181,11 @@ export default page({title: "Treehouse"}, () => (
         <p>Sign up for our mailing list to receive updates on the project.</p>
       </div>
       <div class="flex flex-row gap-4 justify-center">
-        <input type="text" />
-        <button class="primary">Subscribe</button>
+        <form action="https://treehouse.us14.list-manage.com/subscribe/post?u=b46190b3f7c8e90da1a71cea3&amp;id=b663d815b4&amp;f_id=00efa5e0f0" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <input type="email" value="" name="EMAIL" class="required email" id="mce-EMAIL" required />
+          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_b46190b3f7c8e90da1a71cea3_b663d815b4" tabindex="-1" value="" /></div>
+          <input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" class="ml-4 button primary" />
+        </form>
       </div>
       <p class="text-small">We don't share your email.</p>
     </div>
