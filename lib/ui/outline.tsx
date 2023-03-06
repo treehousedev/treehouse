@@ -53,6 +53,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
         if (e.target.value === "") {
           e.preventDefault();
           e.stopPropagation();
+          if (node.childCount() > 0) {
+            return;
+          }
           workspace.executeCommand("delete", {node, event: e});
           return;
         }
