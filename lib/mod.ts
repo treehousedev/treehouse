@@ -34,6 +34,12 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   window.workspace = workspace;
   await workspace.initialize();
   
+  // pretty specific to github backend right now
+  document.addEventListener("BackendError", () => {
+    workspace.showNotice("lockstolen", () => {
+      location.reload();
+    });
+  });
 
   workspace.commands.registerCommand({
     id: "add-page",

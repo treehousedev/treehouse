@@ -7,7 +7,7 @@ import * as esbuild from "https://deno.land/x/esbuild@v0.17.2/mod.js";
 import { generate, rootdir, exists } from "./mod.ts";
 import site from "./globals.ts";
 
-site.dev = true;
+site.dev = (site.dev === undefined) ? true : site.dev;
 
 const port = 9000;
 const middleware = refresh({

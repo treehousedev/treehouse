@@ -26,9 +26,14 @@ export class GitHubBackend {
     this.nodes = localbackend.nodes;
     this.files = localbackend.files;
 
-    this.writeDebounce = debounce((path, contents) => {
+    this.writeDebounce = debounce(async (path, contents) => {
       console.log("Saving workspace...");
-      this.writeFile(path, contents);
+      try {
+        await this.writeFile(path, contents);
+      } catch (e: Error) {
+        document.dispatchEvent(new CustomEvent("BackendError"));
+      }
+      
     });
   }
 
@@ -119,6 +124,20 @@ export class GitHubBackend {
     
     this.files = this;
     this.nodes = this;
+
+    
+    
+    const sessID = uniqueID();
+    await this.readFile("treehouse.lock");
+    await this.writeFile("treehouse.lock", sessID);
+    const lockCheck = setInterval(async () => {
+      const lockFile = await this.readFile("treehouse.lock");
+      if (lockFile !== sessID) {
+        clearInterval(lockCheck);
+        document.dispatchEvent(new CustomEvent("BackendError"));
+        console.warn("lock stolen!");
+      }
+    }, 5000);
 
     
   }
@@ -225,3 +244,9 @@ function debounce(func, timeout = 3000){
     timer = setTimeout(() => { func.apply(this, args); }, timeout);
   };
 }
+
+function uniqueID() {
+  const dateString = Date.now().toString(36);
+  const randomness = Math.random().toString(36).substring(2);
+  return dateString + randomness;
+};

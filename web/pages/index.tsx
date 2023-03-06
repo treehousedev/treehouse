@@ -1,5 +1,5 @@
 import {m,page} from "../deps.ts";
-export default page({title: "Treehouse"}, () => (
+export default page({title: "Treehouse"}, ({dev}) => (
 <html>
 <head>
   <meta charset="UTF-8" />
@@ -213,6 +213,7 @@ export default page({title: "Treehouse"}, () => (
       </a>
     </div>
   </footer>
+  {(dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
 </body>
 </html>
 ));
