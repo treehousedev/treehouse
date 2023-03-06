@@ -36,14 +36,15 @@ export const OutlineNode: m.Component<Attrs, State> = {
       e.stopPropagation();
     }
     const checkCommands = (e) => {
+      const anyModifiers = e.shiftKey || e.metaKey || e.altKey || e.ctrlKey;
       switch (e.key) {
       case "ArrowUp":
-        if (e.target.selectionStart !== 0) {
+        if (e.target.selectionStart !== 0 && !anyModifiers) {
           e.stopPropagation()
         }
         break;
       case "ArrowDown":
-        if (e.target.selectionStart !== e.target.value.length && e.target.selectionStart !== 0) {
+        if (e.target.selectionStart !== e.target.value.length && e.target.selectionStart !== 0 && !anyModifiers) {
           e.stopPropagation()
         }
         break;

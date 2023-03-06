@@ -9,10 +9,10 @@ export function bindingSymbols(key?: string): string[] {
     "meta": "⌘",
     "tab": "↹",
     "ctrl": "⌃",
-    "uparrow": "↑",
-    "downarrow": "↓",
-    "leftarrow": "←",
-    "rightarrow": "→",
+    "arrowup": "↑",
+    "arrowdown": "↓",
+    "arrowleft": "←",
+    "arrowright": "→",
     "enter": "⏎"
   };
   const keys = key.toLowerCase().split("+");
