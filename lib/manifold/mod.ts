@@ -107,7 +107,13 @@ export class Node {
   }
 
   destroy() {
-    this.module.destroy(this);
+    // TODO: also walk components of nodes
+    const nodes = [];
+    this.walk((n: Node): boolean => {
+      nodes.push(n);
+      return false;
+    });
+    nodes.reverse().forEach(n => this.module.destroy(n));
   }
 
   addComponent(obj: any) {
@@ -160,12 +166,22 @@ export class Node {
     return this.module.find([this.getPath(), path].join("/"));
   }
 
+  walk(cb: (n: Node) => boolean): boolean {
+    if (cb(this)) {
+      return true;
+    }
+    for (const child of this.getChildren()) {
+      if (child.walk(cb)) return true;
+    }
+    return false;
+  }
+
   // getComponentsInChildren
   // getComponentsInParents
   // getAncestors
   // getPath
 
-  // walk
+  
   // duplicate?
 }
 
@@ -289,15 +305,8 @@ export class Module {
   }
 
   walk(cb: (n: Node) => boolean) {
-    const walkChildren = (n: Node, cb: (n: Node) => boolean): boolean => {
-      if (cb(n)) return true;
-      for (const child of n.getChildren()) {
-        if (walkChildren(child, cb)) return true;
-      }
-      return false;
-    }
     for (const root of this.roots()) {
-      if (walkChildren(root, cb)) return;
+      if (root.walk(cb)) return;
     }
   }
 }
