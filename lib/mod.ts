@@ -226,10 +226,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workspace.commands.registerCommand({
     id: "insert-child",
     title: "Insert Child",
-    action: (ctx: Context, name: string = "") => {
+    action: (ctx: Context, name: string = "", siblingIndex?: number) => {
       if (!ctx.node) return;
       const node = workspace.nodes.new(name);
       node.setParent(ctx.node);
+      if (siblingIndex !== undefined) {
+        node.setSiblingIndex(siblingIndex);
+      }
       if (ctx.node.panel) {
         workspace.setExpanded(ctx.node, true);
       }

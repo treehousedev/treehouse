@@ -83,7 +83,11 @@ export const OutlineNode: m.Component<Attrs, State> = {
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
         // cursor at end of text
         if (e.target.selectionStart === e.target.value.length) {
-          workspace.executeCommand("insert", {node});
+          if (node.childCount() > 0 && workspace.getExpanded(node)) {
+            workspace.executeCommand("insert-child", {node}, "", 0);
+          } else {
+            workspace.executeCommand("insert", {node});
+          }
           e.stopPropagation();
           return;
         }
