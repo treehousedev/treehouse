@@ -81,7 +81,7 @@ export const App: m.Component = {
 const NavNode: m.Component = {
   view ({attrs: {node, workspace, expanded, level}, state}) {
     state.expanded = (state.expanded === undefined) ? expanded : state.expanded;
-    const expandable = (node.childCount() > 0 && level < 2);
+    const expandable = (node.childCount() > 0 && level < 3);
     const toggle = (e) => {
       if (!expandable) return;
       if (state.expanded) {

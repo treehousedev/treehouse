@@ -74,9 +74,11 @@ export class Workspace {
     const nodes = await this.backend.nodes.loadAll();
     const root = this.nodes.find("@root");
     if (nodes.length === 0) {
-      const ws = this.nodes.new("Workspace");
+      const ws = this.nodes.new("@workspace");
+      ws.setName("Workspace");
       ws.setParent(root);
-      const cal = this.nodes.new("Calendar");
+      const cal = this.nodes.new("@calendar");
+      cal.setName("Calendar");
       cal.setParent(ws);
       const home = this.nodes.new("Home");
       home.setParent(ws);
@@ -92,7 +94,27 @@ export class Workspace {
     }));
     Object.values(this.nodes.nodes).forEach(n => this.backend.index.index(n));  
 
-    this.openNewPanel(this.nodes.find("@root/Workspace"));
+    let ws = this.nodes.find("@workspace");
+    if (!ws) {
+      ws = this.nodes.find("@root/Workspace");
+      // temporary migration. remove eventually. soon.
+      if (ws && ws.raw.ID !== "@workspace") {
+        root.raw.Linked.Children = ["@workspace"];
+        ws.getChildren().forEach(n => {
+          n.raw.Parent = "@workspace";
+        });
+        const raw = ws.raw;
+        const oldID = raw.ID;
+        raw.ID = "@workspace";
+        this.nodes.nodes["@workspace"] = raw;
+        delete this.nodes.nodes[oldID];
+        ws = this.nodes.find("@workspace");
+      }
+    }
+    if (!ws) {
+      ws = root;
+    }
+    this.openNewPanel(ws);
 
     m.redraw();
 
@@ -138,7 +160,7 @@ export class Workspace {
     const dayNode = today.toUTCString().split(today.getFullYear())[0];
     const weekNode = `Week ${String(getWeekOfYear(today)).padStart(2, "0")}`;
     const yearNode = `${today.getFullYear()}`;
-    const todayPath = ["Workspace", "Calendar", yearNode, weekNode, dayNode].join("/");
+    const todayPath = ["@workspace", "Calendar", yearNode, weekNode, dayNode].join("/");
     let todayNode = this.nodes.find(todayPath);
     if (!todayNode) {
       todayNode = this.nodes.new(todayPath);

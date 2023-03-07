@@ -270,6 +270,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Delete node",
     action: (ctx: Context) => {
       if (!ctx.node) return;
+      if (ctx.node.ID.startsWith("@")) return;
       const prev = ctx.node.getPrevSibling();
       ctx.node.destroy();
       m.redraw.sync();
