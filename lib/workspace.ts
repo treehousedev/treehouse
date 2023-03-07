@@ -96,7 +96,9 @@ export class Workspace {
 
     let ws = this.nodes.find("@workspace");
     if (!ws) {
+      console.warn("@workspace not found, attempting to migrate @root/Workspace");
       ws = this.nodes.find("@root/Workspace");
+      console.log("found @root/Workspace, migrating...");
       // temporary migration. remove eventually. soon.
       if (ws && ws.raw.ID !== "@workspace") {
         root.raw.Linked.Children = ["@workspace"];
@@ -110,8 +112,10 @@ export class Workspace {
         delete this.nodes.nodes[oldID];
         ws = this.nodes.find("@workspace");
       }
+      console.log("migrated");
     }
     if (!ws) {
+      console.warn("no suitable workspace found, using @root");
       ws = root;
     }
     this.openNewPanel(ws);
