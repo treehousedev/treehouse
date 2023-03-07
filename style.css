@@ -28,7 +28,7 @@
   --neutral-300: #D2D5D5;
   --neutral-200: #E8EBEB;
   --neutral-100: #F6F7F7;
-  --neutral-0: #F9FAFB;
+  --neutral-0: #fff;
 
   --heading-weight: 800;
   --heading-line-height: 1.4;
@@ -38,6 +38,9 @@
 
 
   color: var(--neutral-900);
+}
+body {
+  min-width: 320px;
 }
 a.hyperlink {
   font-weight: 700;
@@ -65,20 +68,10 @@ section > div, header > div, footer > div {
   max-width: 94.5rem;
   padding-left: 4rem;
   padding-right: 4rem;
-
 }
 section > div {
   padding-top: 8rem;
   padding-bottom: 8rem;
-}
-header > div {
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-}
-footer > div {
-  margin-top: 4rem;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
 }
 p {
   font-size: 1.125rem;
@@ -91,14 +84,18 @@ button, .button {
   padding-right: 2rem !important;
   height: 3rem;
   font-weight: 700 !important;
+  white-space: nowrap;
 }
 .image {
   border-radius: 10px;
   border: 2px solid var(--neutral-900);
 }
+img {
+  max-width: 100%;
+  height: auto;
+}
 a button {
   color: var(--neutral-900);
-  
 }
 button.primary, .button.primary {
   color: var(--neutral-0);
@@ -129,10 +126,36 @@ section.subscribe input[type="email"] {
   padding-left: 1rem !important;
   padding-right: 1rem !important;
   height: 3rem;
-  width: 32rem;
+  width: 100%;
+  max-width: 32rem;
   border: 2px solid var(--neutral-900);
   background-color: var(--neutral-0);
 }
 .text-small {
   font-size: 0.875rem;
+}
+
+@media screen and (max-width: 640px)
+{
+  body {
+    --h1-size: 2rem;
+    --h2-size: 1.5rem;
+    --h3-size: 1.25rem;
+  }
+
+  section > div, header > div, footer > div {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  section > div {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  button, .button {
+    border-radius: 8px;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    height: 2.5rem;
+  }
 }
