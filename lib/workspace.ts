@@ -94,6 +94,7 @@ export class Workspace {
     }));
     Object.values(this.nodes.nodes).forEach(n => this.backend.index.index(n));  
 
+    console.log("about to find @workspace");
     let ws = this.nodes.find("@workspace");
     if (!ws) {
       console.warn("@workspace not found, attempting to migrate @root/Workspace");
