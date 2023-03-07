@@ -288,6 +288,10 @@ export class Module {
     const byId = this.nodes[path];
     if (byId) return new Node(this, byId.ID);
     const parts = path.split("/");
+    if (parts.length === 1 && parts[0].startsWith("@")) {
+      // did not find @id by ID so return null
+      return null;
+    }
     let anchorName = "@root";
     if (parts[0].startsWith("@")) {
       anchorName = parts.shift();
