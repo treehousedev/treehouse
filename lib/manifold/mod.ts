@@ -216,10 +216,16 @@ export class Module {
 
   new(name: string, value?: any): Node {
     let parent: Node|null = null;
-    if (name.includes("/") && !name.startsWith("@")) {
+    if (name.includes("/")) {
+      let start: number = 0;
       const parts = name.split("/");
-      parent = this.getRoot();
-      for (let i = 0; i < parts.length-1; i++) {
+      if (name.startsWith("@")) {
+        parent = this.find(parts[0]);
+        start = 1;
+      } else {
+        parent = this.getRoot();
+      }
+      for (let i = start; i < parts.length-1; i++) {
         if (parent === null) {
           throw "unable to get root";
         }
@@ -284,15 +290,12 @@ export class Module {
     const parts = path.split("/");
     let anchorName = "@root";
     if (parts[0].startsWith("@")) {
-      anchorName = parts.shift() || "";
-      if (parts.length === 0) {
-        return this.getRoot(anchorName);
-      }
+      anchorName = parts.shift();
     }
     const findChild = (n: Node, name: string): Node|undefined => {
       return n.getChildren().find(child => child.getName() === name);
     }
-    let cur = this.getRoot(anchorName);
+    let cur = this.find(anchorName);
     if (!cur) {
       return null;
     }
