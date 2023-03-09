@@ -2,6 +2,15 @@ import {m,page} from "../deps.ts";
 export default page({title: "Treehouse"}, ({dev}) => (
 <html>
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-SGR1T7X7KS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-SGR1T7X7KS');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" href="/icon.png" type="image/x-icon" />
