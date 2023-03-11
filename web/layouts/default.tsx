@@ -6,6 +6,7 @@ export default {view: ({attrs, children}) => (
       <link href="/style.css" rel="stylesheet"></link>
       <link rel="icon" href="/icon.png" type="image/x-icon" />
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speed-highlight/core/dist/themes/default.css"></link>
+      <script src="/analytics.js"></script>
       <title>{attrs.title?`${attrs.title} - ${attrs.site}`:attrs.site}</title>
     </head>
     <body>
