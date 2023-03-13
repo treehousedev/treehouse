@@ -31,6 +31,7 @@ export class GitHubBackend {
       try {
         await this.writeFile(path, contents);
       } catch (e: Error) {
+        console.error(e);
         document.dispatchEvent(new CustomEvent("BackendError"));
       }
       
