@@ -234,14 +234,14 @@ body.docs > section nav h5 {
 body.docs > section nav a.active {
   background-color: #E3FBE5;
 }
-body.docs > section nav a {
+body.docs > section nav li a {
   font-weight: var(--weight-regular);
   padding-left: var(--3);
   border-radius: 4px;
   display: block;
 }
-body.docs > section nav a,
-body.docs > section nav h5 {
+body.docs > section nav li a,
+body.docs > section nav h5 a {
   font-size: 1.125rem;
   line-height: var(--10);
 }
