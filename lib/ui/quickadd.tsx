@@ -1,7 +1,7 @@
 import { OutlineEditor } from "./outline.tsx";
 
 export const QuickAdd = {
-  view({attrs: {workspace}}) {
+  view({attrs: {workbench}}) {
     return (
       <div style={{
         position: "absolute", 
@@ -11,7 +11,7 @@ export const QuickAdd = {
         bottom: "0",
       }}>
         
-        <div onclick={() => workspace.closeQuickAdd()} style={{
+        <div onclick={() => workbench.closeQuickAdd()} style={{
           position: "absolute",
           background: "black",
           opacity: "50%",
@@ -32,12 +32,12 @@ export const QuickAdd = {
         }}>
           <h3 style={{margin: "0"}}>Quick Add</h3>
           <hr />
-          <OutlineEditor workspace={workspace} node={workspace.quickadd} />
+          <OutlineEditor workbench={workbench} node={workbench.quickadd} />
           <hr />
           <div style={{textAlign: "right"}}>
             <button style={{padding: "0.5rem", margin: "0.25rem"}} onclick={() => {
-              workspace.commitQuickAdd();
-              workspace.closeQuickAdd();
+              workbench.commitQuickAdd();
+              workbench.closeQuickAdd();
             }}>Add to Today</button>
             
           </div>

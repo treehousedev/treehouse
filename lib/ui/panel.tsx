@@ -1,21 +1,20 @@
 import {NodeEditor, OutlineEditor} from "./outline.tsx";
-import {panelNode} from "../workspace.ts";
 import {Page} from "../mod.ts";
 
 export const Panel = {
   view({attrs}) {
     const panel = attrs.panel;
-    const workspace = attrs.workspace;
+    const workbench = attrs.workbench;
     const node = panel.history[panel.history.length - 1];
 
     const close = (e) => {
-      workspace.executeCommand("close-panel", {}, panel);
+      workbench.executeCommand("close-panel", {}, panel);
     }
     const goBack = (e) => {
       panel.history.pop();
     }
     const maximize = (e) => {
-      workspace.panels = [[panel]];
+      workbench.panels = [[panel]];
     }
     const editMarkdown = (e) => {
       node.getComponent(Page).markdown = e.target.value;
@@ -37,9 +36,9 @@ export const Panel = {
           </div>
         :null}
         <div style={{flexGrow: "1"}}>
-          {(node.getParent() && node.getParent().ID !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workspace.open(node.getParent())}>{node.getParent().getName()}</span> : null}
+          {(node.getParent() && node.getParent().ID !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workbench.open(node.getParent())}>{node.getParent().getName()}</span> : null}
         </div>
-        {(workspace.panels.flat().length>1)?
+        {(workbench.panels.flat().length>1)?
           <div style={{display: "flex", gap: "0.5rem", zIndex: "0"}}>
             <svg onclick={maximize} style={{cursor: "pointer", transform: "scale(0.9)"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
               <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
@@ -51,8 +50,8 @@ export const Panel = {
         :null}
       </div>
       <div style={{background: "white", borderRadius: "0.5rem", display: "flex", flexDirection: "column"}}>
-        <div oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>
-          <NodeEditor workspace={workspace} node={node} disallowEmpty={true} />
+        <div oncontextmenu={(e) => workbench.showMenu(e, {node})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>
+          <NodeEditor workbench={workbench} node={node} disallowEmpty={true} />
         </div>
         {(node.hasComponent(Page)) ? 
           <textarea oninput={editMarkdown} 
@@ -68,7 +67,7 @@ export const Panel = {
               {node.getComponent(Page).markdown}
           </textarea>
         :null}
-        <OutlineEditor workspace={workspace} node={node} />
+        <OutlineEditor workbench={workbench} node={node} />
       </div>
     </div>
   }

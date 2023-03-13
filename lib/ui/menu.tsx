@@ -1,7 +1,7 @@
 import { bindingSymbols } from "../action/keybinds.ts";
 
 export const Menu: m.Component = {
-  view({attrs: {workspace, x, y, items, align, commands, ctx}}) {
+  view({attrs: {workbench, x, y, items, align, commands, ctx}}) {
     const onclick = (item, cmd) => (e) => {
       e.stopPropagation();
       if (item.disabled) {
@@ -11,9 +11,9 @@ export const Menu: m.Component = {
         item.onclick();
       }
       if (cmd) {
-        workspace.executeCommand(cmd.id, ctx);
+        workbench.executeCommand(cmd.id, ctx);
       }
-      workspace.hideMenu();
+      workbench.hideMenu();
     };
     let posStyle = {left: `${x}px`};
     if (align === "right") {
@@ -40,7 +40,7 @@ export const Menu: m.Component = {
     let cmd = undefined;
     if (i.command) {
       cmd = commands.find(c => c.id === i.command);
-      binding = workspace.keybindings.getBinding(cmd.id);
+      binding = workbench.keybindings.getBinding(cmd.id);
       title = cmd.title;
     }
     if (i.title) {

@@ -35,7 +35,7 @@ export interface Node extends ManifoldNode {
   panel: Panel;
 }
 
-export class Workspace {
+export class Workbench {
   commands: CommandRegistry;
   keybindings: KeyBindings;
   menus: MenuRegistry;

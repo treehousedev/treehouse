@@ -1,11 +1,11 @@
 
-import { Workspace, Node, panelNode } from "../workspace.ts";
+import { Workbench, Node, panelNode } from "../workbench.ts";
 
 import { Checkbox } from "../mod.ts";
 
 interface Attrs {
   node: Node;
-  workspace: Workspace;
+  workbench: Workbench;
 }
 
 interface State {
@@ -17,8 +17,8 @@ interface State {
 
 export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
-    const {node, workspace} = attrs;
-    const expanded = workspace.getExpanded(node); 
+    const {node, workbench} = attrs;
+    const expanded = workbench.getExpanded(node); 
     const hover = (e) => {
       state.hover = true;
       e.stopPropagation();
@@ -29,9 +29,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
     const toggle = (e) => {
       if (expanded) {
-        workspace.executeCommand("collapse", {node});
+        workbench.executeCommand("collapse", {node});
       } else {
-        workspace.executeCommand("expand", {node});
+        workbench.executeCommand("expand", {node});
       }
       e.stopPropagation();
     }
@@ -56,7 +56,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           if (node.childCount() > 0) {
             return;
           }
-          workspace.executeCommand("delete", {node, event: e});
+          workbench.executeCommand("delete", {node, event: e});
           return;
         }
         // cursor at beginning of non-empty text
@@ -65,7 +65,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           e.stopPropagation();
           
           // TODO: make this work as a command?
-          const prev = workspace.findAbove(node);
+          const prev = workbench.findAbove(node);
           if (!prev) {
             return;
           }
@@ -73,7 +73,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           prev.setName(oldName+e.target.value);
           node.destroy();
           m.redraw.sync();
-          workspace.focus(panelNode(prev, node.panel), oldName.length);
+          workbench.focus(panelNode(prev, node.panel), oldName.length);
           
           return;
         }
@@ -83,23 +83,23 @@ export const OutlineNode: m.Component<Attrs, State> = {
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
         // cursor at end of text
         if (e.target.selectionStart === e.target.value.length) {
-          if (node.childCount() > 0 && workspace.getExpanded(node)) {
-            workspace.executeCommand("insert-child", {node}, "", 0);
+          if (node.childCount() > 0 && workbench.getExpanded(node)) {
+            workbench.executeCommand("insert-child", {node}, "", 0);
           } else {
-            workspace.executeCommand("insert", {node});
+            workbench.executeCommand("insert", {node});
           }
           e.stopPropagation();
           return;
         }
         // cursor at beginning of text
         if (e.target.selectionStart === 0) {
-          workspace.executeCommand("insert-before", {node});
+          workbench.executeCommand("insert-before", {node});
           e.stopPropagation();
           return;
         }
         // cursor in middle of text
         if (e.target.selectionStart > 0 && e.target.selectionStart < e.target.value.length) {
-          workspace.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart)).then(() => {
+          workbench.executeCommand("insert", {node}, e.target.value.slice(e.target.selectionStart)).then(() => {
             node.setName(e.target.value.slice(0, e.target.selectionStart));
           });
           e.stopPropagation();
@@ -117,7 +117,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       e.preventDefault();
       e.stopPropagation();
       
-      workspace.executeCommand("zoom", {node});
+      workbench.executeCommand("zoom", {node});
       
       // clear text selection that happens after from double click
       if (document.selection && document.selection.empty) {
@@ -147,14 +147,14 @@ export const OutlineNode: m.Component<Attrs, State> = {
                 marginTop: "0.25rem",
                 display: (state.hover)?"block":"none"
               }}  
-              onclick={(e) => workspace.showMenu(e, {node})}
-              oncontextmenu={(e) => workspace.showMenu(e, {node})} 
+              onclick={(e) => workbench.showMenu(e, {node})}
+              oncontextmenu={(e) => workbench.showMenu(e, {node})} 
               data-menu="node"
               fill="lightgray" 
               viewBox="0 0 16 16">
             <path style={{transform: "translateY(-1px)"}} fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
           </svg>
-          <svg onclick={toggle} ondblclick={zoom} oncontextmenu={(e) => workspace.showMenu(e, {node})} data-menu="node" style={{
+          <svg onclick={toggle} ondblclick={zoom} oncontextmenu={(e) => workbench.showMenu(e, {node})} data-menu="node" style={{
               cursor: "pointer", 
               flexShrink: "0", 
               width: "1rem", 
@@ -168,7 +168,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           </svg>
           <div style={{flexGrow: "1", display: "flex", alignItems: "start"}}>
             {(node.hasComponent(Checkbox)) ? <input type="checkbox" style={{marginTop: "0.3rem", marginRight: "0.5rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />:null}
-            <NodeEditor workspace={workspace} node={node} onkeydown={checkCommands} />
+            <NodeEditor workbench={workbench} node={node} onkeydown={checkCommands} />
           </div>
         </div>
         {(expanded === true) &&
@@ -182,8 +182,8 @@ export const OutlineNode: m.Component<Attrs, State> = {
             </div>
             <div style={{flexGrow: "1"}}>
               {(node.childCount() > 0)
-                ?node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)
-                :<NewNode workspace={workspace} node={node} />
+                ?node.getChildren().map(n => <OutlineNode key={n.ID} workbench={workbench} node={panelNode(n, node.panel)} />)
+                :<NewNode workbench={workbench} node={node} />
               }
             </div>
           </div>
@@ -194,9 +194,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
 };
 
 export const NewNode = {
-  view({attrs: {workspace, node}}) {
+  view({attrs: {workbench, node}}) {
     const startNew = (e) => {
-      workspace.executeCommand("insert-child", {node}, e.target.value);
+      workbench.executeCommand("insert-child", {node}, e.target.value);
     }
     const tabNew = (e) => {
       if (e.key === "Tab") {
@@ -204,7 +204,7 @@ export const NewNode = {
         e.preventDefault();
         if (node.childCount() > 0) {
           const lastchild = node.getChildren()[node.childCount()-1];
-          workspace.executeCommand("insert-child", {node: panelNode(lastchild, node.panel)});
+          workbench.executeCommand("insert-child", {node: panelNode(lastchild, node.panel)});
         }
       }
     }
@@ -238,11 +238,11 @@ export const NewNode = {
 }
 
 export const OutlineEditor: m.Component<Attrs> = {
-  view ({attrs: {workspace, node}, state}) {
+  view ({attrs: {workbench, node}, state}) {
     return (
       <div style={{padding: "var(--padding)"}}>
-        {node.getChildren().map(n => <OutlineNode key={n.ID} workspace={workspace} node={panelNode(n, node.panel)} />)}
-        <NewNode workspace={workspace} node={node} />
+        {node.getChildren().map(n => <OutlineNode key={n.ID} workbench={workbench} node={panelNode(n, node.panel)} />)}
+        <NewNode workbench={workbench} node={node} />
       </div>
     )
   }
@@ -265,7 +265,7 @@ export const NodeEditor: m.Component = {
   onupdate() {
     this.updateHeight();
   },
-  view ({attrs: {workspace, node, onkeydown, disallowEmpty}, state}) {
+  view ({attrs: {workbench, node, onkeydown, disallowEmpty}, state}) {
     const value = (state.editing)?state.buffer:node.getName();
     
     const defaultKeydown = (e) => {
@@ -276,7 +276,7 @@ export const NodeEditor: m.Component = {
     }
     const startEdit = (e) => {
       state.initialValue = node.getName();
-      workspace.context.node = node;
+      workbench.context.node = node;
       state.editing = true;
       state.buffer = node.getName();
     }
@@ -295,7 +295,7 @@ export const NodeEditor: m.Component = {
           }
         }
         state.buffer = undefined;
-        workspace.context.node = null;
+        workbench.context.node = null;
       }
     }
     const edit = (e) => {

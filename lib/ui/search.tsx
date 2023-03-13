@@ -7,7 +7,7 @@ export const Search: m.Component = {
     }
   },
 
-  view({attrs: {workspace}, state}) {
+  view({attrs: {workbench}, state}) {
     
     state.query = (state.query === undefined) ? "" : state.query;
     state.results = (state.results === undefined) ? [] : state.results;
@@ -15,11 +15,11 @@ export const Search: m.Component = {
     const clear = () => {
       state.query = "";
       state.results = [];
-      workspace.curtain = null;
+      workbench.curtain = null;
     }
 
     const open = (node) => {
-      workspace.open(node);
+      workbench.open(node);
       clear();
     }
     
@@ -56,8 +56,8 @@ export const Search: m.Component = {
       state.selected = 0;
 
       if (state.query) {
-        state.results = workspace.backend.index.search(state.query).map(id => {
-          let node = workspace.nodes.find(id);
+        state.results = workbench.backend.index.search(state.query).map(id => {
+          let node = workbench.nodes.find(id);
           if (!node) {
             return undefined;
           }
@@ -74,12 +74,12 @@ export const Search: m.Component = {
       }
 
       if (state.query && state.results.length > 0) {
-        workspace.curtain = {
+        workbench.curtain = {
           visible: false,
           onclick: () => clear()
         };
       } else {
-        workspace.curtain = null;
+        workbench.curtain = null;
       }
       
     }

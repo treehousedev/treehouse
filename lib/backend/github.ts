@@ -28,9 +28,9 @@ export class GitHubBackend {
     this.files = localbackend.files;
 
     this.writeDebounce = debounce(async (path, contents) => {
-      console.log("Saving workspace...");
       try {
         await this.writeFile(path, contents);
+        console.log("Saved workspace.");
       } catch (e: Error) {
         console.error(e);
         document.dispatchEvent(new CustomEvent("BackendError"));

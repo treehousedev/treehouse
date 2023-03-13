@@ -4,7 +4,7 @@ Bring your own backend Tana-style frontend. Actively being developed.
 
 ![Screenshot](https://treehouse.sh/photos/screenshot-small.png)
 
-* Outline editor and repurposable workspace shell.
+* Outline editor and repurposable workbench shell.
 * Built with [Deno](https://deno.land/) toolchain. Zero Node.js utilization.
 * Minimal dependencies, mainly [Mithril.js](https://mithril.js.org/).
 
