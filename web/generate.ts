@@ -25,7 +25,7 @@ for await(const e of walk(pagedir, {
       .replace(extname(e.path), "");
     const out = await generate(pathname);
     if (out) {
-      const target = `${outpath}${pathname}${pathname.endsWith("index")?"":"index"}.html`;
+      const target = `${outpath}${pathname}${pathname.endsWith("index")?"":"/index"}.html`;
       mkdirAll(dirname(target));
       await Deno.writeTextFile(target, out);
       console.log(target);
