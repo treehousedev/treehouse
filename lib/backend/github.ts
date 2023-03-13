@@ -1,6 +1,7 @@
 import {RawNode} from "../manifold/mod.ts";
 import { Authenticator, SearchIndex, NodeStore, FileStore } from "./mod.ts";
 import { BrowserBackend } from "./browser.ts";
+import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.7.5/base64.mjs';
 
 export class GitHubBackend {
   auth: Authenticator;
@@ -196,7 +197,7 @@ export class GitHubBackend {
         random: Math.random().toString(36).substring(2)
       });
       this.shas[path] = resp.data.sha;
-      return atob(resp.data.content);
+      return decode(resp.data.content);
     } catch (e: Error) {
       if (e.name !== "HttpError") {
         console.error(e);
@@ -211,7 +212,7 @@ export class GitHubBackend {
       repo: this.repo, 
       path: path, 
       message: "autosave", 
-      content: btoa(contents), 
+      content: encode(contents), 
       sha: this.shas[path]
     });
     this.shas[path] = resp.data.content.sha;
