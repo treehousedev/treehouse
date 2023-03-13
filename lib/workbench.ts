@@ -1,7 +1,7 @@
 import { Backend } from "./backend/mod.ts";
 import { KeyBindings } from "./action/keybinds.ts";
 import { CommandRegistry } from "./action/commands.ts";
-import { Module, Node as ManifoldNode } from "./manifold/mod.ts";
+import { Module, Node } from "./manifold/mod.ts";
 import { MenuRegistry } from "./action/menus.ts";
 
 
@@ -9,31 +9,51 @@ export interface Context {
   node: Node|null;
   nodes?: Node[];
   event?: Event;
+  panel: Panel;
 }
 
 export class Panel {
   id: string;
   history: Node[];
 
-  constructor(node: ManifoldNode) {
-    node.panel = this;
+  constructor(head: Node) {
     this.id = Math.random().toString(36).substring(2);
-    this.history = [node];
+    this.history = [head];
   }
 
-  get current(): Node {
+  open(node: Node) {
+    this.history.push(node);
+  }
+
+  back() {
+    this.history.pop();
+  }
+
+  get currentNode(): Node {
     return this.history[this.history.length-1];
   }
+
+  get headNode(): Node {
+    return this.history[0];
+  }
 }
 
-export function panelNode(node: ManifoldNode, panel: Panel): Node {
-  node.panel = panel;
-  return node;
-}
 
-export interface Node extends ManifoldNode {
-  panel: Panel;
-}
+// class Workspace {
+//   nodes: Module;
+
+//   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
+
+//   constructor() {
+
+//   }
+
+//   save() {
+
+//   }
+
+
+// }
 
 export class Workbench {
   commands: CommandRegistry;
@@ -161,6 +181,7 @@ export class Workbench {
     node.getChildren().forEach(n => n.destroy());
   }
 
+  // TODO: goto workspace
   todayNode(): ManfioldNode {
     const today = new Date();
     const dayNode = today.toUTCString().split(today.getFullYear())[0];
@@ -178,21 +199,24 @@ export class Workbench {
     this.open(this.todayNode());
   }
 
-  open(n: ManifoldNode) {
+  open(n: Node) {
     if (!this.expanded[n.ID]) {
       this.expanded[n.ID] = {};
     }
     localStorage.setItem("lastopen", n.ID);
-    this.panels[0][0] = new Panel(n);
+    const p = new Panel(n);
+    this.panels[0][0] = p
+    this.context.panel = p;
   }
 
-  openNewPanel(n: ManifoldNode) {
+  openNewPanel(n: Node) {
     if (!this.expanded[n.ID]) {
       this.expanded[n.ID] = {};
     }
     localStorage.setItem("lastopen", n.ID);
     const p = new Panel(n);
     this.panels[0].push(p);
+    this.context.panel = p;
   }
 
   closePanel(panel: Panel) {
@@ -201,16 +225,29 @@ export class Workbench {
     });
   }
 
-  focus(n: Node, pos: number = 0) {
+  defocus() {
+    this.context.node = null;
+  }
+
+  focus(n: Node, panel?: Panel, pos?: number = 0) {
     this.context.node = n;
-    if (n) {
-      document.getElementById(`input-${n.panel?.id}-${n.ID}`)?.focus();
-      document.getElementById(`input-${n.panel?.id}-${n.ID}`)?.setSelectionRange(pos,pos);
+    if (panel) {
+      this.context.panel = panel;
+    }
+    const input = this.getInput(n, panel);
+    if (input) {
+      input.focus();
+      if (pos !== undefined) {
+        input.setSelectionRange(pos,pos);
+      }
     }
   }
 
-  getInput(n: Node): HTMLElement {
-    return document.getElementById(`input-${n.panel?.id}-${n.ID}`);
+  getInput(n: Node, panel?: Panel): HTMLElement {
+    if (!panel) {
+      panel = this.context.panel;
+    }
+    return document.getElementById(`input-${panel.id}-${n.ID}`);
   }
 
   executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {
@@ -279,23 +316,21 @@ export class Workbench {
     m.redraw();
   }
 
-  getExpanded(n: Node): boolean {
-    let root = n.ID;
-    if (n.panel) {
-      root = n.panel.history[0].ID
+  // TODO: goto workspace
+  getExpanded(head: Node, n: Node): boolean {
+    if (!this.expanded[head.ID]) {
+      this.expanded[head.ID] = {};
     }
-    if (!this.expanded[root]) {
-      this.expanded[root] = {};
-    }
-    let expanded = this.expanded[root][n.ID];
+    let expanded = this.expanded[head.ID][n.ID];
     if (expanded === undefined) {
       expanded = false;
     }
     return expanded;
   }
 
-  setExpanded(n: Node, b: boolean) {
-    this.expanded[n.panel.history[0].ID][n.ID] = b;
+  // TODO: goto workspace
+  setExpanded(head: Node, n: Node, b: boolean) {
+    this.expanded[head.ID][n.ID] = b;
     localStorage.setItem(this.expandedStorageKey, JSON.stringify(this.expanded));
   }
 
@@ -307,39 +342,39 @@ export class Workbench {
     }
   }
 
-  findAbove(n: Node): Node|null {
-    if (n.ID === n.panel.current.ID) {
+  // TODO: goto workspace
+  findAbove(head: Node, n: Node): Node|null {
+    if (n.ID === head.ID) {
       return null;
     }
-    const panel = n.panel;
     let above = n.getPrevSibling();
     if (!above) {
-      return panelNode(n.getParent(), panel);
+      return n.getParent();
     }
     const lastChildIfExpanded = (n: Node): Node => {
-      const expanded = this.getExpanded(panelNode(n, panel));
+      const expanded = this.getExpanded(head, n);
       if (!expanded || n.childCount() === 0) {
         return n;
       }
       const lastChild = n.getChildren()[n.childCount() - 1];
       return lastChildIfExpanded(lastChild);
     }
-    return panelNode(lastChildIfExpanded(above), panel);
+    return lastChildIfExpanded(above);
   }
 
-  findBelow(n: Node): Node|null {
+  // TODO: goto workspace
+  findBelow(head: Node, n: Node): Node|null {
     // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
-    const panel = n.panel;
-    if (this.getExpanded(n) && n.childCount() > 0) {
-      return panelNode(n.getChildren()[0], panel);
+    if (this.getExpanded(head, n) && n.childCount() > 0) {
+      return n.getChildren()[0];
     }
     const nextSiblingOrParentNextSibling = (n: Node): Node|null => {
       const below = n.getNextSibling();
       if (below) {
-        return panelNode(below, panel);
+        return below;
       }
       const parent = n.getParent();
-      if (!parent || parent.ID === panel.current.ID) {
+      if (!parent || parent.ID === head.ID) {
         return null;
       }
       return nextSiblingOrParentNextSibling(parent);

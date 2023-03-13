@@ -5,13 +5,13 @@ export const Panel = {
   view({attrs}) {
     const panel = attrs.panel;
     const workbench = attrs.workbench;
-    const node = panel.history[panel.history.length - 1];
+    const node = panel.currentNode;
 
     const close = (e) => {
       workbench.executeCommand("close-panel", {}, panel);
     }
     const goBack = (e) => {
-      panel.history.pop();
+      panel.back();
     }
     const maximize = (e) => {
       workbench.panels = [[panel]];
@@ -50,8 +50,8 @@ export const Panel = {
         :null}
       </div>
       <div style={{background: "white", borderRadius: "0.5rem", display: "flex", flexDirection: "column"}}>
-        <div oncontextmenu={(e) => workbench.showMenu(e, {node})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>
-          <NodeEditor workbench={workbench} node={node} disallowEmpty={true} />
+        <div oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>
+          <NodeEditor workbench={workbench} panel={panel} node={node} disallowEmpty={true} />
         </div>
         {(node.hasComponent(Page)) ? 
           <textarea oninput={editMarkdown} 
@@ -67,7 +67,7 @@ export const Panel = {
               {node.getComponent(Page).markdown}
           </textarea>
         :null}
-        <OutlineEditor workbench={workbench} node={node} />
+        <OutlineEditor workbench={workbench} panel={panel} node={node} />
       </div>
     </div>
   }
