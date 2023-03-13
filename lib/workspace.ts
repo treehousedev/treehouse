@@ -50,6 +50,8 @@ export class Workspace {
   notice: any;
   palette: any;
   quickadd: any;
+  curtain: any;
+
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
   constructor(backend: Backend) {
@@ -239,21 +241,31 @@ export class Workspace {
       commands: cmds,
       align: align
     };
+    this.curtain = {
+      visible: false,
+      onclick: () => this.hideMenu()
+    }
     m.redraw();
   }
 
   hideMenu() {
     this.menu = null;
+    this.curtain = null;
     m.redraw();
   }
 
   showPalette(x: number, y: number, ctx: Context) {
     this.palette = {x, y, ctx: ctx};
+    this.curtain = {
+      visible: false,
+      onclick: () => this.hidePalette()
+    }
     m.redraw();
   }
 
   hidePalette() {
     this.palette = null;
+    this.curtain = null;
     m.redraw();
   }
 

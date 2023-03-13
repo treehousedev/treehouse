@@ -40,9 +40,6 @@ export const CommandPalette: m.Component = {
         }
         return false;
       }
-      if (e.key === "Escape") {
-        workspace.hidePalette();
-      }
     }
     const autocomplete = (e) => {
       state.filter = e.target.value;
@@ -59,7 +56,8 @@ export const CommandPalette: m.Component = {
         padding: "0.5rem",
         background: "white",
         fontSize: "14px",
-        minWidth: "400px"
+        minWidth: "400px",
+        zIndex: "20"
       }}>
         <div><input style={{width: "98%", outline: "0", border: "0"}} type="text" onkeydown={onkeydown} oninput={autocomplete} placeholder="Enter command..." /></div>
         <div class="commands" style={{

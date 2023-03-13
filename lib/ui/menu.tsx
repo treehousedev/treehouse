@@ -31,7 +31,8 @@ export const Menu: m.Component = {
   background: "white",
   filter: "drop-shadow(2px 2px 4px #5555)",
   fontSize: "14px",
-  minWidth: "200px"
+  minWidth: "200px",
+  zIndex: "20"
 })}>
   {items.filter(i => !i.when || i.when()).map(i => {
     let title = "";

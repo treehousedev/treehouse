@@ -68,7 +68,16 @@ export const App: m.Component = {
             ))}
           </div>
         </div>
-       
+        
+        {workspace.curtain && 
+          <div onclick={workspace.curtain.onclick} style={{
+            zIndex: "10",
+            position: "absolute",
+            background: "black",
+            opacity: (workspace.curtain.visible)?"50%":"0%",
+            width: "100%",
+            height: "100%"
+          }}></div>}
         {workspace.menu && <Menu workspace={workspace} {...workspace.menu} />}
         {workspace.palette && <CommandPalette workspace={workspace} {...workspace.palette} />}
         {workspace.quickadd && <QuickAdd workspace={workspace} />}

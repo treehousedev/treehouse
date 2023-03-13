@@ -397,11 +397,15 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       workspace.commands.executeCommand(binding.command, workspace.context);
       e.stopPropagation();
       e.preventDefault();
+      return;
     }
-  });
 
-  document.addEventListener("click", (e) => {
-    workspace.hideMenu();
+    // TODO: find a better way to do this?
+    if (e.key === "Escape") {
+      if (workspace.curtain && workspace.curtain.onclick) {
+        workspace.curtain.onclick(e);
+      }
+    }
   });
 
 
