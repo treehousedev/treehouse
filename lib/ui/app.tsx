@@ -59,7 +59,7 @@ export const App: m.Component = {
         <div style={{display: "flex", flexGrow: "1"}}>
           {state.open &&
             <div style={{width: "200px", padding: "var(--padding)"}}>
-              {workbench.nodes.getRoot().getChildren().map(node => <NavNode node={node} expanded={true} level={0} workbench={workbench} />)}
+              {workbench.workspace.module.getRoot().getChildren().map(node => <NavNode node={node} expanded={true} level={0} workbench={workbench} />)}
             </div>
           }
           <div style={{flexGrow: "1", borderLeft: "1px solid var(--dark)"}}>

@@ -18,7 +18,7 @@ interface State {
 export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
     const {node, panel, workbench} = attrs;
-    const expanded = workbench.getExpanded(panel.headNode, node); 
+    const expanded = workbench.workspace.getExpanded(panel.headNode, node); 
     const hover = (e) => {
       state.hover = true;
       e.stopPropagation();
@@ -65,7 +65,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
           e.stopPropagation();
           
           // TODO: make this work as a command?
-          const prev = workbench.findAbove(panel.headNode, node);
+          const prev = workbench.workspace.findAbove(panel.headNode, node);
           if (!prev) {
             return;
           }
@@ -83,7 +83,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
         // cursor at end of text
         if (e.target.selectionStart === e.target.value.length) {
-          if (node.childCount() > 0 && workbench.getExpanded(panel.headNode, node)) {
+          if (node.childCount() > 0 && workbench.workspace.getExpanded(panel.headNode, node)) {
             workbench.executeCommand("insert-child", {node, panel}, "", 0);
           } else {
             workbench.executeCommand("insert", {node, panel});
@@ -183,7 +183,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
             <div style={{flexGrow: "1"}}>
               {(node.childCount() > 0)
                 ?node.getChildren().map(n => <OutlineNode key={n.ID} workbench={workbench} panel={panel} node={n} />)
-                :<NewNode workbench={workbench} node={node} />
+                :<NewNode workbench={workbench} panel={panel} node={node} />
               }
             </div>
           </div>
@@ -204,7 +204,7 @@ export const NewNode = {
         e.preventDefault();
         if (node.childCount() > 0) {
           const lastchild = node.getChildren()[node.childCount()-1];
-          workbench.executeCommand("insert-child", {node: lastchild, panel: panel});
+          workbench.executeCommand("insert-child", {node: lastchild, panel});
         }
       }
     }

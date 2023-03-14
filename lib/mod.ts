@@ -106,7 +106,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Expand",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      workbench.setExpanded(ctx.panel.headNode, ctx.node, true);
+      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, true);
       m.redraw();
     }
   });
@@ -116,7 +116,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Collapse",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      workbench.setExpanded(ctx.panel.headNode, ctx.node, false);
+      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, false);
       m.redraw();
     }
   });
@@ -129,7 +129,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const prev = ctx.node.getPrevSibling();
       if (prev !== null) {
         ctx.node.setParent(prev);
-        workbench.setExpanded(ctx.panel.headNode, prev, true);
+        workbench.workspace.setExpanded(ctx.panel.headNode, prev, true);
 
         const node = ctx.node; // redraw seems to unset ctx.node
         m.redraw.sync();
@@ -148,7 +148,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
         ctx.node.setParent(parent.getParent());
         ctx.node.setSiblingIndex(parent.getSiblingIndex()+1);
         if (parent.childCount() === 0) {
-          workbench.setExpanded(ctx.panel.headNode, parent, false);
+          workbench.workspace.setExpanded(ctx.panel.headNode, parent, false);
         }
         
         const node = ctx.node; // redraw seems to unset ctx.node
@@ -174,7 +174,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           const parentSib = parent.getPrevSibling();
           node.setParent(parentSib);
           node.setSiblingIndex(parentSib.childCount()-1);
-          workbench.setExpanded(ctx.panel.headNode, parentSib, true);
+          workbench.workspace.setExpanded(ctx.panel.headNode, parentSib, true);
           m.redraw.sync();
           workbench.focus(node);
         } else {
@@ -204,7 +204,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           const parentSib = parent.getNextSibling();
           node.setParent(parentSib);
           node.setSiblingIndex(0);
-          workbench.setExpanded(ctx.panel.headNode, parentSib, true);
+          workbench.workspace.setExpanded(ctx.panel.headNode, parentSib, true);
           m.redraw.sync();
           workbench.focus(node);
         } else {
@@ -223,12 +223,12 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Insert Child",
     action: (ctx: Context, name: string = "", siblingIndex?: number) => {
       if (!ctx.node) return;
-      const node = workbench.nodes.new(name);
+      const node = workbench.workspace.new(name);
       node.setParent(ctx.node);
       if (siblingIndex !== undefined) {
         node.setSiblingIndex(siblingIndex);
       }
-      workbench.setExpanded(ctx.panel.headNode, ctx.node, true);
+      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, true);
       m.redraw.sync();
       workbench.focus(node, ctx.panel, name.length);
     }
@@ -238,7 +238,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Insert Before",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const node = workbench.nodes.new("");
+      const node = workbench.workspace.new("");
       node.setParent(ctx.node.getParent());
       node.setSiblingIndex(ctx.node.getSiblingIndex());
       m.redraw.sync();
@@ -250,7 +250,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Insert Node",
     action: (ctx: Context, name: string = "") => {
       if (!ctx.node) return;
-      const node = workbench.nodes.new(name);
+      const node = workbench.workspace.new(name);
       node.setParent(ctx.node.getParent());
       node.setSiblingIndex(ctx.node.getSiblingIndex()+1);
       m.redraw.sync();
@@ -281,7 +281,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "prev",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const above = workbench.findAbove(ctx.panel.headNode, ctx.node);
+      const above = workbench.workspace.findAbove(ctx.panel.headNode, ctx.node);
       if (above) {
         workbench.focus(above, ctx.panel);
       }
@@ -292,7 +292,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "next",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const below = workbench.findBelow(ctx.panel.headNode, ctx.node);
+      const below = workbench.workspace.findBelow(ctx.panel.headNode, ctx.node);
       if (below) {
         workbench.focus(below, ctx.panel);
       }
@@ -311,6 +311,8 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     }
   });
   workbench.keybindings.registerBinding({command: "pick-command", key: "meta+k"});
+  workbench.keybindings.registerBinding({command: "pick-command", key: "meta+j"});
+  workbench.keybindings.registerBinding({command: "pick-command", key: "shift+ctrl+k"});
   workbench.commands.registerCommand({
     id: "new-panel",
     title: "Open in New Panel",
@@ -342,7 +344,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       [...Array(100)].forEach(() => {
-        const node = workbench.nodes.new(generateName(8));
+        const node = workbench.workspace.new(generateName(8));
         node.setParent(ctx.node);
       });
     }

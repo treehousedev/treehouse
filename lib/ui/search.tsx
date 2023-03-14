@@ -57,7 +57,7 @@ export const Search: m.Component = {
 
       if (state.query) {
         state.results = workbench.backend.index.search(state.query).map(id => {
-          let node = workbench.nodes.find(id);
+          let node = workbench.workspace.find(id);
           if (!node) {
             return undefined;
           }

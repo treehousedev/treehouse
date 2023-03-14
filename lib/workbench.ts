@@ -1,7 +1,7 @@
 import { Backend } from "./backend/mod.ts";
 import { KeyBindings } from "./action/keybinds.ts";
 import { CommandRegistry } from "./action/commands.ts";
-import { Module, Node } from "./manifold/mod.ts";
+import { Module, Node, RawNode } from "./manifold/mod.ts";
 import { MenuRegistry } from "./action/menus.ts";
 
 
@@ -39,52 +39,17 @@ export class Panel {
 }
 
 
-// class Workspace {
-//   nodes: Module;
+class Workspace {
+  module: Module;
 
-//   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
-
-//   constructor() {
-
-//   }
-
-//   save() {
-
-//   }
-
-
-// }
-
-export class Workbench {
-  commands: CommandRegistry;
-  keybindings: KeyBindings;
-  menus: MenuRegistry;
-
-  backend: Backend;
-  nodes: Module;
-
-  context: Context;
-
-  panels: Panel[][]; // Panel[row][column]
-  menu: any;
-  notice: any;
-  palette: any;
-  quickadd: any;
-  curtain: any;
-
+  expandedKey: string;
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
-  constructor(backend: Backend) {
-    this.commands = new CommandRegistry();
-    this.keybindings = new KeyBindings();
-    this.menus = new MenuRegistry();
+  constructor(expandedKey: string) {
+    this.module = new Module();
+    this.expandedKey = expandedKey;
 
-    this.backend = backend;
-    this.nodes = new Module();
-    this.context = {node: null};
-    this.panels = [[]];
-  
-    const expanded = localStorage.getItem(this.expandedStorageKey);
+    const expanded = localStorage.getItem(expandedKey);
     if (expanded) {
       this.expanded = JSON.parse(expanded);
     } else {
@@ -92,55 +57,177 @@ export class Workbench {
     }
   }
 
-  async initialize() {
-    const nodes = await this.backend.nodes.loadAll();
-    const root = this.nodes.find("@root");
+  get rawNodes(): RawNode[] {
+    return Object.values(this.module.nodes);
+  }
+
+  get observers(): ((n: Node) => void)[] {
+    return this.module.observers;
+  }
+
+  // TODO: pull in NodeStore (loadAll, saveAll) from backend API
+  save() {
+    // store workspace doc:
+    // - nodes
+    // - version
+    // - expanded
+    // - lastopen
+  }
+
+  // TODO: load workspace doc, perform migrations based on version
+  load(nodes: RawNode[]) {
+    const root = this.module.find("@root");
     if (nodes.length === 0) {
-      const ws = this.nodes.new("@workspace");
+      const ws = this.module.new("@workspace");
       ws.setName("Workspace");
       ws.setParent(root);
-      const cal = this.nodes.new("@calendar");
+      const cal = this.module.new("@calendar");
       cal.setName("Calendar");
       cal.setParent(ws);
-      const home = this.nodes.new("Home");
+      const home = this.module.new("Home");
       home.setParent(ws);
     }
-    this.nodes.import(nodes);
-    
-    this.nodes.observers.push((n => {
-      this.backend.nodes.saveAll(Object.values(this.nodes.nodes));
-    
-      this.backend.index.index(n.raw);
-      n.getComponentNodes().forEach(com => this.backend.index.index(com.raw));
-    
-    }));
-    Object.values(this.nodes.nodes).forEach(n => this.backend.index.index(n));  
+    this.module.import(nodes);
+  }
 
-    let ws = this.nodes.find("@workspace");
-    if (!ws) {
+  mainNode(): Node {
+    let main = this.module.find("@workspace");
+    if (!main) {
       console.warn("@workspace not found, attempting to migrate @root/Workspace");
-      ws = this.nodes.find("@root/Workspace");
+      main = this.module.find("@root/Workspace");
       console.log("found @root/Workspace, migrating...");
       // temporary migration. remove eventually. soon.
-      if (ws && ws.raw.ID !== "@workspace") {
+      if (main && main.raw.ID !== "@workspace") {
         root.raw.Linked.Children = ["@workspace"];
-        ws.getChildren().forEach(n => {
+        main.getChildren().forEach(n => {
           n.raw.Parent = "@workspace";
         });
-        const raw = ws.raw;
+        const raw = main.raw;
         const oldID = raw.ID;
         raw.ID = "@workspace";
-        this.nodes.nodes["@workspace"] = raw;
-        delete this.nodes.nodes[oldID];
-        ws = this.nodes.find("@workspace");
+        this.module.nodes["@workspace"] = raw;
+        delete this.module.nodes[oldID];
+        main = this.module.find("@workspace");
       }
       console.log("migrated");
     }
-    if (!ws) {
+    if (!main) {
       console.warn("no suitable workspace found, using @root");
-      ws = root;
+      main = this.module.find("@root");
     }
-    this.openNewPanel(ws);
+    return main;
+  }
+
+  find(path:string): Node|null {
+    return this.module.find(path)
+  }
+
+  new(name: string, value?: any): Node {
+    return this.module.new(name, value);
+  }
+
+
+  getExpanded(head: Node, n: Node): boolean {
+    if (!this.expanded[head.ID]) {
+      this.expanded[head.ID] = {};
+    }
+    let expanded = this.expanded[head.ID][n.ID];
+    if (expanded === undefined) {
+      expanded = false;
+    }
+    return expanded;
+  }
+
+  setExpanded(head: Node, n: Node, b: boolean) {
+    this.expanded[head.ID][n.ID] = b;
+    localStorage.setItem(this.expandedKey, JSON.stringify(this.expanded));
+  }
+
+  findAbove(head: Node, n: Node): Node|null {
+    if (n.ID === head.ID) {
+      return null;
+    }
+    let above = n.getPrevSibling();
+    if (!above) {
+      return n.getParent();
+    }
+    const lastChildIfExpanded = (n: Node): Node => {
+      const expanded = this.getExpanded(head, n);
+      if (!expanded || n.childCount() === 0) {
+        return n;
+      }
+      const lastChild = n.getChildren()[n.childCount() - 1];
+      return lastChildIfExpanded(lastChild);
+    }
+    return lastChildIfExpanded(above);
+  }
+
+  findBelow(head: Node, n: Node): Node|null {
+    // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
+    if (this.getExpanded(head, n) && n.childCount() > 0) {
+      return n.getChildren()[0];
+    }
+    const nextSiblingOrParentNextSibling = (n: Node): Node|null => {
+      const below = n.getNextSibling();
+      if (below) {
+        return below;
+      }
+      const parent = n.getParent();
+      if (!parent || parent.ID === head.ID) {
+        return null;
+      }
+      return nextSiblingOrParentNextSibling(parent);
+    }
+    return nextSiblingOrParentNextSibling(n);
+  }
+
+}
+
+export class Workbench {
+  commands: CommandRegistry;
+  keybindings: KeyBindings;
+  menus: MenuRegistry;
+
+  backend: Backend;
+  workspace: Workspace;
+  
+  context: Context;
+  panels: Panel[][]; // Panel[row][column]
+
+  menu: any;
+  notice: any;
+  palette: any;
+  quickadd: any;
+  curtain: any;
+
+  constructor(backend: Backend) {
+    this.commands = new CommandRegistry();
+    this.keybindings = new KeyBindings();
+    this.menus = new MenuRegistry();
+
+    this.backend = backend;
+    this.workspace = new Workspace((this.authenticated())
+      ?`treehouse-expanded-${this.backend.auth.currentUser().userID()}`
+      :`treehouse-expanded`
+    );
+
+    this.context = {node: null};
+    this.panels = [[]];
+    
+  }
+
+  async initialize() {
+    const nodes = await this.backend.nodes.loadAll();
+
+    this.workspace.load(nodes);
+    this.workspace.rawNodes.forEach(n => this.backend.index.index(n));
+    this.workspace.observers.push((n => {
+      this.backend.nodes.saveAll(this.workspace.rawNodes);
+      this.backend.index.index(n.raw);
+      n.getComponentNodes().forEach(com => this.backend.index.index(com.raw));
+    }));
+    
+    this.openNewPanel(this.workspace.mainNode());
 
     m.redraw();
 
@@ -161,22 +248,22 @@ export class Workbench {
   }
 
   openQuickAdd() {
-    let node = this.nodes.find("@quickadd");
+    let node = this.workspace.find("@quickadd");
     if (!node) {
-      node = this.nodes.new("@quickadd");
+      node = this.workspace.new("@quickadd");
     }
     this.quickadd = node;
   }
 
   commitQuickAdd() {
-    const node = this.nodes.find("@quickadd");
+    const node = this.workspace.find("@quickadd");
     if (!node) return;
     const today = this.todayNode();
     node.getChildren().forEach(n => n.setParent(today));
   }
 
   clearQuickAdd() {
-    const node = this.nodes.find("@quickadd");
+    const node = this.workspace.find("@quickadd");
     if (!node) return;
     node.getChildren().forEach(n => n.destroy());
   }
@@ -188,9 +275,9 @@ export class Workbench {
     const weekNode = `Week ${String(getWeekOfYear(today)).padStart(2, "0")}`;
     const yearNode = `${today.getFullYear()}`;
     const todayPath = ["@workspace", "Calendar", yearNode, weekNode, dayNode].join("/");
-    let todayNode = this.nodes.find(todayPath);
+    let todayNode = this.workspace.find(todayPath);
     if (!todayNode) {
-      todayNode = this.nodes.new(todayPath);
+      todayNode = this.workspace.new(todayPath);
     }
     return todayNode;
   }
@@ -200,9 +287,11 @@ export class Workbench {
   }
 
   open(n: Node) {
-    if (!this.expanded[n.ID]) {
-      this.expanded[n.ID] = {};
+    // TODO: not sure this is still necessary
+    if (!this.workspace.expanded[n.ID]) {
+      this.workspace.expanded[n.ID] = {};
     }
+
     localStorage.setItem("lastopen", n.ID);
     const p = new Panel(n);
     this.panels[0][0] = p
@@ -210,9 +299,11 @@ export class Workbench {
   }
 
   openNewPanel(n: Node) {
-    if (!this.expanded[n.ID]) {
-      this.expanded[n.ID] = {};
+    // TODO: not sure this is still necessary
+    if (!this.workspace.expanded[n.ID]) {
+      this.workspace.expanded[n.ID] = {};
     }
+
     localStorage.setItem("lastopen", n.ID);
     const p = new Panel(n);
     this.panels[0].push(p);
@@ -316,71 +407,6 @@ export class Workbench {
     m.redraw();
   }
 
-  // TODO: goto workspace
-  getExpanded(head: Node, n: Node): boolean {
-    if (!this.expanded[head.ID]) {
-      this.expanded[head.ID] = {};
-    }
-    let expanded = this.expanded[head.ID][n.ID];
-    if (expanded === undefined) {
-      expanded = false;
-    }
-    return expanded;
-  }
-
-  // TODO: goto workspace
-  setExpanded(head: Node, n: Node, b: boolean) {
-    this.expanded[head.ID][n.ID] = b;
-    localStorage.setItem(this.expandedStorageKey, JSON.stringify(this.expanded));
-  }
-
-  get expandedStorageKey(): string {
-    if (this.authenticated()) {
-      return `treehouse-expanded-${this.backend.auth.currentUser().userID()}`;
-    } else {
-      return `treehouse-expanded`;
-    }
-  }
-
-  // TODO: goto workspace
-  findAbove(head: Node, n: Node): Node|null {
-    if (n.ID === head.ID) {
-      return null;
-    }
-    let above = n.getPrevSibling();
-    if (!above) {
-      return n.getParent();
-    }
-    const lastChildIfExpanded = (n: Node): Node => {
-      const expanded = this.getExpanded(head, n);
-      if (!expanded || n.childCount() === 0) {
-        return n;
-      }
-      const lastChild = n.getChildren()[n.childCount() - 1];
-      return lastChildIfExpanded(lastChild);
-    }
-    return lastChildIfExpanded(above);
-  }
-
-  // TODO: goto workspace
-  findBelow(head: Node, n: Node): Node|null {
-    // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
-    if (this.getExpanded(head, n) && n.childCount() > 0) {
-      return n.getChildren()[0];
-    }
-    const nextSiblingOrParentNextSibling = (n: Node): Node|null => {
-      const below = n.getNextSibling();
-      if (below) {
-        return below;
-      }
-      const parent = n.getParent();
-      if (!parent || parent.ID === head.ID) {
-        return null;
-      }
-      return nextSiblingOrParentNextSibling(parent);
-    }
-    return nextSiblingOrParentNextSibling(n);
-  }
 
 }
 
