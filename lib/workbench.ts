@@ -22,6 +22,7 @@ export class Panel {
   }
 
   open(node: Node) {
+    localStorage.setItem("lastopen", node.ID);
     this.history.push(node);
   }
 
@@ -227,8 +228,13 @@ export class Workbench {
       n.getComponentNodes().forEach(com => this.backend.index.index(com.raw));
     }));
     
-    this.openNewPanel(this.workspace.mainNode());
-
+    const lastOpen = localStorage.getItem("lastopen");
+    if (lastOpen) {
+      this.openNewPanel(this.workspace.find(lastOpen) || this.workspace.mainNode());
+    } else {
+      this.openNewPanel(this.workspace.mainNode());
+    }
+    
     m.redraw();
 
 
