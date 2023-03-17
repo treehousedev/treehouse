@@ -1,6 +1,6 @@
-import { walk } from "https://deno.land/std/fs/mod.ts";
-import { extname, dirname } from "https://deno.land/std/path/mod.ts";
-import { copy } from "https://deno.land/std/fs/copy.ts";
+import { walk } from "https://deno.land/std@0.177.0/fs/mod.ts";
+import { extname, dirname } from "https://deno.land/std@0.177.0/path/mod.ts";
+import { copy } from "https://deno.land/std@0.177.0/fs/copy.ts";
 
 import {generate, rootdir, pagedir} from "./mod.ts";
 

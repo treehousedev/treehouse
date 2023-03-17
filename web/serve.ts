@@ -1,6 +1,6 @@
-import { serve } from "https://deno.land/std/http/server.ts";
+import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
 import { refresh } from "https://deno.land/x/refresh/mod.ts";
-import { serveDir } from "https://deno.land/std/http/file_server.ts";
+import { serveDir } from "https://deno.land/std@0.177.0/http/file_server.ts";
 
 import * as esbuild from "https://deno.land/x/esbuild@v0.17.2/mod.js";
 
