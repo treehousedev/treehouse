@@ -29,6 +29,7 @@
   --primary: var(--green-500);
 
   --blue-700: #00819E;
+  --blue-600: #007C9E;
   --blue-500: #00819E;
   --blue-300: #00819E;
   
@@ -59,7 +60,8 @@
 
   --weight-light: 300;
   --weight-regular: 400;
-  --weight-medium: 500;
+ /* let's not use medium
+  --weight-medium: 500;*/
   --weight-semibold: 600;
   --weight-bold: 700;
   --weight-extrabold: 800;
@@ -92,15 +94,16 @@
   font-size: var(--h3-size);
 }
 .h5, h5 {
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
   font-size: 0.875rem;
+  letter-spacing: 1px;
 }
 
 .link {
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-semibold);
   text-decoration: underline;
-  color: var(--blue);
+  color: var(--blue-600);
 }
 
 
@@ -173,7 +176,7 @@ body > section.title > * {
 }
 body > section.title .subtitle {
   font-size: var(--8);
-  font-weight: var(--weight-medium);
+  font-weight: var(--weight-semibold);
 }
 body > #subscribe {
   background-color: var(--gray-100);
@@ -181,12 +184,12 @@ body > #subscribe {
 }
 
 article .author {
-  font-weight: var(--weight-bold);
-  line-height: var(--6);
+  font-weight: var(--weight-semibold);
+  line-height: var(--7);
 }
 article .date, body.blog > section nav > div .date {
   color: var(--gray-600);
-  line-height: var(--6);
+  line-height: var(--7);
   margin-bottom: var(--4);
 }
 article h2, article h3 {
@@ -199,7 +202,7 @@ article h2 {
 article p {
   margin-top: var(--2);
   margin-bottom: var(--2);
-  line-height: var(--6);
+  line-height: var(--7);
 }
 article p:first-child {
   margin-top: var(--4);
@@ -211,13 +214,14 @@ article img {
 }
 article a {
   text-decoration: underline;
-  font-weight: var(--weight-regular);
+  font-weight: var(--weight-semibold);
+  color: var(--blue-600);
 }
 
 body.blog > section nav > div {
   margin-top: var(--4);
   margin-bottom: var(--4);
-  line-height: var(--6);
+  line-height: var(--7);
 }
 
 body.docs > section nav ul {
@@ -230,6 +234,7 @@ body.docs > section nav ul {
 body.docs > section nav h5 {
   font-weight: var(--weight-bold);
   text-transform: none;
+  letter-spacing: 0px;
 }
 body.docs > section nav a.active {
   background-color: #E3FBE5;
@@ -247,7 +252,7 @@ body.docs > section nav h5 a {
 }
 
 a {
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-semibold);
 }
 
 .button, button {
@@ -366,6 +371,26 @@ a.row {
     padding-left: 1rem !important;
     padding-right: 1rem !important;
     height: 2.5rem;
+  }
+  article h2, article h3, img, p {
+    margin-bottom: var(--2);
+  }
+  article h2, article h3 {
+    margin-top: var(--3);
+  }
+  nav > .logo > span {
+    display: none;
+  }
+  .blog .title {
+    padding-top: var(--2);
+    padding-bottom: var(--2);
+
+  }
+  .blog .title h4 {
+    font-size: var(--8);
+  }
+  .blog .title .subtitle {
+    font-size: var(--4);
   }
 }
 
