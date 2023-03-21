@@ -1,5 +1,5 @@
-import {RawNode} from "../manifold/mod.ts";
-import { Authenticator, SearchIndex, NodeStore, FileStore } from "./mod.ts";
+
+import { Authenticator, SearchIndex, FileStore } from "./mod.ts";
 import { BrowserBackend } from "./browser.ts";
 import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.7.5/base64.mjs';
 
@@ -7,7 +7,6 @@ export class GitHubBackend {
   auth: Authenticator;
 
   index: SearchIndex;
-  nodes: NodeStore;
   files: FileStore;
 
   loginURL: string;
@@ -24,19 +23,9 @@ export class GitHubBackend {
 
     const localbackend = new BrowserBackend();
     this.index = localbackend.index;
-    this.nodes = localbackend.nodes;
     this.files = localbackend.files;
 
-    this.writeDebounce = debounce(async (path, contents) => {
-      try {
-        await this.writeFile(path, contents);
-        console.log("Saved workspace.");
-      } catch (e: Error) {
-        console.error(e);
-        document.dispatchEvent(new CustomEvent("BackendError"));
-      }
-      
-    });
+    
   }
 
   get repo(): string {
@@ -125,7 +114,6 @@ export class GitHubBackend {
     }
     
     this.files = this;
-    this.nodes = this;
 
     
     
@@ -180,13 +168,6 @@ export class GitHubBackend {
     location.reload();
   }
 
-  async loadAll(): RawNode[] {
-    return JSON.parse(await this.readFile("workspace.json") || "[]");
-  }
-	
-  async saveAll(nodes: RawNode[]) {
-    this.writeDebounce("workspace.json", JSON.stringify(nodes, null, 2));
-  }
 
   async readFile(path: string): string|null {
     try {
@@ -237,14 +218,6 @@ export class User {
   avatarURL(): string {
     return this.user.avatar_url;
   }
-}
-
-function debounce(func, timeout = 3000){
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
-  };
 }
 
 function uniqueID() {

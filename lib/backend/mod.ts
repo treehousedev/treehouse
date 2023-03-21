@@ -4,7 +4,6 @@ import {RawNode} from "../manifold/mod.ts";
 export interface Backend {
   auth: Authenticator|null;
   index: SearchIndex;
-  nodes: NodeStore;
   files: FileStore;
 }
 
@@ -27,11 +26,6 @@ export interface SearchIndex {
   search(query: string): string[];
 }
 
-// TODO: move into workspace
-export interface NodeStore {
-	async loadAll(): RawNode[];
-	async saveAll(nodes: RawNode[]);
-}
 
 export interface FileStore {
   async readFile(path: string): string|null;

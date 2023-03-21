@@ -4,13 +4,11 @@ import {RawNode} from "../manifold/mod.ts";
 export class BrowserBackend {
   auth: null;
   index: SearchIndex;
-  nodes: NodeStore;
   files: FileStore;
 
   constructor() {
     this.auth = null;
     this.files = new FileStore();
-    this.nodes = new NodeStore(this.files);
     if (window.MiniSearch) {
       this.index = new SearchIndex_MiniSearch();
     } else {
@@ -80,23 +78,6 @@ export class SearchIndex_Dumb {
 }
 
 
-
-// TODO: move into workspace
-export class NodeStore {
-  files: FileStore;
-
-  constructor(files: FileStore) {
-    this.files = files;
-  }
-
-  async loadAll(): RawNode[] {
-    return JSON.parse(await this.files.readFile("workspace.json") || "[]");
-  }
-	
-  async saveAll(nodes: RawNode[]) {
-    await this.files.writeFile("workspace.json", JSON.stringify(nodes));
-  }
-}
 
 export class FileStore {
   async readFile(path: string): string|null {

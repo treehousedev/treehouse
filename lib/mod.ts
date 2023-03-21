@@ -346,6 +346,8 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Open",
     action: (ctx: Context) => {
       ctx.panel.open(ctx.node);
+      workbench.workspace.lastOpenedID = ctx.node.ID;
+      workbench.workspace.save();
       m.redraw();
     }
   });

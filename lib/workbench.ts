@@ -1,4 +1,4 @@
-import { Backend } from "./backend/mod.ts";
+import { Backend, FileStore } from "./backend/mod.ts";
 import { KeyBindings } from "./action/keybinds.ts";
 import { CommandRegistry } from "./action/commands.ts";
 import { Module, Node, RawNode } from "./manifold/mod.ts";
@@ -22,7 +22,6 @@ export class Panel {
   }
 
   open(node: Node) {
-    localStorage.setItem("lastopen", node.ID);
     this.history.push(node);
   }
 
@@ -41,21 +40,26 @@ export class Panel {
 
 
 class Workspace {
+  fs: FileStore;
   module: Module;
 
-  expandedKey: string;
+  lastOpenedID: string;
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
-  constructor(expandedKey: string) {
+  constructor(fs: FileStore) {
+    this.fs = fs;
     this.module = new Module();
-    this.expandedKey = expandedKey;
+    this.expanded = {};
 
-    const expanded = localStorage.getItem(expandedKey);
-    if (expanded) {
-      this.expanded = JSON.parse(expanded);
-    } else {
-      this.expanded = {};
-    }
+    this.writeDebounce = debounce(async (path, contents) => {
+      try {
+        await this.fs.writeFile(path, contents);
+        console.log("Saved workspace.");
+      } catch (e: Error) {
+        console.error(e);
+        document.dispatchEvent(new CustomEvent("BackendError"));
+      }
+    });
   }
 
   get rawNodes(): RawNode[] {
@@ -66,19 +70,39 @@ class Workspace {
     return this.module.observers;
   }
 
-  // TODO: pull in NodeStore (loadAll, saveAll) from backend API
   save() {
-    // store workspace doc:
-    // - nodes
-    // - version
-    // - expanded
-    // - lastopen
+    this.writeDebounce("workspace.json", JSON.stringify({
+      version: 1,
+      lastopen: this.lastOpenedID,
+      expanded: this.expanded,
+      nodes: this.rawNodes
+    }, null, 2));
   }
 
-  // TODO: load workspace doc, perform migrations based on version
-  load(nodes: RawNode[]) {
-    const root = this.module.find("@root");
-    if (nodes.length === 0) {
+  async load() {
+    let doc = JSON.parse(await this.fs.readFile("workspace.json") || "{}");
+    if (Array.isArray(doc)) {
+      doc = {
+        version: 0,
+        nodes: doc
+      }
+    }
+    if (doc.nodes) {
+      this.module.import(doc.nodes);
+    }
+    if (doc.expanded) {
+      this.expanded = doc.expanded;
+    }
+    if (doc.lastopen) {
+      this.lastOpenedID = doc.lastopen;
+    }
+    
+  }
+
+  mainNode(): Node {
+    let main = this.module.find("@workspace");
+    if (!main) {
+      const root = this.module.find("@root");
       const ws = this.module.new("@workspace");
       ws.setName("Workspace");
       ws.setParent(root);
@@ -87,34 +111,7 @@ class Workspace {
       cal.setParent(ws);
       const home = this.module.new("Home");
       home.setParent(ws);
-    }
-    this.module.import(nodes);
-  }
-
-  mainNode(): Node {
-    let main = this.module.find("@workspace");
-    if (!main) {
-      console.warn("@workspace not found, attempting to migrate @root/Workspace");
-      main = this.module.find("@root/Workspace");
-      console.log("found @root/Workspace, migrating...");
-      // temporary migration. remove eventually. soon.
-      if (main && main.raw.ID !== "@workspace") {
-        root.raw.Linked.Children = ["@workspace"];
-        main.getChildren().forEach(n => {
-          n.raw.Parent = "@workspace";
-        });
-        const raw = main.raw;
-        const oldID = raw.ID;
-        raw.ID = "@workspace";
-        this.module.nodes["@workspace"] = raw;
-        delete this.module.nodes[oldID];
-        main = this.module.find("@workspace");
-      }
-      console.log("migrated");
-    }
-    if (!main) {
-      console.warn("no suitable workspace found, using @root");
-      main = this.module.find("@root");
+      main = ws;
     }
     return main;
   }
@@ -141,7 +138,8 @@ class Workspace {
 
   setExpanded(head: Node, n: Node, b: boolean) {
     this.expanded[head.ID][n.ID] = b;
-    localStorage.setItem(this.expandedKey, JSON.stringify(this.expanded));
+    this.save();
+    //localStorage.setItem(this.expandedKey, JSON.stringify(this.expanded));
   }
 
   findAbove(head: Node, n: Node): Node|null {
@@ -184,6 +182,16 @@ class Workspace {
 
 }
 
+
+function debounce(func, timeout = 3000){
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => { func.apply(this, args); }, timeout);
+  };
+}
+
+
 export class Workbench {
   commands: CommandRegistry;
   keybindings: KeyBindings;
@@ -207,10 +215,7 @@ export class Workbench {
     this.menus = new MenuRegistry();
 
     this.backend = backend;
-    this.workspace = new Workspace((this.authenticated())
-      ?`treehouse-expanded-${this.backend.auth.currentUser().userID()}`
-      :`treehouse-expanded`
-    );
+    this.workspace = new Workspace(backend.files);
 
     this.context = {node: null};
     this.panels = [[]];
@@ -222,19 +227,16 @@ export class Workbench {
   }
 
   async initialize() {
-    const nodes = await this.backend.nodes.loadAll();
-
-    this.workspace.load(nodes);
+    await this.workspace.load();
     this.workspace.rawNodes.forEach(n => this.backend.index.index(n));
     this.workspace.observers.push((n => {
-      this.backend.nodes.saveAll(this.workspace.rawNodes);
+      this.workspace.save();
       this.backend.index.index(n.raw);
       n.getComponentNodes().forEach(com => this.backend.index.index(com.raw));
     }));
     
-    const lastOpen = localStorage.getItem("lastopen");
-    if (lastOpen) {
-      this.openNewPanel(this.workspace.find(lastOpen) || this.workspace.mainNode());
+    if (this.workspace.lastOpenedID) {
+      this.openNewPanel(this.workspace.find(this.workspace.lastOpenedID) || this.workspace.mainNode());
     } else {
       this.openNewPanel(this.workspace.mainNode());
     }
@@ -302,7 +304,8 @@ export class Workbench {
       this.workspace.expanded[n.ID] = {};
     }
 
-    localStorage.setItem("lastopen", n.ID);
+    this.workspace.lastOpenedID = n.ID;
+    this.workspace.save();
     const p = new Panel(n);
     this.panels[0][0] = p
     this.context.panel = p;
@@ -314,7 +317,8 @@ export class Workbench {
       this.workspace.expanded[n.ID] = {};
     }
 
-    localStorage.setItem("lastopen", n.ID);
+    this.workspace.lastOpenedID = n.ID;
+    this.workspace.save();
     const p = new Panel(n);
     this.panels[0].push(p);
     this.context.panel = p;
