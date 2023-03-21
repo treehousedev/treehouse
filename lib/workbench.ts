@@ -217,6 +217,10 @@ export class Workbench {
     
   }
 
+  get mainPanel(): Panel {
+    return this.panels[0][0];
+  }
+
   async initialize() {
     const nodes = await this.backend.nodes.loadAll();
 

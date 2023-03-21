@@ -14,7 +14,9 @@ export const Panel = {
       panel.back();
     }
     const maximize = (e) => {
+      // todo: should be a command
       workbench.panels = [[panel]];
+      workbench.context.panel = panel;
     }
     const editMarkdown = (e) => {
       node.getComponent(Page).markdown = e.target.value;

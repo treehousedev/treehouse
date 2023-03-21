@@ -330,6 +330,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Close Panel",
     action: (ctx: Context, panel?: Panel) => {
       workbench.closePanel(panel || ctx.node.panel);
+      workbench.context.panel = workbench.mainPanel;
       m.redraw();
     }
   });
