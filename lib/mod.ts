@@ -264,15 +264,18 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       if (ctx.node.ID.startsWith("@")) return;
-      const prev = ctx.node.getPrevSibling();
+      const above = workbench.workspace.findAbove(ctx.panel.headNode, ctx.node);
       ctx.node.destroy();
       m.redraw.sync();
-      if (prev) {
+      if (above) {
         let pos = 0;
         if (ctx.event && ctx.event.key === "Backspace") {
-          pos = prev.getName().length;
+          pos = above.getName().length;
         }
-        workbench.focus(prev, ctx.panel, pos);
+        if (above.childCount() === 0) {
+          workbench.workspace.setExpanded(ctx.panel.headNode, above, false);
+        }
+        workbench.focus(above, ctx.panel, pos);
       }
     }
   });
