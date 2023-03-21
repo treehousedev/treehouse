@@ -7,5 +7,8 @@
     "bundle": "deno run --unstable -A web/bundle.ts",
     "generate": "deno run --unstable -A web/generate.ts",
     "serve": "deno run --unstable -A --watch web/serve.ts",
+  },
+  "imports": {
+    "https://deno.land/std/": "https://deno.land/std@0.177.0/"
   }
 }

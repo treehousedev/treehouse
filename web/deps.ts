@@ -5,7 +5,7 @@ export {default as render} from "npm:mithril-node-render";
 export {default as pretty} from "npm:pretty";
 
 export { Marked } from "https://deno.land/x/markdown@v2.0.0/mod.ts";
-export { highlightText } from 'https://deno.land/x/speed_highlight_js/src/index.js';
+export { highlightText } from 'https://deno.land/x/speed_highlight_js@1.1.11/src/index.js';
 
 // syntactic sugar helper for jsx pages
 export function page(attrs, view) {

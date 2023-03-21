@@ -1,7 +1,7 @@
-import { walkSync } from "https://deno.land/std/fs/mod.ts";
-import { extname, normalize } from "https://deno.land/std/path/mod.ts";
-import { createExtractor, Format, Parser } from "https://deno.land/std/encoding/front_matter/mod.ts";
-import { parse as parseYAML } from "https://deno.land/std/encoding/yaml.ts";
+import { walkSync } from "https://deno.land/std@0.177.0/fs/mod.ts";
+import { extname, normalize } from "https://deno.land/std@0.177.0/path/mod.ts";
+import { createExtractor, Format, Parser } from "https://deno.land/std@0.177.0/encoding/front_matter/mod.ts";
+import { parse as parseYAML } from "https://deno.land/std@0.177.0/encoding/yaml.ts";
 
 import {m,render,pretty,highlightText,Marked} from "./deps.ts";
 import globals from "./globals.ts";
