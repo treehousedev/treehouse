@@ -305,7 +305,6 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "pick-command",
     action: (ctx: Context) => {
-      console.log("command")
       let node = ctx.node;
       let posBelow = false;
       if (!node) {
