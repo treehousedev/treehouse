@@ -305,17 +305,25 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "pick-command",
     action: (ctx: Context) => {
-      if (!ctx.node) return;
-      const trigger = workbench.getInput(ctx.node);
+      console.log("command")
+      let node = ctx.node;
+      let posBelow = false;
+      if (!node) {
+        node = ctx.panel.headNode;
+        posBelow = true;
+      }
+      const trigger = workbench.getInput(node);
       const rect = trigger.getBoundingClientRect();
-      const x = document.body.scrollLeft+rect.x+(trigger.selectionStart * 10)+20;
-      const y = document.body.scrollTop+rect.y-8;
-      workbench.showPalette(x, y, workbench.newContext({node: ctx.node}));
+      let x = document.body.scrollLeft+rect.x+(trigger.selectionStart * 10)+20;
+      let y = document.body.scrollTop+rect.y-8;
+      if (posBelow) {
+        x = document.body.scrollLeft+rect.x;
+        y = document.body.scrollTop+rect.y+rect.height;
+      }
+      workbench.showPalette(x, y, workbench.newContext({node}));
     }
   });
   workbench.keybindings.registerBinding({command: "pick-command", key: "meta+k"});
-  workbench.keybindings.registerBinding({command: "pick-command", key: "meta+j"});
-  workbench.keybindings.registerBinding({command: "pick-command", key: "shift+ctrl+k"});
   workbench.commands.registerCommand({
     id: "new-panel",
     title: "Open in New Panel",
@@ -392,7 +400,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
   document.addEventListener("keydown", (e) => {
     const binding = workbench.keybindings.evaluateEvent(e);
-    if (binding && workbench.context.node) {
+    if (binding) {
       workbench.commands.executeCommand(binding.command, workbench.context);
       e.stopPropagation();
       e.preventDefault();
