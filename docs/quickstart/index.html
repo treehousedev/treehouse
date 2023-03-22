@@ -60,23 +60,39 @@
         <article class="grow">
           <h1 id="quickstart">Quickstart</h1>
           <h2 id="using-from-cdn">Using from CDN</h2>
+          <p>First, you have to directly include Mithril and MiniSearch for now:</p>
 
-          <ul>
-            <li>Import JS/CSS</li>
-            <li>Call setup with backend</li>
-          </ul>
+          <pre><code class="lang-html"><div><div class="shj-numbers"><div></div><div></div></div><div><span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;</span><span class="shj-syn-var">script</span> <span class="shj-syn-class">src</span><span class="shj-syn-str"></span><span class="shj-syn-oper">=</span><span class="shj-syn-str">"https://cdnjs.cloudflare.com/ajax/libs/mithril/2.0.3/mithril.min.js"</span><span class="shj-syn-oper">&gt;</span><span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;/</span><span class="shj-syn-var">script</span><span class="shj-syn-oper">&gt;</span>
+<span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;</span><span class="shj-syn-var">script</span> <span class="shj-syn-class">src</span><span class="shj-syn-str"></span><span class="shj-syn-oper">=</span><span class="shj-syn-str">"https://cdn.jsdelivr.net/npm/minisearch@6.0.1/dist/umd/index.min.js"</span><span class="shj-syn-oper">&gt;</span><span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;/</span><span class="shj-syn-var">script</span><span class="shj-syn-oper">&gt;</span></div></div>
+</code></pre>
+          <p>If you want to use our CSS, you&#39;ll also need to include the Google Font it uses:</p>
+
+          <pre><code class="lang-html"><div><div class="shj-numbers"><div></div><div></div></div><div><span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;</span><span class="shj-syn-var">link</span> <span class="shj-syn-class">href</span><span class="shj-syn-str"></span><span class="shj-syn-oper">=</span><span class="shj-syn-str">"https://treehouse.sh/app/main.css"</span> <span class="shj-syn-class">rel</span><span class="shj-syn-str"></span><span class="shj-syn-oper">=</span><span class="shj-syn-str">"stylesheet"</span> <span class="shj-syn-oper">/&gt;</span>
+<span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;</span><span class="shj-syn-var">link</span> <span class="shj-syn-class">href</span><span class="shj-syn-str"></span><span class="shj-syn-oper">=</span><span class="shj-syn-str">"https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&#38;display=swap"</span> <span class="shj-syn-class">rel</span><span class="shj-syn-str"></span><span class="shj-syn-oper">=</span><span class="shj-syn-str">"stylesheet"</span> <span class="shj-syn-oper">/&gt;</span></div></div>
+</code></pre>
+          <p>Then you just need some JavaScript to import and call setup with a built-in or custom backend adapter:</p>
+
+          <pre><code class="lang-html"><div><div class="shj-numbers"><div></div><div></div><div></div><div></div></div><div><span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;</span><span class="shj-syn-var">script</span> <span class="shj-syn-class">type</span><span class="shj-syn-str"></span><span class="shj-syn-oper">=</span><span class="shj-syn-str">"module"</span><span class="shj-syn-oper">&gt;</span>
+  <span class="shj-syn-kwd">import</span> {setup<span class="shj-syn-oper">,</span> <span class="shj-syn-class">BrowserBackend</span>} <span class="shj-syn-kwd">from</span> <span class="shj-syn-str">"https://treehouse.sh/lib/treehouse.min.js"</span>;
+  <span class="shj-syn-func">setup</span>(document<span class="shj-syn-oper">,</span> document<span class="shj-syn-oper">.</span>body<span class="shj-syn-oper">,</span> <span class="shj-syn-kwd">new</span> <span class="shj-syn-class">BrowserBackend</span>());
+<span class="shj-syn-var"></span><span class="shj-syn-oper">&lt;/</span><span class="shj-syn-var">script</span><span class="shj-syn-oper">&gt;</span></div></div>
+</code></pre>
           <h2 id="building-from-source">Building from Source</h2>
-
-          <ul>
-            <li>deno task build</li>
-          </ul>
+          <p>You can build from source by cloning or forking the project and installing <a href="https://deno.land/">Deno</a>. Then you can run:</p>
+          <p><code>deno task bundle</code></p>
+          <p>This will produce a JS file you can use at <code>web/static/lib/treehouse.min.js</code>. </p>
+          <p>For development or debugging, you can run:</p>
+          <p><code>deno task serve</code></p>
+          <p>This will build and serve this website locally, including the live demo site at <code>localhost:9000/demo</code>, which will use
+            and watch for changes in the <code>lib</code> source. </p>
           <h2 id="customizing-the-frontend">Customizing the Frontend</h2>
-
-          <ul>
-            <li>Change CSS</li>
-            <li>Change Source</li>
-            <li>Extensions</li>
-          </ul>
+          <p>The easiest aspect to customize is the look and feel, which you can do with custom CSS. Our CSS design system is built with
+            custom properties, so you can include your own CSS and just override them with basic CSS.</p>
+          <p>Further customization might require you to fork and change the source. The source code is very straight forward, but learn
+            more in the Developer Guide.</p>
+          <p>Lastly, of course, you can implement a custom backend adapter. Although there are just a few things to change this way,
+            more extension points will be exposed in the future so you won&#39;t have to change source. Let us know in the forum what kind
+            of extension points you&#39;d like!</p>
         </article>
       </div>
     </section>
