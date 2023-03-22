@@ -107,7 +107,7 @@ a simple REST API that can be implemented by a backend host process, such as Ele
 
 An adapter is just an object that implements this API:
 
-```typescript
+```js
 interface Backend {
   auth: Authenticator|null;
   index: SearchIndex;
