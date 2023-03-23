@@ -9,7 +9,7 @@ export default {view: ({attrs, children}) => (
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/speed-highlight/core/dist/themes/default.css" />
   <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/style/design.css" />
+  <link rel="stylesheet" href="/style/site.css" />
   <script src="/analytics.js"></script>
   <title>{attrs.title?`${attrs.title} - ${attrs.site}`:attrs.site}</title>
 </head>

@@ -371,7 +371,7 @@ export class Workbench {
     const align = trigger.dataset["align"] || "left";
     let x = document.body.scrollLeft+rect.x;
     if (align === "right") {
-      x = window.innerWidth - rect.right - rect.width;
+      x = document.body.offsetWidth - rect.right;
     }
     const y = document.body.scrollTop+rect.y+rect.height;
     const items = this.menus.menus[trigger.dataset["menu"]];

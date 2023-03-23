@@ -85,21 +85,34 @@ export const Search: m.Component = {
     }
 
     return (
-      <div class="search" style={{position: "relative", display: "flex", flexGrow: "1", padding: "calc(var(--padding)/2)"}}>
+      <div class="search" style={{position: "relative", display: "flex", flexGrow: "1",  marginLeft: "var(--padding)", marginRight: "var(--padding)"}}>
         <div style={{
             width: "95%",
             padding: "calc(var(--padding)/2)",
+            margin: "calc(var(--padding)/-2)",
             borderRadius: "0.25rem",
             border: (state.results.length > 0)?"1px solid var(--dark)":"none",
             position: "absolute",
             zIndex: (state.results.length > 0)?"100":"1",
             background: (state.results.length > 0)?"white":null
           }}>
-          <input type="text" placeholder="Search" value={state.query} onkeydown={onkeydown} oninput={autocomplete} style={{width: "99%", border: "0", outline: "0", background: "transparent", marginRight: "var(--padding)"}} />
+          <div class="flex" style={{margin: (state.results.length > 0)?"0":"1px"}}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <input type="text" placeholder="Search" value={state.query} onkeydown={onkeydown} oninput={autocomplete} style={{
+              width: "99%", 
+              border: "0", 
+              outline: "0", 
+              background: "transparent", 
+              marginLeft: "var(--1)",
+              marginRight: "var(--padding)"}} />
+          </div>
           {(state.results.length > 0)?
             <div class="results" style={{
+              marginLeft: "20px",
+              paddingLeft: "var(--1)",
               marginTop: "0.25rem",
               overflowX: "hidden",
+              fontWeight: "400",
               overflowY: "auto",
               maxHeight: "400px"
             }}>

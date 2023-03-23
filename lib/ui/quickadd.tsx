@@ -2,6 +2,10 @@ import { OutlineEditor } from "./outline.tsx";
 
 export const QuickAdd = {
   view({attrs: {workbench}}) {
+    const panel = {
+      id: "quickadd",
+      headNode: workbench.quickadd
+    }
     return (
       <div style={{
         position: "absolute", 
@@ -32,7 +36,7 @@ export const QuickAdd = {
         }}>
           <h3 style={{margin: "0"}}>Quick Add</h3>
           <hr />
-          <OutlineEditor workbench={workbench} node={workbench.quickadd} />
+          <OutlineEditor workbench={workbench} node={workbench.quickadd} panel={panel} />
           <hr />
           <div style={{textAlign: "right"}}>
             <button style={{padding: "0.5rem", margin: "0.25rem"}} onclick={() => {

@@ -1,9 +1,16 @@
+@import url(../style/design.css);
+
 :root {
   --dark: #e0e0e0;
   --padding: 1rem;
   --background: #fafbfb;
-  --font: 'Rubik', sans-serif;
+  --font: 'Figtree', sans-serif;
 }
+
+main {
+  background-color: var(--white);
+}
+
 
 input::placeholder {
   opacity: 1;

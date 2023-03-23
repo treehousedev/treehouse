@@ -127,7 +127,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       }
     }
     return (
-      <div style={{paddingLeft: "1rem"}} onmouseover={hover} onmouseout={unhover}>
+      <div onmouseover={hover} onmouseout={unhover}>
         <div style={{
           display: "flex",
           flexDirection: "row",
@@ -177,8 +177,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
             flexDirection: "row",
             paddingBottom: "0.25rem"
           }}>
-            <div style={{width: "1rem", marginRight: "0.25rem", display: "flex"}} onclick={toggle}>
-              <div style={{borderLeft: "1px solid gray", height: "100%", marginLeft: "0.5rem"}}></div>
+            <div style={{width: "var(--8)", display: "flex"}} onclick={toggle}>
             </div>
             <div style={{flexGrow: "1"}}>
               {(node.childCount() > 0)
@@ -213,7 +212,6 @@ export const NewNode = {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
-        paddingLeft: "1rem",
         marginTop: "0.125rem",
         marginBottom: "0.125rem"
       }} >
@@ -240,7 +238,7 @@ export const NewNode = {
 export const OutlineEditor: m.Component<Attrs> = {
   view ({attrs: {workbench, panel, node}, state}) {
     return (
-      <div style={{padding: "var(--padding)"}}>
+      <div style={{color: "var(--gray-900)"}}>
         {node.getChildren().map(n => <OutlineNode key={n.ID} workbench={workbench} panel={panel} node={n} />)}
         <NewNode workbench={workbench} panel={panel} node={node} />
       </div>
@@ -309,7 +307,9 @@ export const NodeEditor: m.Component = {
     
     const style = {
       outline: "none",
+      color: "inherit",
       fontSize: "inherit",
+      fontWeight: "inherit",
       fontFamily: "inherit",
       padding: "0",
       width: "100%",

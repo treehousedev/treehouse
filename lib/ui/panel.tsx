@@ -28,8 +28,17 @@ export const Panel = {
       let newHeight = 20 + numberOfLineBreaks * 20;
       return newHeight;
     }
-    return <div style={{display: "flex", flexDirection: "column", flexGrow: "1", margin: "var(--padding)", paddingBottom: "var(--padding)", height: "92vh"}}>
-      <div  style={{display: "flex", background: "white", borderRadius: "0.5rem", color: "gray", padding: "var(--padding)", paddingTop: "0.5rem", paddingBottom: "0.5rem", gap: "var(--padding)", marginBottom: "0.5rem"}}>
+    return <div class="panel flex flex-col grow" style={{
+        marginTop: "var(--4)", 
+        marginLeft: "var(--12)", 
+        marginRight: "var(--12)", 
+        paddingBottom: "var(--padding)"}}>
+      <div class="bar" style={{
+        display: "flex", 
+        fontSize: "0.875rem",
+        color: "var(--gray-600)", 
+        gap: "var(--padding)", 
+        marginBottom: "var(--8)"}}>
         {(panel.history.length>1)?
           <div style={{rightPadding: "var(--padding)"}}>
             <svg onclick={goBack} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -38,21 +47,21 @@ export const Panel = {
           </div>
         :null}
         <div style={{flexGrow: "1"}}>
-          {(node.getParent() && node.getParent().ID !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workbench.open(node.getParent())}>{node.getParent().getName()}</span> : null}
+          {(node.getParent() && node.getParent().ID !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workbench.open(node.getParent())}>{node.getParent().getName()}</span> : <span>/</span>}
         </div>
         {(workbench.panels.flat().length>1)?
-          <div style={{display: "flex", gap: "0.5rem", zIndex: "0"}}>
-            <svg onclick={maximize} style={{cursor: "pointer", transform: "scale(0.9)"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M1.5 1a.5.5 0 0 0-.5.5v4a.5.5 0 0 1-1 0v-4A1.5 1.5 0 0 1 1.5 0h4a.5.5 0 0 1 0 1h-4zM10 .5a.5.5 0 0 1 .5-.5h4A1.5 1.5 0 0 1 16 1.5v4a.5.5 0 0 1-1 0v-4a.5.5 0 0 0-.5-.5h-4a.5.5 0 0 1-.5-.5zM.5 10a.5.5 0 0 1 .5.5v4a.5.5 0 0 0 .5.5h4a.5.5 0 0 1 0 1h-4A1.5 1.5 0 0 1 0 14.5v-4a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v4a1.5 1.5 0 0 1-1.5 1.5h-4a.5.5 0 0 1 0-1h4a.5.5 0 0 0 .5-.5v-4a.5.5 0 0 1 .5-.5z"/>
-            </svg>
-            <svg onclick={close} style={{cursor: "pointer"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-              <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8 2.146 2.854Z"/>
-            </svg>
+          <div style={{display: "flex", gap: "var(--4)", zIndex: "0", color: "var(--gray-500)", alignItems: "center"}}>
+            <svg  onclick={maximize} style={{cursor: "pointer"}} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-maximize-2"><polyline points="15 3 21 3 21 9"></polyline><polyline points="9 21 3 21 3 15"></polyline><line x1="21" y1="3" x2="14" y2="10"></line><line x1="3" y1="21" x2="10" y2="14"></line></svg>
+            <svg onclick={close} style={{cursor: "pointer"}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
           </div>
         :null}
       </div>
-      <div style={{background: "white", borderRadius: "0.5rem", display: "flex", flexDirection: "column"}}>
-        <div oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} data-menu="node" style={{padding: "var(--padding)", fontSize: "2rem"}}>
+      <div class="body flex flex-col">
+        <div oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} data-menu="node" style={{
+            fontSize: "var(--6)",
+            color: "var(--gray-900)",
+            fontWeight: "700"
+          }}>
           <NodeEditor workbench={workbench} panel={panel} node={node} disallowEmpty={true} />
         </div>
         {(node.hasComponent(Page)) ? 
