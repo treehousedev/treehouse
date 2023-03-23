@@ -12,8 +12,12 @@ export default {view: ({attrs, children}) => m(layout, Object.assign({title: "Do
       </ul>
       <h5><a href="/docs/user">User Guide</a></h5>
       <ul>
-        <li><a href="/docs/user">Using the Interface</a></li>
-        <li><a href="/docs/user">Workspace Model</a></li>
+        <li><a href="/docs/user">What is Treehouse?</a></li>
+        <li><a href="/docs/user">Data Storage</a></li>
+        <li><a href="/docs/user">Nodes</a></li>
+        <li><a href="/docs/user">Calendar</a></li>
+        <li><a href="/docs/user">Command Palette</a></li>
+        <li><a href="/docs/user">Keyboard Shortcuts</a></li>
         <li><a href="/docs/user">Backend Extensions</a></li>
       </ul>
       <h5><a href="/docs/dev">Developer Guide</a></h5>
