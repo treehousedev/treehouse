@@ -38,8 +38,12 @@
           </ul>
           <h5><a href="/docs/user">User Guide</a></h5>
           <ul>
-            <li><a href="/docs/user">Using the Interface</a></li>
-            <li><a href="/docs/user">Workspace Model</a></li>
+            <li><a href="/docs/user">What is Treehouse?</a></li>
+            <li><a href="/docs/user">Data Storage</a></li>
+            <li><a href="/docs/user">Nodes</a></li>
+            <li><a href="/docs/user">Calendar</a></li>
+            <li><a href="/docs/user">Command Palette</a></li>
+            <li><a href="/docs/user">Keyboard Shortcuts</a></li>
             <li><a href="/docs/user">Backend Extensions</a></li>
           </ul>
           <h5><a href="/docs/dev">Developer Guide</a></h5>
@@ -59,82 +63,108 @@
         </nav>
         <article class="grow">
           <h1 id="user-guide">User Guide</h1>
-          <h2 id="using-the-interface">Using the Interface</h2>
-          <p>In short, the Treehouse interface lets you view and manipulate workspaces, which are explained in the next section.
-            In this section, we&#39;ll go over the basic elements of the interface.</p>
-          <h3 id="outline-editor">Outline Editor</h3>
-          <p>The main element of the interface is the outline editor. This is where the majority of interaction with workspace
-            nodes happens and behaves similar to Workflowy, Tana, and other outliners. Nodes with children can be expanded
-            to be viewed inline, etc. For the most part, nodes can be edited as if they were an outline in a text editor.</p>
-          <p>For every node there is a menu dropdown that can be used to access basic commands that can be performed on a node.
-            You can also perform these commands via keyboard shortcuts or the command palette, which are talked about in more
-            detail below.</p>
-          <h3 id="panels">Panels</h3>
-          <p>The outline editor is typically shown inside a panel. Typically there is just one main panel, but you have the
-            option to open nodes in new panels so you can work with different parts of the workspace side-by-side. When multiple
-            panels are open you can close a panel, or expand it, which closes all other panels. </p>
-          <p>You can also &quot;zoom&quot; into a child node of the outline in a panel, making it the top level node for a panel. When
-            you do this, you can go &quot;back&quot; to zoom back out to the previous node the panel was focused on.</p>
-          <h3 id="navigation-bar">Navigation Bar</h3>
-          <p>The navigation bar on the left shows the top nodes of your workspace, allowing them to function as navigation items.
-            This bar can be collapsed if not needed.</p>
-          <h3 id="top-bar">Top Bar</h3>
-          <p>The top bar provides immediate search, quick links to special functionality, and a main menu. This is self explanatory
-            other than the special functionality:</p>
+          <h2 id="what-is-treehouse-">What is Treehouse?</h2>
+          <p>Treehouse is an outline editor, which you can think of as a nested bulleted list. Each bullet item is called a <strong>node</strong>. You can use the nodes to create nested layers of folders and notes.</p>
+          <h2 id="data-storage">Data storage</h2>
+          <h3 id="localstorage">Localstorage</h3>
+          <p>By default, data is stored in your browser’s local storage. That means that the data is linked to your specific browser and device. If you clear your browser cache, the data will be wiped.</p>
+          <h3 id="github">GitHub</h3>
+          <p>If you choose to log in with GitHub, we’ll create a repository and store your data there.</p>
+          <p>To store your workspace, we will create a public repository called <username>.treehouse.sh if it doesn’t already exist. If you want to make the repository private, you can do so in GitHub.</p>
+          <p>To switch back to the local storage backend, log out from the Options menu.</p>
+          <h4 id="multiple-sessions">Multiple sessions</h4>
+          <p>If you log in to Treehouse from multiple devices, the most recent device will have edit and save access. Other sessions will be prompted to refresh the page; if/when you do so, that session becomes the new active session.</p>
+          <h2 id="nodes">Nodes</h2>
+          <p>Your <strong>Workspace</strong> is your top level node, which all other nodes are nested under.</p>
+          <p>Learn how to manage and edit your nodes.</p>
+          <h3 id="add">Add</h3>
+          <p>You can add a new node in a few ways.</p>
+
+          <ol>
+            <li>Hit ENTER on your keyboard and start typing.</li>
+            <li>Click into the blank area next to the plus symbol and start typing.</li>
+          </ol>
+          <h3 id="indent">Indent</h3>
 
           <ul>
-            <li><strong>Today</strong> - This takes you to a special node representing the current date, which is automatically organized under the Calendar node.</li>
-            <li><strong>Quick Add</strong> - This brings up a modal for quickly adding to your workspace without thinking about where it will be put. Currently,
-              this will append it to the Today node for that day.</li>
+            <li>Indent a node using TAB ↹</li>
+            <li>Outdent a node using SHIFT + TAB ⇧ ↹</li>
           </ul>
-          <h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
-          <p>All user operations in Treehouse are encapsulated as commands, which are exposed via menus or the command palette, but can also be triggered
-            directly by keyboard shortcuts. Here is a list of the default keyboard shortcuts:</p>
+          <h3 id="move">Move</h3>
 
           <ul>
-            <li>TODO</li>
+            <li>Move a node up with SHIFT + COMMAND + UP ARROW ⇧ <strong>⌘ ↑</strong></li>
+            <li>Move a node down with SHIFT + COMMAND + DOWN ARROW ⇧ <strong>⌘</strong> ↓</li>
           </ul>
+          <h3 id="expand-or-collapse-a-node">Expand or collapse a node</h3>
+          <p>If a node bullet has an outline around it, that’s an indication that it has nested content that is currently hidden. Click the node to expand it. </p>
+          <p>Click an expanded node once to collapse it.</p>
+          <h3 id="node-menu">Node menu</h3>
+          <p>When you hover over a node, you’ll see a menu to the left of the node bullet. Click it to access node options, such as indent/outdent, open in a panel, etc.</p>
+          <h3 id="node-formatting">Node formatting</h3>
+          <p>Currently, all nodes are formatted as plain text. You can, however, add a checkbox to a node. With a node selected, open the command palette (⌘ K) and select &quot;Add checkbox&quot;.</p>
+          <h3 id="view">View</h3>
+          <p>Double click a node to zoom in.</p>
+          <h3 id="side-by-side-panel-view">Side-by-side (Panel) view</h3>
+          <p>To view two nodes side-by-side:</p>
+          <p>Open the node you want to be in the righthand panel. From its menu, choose “Open in New Panel”.</p>
+          <p>You can close or expand either panel to return to a single panel view.</p>
+          <h2 id="calendar">Calendar</h2>
+          <p>The Calendar is a default node that is automatically generated for every workspace. Nodes inside the calendar are grouped by date, week, then year.</p>
+          <h3 id="today">Today</h3>
+          <p>The Today shortcut allows you to quickly view the node for Today in your Calendar.</p>
+          <h3 id="quick-add">Quick Add</h3>
+          <p>Quick Add in the top navigation is a shortcut that opens a modal in which you can jot a quick note. It will be added to today’s date in your Calendar. </p>
           <h2 id="command-palette">Command Palette</h2>
-          <p>You can bring up the command palette with its keyboard shortcut to access any command that can be run at that time. The command palette is
-            aware of what node and panel is currently selected. If no node is actively being edited, it will show commands for the top level node of the
-            main panel.</p>
-          <h2 id="workspace-model">Workspace Model</h2>
-          <p>The &quot;document&quot; of Treehouse is the workspace, which is just a network of nodes. Right now, nodes are mostly just text nodes, but nodes can also
-            represent more than text. For example, you can add a checkbox to a node, which adds a checkbox &quot;component&quot; to a node. So to better reason about
-            workspace nodes, let&#39;s go over the basic rules of a workspace:</p>
-          <h4 id="everything-is-a-node">Everything is a node</h4>
-          <p>Once again, everything is a node. The navigation for your workspace comes from the top level nodes of your workspace. As new functionality is added
-            to Treehouse, they will also be represented as nodes. </p>
-          <h4 id="nodes-can-have-children">Nodes can have children</h4>
-          <p>As you&#39;d expect from any outliner or tree-like structure, any node can have child nodes that belong to that parent node. </p>
-          <h4 id="nodes-can-be-pages">Nodes can be pages</h4>
-          <p>When you open a node from navigation or by double-clicking any node, you&#39;re opening a panel rooted in that node. In that way, the node becomes a page. </p>
-          <h4 id="nodes-can-have-checkboxes">Nodes can have checkboxes</h4>
-          <p>Adding a checkbox to a node adds a checkbox component to the node with the state of that checkbox. The outline editor knows to show nodes with checkbox
-            components as having a checkbox at the beginning of the text.</p>
-          <h4 id="nodes-can-have-markdown">Nodes can have Markdown</h4>
-          <p>Although all node text <em>should</em> eventually support Markdown, for the moment, you can add a Markdown component to a node that contains Markdown text.
-            This is shown when you open a node as a page above the usual outline. </p>
-          <h4 id="nodes-can-be-more-">Nodes can be more...</h4>
-          <p>New kinds of nodes are simply nodes with new kinds of components. This is not fully utilized yet, but is mentioned as a taste of things to come.</p>
+          <p>With a node selected, open the command palette (⌘ K) to view all the available actions for that node.</p>
+          <h2 id="keyboard-shortcuts">Keyboard shortcuts</h2>
+          <table border="1" cellpadding="8">
+            <tbody>
+              <tr>
+                <td>indent</td>
+                <td>↹</td>
+              </tr>
+              <tr>
+                <td>outdent</td>
+                <td>⇧ ↹</td>
+              </tr>
+              <tr>
+                <td>move node up</td>
+                <td>⇧ ⌘ ↑</td>
+              </tr>
+              <tr>
+                <td>move node down</td>
+                <td>⇧ ⌘ ↓</td>
+              </tr>
+              <tr>
+                <td>delete node</td>
+                <td>⇧ ⌘ ⌫</td>
+              </tr>
+              <tr>
+                <td>add or remove checkbox</td>
+                <td>⌘ ↵</td>
+              </tr>
+              <tr>
+                <td>mark checkbox as done</td>
+                <td>⌘ ↵</td>
+              </tr>
+              <tr>
+                <td>open command palette</td>
+                <td>⌘ K</td>
+              </tr>
+            </tbody>
+          </table>
+
           <h2 id="backend-extensions">Backend Extensions</h2>
-          <p>Your user experience may vary depending on the deployment of the Treehouse frontend. Backends can
-            change or extend how a Treehouse application behaves and are exposed to the frontend via adapters.
-            Below are some of the ways a backend can change the user experience.</p>
+          <p>Backends can change or extend how a Treehouse application behaves and are exposed to the frontend via adapters.</p>
           <h3 id="workspace-storage">Workspace Storage</h3>
-          <p>The Treehouse frontend uses its backend adapter to store the state of your workspace into a JSON document.
-            The backend can decide where and how that JSON document is stored. For example, the Browser backend adapter
-            will store the JSON into localStorage, the GitHub backend adapter will store it into a file in a GitHub hosted
-            repository, etc. This is the biggest part of what a backend adapter provides.</p>
+          <p>The Treehouse frontend uses its backend adapter to store the state of your workspace into a JSON document. The backend can decide where and how that JSON document is stored. For example, the Browser backend adapter will store the JSON into localStorage.</p>
           <h3 id="user-authentication">User Authentication</h3>
-          <p>An optional capability of the frontend is to know whether a particular user is authenticated. This is optional
-            because, for example, in a local desktop application you may not want (or even expect) to need to login to use this
-            frontend. However, for cloud or web-based deployments, you typically want user authentication and some backends
-            will require it, such as the GitHub backend.</p>
+          <p>An optional capability of the frontend is to know whether a particular user is authenticated. You typically want user authentication for cloud or web-based deployments, but not necessarily for a local desktop app.</p>
           <h3 id="search-indexing">Search Indexing</h3>
           <p>Out of the box, Treehouse will index your workspace for full-text search using <a href="https://lucaong.github.io/minisearch/">Minisearch</a>,
             which will be good enough for many cases. However, a backend adapter can choose to hook into the index and searching
-            so that you could have a more powerful search index, like for example ElasticSearch. </p>
+            so that you could have a more powerful search index such as ElasticSearch. </p>
         </article>
       </div>
     </section>

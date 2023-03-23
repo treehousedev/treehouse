@@ -109,12 +109,6 @@
   color: var(--blue-600);
 }
 
-li {
-  padding: var(--1);
-  line-height: var(--8);
-
-}
-
 
 
 /* treehouse specific */
@@ -194,26 +188,33 @@ body > #subscribe {
 
 article .author {
   font-weight: var(--weight-semibold);
-  line-height: var(--7);
 }
 article .date, body.blog > section nav > div .date {
   color: var(--gray-600);
   line-height: var(--7);
   margin-bottom: var(--4);
 }
-article h2, article h3 {
-  margin-bottom: var(--3);
+article h2, article h3, article h4 {
+  margin-bottom: var(--2);
 }
 article h2 {
-  margin-top: var(--8);
+  margin-top: var(--12);
 }
 article h3 {
-    margin-top: var(--7);
+  margin-top: var(--7);
+}
+article h4 {
+  margin-top: var(--6);
+}
+article ul {
+  margin-top: 0px;
+}
+article p, li {
+  line-height: var(--7);
 }
 article p {
   margin-top: 0px;
-  margin-bottom: var(--4);
-  line-height: var(--8);
+  margin-bottom: var(--3);
 }
 article img {
   margin-top: var(--2);
