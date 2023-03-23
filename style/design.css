@@ -81,8 +81,11 @@
 }
 
 .h1,h1,.h2,h2,.h3,h3,.h4,h4,.h5,h5 {
-  line-height: 1.4;
+  line-height: 1.1;
   font-weight: var(--weight-extrabold);
+}
+.h2,h2,.h3,h3,.h4,h4,.h5,h5 {
+  font-weight: var(--weight-bold);
 }
 .h1,h1 {
   font-size: var(--h1-size);
@@ -104,6 +107,12 @@
   font-weight: var(--weight-semibold);
   text-decoration: underline;
   color: var(--blue-600);
+}
+
+li {
+  padding: var(--1);
+  line-height: var(--8);
+
 }
 
 
@@ -193,23 +202,22 @@ article .date, body.blog > section nav > div .date {
   margin-bottom: var(--4);
 }
 article h2, article h3 {
-  margin-bottom: var(--4);
-  margin-top: var(--4);
+  margin-bottom: var(--3);
 }
 article h2 {
   margin-top: var(--8);
 }
-article p {
-  margin-top: var(--2);
-  margin-bottom: var(--2);
-  line-height: var(--7);
+article h3 {
+    margin-top: var(--7);
 }
-article p:first-child {
-  margin-top: var(--4);
+article p {
+  margin-top: 0px;
+  margin-bottom: var(--4);
+  line-height: var(--8);
 }
 article img {
   margin-top: var(--2);
-  margin-bottom: var(--2);
+  margin-bottom: var(--4);
   width: 100%;
 }
 article a {
@@ -429,6 +437,7 @@ a.row {
 }
 .grow {
   flex-grow: 1;
+  max-width: 768px;
 }
 .text-center {
   text-align: center;
