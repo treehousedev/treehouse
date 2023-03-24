@@ -16,7 +16,7 @@ If you want to use our CSS, you'll also need to include the Google Font it uses:
 
 ```html
 <link href="https://treehouse.sh/app/main.css" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,600;0,700;0,400&display=swap" rel="stylesheet" />
 ```
 
 Then you just need some JavaScript to import and call setup with a built-in or custom backend adapter:
