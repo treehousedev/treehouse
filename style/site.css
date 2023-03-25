@@ -199,26 +199,42 @@ input[type="text"] {
   background-color: var(--primary);
 }
 
+code:not(pre > code), pre > code > div {
+  background-color: var(--gray-900);
+  color: var(--white);
+  font-size: smaller;
+  line-height: var(--6);
+  border-radius: 4px;
+  padding: var(--2);
+}
+
 pre > code > div {
   display: flex;
-  font-size: smaller;
   overflow-x: auto;
-  padding-bottom: var(--2);
-  padding-top: var(--2);
-  box-shadow: inset -4px 0px 6px -4px #ccc;
 }
 
-code:not(pre > code) {
-  background-color: var(--gray-800);
-  color: var(--white);
-  border-radius: 4px;
-  padding-left: var(--1);
-  padding-right: var(--1);
-  padding-top: var(--1);
-  padding-bottom: var(--1);
+/*code editor color theme (temporarily borrowed from nite owl)*/
+.shj-numbers, .shj-syn-cmnt {
+  color: var(--gray-100);
 }
-
-
+.shj-syn-insert, .shj-syn-str {
+  color: #AEDB67;
+}
+.shj-syn-deleted, .shj-syn-var {
+  color: #55A3E2;
+}
+.shj-syn-oper {
+  color: #ED524D;
+}
+.shj-syn-class {
+  color: #C792EA;
+}
+.shj-syn-kwd {
+  color: #80DBCA;
+}
+.shj-syn-section, .shj-syn-func {
+  color: #FEEB95
+}
 
 /* Responsive */
 
