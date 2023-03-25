@@ -60,12 +60,8 @@
 
   --weight-light: 300;
   --weight-regular: 400;
- /* let's not use medium
-  --weight-medium: 500;*/
   --weight-semibold: 600;
   --weight-bold: 700;
-  --weight-extrabold: 800;
-  --weight-black: 900;
 
   --layer-1: 10;
   --layer-2: 20;
@@ -82,7 +78,7 @@
 
 .h1,h1,.h2,h2,.h3,h3,.h4,h4,.h5,h5 {
   line-height: 1.1;
-  font-weight: var(--weight-extrabold);
+  font-weight: var(--weight-bold);
 }
 .h2,h2,.h3,h3,.h4,h4,.h5,h5 {
   font-weight: var(--weight-bold);
