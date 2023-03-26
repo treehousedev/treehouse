@@ -1,4 +1,9 @@
-
+/**
+ * Manifold is an extensible node tree system. This is a crude JavaScript
+ * implementation and a work-in-progress. API should be considered unstable.
+ * 
+ * @module
+ */
 import { componentName, getComponent } from "./components.ts";
 
 export interface RawNode {

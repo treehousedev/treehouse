@@ -1,3 +1,21 @@
+/**
+ * A configurable, embeddable frontend for a graph/outline based note-taking tool.
+ * 
+ * Treehouse can be embedded on a page and given a backend for a fully functional
+ * SPA. The backend adapter provides hooks to integrate with various backends.
+ * 
+ * Typical usage involves including resource dependencies on the page then running:
+ * 
+ * ```ts
+ * import {setup, BrowserBackend} from "https://treehouse.sh/lib/treehouse.min.js";
+ * setup(document, document.body, new BrowserBackend());
+ * ```
+ * 
+ * In this case using the built-in BrowserBackend to store state in localStorage.
+ * For more information see the [Quickstart Guide](https://treehouse.sh/docs/quickstart/).
+ * 
+ * @module
+ */
 import { Workbench } from "./workbench.ts";
 import { App } from "./ui/app.tsx";
 import { Backend } from "./backend/mod.ts";
@@ -24,7 +42,14 @@ export class Page {
   }
 }
 
-
+/**
+ * setup initializes and mounts a workbench UI with a given backend adapter to a document.
+ * More specifically, first it initializes the given backend, then creates and initializes
+ * a Workbench instance with that backend, then it mounts the App component to the given
+ * target element. It will also add some event listeners to the document and currently
+ * this is where it registers all the built-in commands and their keybindings, as well
+ * as menus. 
+ */
 export async function setup(document: Document, target: HTMLElement, backend: Backend) {
   if (backend.initialize) {
     await backend.initialize();

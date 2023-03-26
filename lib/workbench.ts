@@ -4,7 +4,11 @@ import { CommandRegistry } from "./action/commands.ts";
 import { Module, Node, RawNode } from "./manifold/mod.ts";
 import { MenuRegistry } from "./action/menus.ts";
 
-
+/**
+ * Context is a user context object interface. This is used to
+ * track a global context for the user, mainly what node(s) are selected,
+ * but is also used for local context in commands.
+ */
 export interface Context {
   node: Node|null;
   nodes?: Node[];
@@ -12,6 +16,11 @@ export interface Context {
   panel: Panel;
 }
 
+/**
+ * Panel is a container for viewing an open node. It also has a history
+ * stack so you can "zoom" into subnodes and return back to previous nodes.
+ * The original node the panel was opened for is the headNode.
+ */
 export class Panel {
   id: string;
   history: Node[];
@@ -38,7 +47,14 @@ export class Panel {
   }
 }
 
-
+/**
+ * Workspace is a container for nodes and manages marshaling them using
+ * the FileStore backend API. It also keeps track of what nodes have been
+ * expanded and what node was last opened. It serializes as JSON with a
+ * version indicator and will handle migrations of old versions to the 
+ * latest when loading. Saving is currently debounced here so this applies
+ * to all backends. 
+ */
 class Workspace {
   fs: FileStore;
   module: Module;
@@ -191,7 +207,14 @@ function debounce(func, timeout = 3000){
   };
 }
 
-
+/**
+ * Workbench is the top-level controller for the Treehouse frontend.
+ * 
+ * It manages the user action registries, open panels, open workspace,
+ * user context, and provides an API used by UI components to 
+ * trigger various pop-overs, work with quick add, or anything else
+ * not provided by the backend or workspace.
+ */
 export class Workbench {
   commands: CommandRegistry;
   keybindings: KeyBindings;
