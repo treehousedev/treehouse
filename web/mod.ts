@@ -78,7 +78,8 @@ export function index(path: string): any[] {
     maxDepth: 1,
     exts: ['.md'],
   })) {
-    const page = matter(Deno.readTextFileSync(e.path));
+    const extract = createExtractor({ [Format.YAML]: parseYAML as Parser });
+    const page = extract(Deno.readTextFileSync(normalize(e.path)));
     page.path = e.path.replace(pagedir, "").replace(extname(e.path), "");
     pages.push(page);
   }
@@ -90,8 +91,8 @@ export function groupByYear(idx) {
 }
 
 export function byDate(a, b) {
-  const nameA = a.data.date.toUpperCase(); // ignore upper and lowercase
-  const nameB = b.data.date.toUpperCase(); // ignore upper and lowercase
+  const nameA = a.attrs.date.toUpperCase(); // ignore upper and lowercase
+  const nameB = b.attrs.date.toUpperCase(); // ignore upper and lowercase
   if (nameA < nameB) {
     return -1;
   }

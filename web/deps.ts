@@ -16,3 +16,5 @@ export function page(attrs, view) {
   }
   return page;  
 }
+
+export { index } from "./mod.ts";

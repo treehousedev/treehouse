@@ -1,6 +1,10 @@
 import {m} from "../deps.ts";
 import layout from "./default.tsx";
-export default {view: ({attrs, children}) => m(layout, Object.assign({title: "Docs"}, attrs),
+export default {view: ({attrs, children}) => m(layout, Object.assign({
+  active: "docs",
+  title: "Docs", 
+  heading: "Documentation"
+}, attrs),
 <section>
   <div class="row justify-center items-start" style="gap: var(--16);">
     <nav class="md:hidden" style="flex: none; min-width: 256px; position: sticky; top: 0px;">
