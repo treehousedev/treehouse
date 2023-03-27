@@ -6,8 +6,8 @@ export default {view: ({attrs, children}) => m(layout, Object.assign({
   heading: "Documentation"
 }, attrs),
 <section>
-  <div class="row justify-center items-start" style="gap: var(--16);">
-    <nav class="md:hidden" style="flex: none; min-width: 256px; position: sticky; top: 0px;">
+  <div class="row justify-center items-start sm:stack" style="gap: var(--16);">
+    <nav style="flex: none; min-width: 256px;">
       <h5><a href="/docs/quickstart">Quickstart</a></h5>
       <ul>
         <li><a href="/docs/quickstart#using-from-cdn">Using from CDN</a></li>

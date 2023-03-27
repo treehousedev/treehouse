@@ -140,6 +140,9 @@ body.blog > section nav > div {
   line-height: var(--7);
 }
 
+body.docs > section nav {
+  position: sticky; top: 0px;
+}
 body.docs > section nav ul {
   list-style-type: none;
   margin-top: 0;
@@ -293,6 +296,10 @@ pre > code > div {
     --h1-size: var(--8);
     --h2-size: var(--6);
     --h3-size: var(--5);
+  }
+
+  body.docs > section nav {
+    position: relative;
   }
 
   body > header > nav {
