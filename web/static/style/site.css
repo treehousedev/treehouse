@@ -61,7 +61,7 @@ body > section.title {
   padding-bottom: var(--8);
 
   font-size: var(--16);
-  font-weight: var(--weight-extrabold);
+  font-weight: var(--weight-bold);
 }
 body > section.title > * {
   filter: drop-shadow(2px 2px 0px var(--black));
