@@ -104,7 +104,10 @@ export const Search: m.Component = {
               outline: "0", 
               background: "transparent", 
               marginLeft: "var(--1)",
-              marginRight: "var(--padding)"}} />
+              marginRight: "var(--padding)",
+              fontSize: "14px",
+              fontWeight: "600",
+              paddingTop: "3px"}} />
           </div>
           {(state.results.length > 0)?
             <div class="results" style={{
