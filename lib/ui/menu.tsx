@@ -26,7 +26,7 @@ export const Menu: m.Component = {
   top: `${y}px`,
   border: "1px solid var(--dark)",
   borderRadius: "0.25rem",
-  padding: "0.25rem 0 0.25rem 0",
+  padding: "0 0 0.25rem 0",
   display: "inline-block",
   background: "white",
   filter: "drop-shadow(2px 2px 4px #5555)",

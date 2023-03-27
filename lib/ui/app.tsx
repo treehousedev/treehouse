@@ -21,7 +21,7 @@ export const App: m.Component = {
           <div style={{padding: "var(--padding)", borderBottom: "1px solid var(--gray-200)", height: "56px"}}>
             <img src="/icon_transparent.png" style={{opacity: "40%", width: "20px", height: "20px"}} />
           </div>
-          <div class="grow" style={{padding: "var(--padding)", color: "var(--gray-900)", fontWeight: "500"}}>
+          <div class="grow" style={{padding: "var(--padding)", color: "var(--gray-900)", fontWeight: "600"}}>
             {state.open && workbench.workspace.module.getRoot().getChildren().map(node => <NavNode node={node} expanded={true} level={0} workbench={workbench} />)}
           </div>  
           <div style={{padding: "var(--padding)", color: "var(--gray-500)"}}>
@@ -47,12 +47,12 @@ export const App: m.Component = {
                 <text text-anchor="middle" x="8" y="13" style={{fontSize: "0.55rem"}}>{(new Date()).getDate()}</text>
               </svg>*/}
               <svg style={{marginRight: "var(--1)"}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-              <div>Today</div>
+              <div style={{paddingTop: "4px"}}>Today</div>
             </div>
             
             <div onclick={() => workbench.openQuickAdd()} style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)", display: "flex", alignItems: "center"}}>
               <svg style={{marginRight: "var(--1)"}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-              <div>Quick Add</div>
+              <div style={{paddingTop: "4px"}}>Quick Add</div>
             </div>
             
 
@@ -107,7 +107,7 @@ const NavNode: m.Component = {
     }
     return (
       <div>
-        <div style={{display: "flex", paddingBottom: "var(--1)", paddingTop: "var(--1)"}}>
+        <div style={{display: "flex", paddingBottom: "var(--2)" }}>
           <svg onclick={toggle} style={{cursor: "pointer", flexShrink: "0", paddingTop: "0px", marginRight: "0.125rem"}} class="feather feather-chevron-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">          
             {(expandable)
                 ?(state.expanded)
