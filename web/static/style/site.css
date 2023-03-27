@@ -36,6 +36,8 @@ body > header > nav .item.active {
 body > footer {
   color: var(--white);
   background-color: var(--black);
+  background-image: url("/halftone_white_15.png");
+  background-size: 50px 50px;
 }
 body > footer > nav {
   padding-top: var(--8);
@@ -74,7 +76,23 @@ body > #subscribe {
   background-color: var(--gray-100);
   margin-top: var(--16);
 }
-
+body > section.alt {
+  background-color: var(--gray-100);
+  background-image: url("/halftone_white_50.png");
+  background-size: 50px 50px;
+}
+body > section.hero .dropshadow {
+    border-radius: 10px;
+    position: absolute;
+    margin-left: 18px;
+    margin-top: 18px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 420px;
+    background-image: url("/halftone_green.png");
+    background-size: 50px 50px;
+}
 article .author {
   font-weight: var(--weight-semibold);
 }
