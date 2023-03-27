@@ -1,14 +1,16 @@
 
 import * as esbuild from "https://deno.land/x/esbuild@v0.17.2/mod.js";
 
-console.log("Creating bundle...");
+var outfile = "web/static/lib/treehouse.min.js";
+
+console.log(`Creating bundle at ${outfile} ...`);
 await esbuild.build({
   entryPoints: ["lib/mod.ts"],
   bundle: true,
-  outfile: "web/static/lib/treehouse.min.js",
+  outfile: outfile,
   jsxFactory: "m",
   format: "esm",
-  minify: false
+  minify: true
 });
 esbuild.stop();
 console.log("Finished!");
