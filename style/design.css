@@ -105,6 +105,10 @@
   color: var(--blue-600);
 }
 
+::placeholder {
+  color: var(--gray-400) !important;
+}
+
 /* Treehouse Utilities */
 
 .text-small {
