@@ -31,7 +31,7 @@ export default {view: ({attrs, children}) => (
         </svg>
         <span>GitHub</span>
       </a>
-      <a class="button primary md:hidden" href="https://treehouse.sh/demo/">
+      <a class="button primary md:hidden" href="/demo/">
         <span>Try the Demo</span>
       </a>
     </nav>
