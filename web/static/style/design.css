@@ -125,6 +125,20 @@ a.row {
   gap: 0.375rem;
 }
 
+.\? {
+  border: 1px solid red;
+}
+
+.\?\? {
+  border: 1px solid green;
+}
+
+.\?\?\? {
+  border: 1px solid blue;
+} 
+
+
+
 
 /* Tailwind Utilities */
 
@@ -166,16 +180,4 @@ a.row {
   left: 0px;
 }
 .absolute { position: absolute; }
-
-.\? {
-  border: 1px solid red;
-}
-
-.\?\? {
-  border: 1px solid green;
-}
-
-.\?\?\? {
-  border: 1px solid blue;
-} 
 

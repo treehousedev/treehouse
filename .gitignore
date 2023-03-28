@@ -2,3 +2,4 @@
 /web/static/lib/treehouse.js
 /web/static/lib/treehouse.min.js
 /local
+.DS_Store
