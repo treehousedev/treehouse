@@ -5,8 +5,6 @@
   --font: 'Figtree', sans-serif;
 }
 
-<<<<<<< Updated upstream
-=======
 /*------------GLOBAL APP STYLES------------*/
 
 body {
@@ -21,7 +19,6 @@ body, input, textarea, button {
   font-family: var(--font);
   font-weight: var(--weight-regular);
 }
->>>>>>> Stashed changes
 
 button {
   box-sizing: content-box;
@@ -39,7 +36,42 @@ button.primary {
   border: none;
 }
 
-
+/*------------SEARCH------------*/
+.search {
+  border: none;
+  background: none;
+  margin: 0 var(--padding);
+}
+.search > div {
+  width: 95%;
+  padding: calc(var(--padding)/2);
+  margin: calc(var(--padding)/-2);
+  position: absolute;
+}
+.search.active > div {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--white);
+  z-index: var(--layer-top);
+}
+.search .results {
+  margin-top: var(--padding);
+  font-weight: var(--weight-regular);
+}
+.search .results > div {
+  padding: calc(var(--padding)/2);
+  line-height: var(--body-line-height);
+}
+.search input {
+  width: 99%;
+  margin: 0 var(--padding) 0 var(--1);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-small);
+}
+.palette .selected, .search .selected {
+  background: var(--gray-200);
+  border-radius: var(--border-radius);
+}
 
 /*------------NOTICES------------*/
 
@@ -55,7 +87,7 @@ button.primary {
 .notice p {
   line-height: var(--body-line-height);
 }
-.notice button+button {
+.notice .button-bar button+button {
   margin-left: var(--padding);
 }
 .notice .button-bar {
@@ -69,32 +101,6 @@ main {
   background-color: var(--white);
 }
 
-<<<<<<< Updated upstream
-
-input::placeholder {
-  opacity: 1;
-  color: var(--dark);
-}
-
-body, input, textarea, button {
-  color: #444;
-  font-size: 1rem;
-  font-family: var(--font);
-  font-weight: 400;
-}
-
-body {
-  zoom: 1;
-  margin: 0;
-  /* font-family: 'Recursive', sans-serif; */
-  font-family: var(--font);
-  color: #444;
-  height: 100%;
-  background: var(--background);
-}
-
-=======
->>>>>>> Stashed changes
 .menu li:not(.disabled):hover {
   background: #666;
   color: white;
@@ -105,37 +111,16 @@ body {
   cursor: pointer;
 }
 
-.palette .selected, .search .selected {
-  background: #666;
-  color: white;
-  border-radius: 0.25rem;
-}
-
 hr {
   border: 0;
-  border-bottom: 1px solid var(--dark);
+  border-bottom: 1px solid var(--border-color);
 }
 
-<<<<<<< Updated upstream
-button {
-  border-radius: 0.25rem;
-  background-color: white;
-  border: 1px solid var(--dark);
-  cursor: pointer; 
-}
-
-.search .results > div {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-}
-
-=======
->>>>>>> Stashed changes
 .\? { border: 1px solid red !important; }
 
 
 
-
+/*------------LOADING ANIMATION------------*/
 .lds-ripple {
   display: inline-block;
   position: absolute;
