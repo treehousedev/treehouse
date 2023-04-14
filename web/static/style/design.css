@@ -75,6 +75,13 @@
   --h1-size: var(--12);
   --h2-size: var(--8);
   --h3-size: var(--6);
+
+  --border-radius: var(--1);
+  --border-color: var(--gray-400);
+
+  --body-line-height: 1.5;
+  --text-small: 0.875rem;
+
 }
 
 .h1,h1,.h2,h2,.h3,h3,.h4,h4,.h5,h5 {
@@ -113,6 +120,7 @@
 
 /* Treehouse Utilities */
 
+/*TO DO: replace this with a variable*/
 .text-small {
   font-size: 0.875rem;
 }

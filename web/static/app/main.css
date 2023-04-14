@@ -18,7 +18,6 @@ body, input, textarea, button {
   font-size: 1rem;
   font-family: var(--font);
   font-weight: var(--weight-regular);
-}
 
 button {
   box-sizing: content-box;
