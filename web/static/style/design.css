@@ -108,6 +108,7 @@
 
 ::placeholder {
   color: var(--gray-400) !important;
+  opacity: 1;
 }
 
 /* Treehouse Utilities */
