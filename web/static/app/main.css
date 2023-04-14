@@ -11,15 +11,29 @@ body {
   zoom: 1;
   margin: 0;
   height: 100%;
-  background: var(--background);
+  background: var(--gray-100);
 }
 body, input, textarea, button {
   color: var(--black);
   font-size: 1rem;
   font-family: var(--font);
   font-weight: var(--weight-regular);
-}
 
+button {
+  box-sizing: content-box;
+  height: 48px;
+  font-weight: var(--weight-bold);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background-color: var(--white);
+  cursor: pointer; 
+  padding: 0 calc(var(--padding)*2);
+}
+button.primary {
+  color: var(--white);
+  background-color: var(--primary);
+  border: none;
+}
 
 /*------------SEARCH------------*/
 .search {
@@ -58,21 +72,32 @@ body, input, textarea, button {
   border-radius: var(--border-radius);
 }
 
+/*------------NOTICES------------*/
+
+.notice {
+  border-radius: var(--border-radius);
+  width: 40rem;
+  padding: calc(var(--padding)*2);
+  background-color: var(--white);
+}
+.notice h3 {
+  margin-bottom: calc(var(--padding)*1.5);
+}
+.notice p {
+  line-height: var(--body-line-height);
+}
+.notice .button-bar button+button {
+  margin-left: var(--padding);
+}
+.notice .button-bar {
+  text-align: right;
+  margin-top: var(--padding);
+}
 
 /* TO REVIEW OR REMOVE */
 
-:root {
-  --dark: #e0e0e0;
-  --background: #fafbfb;
-}
-
 main {
   background-color: var(--white);
-}
-
-input::placeholder {
-  opacity: 1;
-  color: var(--dark);
 }
 
 .menu li:not(.disabled):hover {
@@ -88,13 +113,6 @@ input::placeholder {
 hr {
   border: 0;
   border-bottom: 1px solid var(--border-color);
-}
-
-button {
-  border-radius: var(--border-radius);
-  background-color: white;
-  border: 1px solid var(--border-color);
-  cursor: pointer; 
 }
 
 .\? { border: 1px solid red !important; }
