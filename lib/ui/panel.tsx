@@ -29,16 +29,18 @@ export const Panel = {
       return newHeight;
     }
     return <div class="panel flex flex-col grow" style={{
-        marginTop: "var(--4)", 
-        marginLeft: "var(--12)", 
-        marginRight: "var(--12)", 
+        marginTop: "var(--padding)", 
+        marginLeft: "calc(var(--padding)*2)", 
+        marginRight: "calc(var(--padding)*2)", 
         paddingBottom: "var(--padding)"}}>
       <div class="bar" style={{
         display: "flex", 
         fontSize: "0.875rem",
         color: "var(--gray-600)", 
         gap: "var(--padding)", 
-        marginBottom: "var(--8)"}}>
+        paddingLeft: "var(--padding)",
+        paddingRight: "var(--padding)",
+        marginBottom: "calc(var(--padding)*1.5)"}}>
         {(panel.history.length>1)?
           <div style={{rightPadding: "var(--padding)"}}>
             <svg onclick={goBack} xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
@@ -46,7 +48,9 @@ export const Panel = {
             </svg>
           </div>
         :null}
-        <div style={{flexGrow: "1"}}>
+        <div style={{
+          flexGrow: "1"
+          }}>
           {(node.getParent() && node.getParent().ID !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workbench.open(node.getParent())}>{node.getParent().getName()}</span> : <span>/</span>}
         </div>
         {(workbench.panels.flat().length>1)?
@@ -56,7 +60,10 @@ export const Panel = {
           </div>
         :null}
       </div>
-      <div class="body flex flex-col">
+      <div class="body flex flex-col" style={{
+        paddingLeft: "var(--padding)",
+        paddingRight: "var(--padding)"
+      }}>
         <div oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} data-menu="node" style={{
             fontSize: "var(--6)",
             color: "var(--gray-900)",

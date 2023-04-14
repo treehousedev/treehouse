@@ -1,10 +1,20 @@
 @import url(../style/design.css);
 
 :root {
-  --dark: #e0e0e0;
   --padding: 1rem;
-  --background: #fafbfb;
   --font: 'Figtree', sans-serif;
+}
+
+
+
+
+
+
+/* TO REVIEW OR REMOVE */
+
+:root {
+  --dark: #e0e0e0;
+  --background: #fafbfb;
 }
 
 main {
