@@ -84,8 +84,10 @@ export const Search: m.Component = {
       
     }
 
+
+
     return (
-      <div class="search" style={{position: "relative", display: "flex", flexGrow: "1",  marginLeft: "var(--padding)", marginRight: "var(--padding)"}}>
+      <div class={(state.results.length > 0)?"search active":"search"} style={{position: "relative", display: "flex", flexGrow: "1",  marginLeft: "var(--padding)", marginRight: "var(--padding)"}}>
         <div style={{
             width: "95%",
             padding: "calc(var(--padding)/2)",
