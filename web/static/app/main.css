@@ -5,9 +5,58 @@
   --font: 'Figtree', sans-serif;
 }
 
+/*------------GLOBAL APP STYLES------------*/
+
+body {
+  zoom: 1;
+  margin: 0;
+  height: 100%;
+  background: var(--background);
+}
+body, input, textarea, button {
+  color: var(--black);
+  font-size: 1rem;
+  font-family: var(--font);
+  font-weight: var(--weight-regular);
+}
 
 
-
+/*------------SEARCH------------*/
+.search {
+  border: none;
+  background: none;
+  margin: 0 var(--padding);
+}
+.search > div {
+  width: 95%;
+  padding: calc(var(--padding)/2);
+  margin: calc(var(--padding)/-2);
+  position: absolute;
+}
+.search.active > div {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  background: var(--white);
+  z-index: var(--layer-top);
+}
+.search .results {
+  margin-top: var(--padding);
+  font-weight: var(--weight-regular);
+}
+.search .results > div {
+  padding: calc(var(--padding)/2);
+  line-height: var(--body-line-height);
+}
+.search input {
+  width: 99%;
+  margin: 0 var(--padding) 0 var(--1);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-small);
+}
+.palette .selected, .search .selected {
+  background: var(--gray-200);
+  border-radius: var(--border-radius);
+}
 
 
 /* TO REVIEW OR REMOVE */
@@ -21,27 +70,9 @@ main {
   background-color: var(--white);
 }
 
-
 input::placeholder {
   opacity: 1;
   color: var(--dark);
-}
-
-body, input, textarea, button {
-  color: #444;
-  font-size: 1rem;
-  font-family: var(--font);
-  font-weight: 400;
-}
-
-body {
-  zoom: 1;
-  margin: 0;
-  /* font-family: 'Recursive', sans-serif; */
-  font-family: var(--font);
-  color: #444;
-  height: 100%;
-  background: var(--background);
 }
 
 .menu li:not(.disabled):hover {
@@ -54,34 +85,23 @@ body {
   cursor: pointer;
 }
 
-.palette .selected, .search .selected {
-  background: #666;
-  color: white;
-  border-radius: 0.25rem;
-}
-
 hr {
   border: 0;
-  border-bottom: 1px solid var(--dark);
+  border-bottom: 1px solid var(--border-color);
 }
 
 button {
-  border-radius: 0.25rem;
+  border-radius: var(--border-radius);
   background-color: white;
-  border: 1px solid var(--dark);
+  border: 1px solid var(--border-color);
   cursor: pointer; 
-}
-
-.search .results > div {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
 }
 
 .\? { border: 1px solid red !important; }
 
 
 
-
+/*------------LOADING ANIMATION------------*/
 .lds-ripple {
   display: inline-block;
   position: absolute;
