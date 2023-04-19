@@ -77,6 +77,7 @@
   --h3-size: var(--6);
 
   --border-radius: var(--1);
+  --border-color-light: var(--gray-200);
   --border-color: var(--gray-400);
 
   --body-line-height: 1.5;
@@ -165,7 +166,6 @@ a.row {
 }
 .grow {
   flex-grow: 1;
-  max-width: 768px;
 }
 .text-center {
   text-align: center;

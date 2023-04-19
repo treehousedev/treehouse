@@ -17,42 +17,30 @@ export const App: m.Component = {
     }
     return (
       <main class="workbench m-0 flex flex-row absolute inset-0" style={{overflow: "none"}}>
-        <div class="sidebar flex flex-col" style={{width: (state.open)?"256px":"52px", borderRight: "1px solid var(--gray-200)", backgroundColor: "var(--gray-100)"}}>
-          <div style={{padding: "var(--padding)", borderBottom: "1px solid var(--gray-200)", height: "56px"}}>
-            <img src="/icon_transparent.png" style={{opacity: "40%", width: "20px", height: "20px"}} />
+        <div class="sidebar flex flex-col" style={{width: (state.open)?"256px":"52px"}}>
+          <div class="sidebar-topsection" style={{height: "56px"}}>
+            <img class="logo" src="/icon_transparent.png" style={{width: "20px", height: "20px"}} />
           </div>
-          <div class="grow" style={{padding: "var(--padding)", color: "var(--gray-900)", fontWeight: "600"}}>
+          <div class="grow sidebar-maincontent">
             {state.open && workbench.workspace.module.getRoot().getChildren().map(node => <NavNode node={node} expanded={true} level={0} workbench={workbench} />)}
           </div>  
-          <div style={{padding: "var(--padding)", color: "var(--gray-500)"}}>
+          <div class="sidebar-bottomsection">
             <svg onclick={toggle} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sidebar"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
           </div>
         </div>
-        <div class="main flex flex-col" style={{flexGrow: "1"}}>
-          <div class="topbar flex" style={{
-            padding: "var(--padding)", 
-            paddingLeft: "calc(var(--padding)*2)", 
-            paddingRight: "calc(var(--padding)*2)", 
-            lineHeight: "1", 
-            fontSize: "0.875rem", 
-            color: "var(--gray-900)", 
-            fontWeight: "600", 
-            borderBottom: "1px solid var(--gray-200)", 
-            height: "56px"}}>
-            
-            <div onclick={() => workbench.openToday()} style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)", display: "flex", alignItems: "center"}}>
-              <svg style={{marginRight: "var(--1)"}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
+        <div class="main flex flex-col grow">
+          <div class="topbar flex">
+            <div class="topbar-item" onclick={() => workbench.openToday()} style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)", display: "flex", alignItems: "center"}}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
                 {/* <text text-anchor="middle" x="8" y="13" style={{fontSize: "0.55rem"}}>{(new Date()).getDate()}</text> */}
               </svg>
-              <div style={{paddingTop: "4px"}}>Today</div>
+              <div>Today</div>
             </div>
-            
-            <div onclick={() => workbench.openQuickAdd()} style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)", display: "flex", alignItems: "center"}}>
+            <div class="topbar-item" onclick={() => workbench.openQuickAdd()} style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)", display: "flex", alignItems: "center"}}>
               <svg style={{marginRight: "var(--1)"}} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="16"></line><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-              <div style={{paddingTop: "4px"}}>Quick Add</div>
+              <div>Quick Add</div>
             </div>
-            
 
             <Search workbench={workbench} />
             
@@ -61,8 +49,7 @@ export const App: m.Component = {
             </div>
           </div>
           <div class="panels flex flex-row" style={{position: "relative", overflow: "hidden"}}>
-            {workbench.panels.map(row => row.map(panel => <div style={{
-                borderRight: "1px solid var(--gray-200)", 
+            {workbench.panels.map(row => row.map(panel => <div style={{ 
                 flex: "1 1 auto",
                 overflowY: "auto"
               }}><PanelComponent workbench={workbench} panel={panel} /></div>))}
