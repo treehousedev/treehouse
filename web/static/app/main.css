@@ -160,9 +160,6 @@ main {
 .expanded-node > .indent {
   width: var(--8);
 }
-.node-row-outer-wrapper {
-  margin: 0.;
-}
 /*todo: make common class for shared icon button styles*/
 svg.node-menu {
   cursor: pointer;
