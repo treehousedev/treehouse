@@ -165,6 +165,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
             }} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
             {(node.childCount > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
+            {(node.refTo !== null)?<circle cx="8" cy="7" r="7" fill="none" stroke="gray" stroke-width="1" stroke-dasharray="3,3" />:null}
           </svg>
           <div style={{flexGrow: "1", display: "flex", alignItems: "start"}}>
             {(node.hasComponent(Checkbox)) ? <input type="checkbox" style={{marginTop: "0.3rem", marginRight: "0.5rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />:null}

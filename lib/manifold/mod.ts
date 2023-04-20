@@ -35,9 +35,9 @@ export interface Node {
 
   readonly prevSibling: Node|null;
   readonly nextSibling: Node|null;
-  readonly ancestors: Node[]; // ref?
+  readonly ancestors: Node[];
   readonly isDestroyed: boolean;
-  readonly path: string; // ref?
+  readonly path: string;
   
   readonly children: Node[];
   readonly childCount: number;
@@ -61,8 +61,8 @@ export interface Node {
   getAttr(name: string): string;
   setAttr(name: string, value: string): void;
 
-  find(path: string): Node|null; // ref
-  walk(fn: WalkFunc): boolean; // ref
+  find(path: string): Node|null;
+  walk(fn: WalkFunc): boolean;
   destroy(): void;
   changed(): void;
 

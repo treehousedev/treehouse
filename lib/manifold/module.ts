@@ -153,6 +153,7 @@ export class Node {
   }
 
   get children(): INode[] {
+    if (this.refTo) return this.refTo.children;
     let children: INode[] = [];
     if (this.raw.Linked.Children) {
       children = this.raw.Linked.Children.map(id => new Node(this._bus, id));
@@ -167,16 +168,25 @@ export class Node {
 
   get childCount(): number {
     // TODO: integrate objectChildren hook
+    if (this.refTo) return this.refTo.childCount;
     if (!this.raw.Linked.Children) return 0;
     return this.raw.Linked.Children.length;
   }
 
   addChild(node: INode) {
+    if (this.refTo) {
+      this.refTo.addChild(node);
+      return;
+    }
     this.raw.Linked.Children.push(node.id);
     this.changed();
   } 
 
   removeChild(node: INode) {
+    if (this.refTo) {
+      this.refTo.removeChild(node);
+      return;
+    }
     const children = this.raw.Linked.Children.filter(id => id === node.id);
     this.raw.Linked.Children = children;
     this.changed();

@@ -284,6 +284,19 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
   workbench.keybindings.registerBinding({command: "insert", key: "shift+enter"});
   workbench.commands.registerCommand({
+    id: "create-reference",
+    title: "Create Reference",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      const node = workbench.workspace.new("");
+      node.parent = ctx.node.parent;
+      node.siblingIndex = ctx.node.siblingIndex+1;
+      node.refTo = ctx.node;
+      m.redraw.sync();
+      workbench.focus(node, ctx.panel);
+    }
+  });
+  workbench.commands.registerCommand({
     id: "delete",
     title: "Delete node",
     action: (ctx: Context) => {
@@ -403,6 +416,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     {command: "add-page"},
     // {command: "remove-page"},
     {command: "generate-random"},
+    {command: "create-reference"},
   ]);
 
   workbench.menus.registerMenu("settings", [
