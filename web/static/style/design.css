@@ -179,7 +179,7 @@ a.row {
 .items-start {
   align-items: flex-start;
 }
-.no-shrink {
+.shrink-0 {
   flex-shrink: 0;
 }
 .gap-2 {	gap: var(--2); } 
