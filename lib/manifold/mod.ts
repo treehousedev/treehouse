@@ -8,9 +8,7 @@
 export type WalkFunc = (node: Node) => boolean;
 export type ObserverFunc = (node: Node) => void;
 
-// component hook, child nodes
-  // children looks for components implementing ObjectChildren
-  // OR sync nodes
+
 // references
 
 export interface RawNode {
@@ -22,25 +20,28 @@ export interface RawNode {
 	Attrs:      Record<string, string>;
 }
 
+
+
 export interface Node {
   readonly id: string;
   readonly bus: Bus;
   readonly raw: RawNode;
 
   name: string;
-  value: any;
+  value: any; 
   parent: Node|null;
+  refTo: Node|null;
   siblingIndex: number;
-  
+
   readonly prevSibling: Node|null;
   readonly nextSibling: Node|null;
-  readonly ancestors: Node[];
+  readonly ancestors: Node[]; // ref?
   readonly isDestroyed: boolean;
-  readonly path: string;
+  readonly path: string; // ref?
   
   readonly children: Node[];
   readonly childCount: number;
-  addChild(node: Node): void; 
+  addChild(node: Node): void;
   removeChild(node: Node): void;
 
   readonly components: Node[];
@@ -60,8 +61,8 @@ export interface Node {
   getAttr(name: string): string;
   setAttr(name: string, value: string): void;
 
-  find(path: string): Node|null;
-  walk(fn: WalkFunc): boolean;
+  find(path: string): Node|null; // ref
+  walk(fn: WalkFunc): boolean; // ref
   destroy(): void;
   changed(): void;
 

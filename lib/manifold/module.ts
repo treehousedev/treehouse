@@ -1,5 +1,6 @@
 import { RawNode, Node as INode, Bus as IBus, WalkFunc, ObserverFunc } from "./mod.ts";
 import { componentName, getComponent } from "./components.ts";
+import { triggerHook, hasHook } from "./hooks.ts";
 
 export class Node {
   _id: string;
@@ -8,6 +9,10 @@ export class Node {
   constructor(bus: Bus, id: string) {
     this._bus = bus;
     this._id = id;
+  }
+
+  [Symbol.for("Deno.customInspect")]() {
+    return `Node[${this.id}:${this.name}]`;
   }
 
   /* Node interface */
@@ -26,20 +31,34 @@ export class Node {
 
 
   get name(): string {
+    if (this.refTo) {
+      return this.refTo.name;
+    }
     return this.raw.Name;
   }
 
   set name(val: string) {
-    this.raw.Name = val;
+    if (this.refTo) {
+      this.refTo.name = val;
+    } else {
+      this.raw.Name = val;
+    }
     this.changed();
   }
 
   get value(): any {
+    if (this.refTo) {
+      return this.refTo.value;
+    }
     return this.raw.Value;
   }
 
   set value(val: string) {
-    this.raw.Value = val;
+    if (this.refTo) {
+      this.refTo.value = val;
+    } else {
+      this.raw.Value = val;
+    }
     this.changed();
   }
 
@@ -56,12 +75,30 @@ export class Node {
     if (n !== null) {
       this.raw.Parent = n.id;
       n.raw.Linked.Children.push(this.id);
+      triggerHook(n, "onAttach", n);
     } else {
       this.raw.Parent = undefined;
     }
     this.changed();
   }
 
+  get refTo(): INode|null {
+    const id = this.raw.Attrs["refTo"];
+    if (!id) return null;
+    const refTo = this._bus.nodes[id];
+    if (!refTo) return null;
+    return new Node(this._bus, id);
+  }
+
+  set refTo(n: INode|null) {
+    if (!n) {
+      delete this.raw.Attrs["refTo"];
+      this.changed();
+      return;
+    }
+    this.raw.Attrs["refTo"] = n.id;
+    this.changed();
+  }
 
   get siblingIndex(): number {
     const p = this.parent;
@@ -116,11 +153,20 @@ export class Node {
   }
 
   get children(): INode[] {
-    if (!this.raw.Linked.Children) return [];
-    return this.raw.Linked.Children.map(id => new Node(this._bus, id));
+    let children: INode[] = [];
+    if (this.raw.Linked.Children) {
+      children = this.raw.Linked.Children.map(id => new Node(this._bus, id));
+    };
+    for (const com of this.components) {
+      if (hasHook(com, "objectChildren")) {
+        return triggerHook(com, "objectChildren", com, children);
+      }
+    }
+    return children;
   }
 
   get childCount(): number {
+    // TODO: integrate objectChildren hook
     if (!this.raw.Linked.Children) return 0;
     return this.raw.Linked.Children.length;
   }
@@ -151,6 +197,7 @@ export class Node {
     const node = this.bus.make(componentName(obj), obj);
     node.raw.Parent = this.id;
     this.raw.Linked.Components.push(node.id);
+    triggerHook(node, "onAttach", node);
     this.changed();
   } 
 
@@ -222,13 +269,24 @@ export class Node {
     if (fn(this)) {
       return true;
     }
-    for (const child of this.children) {
+    let children = this.children;
+    if (this.refTo) {
+      if (fn(this.refTo)) {
+        return true;
+      }
+      children = this.refTo.children;
+    }
+    for (const child of children) {
       if (child.walk(fn)) return true;
     }
     return false;
   }
 
   destroy() {
+    if (this.refTo) {
+      this._bus.destroy(this);
+      return;
+    }
     // TODO: also walk components of nodes
     const nodes: INode[] = [];
     this.walk((n: INode): boolean => {
@@ -273,6 +331,7 @@ export class Bus {
     for (const n of nodes) {
       this.nodes[n.ID] = n;
     }
+    // TODO: triggerHook(n, "onAttach", n);
   }
 
   export(): RawNode[] {
@@ -286,18 +345,13 @@ export class Bus {
   make(name: string, value?: any): INode {
     let parent: INode|null = null;
     if (name.includes("/")) {
-      let start: number = 0;
       const parts = name.split("/");
-      if (name.startsWith("@")) {
-        parent = this.find(parts[0]);
-        start = 1;
-      } else {
-        parent = this.root();
-      }
-      for (let i = start; i < parts.length-1; i++) {
+      parent = this.root(parts[0]);
+      for (let i = 1; i < parts.length-1; i++) {
         if (parent === null) {
           throw "unable to get root";
         }
+        
         let child = parent.find(parts[i]);
         if (!child) {
           child = this.make(parts.slice(0, i+1).join("/"));
@@ -357,16 +411,20 @@ export class Bus {
       // did not find @id by ID so return null
       return null;
     }
-    let anchorName = "@root";
-    if (parts[0].startsWith("@")) {
-      anchorName = parts.shift() || "";
+    let cur = this.root(parts[0]);
+    if (cur) {
+      parts.shift();
+    } else {
+      cur = this.root("@root"); 
     }
-    const findChild = (n: INode, name: string): INode|undefined => {
-      return n.children.find(child => child.name === name);
-    }
-    let cur = this.find(anchorName);
     if (!cur) {
       return null;
+    }
+    const findChild = (n: INode, name: string): INode|undefined => {
+      if (n.refTo) {
+        n = n.refTo;
+      }
+      return n.children.find(child => child.name === name);
     }
     for (const name of parts) {
       const child = findChild(cur, name);
