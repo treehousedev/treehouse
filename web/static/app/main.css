@@ -18,7 +18,7 @@ body, input, textarea, button {
   font-size: 1rem;
   font-family: var(--font);
   font-weight: var(--weight-regular);
-
+}
 button {
   box-sizing: content-box;
   height: 48px;
@@ -34,6 +34,67 @@ button.primary {
   background-color: var(--primary);
   border: none;
 }
+
+/*------------APP------------*/
+
+main {
+  background-color: var(--white);
+}
+
+/*------------SIDEBAR------------*/
+.sidebar {
+  background-color: var(--gray-100);
+  border-right: 1px solid var(--border-color-light);
+}
+.sidebar-topsection {
+  padding: var(--padding);
+  border-bottom: 1px solid var(--border-color-light);
+}
+/*TO DO: change logo to SVG and set color instead of opacity*/
+.sidebar-topsection > .logo {
+  opacity: 40%;
+}
+.sidebar-maincontent {
+  padding: var(--padding);
+  font-weight: var(--weight-semibold);
+}
+.sidebar-bottomsection {
+  padding: var(--padding);
+  color: var(--gray-500);
+}
+
+/*------------TOPBAR------------*/
+.topbar {
+  padding: var(--padding) calc(var(--padding)*2);
+  line-height: 1;
+  font-size: var(--text-small);
+  font-weight: var(--weight-semibold);
+  border-bottom: 1px solid var(--border-color-light);
+  height: 56px;
+}
+.topbar > div > svg {
+  margin-right: var(--1);
+}
+.topbar-item {
+  display: flex;
+  align-items: center;
+}
+.topbar-item > div {
+  line-height: 0.1;
+}
+
+/*------------PANELS------------*/
+.panels > div {
+  border-right: 1px solid var(--border-color-light);
+}
+
+
+/*------------NODES------------*/
+/*keep max line length from getting too long for readibility*/
+div > textarea {
+  max-width: 768px;
+}
+
 
 /*------------SEARCH------------*/
 .search {
@@ -73,7 +134,6 @@ button.primary {
 }
 
 /*------------NOTICES------------*/
-
 .notice {
   border-radius: var(--border-radius);
   width: 40rem;
@@ -94,11 +154,7 @@ button.primary {
   margin-top: var(--padding);
 }
 
-/* TO REVIEW OR REMOVE */
-
-main {
-  background-color: var(--white);
-}
+/*------------TO REVIEW OR REMOVE------------*/
 
 .menu li:not(.disabled):hover {
   background: #666;
@@ -114,9 +170,6 @@ hr {
   border: 0;
   border-bottom: 1px solid var(--border-color);
 }
-
-.\? { border: 1px solid red !important; }
-
 
 
 /*------------LOADING ANIMATION------------*/
