@@ -1,8 +1,10 @@
 import { Backend, FileStore } from "./backend/mod.ts";
 import { KeyBindings } from "./action/keybinds.ts";
 import { CommandRegistry } from "./action/commands.ts";
-import { Module, Node, RawNode } from "./manifold/mod.ts";
 import { MenuRegistry } from "./action/menus.ts";
+import { Bus, Node, RawNode } from "./manifold/mod.ts";
+import * as module from "./manifold/module.ts";
+
 
 /**
  * Context is a user context object interface. This is used to
@@ -57,14 +59,14 @@ export class Panel {
  */
 class Workspace {
   fs: FileStore;
-  module: Module;
+  bus: Bus;
 
   lastOpenedID: string;
   expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
 
   constructor(fs: FileStore) {
     this.fs = fs;
-    this.module = new Module();
+    this.bus = new module.Bus();
     this.expanded = {};
 
     this.writeDebounce = debounce(async (path, contents) => {
@@ -79,11 +81,11 @@ class Workspace {
   }
 
   get rawNodes(): RawNode[] {
-    return Object.values(this.module.nodes);
+    return this.bus.export();
   }
 
-  get observers(): ((n: Node) => void)[] {
-    return this.module.observers;
+  observe(fn: (n: Node) => void) {
+    this.bus.observe(fn);
   }
 
   save() {
@@ -104,7 +106,7 @@ class Workspace {
       }
     }
     if (doc.nodes) {
-      this.module.import(doc.nodes);
+      this.bus.import(doc.nodes);
     }
     if (doc.expanded) {
       this.expanded = doc.expanded;
@@ -116,36 +118,36 @@ class Workspace {
   }
 
   mainNode(): Node {
-    let main = this.module.find("@workspace");
+    let main = this.bus.find("@workspace");
     if (!main) {
-      const root = this.module.find("@root");
-      const ws = this.module.new("@workspace");
-      ws.setName("Workspace");
-      ws.setParent(root);
-      const cal = this.module.new("@calendar");
-      cal.setName("Calendar");
-      cal.setParent(ws);
-      const home = this.module.new("Home");
-      home.setParent(ws);
+      const root = this.bus.find("@root");
+      const ws = this.bus.make("@workspace");
+      ws.name = "Workspace";
+      ws.parent = root;
+      const cal = this.bus.make("@calendar");
+      cal.name = "Calendar";
+      cal.parent = ws;
+      const home = this.bus.make("Home");
+      home.parent = ws;
       main = ws;
     }
     return main;
   }
 
   find(path:string): Node|null {
-    return this.module.find(path)
+    return this.bus.find(path)
   }
 
   new(name: string, value?: any): Node {
-    return this.module.new(name, value);
+    return this.bus.make(name, value);
   }
 
 
   getExpanded(head: Node, n: Node): boolean {
-    if (!this.expanded[head.ID]) {
-      this.expanded[head.ID] = {};
+    if (!this.expanded[head.id]) {
+      this.expanded[head.id] = {};
     }
-    let expanded = this.expanded[head.ID][n.ID];
+    let expanded = this.expanded[head.id][n.id];
     if (expanded === undefined) {
       expanded = false;
     }
@@ -153,25 +155,25 @@ class Workspace {
   }
 
   setExpanded(head: Node, n: Node, b: boolean) {
-    this.expanded[head.ID][n.ID] = b;
+    this.expanded[head.id][n.id] = b;
     this.save();
     //localStorage.setItem(this.expandedKey, JSON.stringify(this.expanded));
   }
 
   findAbove(head: Node, n: Node): Node|null {
-    if (n.ID === head.ID) {
+    if (n.id === head.id) {
       return null;
     }
-    let above = n.getPrevSibling();
+    let above = n.prevSibling;
     if (!above) {
-      return n.getParent();
+      return n.parent;
     }
     const lastChildIfExpanded = (n: Node): Node => {
       const expanded = this.getExpanded(head, n);
-      if (!expanded || n.childCount() === 0) {
+      if (!expanded || n.childCount === 0) {
         return n;
       }
-      const lastChild = n.getChildren()[n.childCount() - 1];
+      const lastChild = n.children[n.childCount - 1];
       return lastChildIfExpanded(lastChild);
     }
     return lastChildIfExpanded(above);
@@ -179,16 +181,16 @@ class Workspace {
 
   findBelow(head: Node, n: Node): Node|null {
     // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
-    if (this.getExpanded(head, n) && n.childCount() > 0) {
-      return n.getChildren()[0];
+    if (this.getExpanded(head, n) && n.childCount > 0) {
+      return n.children[0];
     }
     const nextSiblingOrParentNextSibling = (n: Node): Node|null => {
-      const below = n.getNextSibling();
+      const below = n.nextSibling;
       if (below) {
         return below;
       }
-      const parent = n.getParent();
-      if (!parent || parent.ID === head.ID) {
+      const parent = n.parent;
+      if (!parent || parent.id === head.id) {
         return null;
       }
       return nextSiblingOrParentNextSibling(parent);
@@ -252,10 +254,10 @@ export class Workbench {
   async initialize() {
     await this.workspace.load();
     this.workspace.rawNodes.forEach(n => this.backend.index.index(n));
-    this.workspace.observers.push((n => {
+    this.workspace.observe((n => {
       this.workspace.save();
       this.backend.index.index(n.raw);
-      n.getComponentNodes().forEach(com => this.backend.index.index(com.raw));
+      n.components.forEach(com => this.backend.index.index(com.raw));
     }));
     
     if (this.workspace.lastOpenedID) {
@@ -323,11 +325,11 @@ export class Workbench {
 
   open(n: Node) {
     // TODO: not sure this is still necessary
-    if (!this.workspace.expanded[n.ID]) {
-      this.workspace.expanded[n.ID] = {};
+    if (!this.workspace.expanded[n.id]) {
+      this.workspace.expanded[n.id] = {};
     }
 
-    this.workspace.lastOpenedID = n.ID;
+    this.workspace.lastOpenedID = n.id;
     this.workspace.save();
     const p = new Panel(n);
     this.panels[0][0] = p
@@ -336,11 +338,11 @@ export class Workbench {
 
   openNewPanel(n: Node) {
     // TODO: not sure this is still necessary
-    if (!this.workspace.expanded[n.ID]) {
-      this.workspace.expanded[n.ID] = {};
+    if (!this.workspace.expanded[n.id]) {
+      this.workspace.expanded[n.id] = {};
     }
 
-    this.workspace.lastOpenedID = n.ID;
+    this.workspace.lastOpenedID = n.id;
     this.workspace.save();
     const p = new Panel(n);
     this.panels[0].push(p);
@@ -375,7 +377,7 @@ export class Workbench {
     if (!panel) {
       panel = this.context.panel;
     }
-    return document.getElementById(`input-${panel.id}-${n.ID}`);
+    return document.getElementById(`input-${panel.id}-${n.id}`);
   }
 
   executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {
