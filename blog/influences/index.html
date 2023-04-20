@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style/site.css">
     <script src="/analytics.js"></script>
-    <title>Welcome to Treehouse - Treehouse</title>
+    <title>Treehouse Influences - Treehouse</title>
   </head>
 
   <body class="blog">
@@ -31,41 +31,33 @@
     <section>
       <div style="gap: var(--16);" class="row justify-center items-start">
         <article style="width: 768px;">
-          <h1>Welcome to Treehouse</h1>
+          <h1>Treehouse Influences</h1>
           <div class="author">Jeff Lindsay</div>
-          <div class="date">February 23, 2023</div>
-          <p>I&#39;m excited to announce the start of a new major project that I&#39;ll be sharing the journey of on this fancy new blog. The project is called <a href="https://treehouse.sh/">Treehouse</a>, which is starting as an open source note-taking frontend and will evolve into something much more.</p>
+          <div class="date">April 20, 2023</div>
+          <p>Over the past few months, we&#39;ve built a frontend framework for an elegant, quality outliner that&#39;s open source, extensible, and gives you control of your data. I’d like to share some of the design influences for the Treehouse frontend, which should give a sense of the unique direction Treehouse is going from here. </p>
+          <p>The biggest influences for Treehouse are Tana, Notion, and Obsidian. These three represent the state of the art of personal and collaborative information management, sometimes simplified as note-taking tools. However, &quot;note-taking tools&quot; sells them short as they go beyond note-taking and information management. For lack of a better descriptor, many consider them <a href="https://www.forthought.tools/">tools for thought</a>.</p>
+          <h2 id="from-notes-to-tools-for-thought">From Notes to Tools for Thought</h2>
+          <p>For most, note-taking brings to mind simple apps like Apple Notes and Google Keep, or even just a text file editor. These work well for people because they&#39;re already there and focus on quick and easy plain text capture. We could call this casual note-taking. </p>
+          <p>Back in the 2000s, hosted and self-hosted wikis became popular for easy, collaborative web publishing and knowledge management. Like Wikipedia, they could be used to build out hyperlinked knowledge repositories. Many wiki-based tools focused on their use as personal notebooks, one of the most influential examples being <a href="https://tiddlywiki.com/">TiddlyWiki</a>. The simple versatility of the wiki laid the groundwork for what we call &quot;tools for thought&quot; today.</p>
+          <p><img src="https://treehouse.sh/photos/blog/tiddlywiki.png" alt="TiddlyWiki screenshot"></p>
+          <p>When <a href="https://www.notion.so/">Notion</a> appeared in the mid-2010s, it built on the idea of the wiki and introduced structured data management with flexible views that <em>effectively gave you integrated, customizable versions of other productivity tools</em>. Notion, Airtable, and others helped bring in the age of no-code and low-code tools, allowing knowledge workers and entrepreneurs to build their own &quot;apps&quot; or solutions to problems without traditionally building software. Notion brought it all together in a simple, user-friendly experience based around the core idea of wiki-like information management.</p>
+          <p><img src="https://treehouse.sh/photos/blog/notion.jpeg" alt="Notion screenshot"></p>
+          <p>Meanwhile, a separate paradigm of note-taking tools emerged, focusing on the nested, tree-like structure of the outline. Perhaps inspired by tools like <a href="https://www.omnigroup.com/omnioutliner/">OmniOutliner</a> and <a href="https://orgmode.org/">Org Mode</a> for Emacs of the 2000s, <a href="https://workflowy.com/">Workflowy</a> appeared in 2010 as a no-frills web-based outliner. </p>
+          <p><img src="https://treehouse.sh/photos/blog/workflowy.png" alt="Workflowy screenshot"></p>
+          <p><a href="https://obsidian.md/">Obsidian</a> arrived in 2020 and is a local app focusing on Markdown files stored on your filesystem. Obsidian has a large plugin ecosystem giving it a wide breadth of features, but it’s especially appealing to those that want to own their data. If you strip away the plugins, Obsidian is a pretty simple hyperlinked Markdown editor.</p>
+          <p><img src="https://treehouse.sh/photos/blog/obsidian.png" alt="Obsidian screenshot"></p>
+          <p>Most recently, a tool in early access called <a href="https://tana.inc/">Tana</a> caught my attention. Their key innovation is taking the linked outline model of Workflowy and introducing schemas for nodes, making them into structured data. This gives Tana the embedded database functionality of Notion and Airtable, a step towards bringing the two paradigms of note-taking software together towards powerful, malleable tools for thought. </p>
+          <p><img src="https://treehouse.sh/photos/blog/tana.webp" alt="Tana screenshot"></p>
+          <h2 id="how-treehouse-fits-in">How Treehouse Fits In</h2>
+          <p>By now there&#39;s no shortage of options in this space, both as SaaS and open source. Take a look at this growing <a href="https://noteapps.info/">encyclopedia of note-taking tools</a>. Like Notion and Tana, many of the apps listed are much more than note-taking tools. Some lean into the framing of &quot;collaborative documents&quot;, and some are just categorized more generally as &quot;productivity tools&quot;. Tana goes so far as to say &quot;the everything OS&quot;. </p>
+          <p>Note-taking is just the beginning. It&#39;s a tangible gateway for something more powerful inherent to computing. Ever since Engelbart&#39;s <a href="https://en.wikipedia.org/wiki/The_Mother_of_All_Demos">mother of all demos</a>, the computing revolution seems to start with powerful tools for thought, which are, at minimum, good note-taking tools.</p>
+          <p><img src="https://treehouse.sh/photos/blog/nls.jpeg" alt="Engelbart using NLS"></p>
+          <p>Treehouse is a frontend and starter kit for anybody else that wants to explore this space with us. We will release a standalone product based on it soon, but most of the user-facing development will be done in the open source Treehouse project. </p>
           <p><img src="https://treehouse.sh/photos/hero-image.png" alt="Treehouse screenshot"></p>
-          <p>We&#39;re creating a simple, hackable kernel of a note-taking tool as a web frontend that can be extended and customized by developers. Then we&#39;ll use that frontend to build a new kind of note-taking product. Today we have an early preview of our first minimum viable prototype of the frontend, and we&#39;ll be finishing up this release in the open on GitHub.</p>
-          <p>The <a href="https://github.com/treehousedev/treehouse">open source project</a> is a functional app frontend that you can deploy and back in various ways. For developers, this &quot;bring your own backend&quot; approach makes Treehouse a great starting point to build your own note-taking tool, just as we intend to do. We also have pre-made backends for those who want to use it with little-to-no programming. Either way, you&#39;ll always own your data, and now the system presenting it to you as well. </p>
-          <p>In this post, I&#39;m going to talk about our minimum viable prototype and the approach we&#39;re taking with Treehouse as an open source project.</p>
-          <h2 id="out-of-the-box">Out of the Box</h2>
-          <p>While inspired by powerful tools like <a href="https://www.notion.so/">Notion</a>, <a href="https://tana.inc/">Tana</a>, and <a href="https://obsidian.md/">Obsidian</a>, we wanted to boil our initial goal down to the essentials while still being usable enough to use ourselves. As we continue to plan our prototype release milestone, we&#39;d love to hear what you think is essential for you to have in a tool and platform like this, but here is what to expect as a baseline.</p>
-          <h3 id="outliner-with-markdown-pages">Outliner with Markdown Pages</h3>
-          <p>At the heart of Treehouse is a graph-like system I&#39;ve been developing called Manifold. This will play a big part in the long-term extensibility of Treehouse, which I&#39;ll talk more about in the future. For now, this maps very cleanly to the outliner model popularized by Workflowy, Tana, and others.</p>
-          <p>However, I&#39;m also a fan of Notion-style pages and Obsidian&#39;s commitment to working with plain Markdown files. The Manifold system allows us to make certain nodes into Markdown pages. This hybrid model gets us the best of both worlds with room for even more possibilities later on.</p>
-          <h3 id="quick-add-and-daily-notes">Quick Add and Daily Notes</h3>
-          <p>Being able to quickly get thoughts and information into the system has been a key aspect of every good note-taking system. This can be exposed a number of ways from browser extensions to desktop shortcuts, but what makes any &quot;quick add&quot; functionality quick is not having to think about where it will be organized.</p>
-          <p>Luckily, &quot;daily notes&quot; has become such a common pattern that many recent tools have managed daily notes built-in. This typical gives you a &quot;today&quot; note that is automatically organized into a calendar-like structure. This conveniently becomes the perfect destination for &quot;quick add&quot; notes.</p>
-          <h3 id="full-text-search">Full-text Search</h3>
-          <p>Whether you are an obsessive organizer or are too busy to take the time, solid full-text search is basically a necessity. It&#39;s how we quickly get to our data. </p>
-          <p>Out of the box we have a full-text search that doesn&#39;t require a backend. However, our pluggable backend will allow you to power search in a number of ways, and also opens up the ability to search into external systems that are important to you.</p>
-          <h3 id="built-in-backends">Built-in Backends</h3>
-          <p>&quot;Bring your own backend&quot; is a critical part of the design of this project, but Treehouse also needs to be usable by people who prefer not to <em>build</em> their own backend. Our prototype release is planned to include a handful of built-in backends to get started with.</p>
-          <p>Our preview demo is using a localStorage backend, which works for development and special use cases. Of course, we will have a simple local filesystem backend for desktop scenarios, similar to Obsidian.</p>
-          <p>However, we&#39;re most excited for the GitHub backend. This functions similarly to the local filesystem backend, but it would be versioned in a central repository on your GitHub account and be accessible on any online platform.</p>
-          <p>Backends will not only let you extend storage, search, and authentication, but other aspects in the future. </p>
-          <h2 id="project-overview">Project Overview</h2>
-          <p>The Treehouse codebase and open source project is as much the product as its features. The entire user and developer experience is being designed around simplicity and human ergonomics.</p>
-          <p>The Treehouse frontend is built with web technologies intended for use across web, mobile, and desktop platforms. The project is written in TypeScript using <a href="https://deno.land/">Deno</a> as its JavaScript toolchain.</p>
-          <p>The JavaScript ecosystem is a mess, but Deno provides a forward-looking, self-contained toolchain that&#39;s easy to love. We actually have a zero Node.js policy and avoid NPM modules as much as possible.</p>
-          <p>With minimal dependencies and an ongoing effort to keep the codebase small, it will always be easy to understand the entire Treehouse system. This will be further supported with a focus on documentation, both API docs and guides.</p>
-          <p>We&#39;re using a permissive open source license, allowing you to use or change our code as you see fit. Contribution and participation is welcome, but so is simply consuming downstream. </p>
-          <p>The project is actively being developed but we keep a <a href="https://treehouse.sh/demo/">preview demo</a> running off the main branch that should always be in working order.</p>
+          <p>Today with Treehouse you can build your own Workflowy equivalent, but soon it will become more comparable to Tana and Notion with the open extensibility of Obsidian. That alone is pretty exciting to have in a minimal open source project, but I can&#39;t wait to show you what will come next. </p>
           <h2 id="coming-soon">Coming Soon</h2>
-          <p>I&#39;m excited to give you a deeper look at the project stack in a future post. For now, keep an eye out for the next post digging into the influences for Treehouse. We&#39;ll also try to answer &quot;why another note-taking tool&quot;, and tease some long-term ideas for the future.</p>
-          <p>Lastly, I want to mention the project is being developed in the open, not just with the code on GitHub, but most of my work is streamed and archived on <a href="https://www.twitch.tv/progrium">Twitch</a>. Feel free to come and co-work with me.</p>
-          <p>Thanks for reading, and a big thanks to my <a href="https://github.com/sponsors/progrium/">sponsors</a> for supporting this kind of open source work. </p>
+          <p>In the next post, I&#39;ll start getting technical and share details on the Treehouse project stack and architecture. If you can&#39;t wait, we do have <a href="https://treehouse.sh/docs/dev/">documentation</a> for you to check out. </p>
+          <p>Thanks for reading, and a big thanks to my <a href="https://github.com/sponsors/progrium">sponsors</a> for supporting this kind of open source work. Share your thoughts and favorite note-taking tools in the <a href="https://github.com/treehousedev/treehouse/discussions/95">discussion thread</a> for this post.</p>
         </article>
         <nav style="width: 256px;" class="md:hidden">
           <h5>More Blog Posts</h5>
