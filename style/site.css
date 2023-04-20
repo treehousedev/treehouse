@@ -93,19 +93,27 @@ body > section.hero .dropshadow {
     background-image: url("/halftone_green.png");
     background-size: 50px 50px;
 }
+
+/*------------ARTICLE------------*/
+/*used for blog posts and documentation*/
+
+/*add extra height for readibility*/
+article {
+  line-height: 1.7;
+}
 article .author {
   font-weight: var(--weight-semibold);
 }
 article .date, body.blog > section nav > div .date {
   color: var(--gray-600);
-  line-height: var(--7);
   margin-bottom: var(--4);
 }
-article h2, article h3, article h4 {
-  margin-bottom: var(--2);
+/*grouped because bottom margin should stay consistent*/
+article h1, article h2, article h3, article h4, article p {
+  margin-bottom: var(--3);
 }
 article h2 {
-  margin-top: var(--12);
+  margin-top: var(--10);
 }
 article h3 {
   margin-top: var(--7);
@@ -113,20 +121,14 @@ article h3 {
 article h4 {
   margin-top: var(--6);
 }
-article ul {
+article ul, article p {
   margin-top: 0px;
-}
-article p, li {
-  line-height: var(--7);
-}
-article p {
-  margin-top: 0px;
-  margin-bottom: var(--3);
 }
 article img {
   margin-top: var(--2);
   margin-bottom: var(--4);
   width: 100%;
+  border: 1px solid var(--border-color-light);
 }
 article a {
   text-decoration: underline;
