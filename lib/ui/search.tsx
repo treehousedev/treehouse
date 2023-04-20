@@ -62,8 +62,8 @@ export const Search: m.Component = {
             return undefined;
           }
           // if component value, get the parent
-          if (node.getValue()) {
-            node = node.getParent();
+          if (node.value) {
+            node = node.parent;
             // parent might not actually exist
             if (!node.raw) return;
           }
@@ -103,7 +103,7 @@ export const Search: m.Component = {
               overflowY: "auto",
               maxHeight: "400px"
             }}>
-              {state.results.map((result, idx) => <div onclick={() => open(result)} class={(state.selected===idx)?"selected":""}>{result.getName()}</div>)}
+              {state.results.map((result, idx) => <div onclick={() => open(result)} class={(state.selected===idx)?"selected":""}>{result.name}</div>)}
             </div>
           :null}
         </div>

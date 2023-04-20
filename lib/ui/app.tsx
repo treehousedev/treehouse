@@ -22,7 +22,7 @@ export const App: m.Component = {
             <img class="logo" src="/icon_transparent.png" style={{width: "20px", height: "20px"}} />
           </div>
           <div class="grow sidebar-maincontent">
-            {state.open && workbench.workspace.module.getRoot().getChildren().map(node => <NavNode node={node} expanded={true} level={0} workbench={workbench} />)}
+            {state.open && workbench.workspace.bus.root().children.map(node => <NavNode node={node} expanded={true} level={0} workbench={workbench} />)}
           </div>  
           <div class="sidebar-bottomsection">
             <svg onclick={toggle} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sidebar"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
@@ -77,7 +77,7 @@ export const App: m.Component = {
 const NavNode: m.Component = {
   view ({attrs: {node, workbench, expanded, level}, state}) {
     state.expanded = (state.expanded === undefined) ? expanded : state.expanded;
-    const expandable = (node.childCount() > 0 && level < 3);
+    const expandable = (node.childCount > 0 && level < 3);
     const toggle = (e) => {
       if (!expandable) return;
       if (state.expanded) {
@@ -102,12 +102,12 @@ const NavNode: m.Component = {
           </svg>
           
           <div onclick={open} style={{cursor: "pointer", lineHeight: "1.25", fontSize: "0.875rem", flexGrow: "1", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
-            {node.getName()}
+            {node.name}
           </div>
         </div>
         {state.expanded && 
           <div style={{marginLeft: "0.5rem"}}>
-            {node.getChildren().filter(n => n.getName() !== "").map(n => <NavNode workbench={workbench} node={n} level={level+1} />)}
+            {node.children.filter(n => n.name !== "").map(n => <NavNode workbench={workbench} node={n} level={level+1} />)}
           </div>
         }
       </div>

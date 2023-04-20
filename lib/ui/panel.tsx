@@ -51,7 +51,7 @@ export const Panel = {
         <div style={{
           flexGrow: "1"
           }}>
-          {(node.getParent() && node.getParent().ID !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workbench.open(node.getParent())}>{node.getParent().getName()}</span> : <span>/</span>}
+          {(node.parent && node.parent.id !== "@root") ? <span style={{cursor: "pointer"}} onclick={() => workbench.open(node.parent)}>{node.parent.name}</span> : <span>/</span>}
         </div>
         {(workbench.panels.flat().length>1)?
           <div style={{display: "flex", gap: "var(--4)", zIndex: "0", color: "var(--gray-500)", alignItems: "center"}}>

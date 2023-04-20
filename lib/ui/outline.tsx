@@ -53,7 +53,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         if (e.target.value === "") {
           e.preventDefault();
           e.stopPropagation();
-          if (node.childCount() > 0) {
+          if (node.childCount > 0) {
             return;
           }
           workbench.executeCommand("delete", {node, panel, event: e});
@@ -69,8 +69,8 @@ export const OutlineNode: m.Component<Attrs, State> = {
           if (!prev) {
             return;
           }
-          const oldName = prev.getName();
-          prev.setName(oldName+e.target.value);
+          const oldName = prev.name;
+          prev.name = oldName+e.target.value;
           node.destroy();
           m.redraw.sync();
           workbench.focus(prev, panel, oldName.length);
@@ -83,7 +83,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
         // cursor at end of text
         if (e.target.selectionStart === e.target.value.length) {
-          if (node.childCount() > 0 && workbench.workspace.getExpanded(panel.headNode, node)) {
+          if (node.childCount > 0 && workbench.workspace.getExpanded(panel.headNode, node)) {
             workbench.executeCommand("insert-child", {node, panel}, "", 0);
           } else {
             workbench.executeCommand("insert", {node, panel});
@@ -100,7 +100,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         // cursor in middle of text
         if (e.target.selectionStart > 0 && e.target.selectionStart < e.target.value.length) {
           workbench.executeCommand("insert", {node, panel}, e.target.value.slice(e.target.selectionStart)).then(() => {
-            node.setName(e.target.value.slice(0, e.target.selectionStart));
+            node.name = e.target.value.slice(0, e.target.selectionStart);
           });
           e.stopPropagation();
           return;
@@ -163,7 +163,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
               paddingLeft: "1px",
               marginTop: "0.25rem"
             }} xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
-            {(node.childCount() > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
+            {(node.childCount > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
             <circle cx="8" cy="7" r="3"/>
           </svg>
           <div style={{flexGrow: "1", display: "flex", alignItems: "start"}}>
@@ -180,8 +180,8 @@ export const OutlineNode: m.Component<Attrs, State> = {
             <div style={{width: "var(--8)", display: "flex"}} onclick={toggle}>
             </div>
             <div style={{flexGrow: "1"}}>
-              {(node.childCount() > 0)
-                ?node.getChildren().map(n => <OutlineNode key={n.ID} workbench={workbench} panel={panel} node={n} />)
+              {(node.childCount > 0)
+                ?node.children.map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)
                 :<NewNode workbench={workbench} panel={panel} node={node} />
               }
             </div>
@@ -201,8 +201,8 @@ export const NewNode = {
       if (e.key === "Tab") {
         e.stopPropagation();
         e.preventDefault();
-        if (node.childCount() > 0) {
-          const lastchild = node.getChildren()[node.childCount()-1];
+        if (node.childCount > 0) {
+          const lastchild = node.children[node.childCount-1];
           workbench.executeCommand("insert-child", {node: lastchild, panel});
         }
       }
@@ -239,7 +239,7 @@ export const OutlineEditor: m.Component<Attrs> = {
   view ({attrs: {workbench, panel, node}, state}) {
     return (
       <div style={{color: "var(--gray-900)"}}>
-        {node.getChildren().map(n => <OutlineNode key={n.ID} workbench={workbench} panel={panel} node={n} />)}
+        {node.children.map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)}
         <NewNode workbench={workbench} panel={panel} node={node} />
       </div>
     )
@@ -264,7 +264,7 @@ export const NodeEditor: m.Component = {
     this.updateHeight();
   },
   view ({attrs: {workbench, node, panel, onkeydown, disallowEmpty}, state}) {
-    const value = (state.editing)?state.buffer:node.getName();
+    const value = (state.editing)?state.buffer:node.name;
     
     const defaultKeydown = (e) => {
       if (e.key === "Enter") {
@@ -273,10 +273,10 @@ export const NodeEditor: m.Component = {
       }
     }
     const startEdit = (e) => {
-      state.initialValue = node.getName();
+      state.initialValue = node.name;
       workbench.context.node = node;
       state.editing = true;
-      state.buffer = node.getName();
+      state.buffer = node.name;
     }
     const finishEdit = (e) => {
       // safari can trigger blur more than once
@@ -287,9 +287,9 @@ export const NodeEditor: m.Component = {
         state.editing = false;
         if (!node.isDestroyed) {
           if (disallowEmpty && state.buffer.length === 0) {
-            node.setName(state.initialValue);
+            node.name = state.initialValue;
           } else {
-            node.setName(state.buffer);
+            node.name = state.buffer;
           }
         }
         state.buffer = undefined;
@@ -299,9 +299,9 @@ export const NodeEditor: m.Component = {
     const edit = (e) => {
       state.buffer = e.target.value;
       if (disallowEmpty && state.buffer.length === 0) {
-        node.setName(state.initialValue);
+        node.name = state.initialValue;
       } else {
-        node.setName(state.buffer);
+        node.name = state.buffer;
       }
     }
     
@@ -323,7 +323,7 @@ export const NodeEditor: m.Component = {
     return (
       <div style={{width: "100%", marginBottom: "0.5rem"}}>
         <textarea style={style} 
-          id={`input-${panel.id}-${node.ID}`}
+          id={`input-${panel.id}-${node.id}`}
           rows="1"
           onfocus={startEdit}
           onblur={finishEdit}
