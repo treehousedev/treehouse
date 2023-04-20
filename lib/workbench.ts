@@ -257,7 +257,7 @@ export class Workbench {
     this.workspace.observe((n => {
       this.workspace.save();
       this.backend.index.index(n.raw);
-      n.getComponentNodes().forEach(com => this.backend.index.index(com.raw));
+      n.components.forEach(com => this.backend.index.index(com.raw));
     }));
     
     if (this.workspace.lastOpenedID) {
