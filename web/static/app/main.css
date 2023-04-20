@@ -87,15 +87,104 @@ main {
 .panels > div {
   border-right: 1px solid var(--border-color-light);
 }
+.panel {
+  margin-top: var(--padding);
+  margin-left: calc(var(--padding)*2);
+  margin-right: calc(var(--padding)*2);
+  padding-bottom: var(--padding);
+}
+.panel > .bar {
+  font-size: var(--text-small);
+  color: var(--gray-600);
+  gap: var(--padding);
+  padding: 0 var(--padding);
+  margin-bottom: calc(var(--padding)*1.5);
+}
+.panel > .bar .panel-icons {
+  gap: var(--4);
+  z-index: 0;
+  color: var(--gray-500);
+}
+.panel > .body {
+  padding: 0 var(--padding);
+}
+
+.panel > .body > .title-node {
+/* todo: set CSS variables for app header styles */
+  font-size: var(--6);
+  font-weight: var(--weight-bold);
+}
 
 
 /*------------NODES------------*/
 /*keep max line length from getting too long for readibility*/
-div > textarea {
+.node-container {
+  width: 100%;
+  margin-bottom: var(--2);
+}
+.node-container textarea, .panel-back-parent {
   max-width: 768px;
 }
-
-
+/*todo: check unused textarea styles in panel.tsx*/
+.node-container > textarea, .node-container > span {
+  outline: none;
+  padding: 0;
+  width: 100%;
+  box-sizing: border-box;
+  resize: none;
+  overflow: hidden;
+  display: block;
+  line-height: var(--body-line-height);
+  border: none;
+}
+.new-node svg {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+  padding-left: 1px;
+}
+.new-node svg circle {
+  fill: var(--gray-200);
+}
+.new-node svg path {
+  fill: var(--gray-600);
+}
+.new-node input {
+  border: 0px;
+  outline: 0px;
+}
+.expanded-node {
+  padding-bottom: var(--1);
+}
+.expanded-node > .indent {
+  width: var(--8);
+}
+.node-row-outer-wrapper {
+  margin: 0.;
+}
+/*todo: make common class for shared icon button styles*/
+svg.node-menu {
+  cursor: pointer;
+  fill: var(--gray-600);
+  width: 1rem;
+  height: 1rem;
+  margin-left: -1rem;
+  user-select: none;
+  margin-top: var(--1);
+}
+svg.node-bullet {
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+  margin-right: var(--2);
+  padding-left: 1px;
+  margin-top: var(--1);
+  fill: var(--gray-600);
+}
+svg.node-bullet circle#node-collapsed {
+  fill: var(--gray-200);
+}
 /*------------SEARCH------------*/
 .search {
   border: none;
@@ -165,7 +254,6 @@ div > textarea {
   color: #bbb;
   cursor: pointer;
 }
-
 hr {
   border: 0;
   border-bottom: 1px solid var(--border-color);
