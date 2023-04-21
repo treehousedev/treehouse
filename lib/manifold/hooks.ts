@@ -19,3 +19,18 @@ export function triggerHook(node: Node, hook: string, ...args: any[]): any {
     return node.value[hook].apply(node.value, args);
   }
 }
+
+export function objectHas(obj: Node, hook: string): boolean {
+  for (const com of obj.components) {
+    if (hasHook(com, hook)) return true;
+  }
+  return false;
+}
+
+export function objectCall(obj: Node, hook: string, ...args: any[]): any {
+  for (const com of obj.components) {
+    if (hasHook(com, hook)) {
+      return com.value[hook].apply(com.value, args);
+    }
+  }
+}

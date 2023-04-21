@@ -20,6 +20,7 @@ import { Workbench } from "./workbench.ts";
 import { App } from "./ui/app.tsx";
 import { Backend } from "./backend/mod.ts";
 import { component } from "./manifold/components.ts";
+import { SearchNode } from "./com/search.tsx";
 
 export { BrowserBackend, SearchIndex_MiniSearch} from "./backend/browser.ts";
 export { GitHubBackend } from "./backend/github.ts";
@@ -42,6 +43,7 @@ export class Page {
   }
 }
 
+
 /**
  * setup initializes and mounts a workbench UI with a given backend adapter to a document.
  * More specifically, first it initializes the given backend, then creates and initializes
@@ -63,6 +65,17 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     workbench.showNotice("lockstolen", () => {
       location.reload();
     });
+  });
+
+  workbench.commands.registerCommand({
+    id: "create-search",
+    title: "Create Search Node",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      const search = new SearchNode();
+      ctx.node.addComponent(search);
+      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, true);
+    }
   });
 
   workbench.commands.registerCommand({
@@ -412,11 +425,11 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     {command: "delete"},
     // {command: "add-checkbox"}, 
     // {command: "remove-checkbox"},
-    {command: "mark-done"},
-    {command: "add-page"},
+    // {command: "mark-done"},
+    // {command: "add-page"},
     // {command: "remove-page"},
-    {command: "generate-random"},
-    {command: "create-reference"},
+    // {command: "generate-random"},
+    // {command: "create-reference"},
   ]);
 
   workbench.menus.registerMenu("settings", [

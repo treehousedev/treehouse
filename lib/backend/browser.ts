@@ -40,7 +40,9 @@ export class SearchIndex_MiniSearch {
   }
 
   remove(id: string) {
-    this.indexer.discard(id);
+    try {
+      this.indexer.discard(id);
+    } catch {}
   }
 
   search(query: string): string[] {

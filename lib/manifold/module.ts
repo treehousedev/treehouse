@@ -1,5 +1,5 @@
-import { RawNode, Node as INode, Bus as IBus, WalkFunc, ObserverFunc } from "./mod.ts";
-import { componentName, getComponent } from "./components.ts";
+import { RawNode, Node as INode, Bus as IBus, WalkFunc, ObserverFunc, WalkOptions } from "./mod.ts";
+import { componentName, getComponent, inflateToComponent } from "./components.ts";
 import { triggerHook, hasHook } from "./hooks.ts";
 
 export class Node {
@@ -160,15 +160,19 @@ export class Node {
     };
     for (const com of this.components) {
       if (hasHook(com, "objectChildren")) {
-        return triggerHook(com, "objectChildren", com, children);
+        return triggerHook(com, "objectChildren", this, children);
       }
     }
     return children;
   }
 
   get childCount(): number {
-    // TODO: integrate objectChildren hook
     if (this.refTo) return this.refTo.childCount;
+    for (const com of this.components) {
+      if (hasHook(com, "objectChildren")) {
+        return triggerHook(com, "objectChildren", this, null).length;
+      }
+    }
     if (!this.raw.Linked.Children) return 0;
     return this.raw.Linked.Children.length;
   }
@@ -275,33 +279,45 @@ export class Node {
     return this.bus.find([this.path, path].join("/"));
   }
 
-  walk(fn: WalkFunc): boolean {
+  walk(fn: WalkFunc, opts?: WalkOptions): boolean {
+    opts = opts || {
+      followRefs: false,
+      includeComponents: false
+    };
     if (fn(this)) {
       return true;
     }
     let children = this.children;
-    if (this.refTo) {
+    if (this.refTo && opts.followRefs) {
       if (fn(this.refTo)) {
         return true;
       }
       children = this.refTo.children;
     }
     for (const child of children) {
-      if (child.walk(fn)) return true;
+      if (child.walk(fn, opts)) return true;
+    }
+    if (opts.includeComponents) {
+      for (const com of this.components) {
+        if (com.walk(fn, opts)) return true;
+      }
     }
     return false;
   }
 
   destroy() {
+    if (this.isDestroyed) return;
     if (this.refTo) {
       this._bus.destroy(this);
       return;
     }
-    // TODO: also walk components of nodes
     const nodes: INode[] = [];
     this.walk((n: INode): boolean => {
       nodes.push(n);
       return false;
+    }, {
+      followRefs: false,
+      includeComponents: true
     });
     nodes.reverse().forEach(n => this._bus.destroy(n));
   }
@@ -339,9 +355,23 @@ export class Bus {
 
   import(nodes: RawNode[]) {
     for (const n of nodes) {
+      if (n.Value && getComponent(n.Name)) {
+        n.Value = inflateToComponent(n.Name, n.Value);
+      }
       this.nodes[n.ID] = n;
     }
-    // TODO: triggerHook(n, "onAttach", n);
+    for (const n of nodes) {
+      const node = this.find(n.ID);
+      if (node) {
+        // check orphan
+        if (node.parent && !node.parent.raw) {
+          delete this.nodes[n.ID];
+          continue
+        }
+        // trigger attach
+        triggerHook(node, "onAttach", node);
+      }
+    }
   }
 
   export(): RawNode[] {
@@ -385,9 +415,10 @@ export class Bus {
     return node;
   }
 
+  // destroys node but not linked nodes
   destroy(n: INode) {
     const p = n.parent;
-    if (p !== null) {
+    if (p !== null && !p.isDestroyed) {
       if (p.raw.Linked.Children.includes(n.id)) {
         p.raw.Linked.Children.splice(n.siblingIndex, 1);
       }
@@ -395,7 +426,6 @@ export class Bus {
         p.raw.Linked.Components.splice(n.siblingIndex, 1);
       }
     }
-    // TODO: walk children and destroy children
     delete this.nodes[n.id];
     if (p) {
       this.changed(p);
@@ -444,9 +474,9 @@ export class Bus {
     return cur;
   }
 
-  walk(fn: WalkFunc) {
+  walk(fn: WalkFunc, opts?: WalkOptions) {
     for (const root of this.roots()) {
-      if (root.walk(fn)) return;
+      if (root.walk(fn, opts)) return;
     }
   }
 

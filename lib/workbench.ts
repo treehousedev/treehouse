@@ -107,6 +107,7 @@ class Workspace {
     }
     if (doc.nodes) {
       this.bus.import(doc.nodes);
+      console.log(`Loaded ${doc.nodes.length} nodes.`);
     }
     if (doc.expanded) {
       this.expanded = doc.expanded;
@@ -256,8 +257,12 @@ export class Workbench {
     this.workspace.rawNodes.forEach(n => this.backend.index.index(n));
     this.workspace.observe((n => {
       this.workspace.save();
-      this.backend.index.index(n.raw);
-      n.components.forEach(com => this.backend.index.index(com.raw));
+      if (n.isDestroyed) {
+        this.backend.index.remove(n.id);
+      } else {
+        this.backend.index.index(n.raw);
+        n.components.forEach(com => this.backend.index.index(com.raw));
+      }
     }));
     
     if (this.workspace.lastOpenedID) {

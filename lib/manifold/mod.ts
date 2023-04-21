@@ -8,6 +8,10 @@
 export type WalkFunc = (node: Node) => boolean;
 export type ObserverFunc = (node: Node) => void;
 
+export interface WalkOptions {
+  followRefs: boolean;
+  includeComponents: boolean;
+}
 
 // references
 
@@ -62,7 +66,7 @@ export interface Node {
   setAttr(name: string, value: string): void;
 
   find(path: string): Node|null;
-  walk(fn: WalkFunc): boolean;
+  walk(fn: WalkFunc, opts?: WalkOptions): boolean;
   destroy(): void;
   changed(): void;
 
@@ -77,7 +81,7 @@ export interface Bus {
   roots(): Node[];
   root(name?: string): Node|null;
   find(path:string): Node|null;
-  walk(fn: WalkFunc): void;
+  walk(fn: WalkFunc, opts?: WalkOptions): void;
   observe(fn: ObserverFunc): void;
 }
 

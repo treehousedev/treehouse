@@ -31,5 +31,11 @@ export function getComponent(com: any): any {
 }
 
 export function inflateToComponent(com: any, obj: any): any {
-  return Object.create(getComponent(com).prototype, Object.getOwnPropertyDescriptors(obj));
+  const o = new (getComponent(com));
+  if (o["fromJSON"] instanceof Function) {
+    o.fromJSON(obj);
+  } else {
+    Object.defineProperties(o, Object.getOwnPropertyDescriptors(obj));
+  }
+  return o;
 }
