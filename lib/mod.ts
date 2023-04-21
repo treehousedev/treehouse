@@ -117,6 +117,22 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
 
   workbench.commands.registerCommand({
+    id: "create-field",
+    title: "Create Field",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      if (ctx.node.childCount > 0) return;
+      if (ctx.node.componentCount > 0) return;
+      const field = workbench.workspace.new(ctx.node.name, "");
+      field.raw.Parent = ctx.node.parent.id;
+      ctx.node.parent.addLinked("Fields", field);
+      ctx.node.destroy();
+      m.redraw.sync();
+      workbench.focus(field);
+    }
+  });
+
+  workbench.commands.registerCommand({
     id: "mark-done",
     title: "Mark done",
     action: (ctx: Context) => {

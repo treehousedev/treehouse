@@ -130,7 +130,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
     return (
       <div onmouseover={hover} onmouseout={unhover}>
         <div class="node-row-outer-wrapper flex flex-row items-start">
-          <svg class="node-menu-icon shrink-0" xmlns="http://www.w3.org/2000/svg"
+          <svg class="node-menu shrink-0" xmlns="http://www.w3.org/2000/svg"
               style={{display: (state.hover)?"block":"none"}}  
               onclick={(e) => workbench.showMenu(e, {node, panel})}
               oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} 
@@ -138,10 +138,10 @@ export const OutlineNode: m.Component<Attrs, State> = {
               viewBox="0 0 16 16">
             <path style={{transform: "translateY(-1px)"}} fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
           </svg>
-          <div class="node-bullet shrink-0" onclick={toggle} ondblclick={open} oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} data-menu="node">
+          <div class="node-handle shrink-0" onclick={toggle} ondblclick={open} oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} data-menu="node">
             {(objectHas(node, "handleIcon"))
               ? objectCall(node, "handleIcon")
-              : <svg xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
+              : <svg class="node-bullet" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
                 {(node.childCount > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
                 <circle cx="8" cy="7" r="3"/>,
                 {(node.refTo !== null)?<circle cx="8" cy="7" r="7" fill="none" stroke="gray" stroke-width="1" stroke-dasharray="3,3" />:null}
@@ -155,9 +155,13 @@ export const OutlineNode: m.Component<Attrs, State> = {
         </div>
         {(expanded === true) &&
           <div class="expanded-node flex flex-row">
-            <div class="indent flex" onclick={toggle}>
-            </div>
+            <div class="indent flex" onclick={toggle}></div>
             <div class="grow">
+              <div style={{backgroundColor: "#eee"}}>
+                {(node.getLinked("Fields").length > 0) &&
+                  node.getLinked("Fields").map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)
+                }
+              </div>
               {(node.childCount > 0)
                 ?node.children.map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)
                 :<NewNode workbench={workbench} panel={panel} node={node} />

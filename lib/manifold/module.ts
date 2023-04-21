@@ -247,17 +247,26 @@ export class Node {
   }
 
   addLinked(rel: string, node: INode) {
+    if (!this.raw.Linked[rel]) {
+      this.raw.Linked[rel] = [];
+    }
     this.raw.Linked[rel].push(node.id);
     this.changed();
   } 
 
   removeLinked(rel: string, node: INode) {
+    if (!this.raw.Linked[rel]) {
+      this.raw.Linked[rel] = [];
+    }
     const linked = this.raw.Linked[rel].filter(id => id === node.id);
     this.raw.Linked[rel] = linked;
     this.changed();
   }
 
   moveLinked(rel: string, node: INode, idx: number) {
+    if (!this.raw.Linked[rel]) {
+      this.raw.Linked[rel] = [];
+    }
     const oldIdx = this.raw.Linked[rel].findIndex(id => id === node.id);
     if (oldIdx === -1) return;
     const linked = this.raw.Linked[rel];
