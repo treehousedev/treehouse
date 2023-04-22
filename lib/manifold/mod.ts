@@ -13,8 +13,6 @@ export interface WalkOptions {
   includeComponents: boolean;
 }
 
-// references
-
 export interface RawNode {
   ID:         string;
 	Name:       string;
@@ -22,6 +20,8 @@ export interface RawNode {
 	Parent?:    string;
 	Linked:     Record<string, string[]>; // Rel => IDs
 	Attrs:      Record<string, string>;
+  
+  Rel?:       string; // Parent Rel hint kludge (Components, Fields)
 }
 
 

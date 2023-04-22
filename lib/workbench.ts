@@ -162,6 +162,7 @@ class Workspace {
   }
 
   findAbove(head: Node, n: Node): Node|null {
+    // TODO: Fields
     if (n.id === head.id) {
       return null;
     }
@@ -182,6 +183,9 @@ class Workspace {
 
   findBelow(head: Node, n: Node): Node|null {
     // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
+    if (this.getExpanded(head, n) && n.getLinked("Fields").length > 0) {
+      return n.getLinked("Fields")[0];
+    }
     if (this.getExpanded(head, n) && n.childCount > 0) {
       return n.children[0];
     }
@@ -193,6 +197,9 @@ class Workspace {
       const parent = n.parent;
       if (!parent || parent.id === head.id) {
         return null;
+      }
+      if (n.raw.Rel === "Fields" && parent.childCount > 0) {
+        return parent.children[0];
       }
       return nextSiblingOrParentNextSibling(parent);
     }
@@ -382,7 +389,12 @@ export class Workbench {
     if (!panel) {
       panel = this.context.panel;
     }
-    return document.getElementById(`input-${panel.id}-${n.id}`);
+    let id = `input-${panel.id}-${n.id}`;
+    // kludge:
+    if (n.raw.Rel === "Fields") {
+      id = id+"-value"; 
+    }
+    return document.getElementById(id);
   }
 
   executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {

@@ -1,7 +1,7 @@
 
 import { Workbench, Node } from "../workbench.ts";
 
-import { Checkbox, SearchNode } from "../mod.ts";
+import { Checkbox } from "../com/checkbox.tsx";
 import { objectCall, objectHas } from "../manifold/hooks.ts";
 
 interface Attrs {
@@ -16,26 +16,62 @@ interface State {
   buffer?: string;
 }
 
+export const OutlineEditor: m.Component<Attrs> = {
+  view ({attrs: {workbench, panel, node}, state}) {
+    return (
+      <div>
+        {node.children.map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)}
+        <NewNode workbench={workbench} panel={panel} node={node} />
+      </div>
+    )
+  }
+}
+
+const CheckboxEditor = {
+  view({attrs}) {
+    const {node, panel, workbench} = attrs;
+    const toggleCheckbox = (e) => {
+      const checkbox = node.getComponent(Checkbox);
+      checkbox.checked = !checkbox.checked;
+      node.changed();
+    }
+    return <input type="checkbox" style={{marginTop: "0.3rem", marginRight: "0.5rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />
+  }
+}
+
+// handles: expanded state, node menu+handle, children
 export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
-    const {node, panel, workbench} = attrs;
-    const expanded = workbench.workspace.getExpanded(panel.headNode, node); 
+    let {node, panel, workbench} = attrs;
+
+    let isRef = false;
+    let handleNode = node;
+    if (node.refTo) {
+      isRef = true;
+      node = handleNode.refTo;
+    }
+
+    const expanded = workbench.workspace.getExpanded(panel.headNode, handleNode); 
+
     const hover = (e) => {
       state.hover = true;
       e.stopPropagation();
     }
+    
     const unhover = (e) => {
       state.hover = false;
       e.stopPropagation();
     }
+    
     const toggle = (e) => {
       if (expanded) {
-        workbench.executeCommand("collapse", {node, panel});
+        workbench.executeCommand("collapse", {node: handleNode, panel});
       } else {
-        workbench.executeCommand("expand", {node, panel});
+        workbench.executeCommand("expand", {node: handleNode, panel});
       }
       e.stopPropagation();
     }
+    
     const checkCommands = (e) => {
       const anyModifiers = e.shiftKey || e.metaKey || e.altKey || e.ctrlKey;
       switch (e.key) {
@@ -109,11 +145,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
         break;
       }
     }
-    const toggleCheckbox = (e) => {
-      const checkbox = node.getComponent(Checkbox);
-      checkbox.checked = !checkbox.checked;
-      node.changed();
-    }
+
     const open = (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -127,37 +159,50 @@ export const OutlineNode: m.Component<Attrs, State> = {
         window.getSelection().removeAllRanges();
       }
     }
+
+    const subCount = (n) => {
+      return n.childCount + n.getLinked("Fields").length;
+    }
+
     return (
       <div onmouseover={hover} onmouseout={unhover}>
         <div class="node-row-outer-wrapper flex flex-row items-start">
           <svg class="node-menu shrink-0" xmlns="http://www.w3.org/2000/svg"
               style={{display: (state.hover)?"block":"none"}}  
-              onclick={(e) => workbench.showMenu(e, {node, panel})}
-              oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} 
+              onclick={(e) => workbench.showMenu(e, {node: handleNode, panel})}
+              oncontextmenu={(e) => workbench.showMenu(e, {node: handleNode, panel})} 
               data-menu="node"
               viewBox="0 0 16 16">
             <path style={{transform: "translateY(-1px)"}} fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />
           </svg>
-          <div class="node-handle shrink-0" onclick={toggle} ondblclick={open} oncontextmenu={(e) => workbench.showMenu(e, {node, panel})} data-menu="node">
+          <div class="node-handle shrink-0" onclick={toggle} ondblclick={open} oncontextmenu={(e) => workbench.showMenu(e, {node: handleNode, panel})} data-menu="node">
             {(objectHas(node, "handleIcon"))
               ? objectCall(node, "handleIcon")
               : <svg class="node-bullet" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                {(node.childCount > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
+                {(subCount(node) > 0 && !expanded)?<circle cx="8" cy="7" r="7" fill="lightgray" />:null}
                 <circle cx="8" cy="7" r="3"/>,
-                {(node.refTo !== null)?<circle cx="8" cy="7" r="7" fill="none" stroke="gray" stroke-width="1" stroke-dasharray="3,3" />:null}
+                {(isRef)?<circle cx="8" cy="7" r="7" fill="none" stroke="gray" stroke-width="1" stroke-dasharray="3,3" />:null}
               </svg>
             }
           </div>
-          <div class="flex grow items-start">
-            {(node.hasComponent(Checkbox)) ? <input type="checkbox" style={{marginTop: "0.3rem", marginRight: "0.5rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />:null}
-            <NodeEditor workbench={workbench} panel={panel} node={node} onkeydown={checkCommands} />
-          </div>
+          {(node.raw.Rel === "Fields") 
+            ? <div class="flex grow items-start flex-row">
+                <div>
+                  <NodeEditor workbench={workbench} panel={panel} node={node} onkeydown={checkCommands} />
+                </div>
+                <NodeEditor editValue={true} workbench={workbench} panel={panel} node={node} onkeydown={checkCommands} />
+              </div>
+            : <div class="flex grow items-start flex-row">
+                {(node.hasComponent(Checkbox)) && <CheckboxEditor node={node} />}
+                <NodeEditor workbench={workbench} panel={panel} node={node} onkeydown={checkCommands} />
+              </div>
+          }
         </div>
         {(expanded === true) &&
           <div class="expanded-node flex flex-row">
             <div class="indent flex" onclick={toggle}></div>
             <div class="grow">
-              <div style={{backgroundColor: "#eee"}}>
+              <div class="fields">
                 {(node.getLinked("Fields").length > 0) &&
                   node.getLinked("Fields").map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)
                 }
@@ -174,6 +219,92 @@ export const OutlineNode: m.Component<Attrs, State> = {
   }
 };
 
+// handles node name/text editing
+export const NodeEditor: m.Component = {
+  oncreate({dom}) {
+    const textarea = dom.querySelector("textarea");
+    const initialHeight = textarea.offsetHeight;
+    const span = dom.querySelector("span");
+    this.updateHeight = () => {
+      span.style.width = `${Math.max(textarea.offsetWidth, 100)}px`;
+      span.innerHTML = textarea.value.replace("\n", "<br/>");
+      textarea.style.height = (span.offsetHeight > 0) ? `${span.offsetHeight}px` : `${initialHeight}px`;
+    }
+    textarea.addEventListener("input", () => this.updateHeight());
+    textarea.addEventListener("blur", () => span.innerHTML = "");
+    setTimeout(() => this.updateHeight(), 50);
+  },
+  onupdate() {
+    this.updateHeight();
+  },
+  view ({attrs: {workbench, node, panel, onkeydown, disallowEmpty, editValue}, state}) {
+    let prop = (editValue) ? "value" : "name";
+    let displayValue = node[prop] || "";
+    if (prop === "name") {
+      displayValue = objectHas(node, "displayName") ? objectCall(node, "displayName", node) : node.name;
+    }
+    const value = (state.editing)?state.buffer:displayValue;
+    
+    const defaultKeydown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+    const startEdit = (e) => {
+      state.initialValue = node[prop];
+      workbench.context.node = node;
+      state.editing = true;
+      state.buffer = node[prop];
+    }
+    const finishEdit = (e) => {
+      // safari can trigger blur more than once
+      // for a given element, namely when clicking
+      // into devtools. this prevents the second 
+      // blur setting node name to undefined/empty.
+      if (state.editing) {
+        state.editing = false;
+        if (!node.isDestroyed) {
+          if (disallowEmpty && state.buffer.length === 0) {
+            node[prop] = state.initialValue;
+          } else {
+            node[prop] = state.buffer;
+          }
+        }
+        state.buffer = undefined;
+        workbench.context.node = null;
+      }
+    }
+    const edit = (e) => {
+      state.buffer = e.target.value;
+      if (disallowEmpty && state.buffer.length === 0) {
+        node[prop] = state.initialValue;
+      } else {
+        node[prop] = state.buffer;
+      }
+    }
+    
+    let id = `input-${panel.id}-${node.id}`;
+    if (prop === "value") {
+      id = id+"-value";
+    }
+    return (
+      <div class="node-container">
+        <textarea
+          id={id}
+          rows="1"
+          onfocus={startEdit}
+          onblur={finishEdit}
+          oninput={edit}
+          onkeydown={onkeydown||defaultKeydown}
+          value={value}>{value}</textarea>
+        <span style={{visibility: "hidden", position: "fixed"}}></span>
+      </div>
+    )
+  }
+}
+
+// new node placeholder
 export const NewNode = {
   view({attrs: {workbench, panel, node}}) {
     const startNew = (e) => {
@@ -208,90 +339,5 @@ export const NewNode = {
   }
 }
 
-export const OutlineEditor: m.Component<Attrs> = {
-  view ({attrs: {workbench, panel, node}, state}) {
-    return (
-      <div>
-        {node.children.map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)}
-        <NewNode workbench={workbench} panel={panel} node={node} />
-      </div>
-    )
-  }
-}
 
-export const NodeEditor: m.Component = {
-  oncreate({dom}) {
-    const textarea = dom.querySelector("textarea");
-    const initialHeight = textarea.offsetHeight;
-    const span = dom.querySelector("span");
-    this.updateHeight = () => {
-      span.style.width = `${Math.max(textarea.offsetWidth, 100)}px`;
-      span.innerHTML = textarea.value.replace("\n", "<br/>");
-      textarea.style.height = (span.offsetHeight > 0) ? `${span.offsetHeight}px` : `${initialHeight}px`;
-    }
-    textarea.addEventListener("input", () => this.updateHeight());
-    textarea.addEventListener("blur", () => span.innerHTML = "");
-    setTimeout(() => this.updateHeight(), 50);
-  },
-  onupdate() {
-    this.updateHeight();
-  },
-  view ({attrs: {workbench, node, panel, onkeydown, disallowEmpty}, state}) {
-    const displayValue = objectHas(node, "displayName") ? objectCall(node, "displayName", node) : node.name;
-    const value = (state.editing)?state.buffer:displayValue;
-    
-    const defaultKeydown = (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    }
-    const startEdit = (e) => {
-      state.initialValue = node.name;
-      workbench.context.node = node;
-      state.editing = true;
-      state.buffer = node.name;
-    }
-    const finishEdit = (e) => {
-      // safari can trigger blur more than once
-      // for a given element, namely when clicking
-      // into devtools. this prevents the second 
-      // blur setting node name to undefined/empty.
-      if (state.editing) {
-        state.editing = false;
-        if (!node.isDestroyed) {
-          if (disallowEmpty && state.buffer.length === 0) {
-            node.name = state.initialValue;
-          } else {
-            node.name = state.buffer;
-          }
-        }
-        state.buffer = undefined;
-        workbench.context.node = null;
-      }
-    }
-    const edit = (e) => {
-      state.buffer = e.target.value;
-      if (disallowEmpty && state.buffer.length === 0) {
-        node.name = state.initialValue;
-      } else {
-        node.name = state.buffer;
-      }
-    }
-    
-    const style = {}
-    return (
-      <div class="node-container">
-        <textarea
-          id={`input-${panel.id}-${node.id}`}
-          rows="1"
-          onfocus={startEdit}
-          onblur={finishEdit}
-          oninput={edit}
-          onkeydown={onkeydown||defaultKeydown}
-          value={value}>{value}</textarea>
-        <span style={Object.assign({visibility: "hidden", position: "fixed"}, style)}></span>
-      </div>
-    )
-  }
-}
+

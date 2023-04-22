@@ -19,29 +19,13 @@
 import { Workbench } from "./workbench.ts";
 import { App } from "./ui/app.tsx";
 import { Backend } from "./backend/mod.ts";
-import { component } from "./manifold/components.ts";
 import { SearchNode } from "./com/search.tsx";
+import { Checkbox } from "./com/checkbox.tsx";
+import { Page } from "./com/page.tsx";
+import { TextField } from "./com/textfield.tsx";
 
 export { BrowserBackend, SearchIndex_MiniSearch} from "./backend/browser.ts";
 export { GitHubBackend } from "./backend/github.ts";
-
-@component
-export class Checkbox {
-  checked: boolean;
-
-  constructor() {
-    this.checked = false;
-  }
-}
-
-@component
-export class Page {
-  markdown: string;
-
-  constructor() {
-    this.markdown = "";
-  }
-}
 
 
 /**
@@ -125,6 +109,8 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (ctx.node.componentCount > 0) return;
       const field = workbench.workspace.new(ctx.node.name, "");
       field.raw.Parent = ctx.node.parent.id;
+      const text = new TextField();
+      field.addComponent(text);
       ctx.node.parent.addLinked("Fields", field);
       ctx.node.destroy();
       m.redraw.sync();
@@ -340,6 +326,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           pos = above.name.length;
         }
         if (above.childCount === 0) {
+          // TODO: use subCount
           workbench.workspace.setExpanded(ctx.panel.headNode, above, false);
         }
         workbench.focus(above, ctx.panel, pos);

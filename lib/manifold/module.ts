@@ -26,7 +26,9 @@ export class Node {
   }
 
   get raw(): RawNode {
-    return this._bus.nodes[this.id];
+    const raw = this._bus.nodes[this.id];
+    if (!raw) throw `use of non-existent node ${this.id}`;
+    return raw;
   }
 
 
@@ -64,6 +66,7 @@ export class Node {
 
   get parent(): INode|null {
     if (!this.raw.Parent) return null;
+    if (!this._bus.nodes[this.raw.Parent]) return null;
     return new Node(this._bus, this.raw.Parent);
   }
 
@@ -103,14 +106,16 @@ export class Node {
   get siblingIndex(): number {
     const p = this.parent;
     if (p === null) return 0;
-    return p.raw.Linked.Children.findIndex(id => id === this.id);
+    let rel = this.raw.Rel || "Children";
+    return p.raw.Linked[rel].findIndex(id => id === this.id);
   }
 
   set siblingIndex(i: number) {
     const p = this.parent;
     if (p === null) return;
-    p.raw.Linked.Children.splice(this.siblingIndex, 1);
-    p.raw.Linked.Children.splice(i, 0, this.id);
+    let rel = this.raw.Rel || "Children";
+    p.raw.Linked[rel].splice(this.siblingIndex, 1);
+    p.raw.Linked[rel].splice(i, 0, this.id);
     p.changed();
   }
 
@@ -118,14 +123,16 @@ export class Node {
     const p = this.parent;
     if (p === null) return null;
     if (this.siblingIndex === 0) return null;
-    return p.children[this.siblingIndex-1];
+    let rel = this.raw.Rel || "Children";
+    return p.getLinked(rel)[this.siblingIndex-1];
   }
 
   get nextSibling(): INode|null {
     const p = this.parent;
     if (p === null) return null;
     if (this.siblingIndex === p.children.length-1) return null;
-    return p.children[this.siblingIndex+1];
+    let rel = this.raw.Rel || "Children";
+    return p.getLinked(rel)[this.siblingIndex+1];
   }
 
   get ancestors(): INode[] {
@@ -210,6 +217,7 @@ export class Node {
   addComponent(obj: any) {
     const node = this.bus.make(componentName(obj), obj);
     node.raw.Parent = this.id;
+    node.raw.Rel = "Components" // kludge
     this.raw.Linked.Components.push(node.id);
     triggerHook(node, "onAttach", node);
     this.changed();
@@ -250,6 +258,7 @@ export class Node {
     if (!this.raw.Linked[rel]) {
       this.raw.Linked[rel] = [];
     }
+    node.raw.Rel = rel; // kludge
     this.raw.Linked[rel].push(node.id);
     this.changed();
   } 
@@ -366,6 +375,7 @@ export class Bus {
     for (const n of nodes) {
       if (n.Value && getComponent(n.Name)) {
         n.Value = inflateToComponent(n.Name, n.Value);
+        n.Rel = "Components"; // kludge
       }
       this.nodes[n.ID] = n;
     }
@@ -428,11 +438,9 @@ export class Bus {
   destroy(n: INode) {
     const p = n.parent;
     if (p !== null && !p.isDestroyed) {
-      if (p.raw.Linked.Children.includes(n.id)) {
-        p.raw.Linked.Children.splice(n.siblingIndex, 1);
-      }
-      if (p.raw.Linked.Components.includes(n.id)) {
-        p.raw.Linked.Components.splice(n.siblingIndex, 1);
+      let rel = n.raw.Rel || "Children";
+      if (p.raw.Linked[rel].includes(n.id)) {
+        p.raw.Linked[rel].splice(n.siblingIndex, 1);
       }
     }
     delete this.nodes[n.id];
