@@ -2,7 +2,7 @@
 import { Workbench, Node } from "../workbench.ts";
 
 import { Checkbox } from "../com/checkbox.tsx";
-import { objectCall, objectHas } from "../manifold/hooks.ts";
+import { objectCall, objectHas } from "../model/hooks.ts";
 
 interface Attrs {
   node: Node;

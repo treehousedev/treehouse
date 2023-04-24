@@ -1,5 +1,5 @@
-import { component } from "../manifold/components.ts";
-import { Node } from "../manifold/mod.ts";
+import { component } from "../model/components.ts";
+import { Node } from "../model/mod.ts";
 
 @component
 export class TextField {

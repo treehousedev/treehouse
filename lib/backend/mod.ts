@@ -5,7 +5,7 @@
  * 
  * @module
  */
-import {RawNode} from "../manifold/mod.ts";
+import {RawNode} from "../model/mod.ts";
 
 /**
  * Backend is the adapter object API to be implemented for a working backend.

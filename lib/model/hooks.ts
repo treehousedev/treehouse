@@ -1,3 +1,10 @@
+/**
+ * Hooks are single method interfaces implemented by component values. There are
+ * some system hook interfaces defined here as well as utilities for working with
+ * system and app hooks.
+ * 
+ * @module
+ */
 import { Node } from "./mod.ts";
 
 // triggered on parent set or import (if has parent), or addcomponent

@@ -1,6 +1,6 @@
 import { SearchIndex } from "../backend/mod.ts";
-import { component } from "../manifold/components.ts";
-import { Node } from "../manifold/mod.ts";
+import { component } from "../model/components.ts";
+import { Node } from "../model/mod.ts";
 
 function debounce(func, timeout = 1000){
   let timer;

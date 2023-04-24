@@ -1,4 +1,4 @@
-import {RawNode} from "../manifold/mod.ts";
+import {RawNode} from "../model/mod.ts";
 
 
 export class BrowserBackend {

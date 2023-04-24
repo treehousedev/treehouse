@@ -1,6 +1,6 @@
 /**
- * Manifold is an extensible node tree system. This is a crude JavaScript
- * implementation and a work-in-progress. API should be considered unstable.
+ * The Treehouse model is an extensible node tree system. It is an implementation of the 
+ * Manifold system which is in active development, so expect changes here.
  * 
  * @module
  */
@@ -20,7 +20,7 @@ export interface RawNode {
 	Parent?:    string;
 	Linked:     Record<string, string[]>; // Rel => IDs
 	Attrs:      Record<string, string>;
-  
+
   Rel?:       string; // Parent Rel hint kludge (Components, Fields)
 }
 

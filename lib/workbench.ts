@@ -2,8 +2,8 @@ import { Backend, FileStore } from "./backend/mod.ts";
 import { KeyBindings } from "./action/keybinds.ts";
 import { CommandRegistry } from "./action/commands.ts";
 import { MenuRegistry } from "./action/menus.ts";
-import { Bus, Node, RawNode } from "./manifold/mod.ts";
-import * as module from "./manifold/module.ts";
+import { Bus, Node, RawNode } from "./model/mod.ts";
+import * as module from "./model/module/mod.ts";
 
 
 /**

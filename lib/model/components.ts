@@ -1,4 +1,10 @@
-
+/**
+ * Components are classes that can be used for component values in component nodes.
+ * These classes need to be registered so they can be properly "hydrated" from 
+ * marshaled form (usually JSON) back into class instances.
+ * 
+ * @module
+ */
 
 const registry: Record<string, any> = {};
 

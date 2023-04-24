@@ -1,8 +1,8 @@
 
 import { assertEquals, assert, assertExists } from "https://deno.land/std@0.173.0/testing/asserts.ts";
-import * as module from "./module.ts";
-import { Node } from "./mod.ts";
-import { component } from "./components.ts";
+import * as module from "./mod.ts";
+import { Node } from "../mod.ts";
+import { component } from "../components.ts";
 
 Deno.test("node children", () => {
   const bus = new module.Bus();
