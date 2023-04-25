@@ -131,8 +131,7 @@ main {
   line-height: var(--body-line-height);
   border: none;
 }
-.title-node textarea {
-  line-height: 0.95;
+.title-node textarea, .title-node > .node-container > span {
   font-size: var(--6);
   font-weight: var(--weight-bold);
 }
