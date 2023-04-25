@@ -1,5 +1,6 @@
-import {NodeEditor, OutlineEditor} from "./outline.tsx";
-import {Page} from "../com/page.tsx";
+import { OutlineEditor } from "./outline.tsx";
+import { NodeEditor } from "./node/editor.tsx";
+import { Page } from "../com/page.tsx";
 
 export const Panel = {
   view({attrs}) {

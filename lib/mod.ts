@@ -16,7 +16,7 @@
  * 
  * @module
  */
-import { Workbench } from "./workbench.ts";
+import { Workbench } from "./workbench/mod.ts";
 import { App } from "./ui/app.tsx";
 import { Backend } from "./backend/mod.ts";
 import { SearchNode } from "./com/search.tsx";
@@ -59,6 +59,25 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const search = new SearchNode();
       ctx.node.addComponent(search);
       workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, true);
+    }
+  });
+
+
+  workbench.commands.registerCommand({
+    id: "view-list",
+    title: "View as List",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      ctx.node.setAttr("view", "list");
+    }
+  });
+
+  workbench.commands.registerCommand({
+    id: "view-table",
+    title: "View as Table",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      ctx.node.setAttr("view", "table");
     }
   });
 

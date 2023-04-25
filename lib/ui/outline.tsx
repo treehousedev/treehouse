@@ -1,8 +1,12 @@
 
-import { Workbench, Node } from "../workbench.ts";
-
+import { Workbench } from "../workbench/mod.ts";
 import { Checkbox } from "../com/checkbox.tsx";
 import { objectCall, objectHas } from "../model/hooks.ts";
+import { NewNode } from "./node/new.tsx";
+import { NodeEditor } from "./node/editor.tsx";
+import { Node } from "../model/mod.ts";
+
+import { getView } from "../view/views.ts";
 
 interface Attrs {
   node: Node;
@@ -11,7 +15,6 @@ interface Attrs {
 
 interface State {
   hover: boolean;
-  // expanded: boolean;
   editing: boolean;
   buffer?: string;
 }
@@ -24,18 +27,6 @@ export const OutlineEditor: m.Component<Attrs> = {
         <NewNode workbench={workbench} panel={panel} node={node} />
       </div>
     )
-  }
-}
-
-const CheckboxEditor = {
-  view({attrs}) {
-    const {node, panel, workbench} = attrs;
-    const toggleCheckbox = (e) => {
-      const checkbox = node.getComponent(Checkbox);
-      checkbox.checked = !checkbox.checked;
-      node.changed();
-    }
-    return <input type="checkbox" style={{marginTop: "0.3rem", marginRight: "0.5rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />
   }
 }
 
@@ -193,7 +184,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
                 <NodeEditor editValue={true} workbench={workbench} panel={panel} node={node} onkeydown={checkCommands} />
               </div>
             : <div class="flex grow items-start flex-row">
-                {(node.hasComponent(Checkbox)) && <CheckboxEditor node={node} />}
+                {(node.hasComponent(Checkbox)) && m(objectCall(node, "editor"), {node})}
                 <NodeEditor workbench={workbench} panel={panel} node={node} onkeydown={checkCommands} />
               </div>
           }
@@ -201,16 +192,8 @@ export const OutlineNode: m.Component<Attrs, State> = {
         {(expanded === true) &&
           <div class="expanded-node flex flex-row">
             <div class="indent flex" onclick={toggle}></div>
-            <div class="grow">
-              <div class="fields">
-                {(node.getLinked("Fields").length > 0) &&
-                  node.getLinked("Fields").map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)
-                }
-              </div>
-              {(node.childCount > 0)
-                ?node.children.map(n => <OutlineNode key={n.id} workbench={workbench} panel={panel} node={n} />)
-                :<NewNode workbench={workbench} panel={panel} node={node} />
-              }
+            <div class="view grow">
+              {m(getView(node.getAttr("view")||"list"), {workbench, panel, node})}
             </div>
           </div>
         }
@@ -219,125 +202,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
   }
 };
 
-// handles node name/text editing
-export const NodeEditor: m.Component = {
-  oncreate({dom}) {
-    const textarea = dom.querySelector("textarea");
-    const initialHeight = textarea.offsetHeight;
-    const span = dom.querySelector("span");
-    this.updateHeight = () => {
-      span.style.width = `${Math.max(textarea.offsetWidth, 100)}px`;
-      span.innerHTML = textarea.value.replace("\n", "<br/>");
-      textarea.style.height = (span.offsetHeight > 0) ? `${span.offsetHeight}px` : `${initialHeight}px`;
-    }
-    textarea.addEventListener("input", () => this.updateHeight());
-    textarea.addEventListener("blur", () => span.innerHTML = "");
-    setTimeout(() => this.updateHeight(), 50);
-  },
-  onupdate() {
-    this.updateHeight();
-  },
-  view ({attrs: {workbench, node, panel, onkeydown, disallowEmpty, editValue}, state}) {
-    let prop = (editValue) ? "value" : "name";
-    let displayValue = node[prop] || "";
-    if (prop === "name") {
-      displayValue = objectHas(node, "displayName") ? objectCall(node, "displayName", node) : node.name;
-    }
-    const value = (state.editing)?state.buffer:displayValue;
-    
-    const defaultKeydown = (e) => {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-    }
-    const startEdit = (e) => {
-      state.initialValue = node[prop];
-      workbench.context.node = node;
-      state.editing = true;
-      state.buffer = node[prop];
-    }
-    const finishEdit = (e) => {
-      // safari can trigger blur more than once
-      // for a given element, namely when clicking
-      // into devtools. this prevents the second 
-      // blur setting node name to undefined/empty.
-      if (state.editing) {
-        state.editing = false;
-        if (!node.isDestroyed) {
-          if (disallowEmpty && state.buffer.length === 0) {
-            node[prop] = state.initialValue;
-          } else {
-            node[prop] = state.buffer;
-          }
-        }
-        state.buffer = undefined;
-        workbench.context.node = null;
-      }
-    }
-    const edit = (e) => {
-      state.buffer = e.target.value;
-      if (disallowEmpty && state.buffer.length === 0) {
-        node[prop] = state.initialValue;
-      } else {
-        node[prop] = state.buffer;
-      }
-    }
-    
-    let id = `input-${panel.id}-${node.id}`;
-    if (prop === "value") {
-      id = id+"-value";
-    }
-    return (
-      <div class="node-container">
-        <textarea
-          id={id}
-          rows="1"
-          onfocus={startEdit}
-          onblur={finishEdit}
-          oninput={edit}
-          onkeydown={onkeydown||defaultKeydown}
-          value={value}>{value}</textarea>
-        <span style={{visibility: "hidden", position: "fixed"}}></span>
-      </div>
-    )
-  }
-}
 
-// new node placeholder
-export const NewNode = {
-  view({attrs: {workbench, panel, node}}) {
-    const startNew = (e) => {
-      workbench.executeCommand("insert-child", {node, panel}, e.target.value);
-    }
-    const tabNew = (e) => {
-      if (e.key === "Tab") {
-        e.stopPropagation();
-        e.preventDefault();
-        if (node.childCount > 0) {
-          const lastchild = node.children[node.childCount-1];
-          workbench.executeCommand("insert-child", {node: lastchild, panel});
-        }
-      }
-    }
-    return (
-      <div class="new-node flex flex-row items-center">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 16 16">
-          <circle cx="8" cy="7" r="7" />
-          <path style={{transform: "translate(0px, -1px)"}} d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-        </svg>
-        <div class="flex grow">
-          <input class="grow"
-            type="text"
-            oninput={startNew}
-            onkeydown={tabNew}
-            value={""}
-          />
-        </div>
-      </div>
-    )
-  }
-}
+
+
 
 
 

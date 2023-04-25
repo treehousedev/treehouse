@@ -184,6 +184,21 @@ svg.node-bullet {
 svg.node-bullet circle#node-collapsed {
   fill: var(--gray-200);
 }
+
+/*------------TABLE VIEW------------*/
+
+.table-view {
+  display: grid;
+}
+.table-view th {
+  text-align: left;
+}
+.table-view thead,
+.table-view tbody,
+.table-view tr {
+  display: contents;
+}
+
 /*------------SEARCH------------*/
 .search {
   border: none;
