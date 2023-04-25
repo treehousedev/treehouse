@@ -56,7 +56,15 @@ export const Search: m.Component = {
       state.selected = 0;
 
       if (state.query) {
-        state.results = workbench.backend.index.search(state.query).map(id => {
+        let splitQuery = state.query.split(/[ ]+/);
+        let textQuery = splitQuery.filter(term => !term.includes(":")).join(" ");
+        let fieldQuery = Object.fromEntries(splitQuery.filter(term => term.includes(":")).map(term => term.toLowerCase().split(":")));
+        if (!textQuery && Object.keys(fieldQuery).length > 0) {
+          // when text query is empty, no results will show up,
+          // but we index field names, so this works for now.
+          textQuery = Object.keys(fieldQuery)[0];
+        }
+        state.results = workbench.backend.index.search(textQuery).map(id => {
           let node = workbench.workspace.find(id);
           if (!node) {
             return undefined;
@@ -65,7 +73,19 @@ export const Search: m.Component = {
           if (node.value) {
             node = node.parent;
             // parent might not actually exist
-            if (!node.raw) return;
+            if (!node.raw) return undefined;
+          }
+          // kludgy filter on fields
+          if (Object.keys(fieldQuery).length > 0) {
+            const fields = {};
+            for (const f of node.getLinked("Fields")) {
+              fields[f.name.toLowerCase()] = f.value.toLowerCase();
+            }
+            for (const f in fieldQuery) {
+              if (!fields[f] || fields[f] !== fieldQuery[f]) {
+                return undefined;
+              }
+            }
           }
           return node;
         }).filter(n => n !== undefined);

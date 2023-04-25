@@ -46,23 +46,45 @@ export class SearchNode {
   search() {
     console.log("searched");
     if (!this.object) return;
-    const results = this.index.search(this.object.name)
+
+    let query = this.object.name;
+    let splitQuery = query.split(/[ ]+/);
+    let textQuery = splitQuery.filter(term => !term.includes(":")).join(" ");
+    let fieldQuery = Object.fromEntries(splitQuery.filter(term => term.includes(":")).map(term => term.toLowerCase().split(":")));
+    if (!textQuery && Object.keys(fieldQuery).length > 0) {
+      // when text query is empty, no results will show up,
+      // but we index field names, so this works for now.
+      textQuery = Object.keys(fieldQuery)[0];
+    }
+    const results = this.index.search(textQuery)
       .map(id => {
         let node = window.workbench.workspace.find(id);
         if (!node) {
           return undefined;
         }
-        // if component value, get the parent
+        // if component/field value, get the parent
         if (node.value) {
           node = node.parent;
           // parent might not actually exist
-          if (!node.raw) return;
+          if (!node.raw) return undefined;
+        }
+        // kludgy filter on fields
+        if (Object.keys(fieldQuery).length > 0) {
+          const fields = {};
+          for (const f of node.getLinked("Fields")) {
+            fields[f.name.toLowerCase()] = f.value.toLowerCase();
+          }
+          for (const f in fieldQuery) {
+            if (!fields[f] || fields[f] !== fieldQuery[f]) {
+              return undefined;
+            }
+          }
         }
         return node;
       })
       .filter(n => n !== undefined)
       .filter(n => n.id !== this.object.id && n.id !== this.component.id);
-    if (results.length !== this.lastResultCount || this.object.name !== this.lastQuery) {
+    if (results.length !== this.lastResultCount || query !== this.lastQuery) {
       if (this.results) {
         // clean up old results
         this.results.forEach((n) => n.destroy());
@@ -73,7 +95,7 @@ export class SearchNode {
         ref.refTo = n;
         return ref;
       });
-      this.lastQuery = this.object.name;
+      this.lastQuery = query;
       this.lastResultCount = results.length;
     }
   }

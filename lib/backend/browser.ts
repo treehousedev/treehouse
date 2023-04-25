@@ -23,7 +23,7 @@ export class SearchIndex_MiniSearch {
   constructor() {
     this.indexer = new MiniSearch({
       idField: "ID",
-      fields: ['ID', 'Name', 'Value.markdown'], // fields to index for full-text search
+      fields: ['ID', 'Name', 'Value', 'Value.markdown'], // fields to index for full-text search
       storeFields: ['ID'], // fields to return with search results
       extractField: (document, fieldName) => {
         return fieldName.split('.').reduce((doc, key) => doc && doc[key], document);
