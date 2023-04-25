@@ -109,12 +109,6 @@ main {
   padding: 0 var(--padding);
 }
 
-.panel > .body > .title-node {
-/* todo: set CSS variables for app header styles */
-  font-size: var(--6);
-  font-weight: var(--weight-bold);
-}
-
 
 /*------------NODES------------*/
 /*keep max line length from getting too long for readibility*/
@@ -136,6 +130,10 @@ main {
   display: block;
   line-height: var(--body-line-height);
   border: none;
+}
+.title-node textarea, .title-node > .node-container > span {
+  font-size: var(--6);
+  font-weight: var(--weight-bold);
 }
 .new-node svg {
   flex-shrink: 0;
