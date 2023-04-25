@@ -48,7 +48,7 @@ export class SearchIndex_MiniSearch {
   search(query: string): string[] {
     const suggested = this.indexer.autoSuggest(query);
     if (suggested.length === 0) return [];
-    return this.indexer.search(suggested[0].suggestion).map(doc => doc.ID);
+    return this.indexer.search(suggested[0].suggestion, {prefix: true}).map(doc => doc.ID);
   }
 }
 
