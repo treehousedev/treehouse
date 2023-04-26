@@ -170,6 +170,9 @@ a.row {
 .text-center {
   text-align: center;
 }
+.text-right {
+  text-align: right;
+}
 .w-full {
   width: 100%;
 }
