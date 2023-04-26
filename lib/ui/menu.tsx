@@ -24,15 +24,7 @@ export const Menu: m.Component = {
   margin: "0",
   position: "absolute",
   top: `${y}px`,
-  border: "1px solid var(--dark)",
-  borderRadius: "0.25rem",
-  padding: "0.25rem 0 0.25rem 0",
   display: "inline-block",
-  background: "white",
-  filter: "drop-shadow(2px 2px 4px #5555)",
-  fontSize: "14px",
-  minWidth: "200px",
-  zIndex: "20"
 })}>
   {items.filter(i => !i.when || i.when()).map(i => {
     let title = "";
@@ -48,18 +40,10 @@ export const Menu: m.Component = {
     }
     return (
       <li onclick={onclick(i, cmd)} class={(i.disabled)?"disabled":""} style={{
-        margin: "0px",  
-        listStyleType: "none",
-        padding: "0.25rem 0.5rem 0.25rem 0.5rem",
         display: "flex"
       }}>
         <div>{title}</div>
-        {binding && <div style={{
-          flexGrow: "1", 
-          textAlign:"right", 
-          color: "#888",
-          marginLeft: "1rem"
-        }}>{bindingSymbols(binding.key).join(" ").toUpperCase()}</div>}
+        {binding && <div class="keybindings grow text-right">{bindingSymbols(binding.key).join(" ").toUpperCase()}</div>}
       </li>
     )
   })}

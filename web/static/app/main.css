@@ -229,7 +229,7 @@ svg.node-bullet circle#node-collapsed {
   font-weight: var(--weight-semibold);
   font-size: var(--text-small);
 }
-.palette .selected, .search .selected {
+.palette .selected, .search .selected, .menu li:not(.disabled):hover {
   background: var(--gray-200);
   border-radius: var(--border-radius);
 }
@@ -255,20 +255,31 @@ svg.node-bullet circle#node-collapsed {
   margin-top: var(--padding);
 }
 
-/*------------TO REVIEW OR REMOVE------------*/
-
+/*------------MENU------------*/
+.menu {
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: calc(var(--padding)/4);
+  background-color: var(--white);
+  font-size: var(--text-small);
+  min-width: 200px;
+  z-index: var(--layer-2);
+}
+.menu li {
+  list-style-type: none;
+  padding: calc(var(--padding)/2);
+  margin: 0px;
+}
+.menu li .keybindings {
+  color: var(--gray-500);
+  margin-left: var(--4);
+}
 .menu li:not(.disabled):hover {
-  background: #666;
-  color: white;
   cursor: pointer;
 }
 .menu li.disabled {
   color: #bbb;
   cursor: pointer;
-}
-hr {
-  border: 0;
-  border-bottom: 1px solid var(--border-color);
 }
 
 
