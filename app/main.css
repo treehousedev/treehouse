@@ -255,6 +255,28 @@ svg.node-bullet circle#node-collapsed {
   margin-top: var(--padding);
 }
 
+/*------------PALETTE------------*/
+.palette {
+  margin: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--padding);
+  min-width: 400px;
+  z-index: var(--layer-2);
+  background: var(--white);
+}
+.palette, .palette input {
+  font-size: var(--text-small);
+}
+.palette .commands {
+  line-height: var(--body-line-height);
+  padding: calc(var(--padding)/2) 0;
+  max-height: 250px;
+}
+.palette .commands > div, .palette input {
+  padding: calc(var(--padding)/2);
+}
+
 /*------------TO REVIEW OR REMOVE------------*/
 
 .menu li:not(.disabled):hover {
