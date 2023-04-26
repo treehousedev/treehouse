@@ -34,6 +34,10 @@ button.primary {
   background-color: var(--primary);
   border: none;
 }
+p {
+  margin-block-start: var(--padding);
+  margin-block-end: var(--padding);
+}
 
 /*------------APP------------*/
 
@@ -202,6 +206,7 @@ svg.node-bullet circle#node-collapsed {
   border: none;
   background: none;
   margin: 0 var(--padding);
+  position: relative;
 }
 .search > div {
   width: 95%;
@@ -343,3 +348,43 @@ hr {
     opacity: 0;
   }
 }
+
+
+/*------------MOBILE------------*/
+
+@media (max-width: 600px) {
+
+  :root {
+    --padding: var(--2);
+  }
+
+  .notice {
+    width: 100vw;
+  }
+/*todo: this padding needs to stay to same as desktop 
+for alignment purposes. should probably center
+the top nav in a more elegant way at some point*/
+  .sidebar-topsection, .topbar {
+    padding: calc(var(--padding)*2);
+  }
+ 
+  .search {
+    max-width: 100vw;
+
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
