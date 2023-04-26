@@ -229,6 +229,7 @@ svg.node-bullet circle#node-collapsed {
   font-weight: var(--weight-semibold);
   font-size: var(--text-small);
 }
+/*todo: combine common styles for palette/search*/
 .palette .selected, .search .selected {
   background: var(--gray-200);
   border-radius: var(--border-radius);
