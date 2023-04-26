@@ -229,6 +229,8 @@ svg.node-bullet circle#node-collapsed {
   font-weight: var(--weight-semibold);
   font-size: var(--text-small);
 }
+
+/*todo: combine common styles for palette/search*/
 .palette .selected, .search .selected, .menu li:not(.disabled):hover {
   background: var(--gray-200);
   border-radius: var(--border-radius);
@@ -282,6 +284,27 @@ svg.node-bullet circle#node-collapsed {
   cursor: pointer;
 }
 
+/*------------PALETTE------------*/
+.palette {
+  margin: 0;
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: var(--padding);
+  min-width: 400px;
+  z-index: var(--layer-2);
+  background: var(--white);
+}
+.palette, .palette input {
+  font-size: var(--text-small);
+}
+.palette .commands {
+  line-height: var(--body-line-height);
+  padding: calc(var(--padding)/2) 0;
+  max-height: 250px;
+}
+.palette .commands > div, .palette input {
+  padding: calc(var(--padding)/2);
+}
 
 /*------------LOADING ANIMATION------------*/
 .lds-ripple {

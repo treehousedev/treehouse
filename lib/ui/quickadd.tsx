@@ -23,23 +23,16 @@ export const QuickAdd = {
           height: "100%"
         }}></div>
         
-        <div style={{
+        <div class="notice" style={{
           position: "relative",
           marginLeft: "auto", 
           marginRight: "auto", 
-          width: "45vw",
-          borderRadius: "0.5rem",
-          filter: "drop-shadow(2px 2px 4px #5555)",
           marginTop: "20vh", 
-          padding: "2rem",
-          background: "white"
         }}>
-          <h3 style={{margin: "0"}}>Quick Add</h3>
-          <hr />
+          <h3>Quick Add</h3>
           <OutlineEditor workbench={workbench} node={workbench.quickadd} panel={panel} />
-          <hr />
-          <div style={{textAlign: "right"}}>
-            <button style={{padding: "0.5rem", margin: "0.25rem"}} onclick={() => {
+          <div class="button-bar">
+            <button class="primary" onclick={() => {
               workbench.commitQuickAdd();
               workbench.closeQuickAdd();
             }}>Add to Today</button>
