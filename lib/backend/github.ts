@@ -3,6 +3,12 @@ import { Authenticator, SearchIndex, FileStore } from "./mod.ts";
 import { BrowserBackend } from "./browser.ts";
 import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.7.5/base64.mjs';
 
+export interface Options {
+  domain: string;           // domain used with username subdomain to produce repo name
+  checkDomain: boolean;     // redirect to user domain if it is not current location
+  authFallbackURL?: string; // URL to redirect to if auth fails
+}
+
 export class GitHubBackend {
   auth: Authenticator;
 
@@ -14,12 +20,19 @@ export class GitHubBackend {
   client: any; // Octokit instance
   user: User|null;
   shas: Record<string, string>; // path => sha
+  
+  opts: Options;
 
-  constructor(loginURL: string, octokit: any) {
+  constructor(loginURL: string, octokit: any, opts?: Options) {
     this.loginURL = loginURL;
     this.clientFactory = octokit;
     this.auth = this;
     this.shas = {};
+
+    this.opts = Object.assign({
+      domain: "treehouse.sh",
+      checkDomain: false,
+    }, opts || {});
 
     const localbackend = new BrowserBackend();
     this.index = localbackend.index;
@@ -29,7 +42,7 @@ export class GitHubBackend {
   }
 
   get repo(): string {
-    return `${this.user?.userID()}.treehouse.sh`;
+    return `${this.user?.userID()}.${this.opts.domain}`;
   }
 
   async initialize() {
@@ -62,9 +75,38 @@ export class GitHubBackend {
       }
     }
 
-    await this.authenticate();
-    if (!this.user) {
-      console.error("authentication failed");
+    // capture access token if provided directly
+    const token = new URL(location.href).searchParams.get("access_token");
+    if (token) {
+      try {
+        // remove ?access_token=... from URL
+        const querystring = location.search.replace(/\baccess_token=\w+/, "").replace(/\?$/, "");
+        history.pushState({}, "", `${location.pathname}${querystring}`);
+        
+        localStorage.setItem("treehouse:gh-token", token);
+      } catch (e: Error) {
+        this.reset();
+        console.error(e);
+        return;
+      }
+    }
+
+    try {
+      await this.authenticate();
+      if (!this.user) {
+        throw "authentication failed";
+      }
+    } catch (e: Error) {
+      console.error(e);
+      if (this.opts.authFallbackURL) {
+        location.href = this.opts.authFallbackURL;
+      }
+      return;
+    }
+    
+    // check domain if set to
+    if (this.opts.checkDomain && this.repo !== location.hostname) {
+      location.hostname = this.repo;
       return;
     }
 
