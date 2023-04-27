@@ -8,19 +8,6 @@ Bring your own backend Tana-style frontend. Actively being developed.
 * Built with [Deno](https://deno.land/) toolchain. Zero Node.js utilization.
 * Minimal dependencies, mainly [Mithril.js](https://mithril.js.org/).
 
-#### Prototype Release Status
-
-* [x] Basic outliner
-* [x] Keybindings
-* [x] Command palette
-* [x] Multi-view panels
-* [x] Managed calendar pages
-* [x] Full-text search
-* [x] GitHub repository backend
-* [ ] Markdown pages
-* [ ] Desktop support via Apptron
-
-
 ## Demo
 
 This project is meant as a frontend toolkit for your own note-taking app,
