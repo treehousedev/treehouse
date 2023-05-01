@@ -32,12 +32,27 @@ export class Bus {
       this.nodes[n.ID] = n;
     }
     for (const n of nodes) {
+      // clear stored tmp nodes
+      if (n.Parent === "@tmp") {
+        delete this.nodes[n.ID];
+        continue;
+      }
+      // clear nodes with no parent that aren't system
+      if (!n.ID.startsWith("@") && n.Parent === undefined) {
+        delete this.nodes[n.ID];
+        continue;
+      }
+      // clear nodes with non-existant parent
+      if (n.Parent && !this.nodes[n.Parent]) {
+        delete this.nodes[n.ID];
+        continue;
+      }
       const node = this.find(n.ID);
       if (node) {
         // check orphan
         if (node.parent && !node.parent.raw) {
           delete this.nodes[n.ID];
-          continue
+          continue;
         }
         // trigger attach
         triggerHook(node, "onAttach", node);

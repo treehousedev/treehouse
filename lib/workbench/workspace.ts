@@ -75,6 +75,7 @@ export class Workspace {
   mainNode(): Node {
     let main = this.bus.find("@workspace");
     if (!main) {
+      console.info("Building missing workspace node.")
       const root = this.bus.find("@root");
       const ws = this.bus.make("@workspace");
       ws.name = "Workspace";
