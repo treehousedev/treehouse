@@ -29,7 +29,10 @@ await serve(async (req) => {
         bundle: true,
         outfile: "web/static/lib/treehouse.js",
         jsxFactory: "m",
+        sourcemap: true,
         format: "esm",
+        keepNames: true,
+        // minify: true
       });
       lastBuild = Date.now();
     }

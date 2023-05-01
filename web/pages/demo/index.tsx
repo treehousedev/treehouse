@@ -23,7 +23,7 @@ export default page({}, ({attrs: {dev, backend}}) => (
       window.backend = {JSON.stringify(backend)};
     </script>
     <script src="/app/main.js" type="module"></script>
-    {(dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
+    
   </body>
 </html>
 ));

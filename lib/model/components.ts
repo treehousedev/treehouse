@@ -9,24 +9,14 @@
 const registry: Record<string, any> = {};
 
 export function component(target: any) {
-  const stack = new Error().stack;
-  if (stack) {
-    const line = stack.split('\n')[3];
-    const name = line.split("/").pop()?.split(".")[0];
-    target.__module = name;
-  }
-
   registry[componentName(target)] = target;
 }
 
 export function componentName(target: any): string {
-  if (target.constructor && target.constructor.__module) {
+  if (target.prototype === undefined) {
     target = target.constructor;
   }
-  if (target.__module) {
-    return `${target.__module}.${target.name}`
-  }
-  return target.name;
+  return `treehouse.${target.name}`;
 }
 
 export function getComponent(com: any): any {

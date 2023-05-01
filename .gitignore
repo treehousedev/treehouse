@@ -1,5 +1,7 @@
 /web/out
 /web/static/lib/treehouse.js
+/web/static/lib/treehouse.js.map
 /web/static/lib/treehouse.min.js
+/web/static/lib/treehouse.min.js.map
 /local
 .DS_Store

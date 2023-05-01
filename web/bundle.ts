@@ -9,7 +9,9 @@ await esbuild.build({
   bundle: true,
   outfile: outfile,
   jsxFactory: "m",
+  sourcemap: true,
   format: "esm",
+  keepNames: true,
   minify: true
 });
 esbuild.stop();
