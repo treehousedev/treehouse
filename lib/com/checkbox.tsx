@@ -16,7 +16,7 @@ export class Checkbox {
 
 const CheckboxEditor = {
   view({attrs}) {
-    const {node, panel, workbench} = attrs;
+    const {node} = attrs;
     const toggleCheckbox = (e) => {
       const checkbox = node.getComponent(Checkbox);
       checkbox.checked = !checkbox.checked;

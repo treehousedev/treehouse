@@ -1,11 +1,9 @@
 import { OutlineEditor } from "./outline.tsx";
+import { Path } from "../workbench/mod.ts";
 
 export const QuickAdd = {
   view({attrs: {workbench}}) {
-    const panel = {
-      id: "quickadd",
-      headNode: workbench.quickadd
-    }
+    const path = new Path(workbench.quickadd, "quickadd");
     return (
       <div style={{
         position: "absolute", 
@@ -30,7 +28,7 @@ export const QuickAdd = {
           marginTop: "20vh", 
         }}>
           <h3>Quick Add</h3>
-          <OutlineEditor workbench={workbench} node={workbench.quickadd} panel={panel} />
+          <OutlineEditor workbench={workbench} path={path} />
           <div class="button-bar">
             <button class="primary" onclick={() => {
               workbench.commitQuickAdd();

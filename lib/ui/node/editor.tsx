@@ -1,7 +1,8 @@
 import { objectCall, objectHas } from "../../model/hooks.ts";
 
 export const NodeEditor: m.Component = {
-  view ({attrs: {workbench, node, panel, onkeydown, disallowEmpty, editValue}, state}) {
+  view ({attrs: {workbench, path, onkeydown, disallowEmpty, editValue}, state}) {
+    const node = path.node;
     let prop = (editValue) ? "value" : "name";
     
     const display = () => {
@@ -13,6 +14,7 @@ export const NodeEditor: m.Component = {
     const onfocus = () => {
       state.initialValue = node[prop];
       workbench.context.node = node;
+      workbench.context.path = path;
     }
     const getter = () => {
       return node[prop];
@@ -30,7 +32,7 @@ export const NodeEditor: m.Component = {
       }
     }
     
-    let id = `input-${panel.id}-${node.id}`;
+    let id = `input-${path.id}-${node.id}`;
     if (prop === "value") {
       id = id+"-value";
     }
@@ -106,6 +108,7 @@ export const TextEditor: m.Component<Attrs, State> = {
       setter(state.buffer, false);
     }
     
+    // TODO: node-container => text-editor
     return (
       <div class="node-container">
         <textarea

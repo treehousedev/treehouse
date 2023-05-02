@@ -49,10 +49,10 @@ export const App: m.Component = {
             </div>
           </div>
           <div class="panels flex flex-row" style={{position: "relative", overflow: "hidden"}}>
-            {workbench.panels.map(row => row.map(panel => <div style={{ 
+            {workbench.panels.map(path => <div style={{ 
                 flex: "1 1 auto",
                 overflowY: "auto"
-              }}><PanelComponent workbench={workbench} panel={panel} /></div>))}
+              }}><PanelComponent workbench={workbench} path={path} /></div>)}
           </div>
         </div>
         

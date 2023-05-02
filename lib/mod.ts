@@ -16,7 +16,7 @@
  * 
  * @module
  */
-import { Workbench } from "./workbench/mod.ts";
+import { Path, Workbench } from "./workbench/mod.ts";
 import { App } from "./ui/app.tsx";
 import { Backend } from "./backend/mod.ts";
 import { SearchNode } from "./com/search.tsx";
@@ -58,7 +58,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (!ctx.node) return;
       const search = new SearchNode();
       ctx.node.addComponent(search);
-      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, true);
+      workbench.workspace.setExpanded(ctx.path.head, ctx.node, true);
     }
   });
 
@@ -126,14 +126,17 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (!ctx.node) return;
       if (ctx.node.childCount > 0) return;
       if (ctx.node.componentCount > 0) return;
+      const path = ctx.path.clone();
+      path.pop(); // drop node
       const field = workbench.workspace.new(ctx.node.name, "");
       field.raw.Parent = ctx.node.parent.id;
       const text = new TextField();
       field.addComponent(text);
       ctx.node.parent.addLinked("Fields", field);
+      path.push(field);
       ctx.node.destroy();
       m.redraw.sync();
-      workbench.focus(field);
+      workbench.focus(path);
     }
   });
 
@@ -165,7 +168,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Expand",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, true);
+      workbench.workspace.setExpanded(ctx.path.head, ctx.node, true);
       m.redraw();
     }
   });
@@ -175,7 +178,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Collapse",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, false);
+      workbench.workspace.setExpanded(ctx.path.head, ctx.node, false);
       m.redraw();
     }
   });
@@ -185,14 +188,17 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Indent",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const prev = ctx.node.prevSibling;
+      const node = ctx.node; // redraw seems to unset ctx.node
+      const path = ctx.path.clone();
+      const prev = node.prevSibling;
       if (prev !== null) {
-        ctx.node.parent = prev;
-        workbench.workspace.setExpanded(ctx.panel.headNode, prev, true);
-
-        const node = ctx.node; // redraw seems to unset ctx.node
+        path.pop(); // drop node
+        path.push(prev);
+        node.parent = prev;
+        path.push(node);
+        workbench.workspace.setExpanded(ctx.path.head, prev, true);
         m.redraw.sync();
-        workbench.focus(node);
+        workbench.focus(path);
       }
     }
   });
@@ -202,17 +208,20 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Outdent",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const parent = ctx.node.parent;
+      const node = ctx.node; // redraw seems to unset ctx.node
+      const parent = ctx.path.previous;
+      const path = ctx.path.clone();
       if (parent !== null && parent.id !== "@root") {
-        ctx.node.parent = parent.parent;
-        ctx.node.siblingIndex = parent.siblingIndex+1;
+        path.pop(); // drop node
+        path.pop(); // drop parent
+        node.parent = parent.parent;
+        path.push(node);
+        node.siblingIndex = parent.siblingIndex+1;
         if (parent.childCount === 0) {
-          workbench.workspace.setExpanded(ctx.panel.headNode, parent, false);
+          workbench.workspace.setExpanded(ctx.path.head, parent, false);
         }
-        
-        const node = ctx.node; // redraw seems to unset ctx.node
         m.redraw.sync();
-        workbench.focus(node);
+        workbench.focus(path);
       }
     }
   });
@@ -230,12 +239,17 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           if (!parent.prevSibling) {
             return;
           }
+          const p = ctx.path.clone();
+          p.pop(); // drop node
+          p.pop(); // drop parent
           const parentSib = parent.prevSibling;
+          p.push(parentSib);
+          p.push(node);
           node.parent = parentSib;
           node.siblingIndex = parentSib.childCount-1;
-          workbench.workspace.setExpanded(ctx.panel.headNode, parentSib, true);
+          workbench.workspace.setExpanded(ctx.path.head, parentSib, true);
           m.redraw.sync();
-          workbench.focus(node);
+          workbench.focus(p);
         } else {
           if (children === 1) {
             return;
@@ -256,16 +270,22 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const parent = node.parent;
       if (parent !== null && parent.id !== "@root") {
         const children = parent.childCount;
+        // if last child
         if (node.siblingIndex === children-1) {
           if (!parent.nextSibling) {
             return;
           }
+          const p = ctx.path.clone();
+          p.pop(); // drop node
+          p.pop(); // drop parent
           const parentSib = parent.nextSibling;
+          p.push(parentSib);
+          p.push(node);
           node.parent = parentSib;
           node.siblingIndex = 0;
-          workbench.workspace.setExpanded(ctx.panel.headNode, parentSib, true);
+          workbench.workspace.setExpanded(ctx.path.head, parentSib, true);
           m.redraw.sync();
-          workbench.focus(node);
+          workbench.focus(p);
         } else {
           if (children === 1) {
             return;
@@ -287,9 +307,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (siblingIndex !== undefined) {
         node.siblingIndex = siblingIndex;
       }
-      workbench.workspace.setExpanded(ctx.panel.headNode, ctx.node, true);
+      workbench.workspace.setExpanded(ctx.path.head, ctx.node, true);
       m.redraw.sync();
-      workbench.focus(node, ctx.panel, name.length);
+      workbench.focus(ctx.path.append(node), name.length);
     }
   });
   workbench.commands.registerCommand({
@@ -301,7 +321,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       node.parent = ctx.node.parent;
       node.siblingIndex = ctx.node.siblingIndex;
       m.redraw.sync();
-      workbench.focus(node, ctx.panel);
+      const p = ctx.path.clone();
+      p.pop();
+      workbench.focus(p.append(node));
     }
   });
   workbench.commands.registerCommand({
@@ -313,7 +335,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       node.parent = ctx.node.parent;
       node.siblingIndex = ctx.node.siblingIndex+1;
       m.redraw.sync();
-      workbench.focus(node, ctx.panel);
+      const p = ctx.path.clone();
+      p.pop();
+      workbench.focus(p.append(node));
     }
   });
   workbench.keybindings.registerBinding({command: "insert", key: "shift+enter"});
@@ -327,7 +351,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       node.siblingIndex = ctx.node.siblingIndex+1;
       node.refTo = ctx.node;
       m.redraw.sync();
-      workbench.focus(node, ctx.panel);
+      const p = ctx.path.clone();
+      p.pop();
+      workbench.focus(p.append(node));
     }
   });
   workbench.commands.registerCommand({
@@ -336,19 +362,19 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       if (ctx.node.id.startsWith("@")) return;
-      const above = workbench.workspace.findAbove(ctx.panel.headNode, ctx.node);
+      const above = workbench.workspace.findAbove(ctx.path);
       ctx.node.destroy();
       m.redraw.sync();
       if (above) {
         let pos = 0;
         if (ctx.event && ctx.event.key === "Backspace") {
-          pos = above.name.length;
+          pos = above.node.name.length;
         }
-        if (above.childCount === 0) {
+        if (above.node.childCount === 0) {
           // TODO: use subCount
-          workbench.workspace.setExpanded(ctx.panel.headNode, above, false);
+          workbench.workspace.setExpanded(ctx.path.head, above.node, false);
         }
-        workbench.focus(above, ctx.panel, pos);
+        workbench.focus(above, pos);
       }
     }
   });
@@ -357,9 +383,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "prev",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const above = workbench.workspace.findAbove(ctx.panel.headNode, ctx.node);
+      const above = workbench.workspace.findAbove(ctx.path);
       if (above) {
-        workbench.focus(above, ctx.panel);
+        workbench.focus(above);
       }
     }
   });
@@ -368,9 +394,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "next",
     action: (ctx: Context) => {
       if (!ctx.node) return;
-      const below = workbench.workspace.findBelow(ctx.panel.headNode, ctx.node);
+      const below = workbench.workspace.findBelow(ctx.path);
       if (below) {
-        workbench.focus(below, ctx.panel);
+        workbench.focus(below);
       }
     }
   });
@@ -379,12 +405,14 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "pick-command",
     action: (ctx: Context) => {
       let node = ctx.node;
+      let path = ctx.path;
       let posBelow = false;
       if (!node) {
-        node = ctx.panel.headNode;
+        node = ctx.path.head;
+        path = new Path(ctx.path.head, ctx.path.name);
         posBelow = true;
       }
-      const trigger = workbench.getInput(node);
+      const trigger = workbench.getInput(path);
       const rect = trigger.getBoundingClientRect();
       let x = document.body.scrollLeft+rect.x+(trigger.selectionStart * 10)+20;
       let y = document.body.scrollTop+rect.y-8;
@@ -408,9 +436,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "close-panel",
     title: "Close Panel",
-    action: (ctx: Context, panel?: Panel) => {
-      workbench.closePanel(panel || ctx.node.panel);
-      workbench.context.panel = workbench.mainPanel;
+    action: (ctx: Context, panel?: Path) => {
+      workbench.closePanel(panel || ctx.path);
+      workbench.context.path = workbench.mainPanel;
       m.redraw();
     }
   });
@@ -418,7 +446,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "open",
     title: "Open",
     action: (ctx: Context) => {
-      ctx.panel.open(ctx.node);
+      ctx.path.push(ctx.node);
       workbench.workspace.lastOpenedID = ctx.node.id;
       workbench.workspace.save();
       m.redraw();
@@ -476,7 +504,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   document.addEventListener("keydown", (e) => {
     const binding = workbench.keybindings.evaluateEvent(e);
     if (binding) {
-      workbench.commands.executeCommand(binding.command, workbench.context);
+      workbench.executeCommand(binding.command, workbench.context);
       e.stopPropagation();
       e.preventDefault();
       return;

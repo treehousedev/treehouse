@@ -1,5 +1,6 @@
 import { FileStore } from "../backend/mod.ts";
 import { Bus, Node, RawNode } from "../model/mod.ts";
+import { Path } from "./mod.ts";
 import * as module from "../model/module/mod.ts";
 
 
@@ -98,7 +99,7 @@ export class Workspace {
     return this.bus.make(name, value);
   }
 
-
+  // TODO: take single Path
   getExpanded(head: Node, n: Node): boolean {
     if (!this.expanded[head.id]) {
       this.expanded[head.id] = {};
@@ -110,55 +111,82 @@ export class Workspace {
     return expanded;
   }
 
+  // TODO: take single Path
   setExpanded(head: Node, n: Node, b: boolean) {
     this.expanded[head.id][n.id] = b;
     this.save();
-    //localStorage.setItem(this.expandedKey, JSON.stringify(this.expanded));
   }
 
-  findAbove(head: Node, n: Node): Node|null {
-    // TODO: Fields
-    if (n.id === head.id) {
+  findAbove(path: Path): Path|null {
+    if (path.node.id === path.head.id) {
       return null;
     }
-    let above = n.prevSibling;
-    if (!above) {
-      return n.parent;
-    }
-    const lastChildIfExpanded = (n: Node): Node => {
-      const expanded = this.getExpanded(head, n);
-      if (!expanded || n.childCount === 0) {
-        return n;
+    const p = path.clone();
+    p.pop(); // pop to parent
+    let prev = path.node.prevSibling;
+    if (!prev) {
+      // if not a field and parent has fields, return last field
+      const fieldCount = path.previous.getLinked("Fields").length;
+      if (path.node.raw.Rel !== "Fields" && fieldCount > 0) {
+        return p.append(path.previous.getLinked("Fields")[fieldCount-1]);
       }
-      const lastChild = n.children[n.childCount - 1];
-      return lastChildIfExpanded(lastChild);
+      // if no prev sibling, and no fields, return parent
+      return p;
     }
-    return lastChildIfExpanded(above);
+    const lastSubIfExpanded = (p: Path): Path => {
+      const expanded = this.getExpanded(path.head, p.node);
+      if (!expanded) {
+        // if not expanded, return input path
+        return p;
+      }
+      const fieldCount = p.node.getLinked("Fields").length;
+      if (p.node.childCount === 0 && fieldCount > 0) {
+        const lastField = p.node.getLinked("Fields")[fieldCount-1];
+        // if expanded, no children, has fields, return last field or its last sub if expanded
+        return lastSubIfExpanded(p.append(lastField));
+      }
+      const lastChild = p.node.children[p.node.childCount - 1];
+      // return last child or its last sub if expanded
+      return lastSubIfExpanded(p.append(lastChild));
+    }
+    // return prev sibling or its last child if expanded
+    return lastSubIfExpanded(p.append(prev));
   }
 
-  findBelow(head: Node, n: Node): Node|null {
+  findBelow(path: Path): Path|null {
     // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
-    if (this.getExpanded(head, n) && n.getLinked("Fields").length > 0) {
-      return n.getLinked("Fields")[0];
+    const p = path.clone();
+    if (this.getExpanded(path.head, path.node) && path.node.getLinked("Fields").length > 0) {
+      // if expanded and fields, return first field
+      return p.append(path.node.getLinked("Fields")[0]);
     }
-    if (this.getExpanded(head, n) && n.childCount > 0) {
-      return n.children[0];
+    if (this.getExpanded(path.head, path.node) && path.node.childCount > 0) {
+      // if expanded and children, return first child
+      return p.append(path.node.children[0]);
     }
-    const nextSiblingOrParentNextSibling = (n: Node): Node|null => {
-      const below = n.nextSibling;
-      if (below) {
-        return below;
+    const nextSiblingOrParentNextSibling = (p: Path): Path|null => {
+      const next = p.node.nextSibling;
+      if (next) {
+        p.pop(); // pop to parent
+        // if next sibling, return that
+        return p.append(next);
       }
-      const parent = n.parent;
-      if (!parent || parent.id === head.id) {
+      const parent = p.previous;
+      if (!parent || parent.id === path.head.id) {
+        // if no parent or parent is path head, return null
         return null;
       }
-      if (n.raw.Rel === "Fields" && parent.childCount > 0) {
-        return parent.children[0];
+      if (p.node.raw.Rel === "Fields" && parent.childCount > 0) {
+        p.pop(); // pop to parent
+        // if field and parent has children, return first child
+        return p.append(parent.children[0]);
       }
-      return nextSiblingOrParentNextSibling(parent);
+      p.pop(); // pop to parent
+      // return parents next sibling or parents parents next sibling
+      return nextSiblingOrParentNextSibling(p);
     }
-    return nextSiblingOrParentNextSibling(n);
+    // return next sibling or parents next sibling
+    return nextSiblingOrParentNextSibling(p);
   }
 
 }

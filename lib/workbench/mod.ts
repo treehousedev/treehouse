@@ -1,6 +1,8 @@
 export { Workbench } from "./workbench.ts";
-export { Panel } from "./panel.ts";
+export { Path } from "./path.ts";
 export { Workspace } from "./workspace.ts";
+
+import { Node } from "../model/mod.ts";
 
 /**
  * Context is a user context object interface. This is used to
@@ -8,8 +10,9 @@ export { Workspace } from "./workspace.ts";
  * but is also used for local context in commands.
  */
 export interface Context {
+  path: Path;
   node: Node|null;
   nodes?: Node[];
   event?: Event;
-  panel: Panel;
+  
 }

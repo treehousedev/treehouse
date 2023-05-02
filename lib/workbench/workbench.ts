@@ -4,7 +4,7 @@ import { CommandRegistry } from "../action/commands.ts";
 import { MenuRegistry } from "../action/menus.ts";
 import { Node } from "../model/mod.ts";
 
-import { Workspace, Context, Panel } from "./mod.ts";
+import { Workspace, Context, Path } from "./mod.ts";
 
 /**
  * Workbench is the top-level controller for the Treehouse frontend.
@@ -23,7 +23,7 @@ export class Workbench {
   workspace: Workspace;
   
   context: Context;
-  panels: Panel[][]; // Panel[row][column]
+  panels: Path[];
 
   menu: any;
   notice: any;
@@ -40,12 +40,12 @@ export class Workbench {
     this.workspace = new Workspace(backend.files);
 
     this.context = {node: null};
-    this.panels = [[]];
+    this.panels = [];
     
   }
 
-  get mainPanel(): Panel {
-    return this.panels[0][0];
+  get mainPanel(): Path {
+    return this.panels[0];
   }
 
   async initialize() {
@@ -69,7 +69,7 @@ export class Workbench {
     
     m.redraw();
 
-
+    // todo: move this out to the demo
     if (!localStorage.getItem("firsttime")) {
       this.showNotice('firsttime');
     }
@@ -132,9 +132,9 @@ export class Workbench {
 
     this.workspace.lastOpenedID = n.id;
     this.workspace.save();
-    const p = new Panel(n);
-    this.panels[0][0] = p
-    this.context.panel = p;
+    const p = new Path(n);
+    this.panels[0] = p
+    this.context.path = p;
   }
 
   openNewPanel(n: Node) {
@@ -145,48 +145,44 @@ export class Workbench {
 
     this.workspace.lastOpenedID = n.id;
     this.workspace.save();
-    const p = new Panel(n);
-    this.panels[0].push(p);
-    this.context.panel = p;
+    const p = new Path(n);
+    this.panels.push(p);
+    this.context.path = p;
   }
 
-  closePanel(panel: Panel) {
-    this.panels.forEach((row, ridx) => {
-      this.panels[ridx] = row.filter(p => p !== panel);
-    });
+  closePanel(panel: Path) {
+    this.panels = this.panels.filter(p => p.name !== panel.name);
   }
 
   defocus() {
     this.context.node = null;
   }
 
-  focus(n: Node, panel?: Panel, pos?: number = 0) {
-    this.context.node = n;
-    if (panel) {
-      this.context.panel = panel;
-    }
-    const input = this.getInput(n, panel);
+  focus(path: Path, pos?: number = 0) {
+    const input = this.getInput(path);
     if (input) {
+      this.context.path = path;
       input.focus();
       if (pos !== undefined) {
         input.setSelectionRange(pos,pos);
       }
+    } else {
+      console.warn("unable to find input for", path);
     }
   }
 
-  getInput(n: Node, panel?: Panel): HTMLElement {
-    if (!panel) {
-      panel = this.context.panel;
-    }
-    let id = `input-${panel.id}-${n.id}`;
+  getInput(path: Path): HTMLElement {
+    let id = `input-${path.id}-${path.node.id}`;
     // kludge:
-    if (n.raw.Rel === "Fields") {
+    if (path.node.raw.Rel === "Fields") {
       id = id+"-value"; 
     }
     return document.getElementById(id);
   }
 
   executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {
+    ctx = this.newContext(ctx);
+    console.log(id, ctx, ...rest);
     return this.commands.executeCommand(id, this.newContext(ctx), ...rest);
   }
 

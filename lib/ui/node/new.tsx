@@ -1,16 +1,16 @@
 
 export const NewNode = {
-  view({attrs: {workbench, panel, node}}) {
+  view({attrs: {workbench, path}}) {
     const startNew = (e) => {
-      workbench.executeCommand("insert-child", {node, panel}, e.target.value);
+      workbench.executeCommand("insert-child", {node: path.node, path}, e.target.value);
     }
     const tabNew = (e) => {
       if (e.key === "Tab") {
         e.stopPropagation();
         e.preventDefault();
         if (node.childCount > 0) {
-          const lastchild = node.children[node.childCount-1];
-          workbench.executeCommand("insert-child", {node: lastchild, panel});
+          const lastchild = path.node.children[path.node.childCount-1];
+          workbench.executeCommand("insert-child", {node: lastchild, path});
         }
       }
     }
