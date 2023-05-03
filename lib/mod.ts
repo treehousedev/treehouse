@@ -345,6 +345,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     id: "create-reference",
     title: "Create Reference",
     action: (ctx: Context) => {
+      // TODO: prevent creating reference to reference
       if (!ctx.node) return;
       const node = workbench.workspace.new("");
       node.parent = ctx.node.parent;
