@@ -17,7 +17,7 @@ export class Workspace {
   bus: Bus;
 
   lastOpenedID: string;
-  expanded: {[key: string]: {[key: string]: boolean}}; // [rootid][id]
+  expanded: { [key: string]: { [key: string]: boolean } }; // [rootid][id]
 
   constructor(fs: FileStore) {
     this.fs = fs;
@@ -65,12 +65,21 @@ export class Workspace {
       console.log(`Loaded ${doc.nodes.length} nodes.`);
     }
     if (doc.expanded) {
-      this.expanded = doc.expanded;
+      // Only import the node keys that still exist
+      // in the workspace.
+      for (const n in doc.expanded) {
+        for (const i in doc.expanded[n]) {
+          if (this.bus.find(i)) {
+            if (!this.expanded[n]) this.expanded[n] = {};
+            this.expanded[n][i] = doc.expanded[n][i];
+          }
+        }
+      }
     }
     if (doc.lastopen) {
       this.lastOpenedID = doc.lastopen;
     }
-    
+
   }
 
   mainNode(): Node {
@@ -91,7 +100,7 @@ export class Workspace {
     return main;
   }
 
-  find(path:string): Node|null {
+  find(path: string): Node | null {
     return this.bus.find(path)
   }
 
@@ -117,7 +126,7 @@ export class Workspace {
     this.save();
   }
 
-  findAbove(path: Path): Path|null {
+  findAbove(path: Path): Path | null {
     if (path.node.id === path.head.id) {
       return null;
     }
@@ -128,7 +137,7 @@ export class Workspace {
       // if not a field and parent has fields, return last field
       const fieldCount = path.previous.getLinked("Fields").length;
       if (path.node.raw.Rel !== "Fields" && fieldCount > 0) {
-        return p.append(path.previous.getLinked("Fields")[fieldCount-1]);
+        return p.append(path.previous.getLinked("Fields")[fieldCount - 1]);
       }
       // if no prev sibling, and no fields, return parent
       return p;
@@ -141,7 +150,7 @@ export class Workspace {
       }
       const fieldCount = p.node.getLinked("Fields").length;
       if (p.node.childCount === 0 && fieldCount > 0) {
-        const lastField = p.node.getLinked("Fields")[fieldCount-1];
+        const lastField = p.node.getLinked("Fields")[fieldCount - 1];
         // if expanded, no children, has fields, return last field or its last sub if expanded
         return lastSubIfExpanded(p.append(lastField));
       }
@@ -153,7 +162,7 @@ export class Workspace {
     return lastSubIfExpanded(p.append(prev));
   }
 
-  findBelow(path: Path): Path|null {
+  findBelow(path: Path): Path | null {
     // TODO: find a way to indicate pseudo "new" node for expanded leaf nodes
     const p = path.clone();
     if (this.getExpanded(path.head, path.node) && path.node.getLinked("Fields").length > 0) {
@@ -164,7 +173,7 @@ export class Workspace {
       // if expanded and children, return first child
       return p.append(path.node.children[0]);
     }
-    const nextSiblingOrParentNextSibling = (p: Path): Path|null => {
+    const nextSiblingOrParentNextSibling = (p: Path): Path | null => {
       const next = p.node.nextSibling;
       if (next) {
         p.pop(); // pop to parent
@@ -192,7 +201,7 @@ export class Workspace {
 }
 
 
-function debounce(func, timeout = 3000){
+function debounce(func, timeout = 3000) {
   let timer;
   return (...args) => {
     clearTimeout(timer);
