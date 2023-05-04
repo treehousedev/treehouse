@@ -23,7 +23,7 @@ export const App: m.Component = {
           </div>
           <div class="grow sidebar-maincontent">
             {state.open && workbench.workspace.bus.root().children.map(node => <NavNode node={node} expanded={true} level={0} workbench={workbench} />)}
-          </div>  
+          </div>
           <div class="sidebar-bottomsection">
             <svg onclick={toggle} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sidebar"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
           </div>

@@ -40,8 +40,10 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   if (backend.initialize) {
     await backend.initialize();
   }
+
   const workbench = new Workbench(backend);
   window.workbench = workbench;
+  
   await workbench.initialize();
   
   // pretty specific to github backend right now

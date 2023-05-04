@@ -66,6 +66,10 @@ export class Workbench {
     } else {
       this.openNewPanel(this.workspace.mainNode());
     }
+
+    if (this.backend.loadExtensions) {
+      await this.backend.loadExtensions();
+    }
     
     m.redraw();
 

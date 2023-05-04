@@ -170,22 +170,53 @@ export class GitHubBackend {
         console.warn("lock stolen!");
       }
     }, 5000);
+  }
 
-
-    // load style.css if exists
+  async loadExtensions() {
     try {
-      // TODO: get the root dir and check for style.css first so this doesn't create 404 error in console
-      const resp = await this.client.rest.repos.getContent({
+      const dirCheck = await this.client.rest.repos.getContent({
         owner: this.user?.userID(), 
         repo: this.repo, 
-        path: "style.css",
+        path: "",
         random: Math.random().toString(36).substring(2)
       });
-      const css = document.createElement("link");
-      css.setAttribute("href", `data:text/css;charset=utf-8;base64,${resp.data.content}`);
-      css.setAttribute("rel", "stylesheet");
-      css.setAttribute("type", "text/css");
-      document.head.appendChild(css);
+      if (dirCheck.data.find(o => o.type === "dir" && o.name === "ext")) {
+        const dirList = await this.client.rest.repos.getContent({
+          owner: this.user?.userID(), 
+          repo: this.repo, 
+          path: "ext",
+          random: Math.random().toString(36).substring(2)
+        });
+        for (const file of dirList.data) {
+          if (file.name.endsWith(".css")) {
+            // Load CSS 
+            const resp = await this.client.rest.repos.getContent({
+              owner: this.user?.userID(), 
+              repo: this.repo, 
+              path: file.path,
+              random: Math.random().toString(36).substring(2)
+            });
+            const css = document.createElement("link");
+            css.setAttribute("href", `data:text/css;charset=utf-8;base64,${resp.data.content}`);
+            css.setAttribute("rel", "stylesheet");
+            css.setAttribute("type", "text/css");
+            document.head.appendChild(css);
+          } else if (file.name.endsWith(".js")) {
+            // Load JavaScript
+            const resp = await this.client.rest.repos.getContent({
+              owner: this.user?.userID(), 
+              repo: this.repo, 
+              path: file.path,
+              random: Math.random().toString(36).substring(2)
+            });
+            const js = document.createElement("script");
+            js.setAttribute("type", "module");
+            js.setAttribute("src", `data:text/javascript;charset=utf-8;base64,${resp.data.content}`);
+            document.head.appendChild(js);
+          }
+        }
+      }
+      
     } catch (e: Error) {}
     
   }
