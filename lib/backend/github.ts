@@ -171,9 +171,25 @@ export class GitHubBackend {
       }
     }, 5000);
 
+
+    // load style.css if exists
+    try {
+      // TODO: get the root dir and check for style.css first so this doesn't create 404 error in console
+      const resp = await this.client.rest.repos.getContent({
+        owner: this.user?.userID(), 
+        repo: this.repo, 
+        path: "style.css",
+        random: Math.random().toString(36).substring(2)
+      });
+      const css = document.createElement("link");
+      css.setAttribute("href", `data:text/css;charset=utf-8;base64,${resp.data.content}`);
+      css.setAttribute("rel", "stylesheet");
+      css.setAttribute("type", "text/css");
+      document.head.appendChild(css);
+    } catch (e: Error) {}
     
   }
-
+  
   async authenticate() {
     const token = localStorage.getItem("treehouse:gh-token");
     if (!token) {
