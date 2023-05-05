@@ -9,14 +9,13 @@ export class Checkbox {
     this.checked = false;
   }
 
-  editor() {
+  beforeEditor() {
     return CheckboxEditor;
   }
 }
 
 const CheckboxEditor = {
-  view({attrs}) {
-    const {node} = attrs;
+  view({attrs: {node}}) {
     const toggleCheckbox = (e) => {
       const checkbox = node.getComponent(Checkbox);
       checkbox.checked = !checkbox.checked;

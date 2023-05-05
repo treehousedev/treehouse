@@ -46,6 +46,19 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   window.workbench = workbench;
   
   await workbench.initialize();
+
+  // TODO: better way to initialize components? 
+  [
+    Clock, 
+    TextField, 
+    Page, 
+    Checkbox,
+  ].forEach(com => {
+    if (com.initialize) {
+      com.initialize(workbench);
+    }
+  });
+
   
   // pretty specific to github backend right now
   document.addEventListener("BackendError", () => {
@@ -81,27 +94,6 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       ctx.node.setAttr("view", "table");
-    }
-  });
-
-  workbench.commands.registerCommand({
-    id: "stop-clock",
-    title: "Stop clock",
-    action: (ctx: Context) => {
-      if (!ctx.node) return;
-      const clock = new Clock();
-      clock.startedAt = new Date();
-      ctx.node.addComponent(clock);
-    }
-  });
-
-
-  workbench.commands.registerCommand({
-    id: "remove-clock",
-    title: "Remove clock",
-    action: (ctx: Context) => {
-      if (!ctx.node) return;
-      ctx.node.removeComponent(Clock);
     }
   });
 

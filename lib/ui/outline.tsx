@@ -179,34 +179,13 @@ export const OutlineNode: m.Component<Attrs, State> = {
                 <NodeEditor editValue={true} workbench={workbench} path={path} onkeydown={checkCommands} />
               </div>
             : <div class="flex grow items-start flex-row">
-                {(node.hasComponent(Checkbox)) && m(objectCall(node, "editor"), {node})}
+                {objectHas(node, "beforeEditor") && m(objectCall(node, "beforeEditor"), {node})}
                 <NodeEditor workbench={workbench} path={path} onkeydown={checkCommands} />
-                {(node.hasComponent(Clock)) && <div class="flex flex-row items-center" style={{background: "green", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
-                  <svg style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                  <div>0:30</div>
-                </div>}
+                {objectHas(node, "afterEditor") && m(objectCall(node, "afterEditor"), {node})}
               </div>
           }
         </div>
-        {(node.hasComponent(Clock)) && <div class="expanded-node flex flex-row">
-          <div class="indent flex" onclick={toggle}></div>
-          <div class="grow">
-            <div class="flex flex-row" style={{marginBottom: "2px"}}>
-              <div class="grow">{(node.getComponent(Clock).startedAt)?node.getComponent(Clock).startedAt.toJSON():""}</div>
-              <div class="flex flex-row items-center" style={{background: "gray", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
-                <svg style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <div>0:30</div>
-              </div>
-            </div>
-            <div class="flex flex-row">
-              <div class="grow">2023-05-04 @ 6:40pm - 7:00pm</div>
-              <div class="flex flex-row items-center" style={{background: "gray", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
-                <svg style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-clock"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-                <div>0:30</div>
-              </div>
-            </div>
-          </div>
-        </div>}
+        {objectHas(node, "belowEditor") && m(objectCall(node, "belowEditor"), {node})}
         {(expanded === true) &&
           <div class="expanded-node flex flex-row">
             <div class="indent flex" onclick={toggle}></div>

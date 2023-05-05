@@ -3,6 +3,7 @@ import { KeyBindings } from "../action/keybinds.ts";
 import { CommandRegistry } from "../action/commands.ts";
 import { MenuRegistry } from "../action/menus.ts";
 import { Node } from "../model/mod.ts";
+import { objectHas, objectCall } from "../model/hooks.ts";
 
 import { Workspace, Context, Path } from "./mod.ts";
 
@@ -50,6 +51,7 @@ export class Workbench {
 
   async initialize() {
     await this.workspace.load();
+
     this.workspace.rawNodes.forEach(n => this.backend.index.index(n));
     this.workspace.observe((n => {
       this.workspace.save();
@@ -60,6 +62,7 @@ export class Workbench {
         n.components.forEach(com => this.backend.index.index(com.raw));
       }
     }));
+
     
     if (this.workspace.lastOpenedID) {
       this.openNewPanel(this.workspace.find(this.workspace.lastOpenedID) || this.workspace.mainNode());
@@ -111,7 +114,7 @@ export class Workbench {
   }
 
   // TODO: goto workspace
-  todayNode(): ManfioldNode {
+  todayNode(): Node {
     const today = new Date();
     const dayNode = today.toUTCString().split(today.getFullYear())[0];
     const weekNode = `Week ${String(getWeekOfYear(today)).padStart(2, "0")}`;
