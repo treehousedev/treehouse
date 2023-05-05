@@ -181,8 +181,8 @@ export class Workspace {
         return p.append(next);
       }
       const parent = p.previous;
-      if (!parent || parent.id === path.head.id) {
-        // if no parent or parent is path head, return null
+      if (!parent) {
+        // if no parent, return null
         return null;
       }
       if (p.node.raw.Rel === "Fields" && parent.childCount > 0) {

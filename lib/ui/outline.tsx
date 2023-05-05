@@ -19,13 +19,8 @@ interface State {
 }
 
 export const OutlineEditor: m.Component<Attrs> = {
-  view ({attrs: {workbench, path}, state}) {
-    return (
-      <div>
-        {path.node.children.map(n => <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />)}
-        <NewNode workbench={workbench} path={path} />
-      </div>
-    )
+  view ({attrs: {workbench, path}}) {
+    return m(getView(path.node.getAttr("view")||"list"), {workbench, path});
   }
 }
 
