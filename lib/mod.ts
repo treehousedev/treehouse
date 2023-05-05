@@ -23,6 +23,7 @@ import { SearchNode } from "./com/search.tsx";
 import { Checkbox } from "./com/checkbox.tsx";
 import { Page } from "./com/page.tsx";
 import { TextField } from "./com/textfield.tsx";
+import { Clock } from "./com/clock.tsx";
 
 export { BrowserBackend, SearchIndex_MiniSearch} from "./backend/browser.ts";
 export { GitHubBackend } from "./backend/github.ts";
@@ -82,6 +83,28 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       ctx.node.setAttr("view", "table");
     }
   });
+
+  workbench.commands.registerCommand({
+    id: "stop-clock",
+    title: "Stop clock",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      const clock = new Clock();
+      clock.startedAt = new Date();
+      ctx.node.addComponent(clock);
+    }
+  });
+
+
+  workbench.commands.registerCommand({
+    id: "remove-clock",
+    title: "Remove clock",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      ctx.node.removeComponent(Clock);
+    }
+  });
+
 
   workbench.commands.registerCommand({
     id: "add-page",
