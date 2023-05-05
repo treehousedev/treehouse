@@ -39,6 +39,16 @@ p {
   margin-block-end: var(--padding);
 }
 
+.blink {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+
 /*------------APP------------*/
 
 main {
