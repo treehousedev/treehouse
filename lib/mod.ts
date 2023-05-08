@@ -25,7 +25,7 @@ import { Page } from "./com/page.tsx";
 import { TextField } from "./com/textfield.tsx";
 import { Clock } from "./com/clock.tsx";
 
-export { BrowserBackend, SearchIndex_MiniSearch} from "./backend/browser.ts";
+export { BrowserBackend, SearchIndex_MiniSearch } from "./backend/browser.ts";
 export { GitHubBackend } from "./backend/github.ts";
 
 
@@ -44,14 +44,14 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
   const workbench = new Workbench(backend);
   window.workbench = workbench;
-  
+
   await workbench.initialize();
 
   // TODO: better way to initialize components? 
   [
-    Clock, 
-    TextField, 
-    Page, 
+    Clock,
+    TextField,
+    Page,
     Checkbox,
   ].forEach(com => {
     if (com.initialize) {
@@ -59,7 +59,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     }
   });
 
-  
+
   // pretty specific to github backend right now
   document.addEventListener("BackendError", () => {
     workbench.showNotice("lockstolen", () => {
@@ -176,7 +176,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "mark-done", key: "meta+enter" });
+  workbench.keybindings.registerBinding({ command: "mark-done", key: "meta+enter" });
 
 
 
@@ -189,7 +189,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       m.redraw();
     }
   });
-  workbench.keybindings.registerBinding({command: "expand", key: "meta+arrowdown" });
+  workbench.keybindings.registerBinding({ command: "expand", key: "meta+arrowdown" });
   workbench.commands.registerCommand({
     id: "collapse",
     title: "Collapse",
@@ -199,12 +199,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       m.redraw();
     }
   });
-  workbench.keybindings.registerBinding({command: "collapse", key: "meta+arrowup" });
+  workbench.keybindings.registerBinding({ command: "collapse", key: "meta+arrowup" });
   workbench.commands.registerCommand({
     id: "indent",
     title: "Indent",
     action: (ctx: Context) => {
       if (!ctx.node) return;
+      if (ctx.node.raw.Rel === "Fields") return;
       const node = ctx.node; // redraw seems to unset ctx.node
       const path = ctx.path.clone();
       const prev = node.prevSibling;
@@ -219,12 +220,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "indent", key: "tab"});
+  workbench.keybindings.registerBinding({ command: "indent", key: "tab" });
   workbench.commands.registerCommand({
     id: "outdent",
     title: "Outdent",
     action: (ctx: Context) => {
       if (!ctx.node) return;
+      if (ctx.node.raw.Rel === "Fields") return;
       const node = ctx.node; // redraw seems to unset ctx.node
       const parent = ctx.path.previous;
       const path = ctx.path.clone();
@@ -233,7 +235,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
         path.pop(); // drop parent
         node.parent = parent.parent;
         path.push(node);
-        node.siblingIndex = parent.siblingIndex+1;
+        node.siblingIndex = parent.siblingIndex + 1;
         if (parent.childCount === 0) {
           workbench.workspace.setExpanded(ctx.path.head, parent, false);
         }
@@ -242,7 +244,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "outdent", key: "shift+tab"});
+  workbench.keybindings.registerBinding({ command: "outdent", key: "shift+tab" });
   workbench.commands.registerCommand({
     id: "move-up",
     title: "Move Up",
@@ -263,7 +265,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           p.push(parentSib);
           p.push(node);
           node.parent = parentSib;
-          node.siblingIndex = parentSib.childCount-1;
+          node.siblingIndex = parentSib.childCount - 1;
           workbench.workspace.setExpanded(ctx.path.head, parentSib, true);
           m.redraw.sync();
           workbench.focus(p);
@@ -271,13 +273,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           if (children === 1) {
             return;
           }
-          node.siblingIndex = node.siblingIndex-1;
+          node.siblingIndex = node.siblingIndex - 1;
           m.redraw.sync();
         }
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "move-up", key: "shift+meta+arrowup"});
+  workbench.keybindings.registerBinding({ command: "move-up", key: "shift+meta+arrowup" });
   workbench.commands.registerCommand({
     id: "move-down",
     title: "Move Down",
@@ -288,7 +290,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (parent !== null && parent.id !== "@root") {
         const children = parent.childCount;
         // if last child
-        if (node.siblingIndex === children-1) {
+        if (node.siblingIndex === children - 1) {
           if (!parent.nextSibling) {
             return;
           }
@@ -307,13 +309,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           if (children === 1) {
             return;
           }
-          node.siblingIndex = node.siblingIndex+1;
+          node.siblingIndex = node.siblingIndex + 1;
           m.redraw.sync();
         }
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "move-down", key: "shift+meta+arrowdown"});
+  workbench.keybindings.registerBinding({ command: "move-down", key: "shift+meta+arrowdown" });
   workbench.commands.registerCommand({
     id: "insert-child",
     title: "Insert Child",
@@ -350,14 +352,14 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (!ctx.node) return;
       const node = workbench.workspace.new(name);
       node.parent = ctx.node.parent;
-      node.siblingIndex = ctx.node.siblingIndex+1;
+      node.siblingIndex = ctx.node.siblingIndex + 1;
       m.redraw.sync();
       const p = ctx.path.clone();
       p.pop();
       workbench.focus(p.append(node));
     }
   });
-  workbench.keybindings.registerBinding({command: "insert", key: "shift+enter"});
+  workbench.keybindings.registerBinding({ command: "insert", key: "shift+enter" });
   workbench.commands.registerCommand({
     id: "create-reference",
     title: "Create Reference",
@@ -366,7 +368,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (!ctx.node) return;
       const node = workbench.workspace.new("");
       node.parent = ctx.node.parent;
-      node.siblingIndex = ctx.node.siblingIndex+1;
+      node.siblingIndex = ctx.node.siblingIndex + 1;
       node.refTo = ctx.node;
       m.redraw.sync();
       const p = ctx.path.clone();
@@ -396,7 +398,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "delete", key: "shift+meta+backspace" });
+  workbench.keybindings.registerBinding({ command: "delete", key: "shift+meta+backspace" });
   workbench.commands.registerCommand({
     id: "prev",
     action: (ctx: Context) => {
@@ -407,7 +409,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "prev", key: "arrowup"});
+  workbench.keybindings.registerBinding({ command: "prev", key: "arrowup" });
   workbench.commands.registerCommand({
     id: "next",
     action: (ctx: Context) => {
@@ -418,7 +420,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
     }
   });
-  workbench.keybindings.registerBinding({command: "next", key: "arrowdown"});
+  workbench.keybindings.registerBinding({ command: "next", key: "arrowdown" });
   workbench.commands.registerCommand({
     id: "pick-command",
     action: (ctx: Context) => {
@@ -432,16 +434,16 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
       const trigger = workbench.getInput(path);
       const rect = trigger.getBoundingClientRect();
-      let x = document.body.scrollLeft+rect.x+(trigger.selectionStart * 10)+20;
-      let y = document.body.scrollTop+rect.y-8;
+      let x = document.body.scrollLeft + rect.x + (trigger.selectionStart * 10) + 20;
+      let y = document.body.scrollTop + rect.y - 8;
       if (posBelow) {
-        x = document.body.scrollLeft+rect.x;
-        y = document.body.scrollTop+rect.y+rect.height;
+        x = document.body.scrollLeft + rect.x;
+        y = document.body.scrollTop + rect.y + rect.height;
       }
-      workbench.showPalette(x, y, workbench.newContext({node}));
+      workbench.showPalette(x, y, workbench.newContext({ node }));
     }
   });
-  workbench.keybindings.registerBinding({command: "pick-command", key: "meta+k"});
+  workbench.keybindings.registerBinding({ command: "pick-command", key: "meta+k" });
   workbench.commands.registerCommand({
     id: "new-panel",
     title: "Open in New Panel",
@@ -484,13 +486,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
 
   workbench.menus.registerMenu("node", [
-    {command: "open"},
-    {command: "new-panel"},
-    {command: "indent"},
-    {command: "outdent"},
-    {command: "move-up"},
-    {command: "move-down"},
-    {command: "delete"},
+    { command: "open" },
+    { command: "new-panel" },
+    { command: "indent" },
+    { command: "outdent" },
+    { command: "move-up" },
+    { command: "move-down" },
+    { command: "delete" },
     // {command: "add-checkbox"}, 
     // {command: "remove-checkbox"},
     // {command: "mark-done"},
@@ -501,22 +503,26 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   ]);
 
   workbench.menus.registerMenu("settings", [
-    {title: () => `${workbench.backend.auth?.currentUser()?.userID()} @ GitHub`, disabled: true, when: () => workbench.authenticated()},
-    {title: () => "Login with GitHub", when: () => !workbench.authenticated(), onclick: () => {
-      if (!localStorage.getItem("github")) {
-        workbench.showNotice("github", () => {
+    { title: () => `${workbench.backend.auth?.currentUser()?.userID()} @ GitHub`, disabled: true, when: () => workbench.authenticated() },
+    {
+      title: () => "Login with GitHub", when: () => !workbench.authenticated(), onclick: () => {
+        if (!localStorage.getItem("github")) {
+          workbench.showNotice("github", () => {
+            workbench.backend.auth.login()
+          })
+        } else {
           workbench.backend.auth.login()
-        })
-      } else {
-        workbench.backend.auth.login()
+        }
       }
-    }},
-    {title: () => "Reset Demo", when: () => !workbench.authenticated(), onclick: () => {
-      localStorage.clear();
-      location.reload();
-    }},
-    {title: () => "Submit Issue", onclick: () => window.open("https://github.com/treehousedev/treehouse/issues", "_blank")},
-    {title: () => "Logout", when: () => workbench.authenticated(), onclick: () => workbench.backend.auth.logout()},
+    },
+    {
+      title: () => "Reset Demo", when: () => !workbench.authenticated(), onclick: () => {
+        localStorage.clear();
+        location.reload();
+      }
+    },
+    { title: () => "Submit Issue", onclick: () => window.open("https://github.com/treehousedev/treehouse/issues", "_blank") },
+    { title: () => "Logout", when: () => workbench.authenticated(), onclick: () => workbench.backend.auth.logout() },
   ]);
 
   document.addEventListener("keydown", (e) => {
@@ -537,7 +543,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
 
 
-  m.mount(target, {view: () => m(App, {workbench})});
+  m.mount(target, { view: () => m(App, { workbench }) });
 }
 
 
@@ -573,9 +579,9 @@ function generateName(length = 10) {
   };
   const words = (length) => (
     [...Array(length)]
-        .map((_, i) => word())
-        .join(' ')
-        .trim()
+      .map((_, i) => word())
+      .join(' ')
+      .trim()
   );
   return words(random(2, length))
 }
