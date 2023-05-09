@@ -11,7 +11,7 @@ export interface MenuItem {
 }
 
 export class MenuRegistry {
-  menus: {[index: string]: MenuItem[]};
+  menus: { [index: string]: MenuItem[] };
 
   constructor() {
     this.menus = {};

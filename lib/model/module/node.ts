@@ -65,13 +65,13 @@ export class Node {
     this.changed();
   }
 
-  get parent(): INode|null {
+  get parent(): INode | null {
     if (!this.raw.Parent) return null;
     if (!this._bus.nodes[this.raw.Parent]) return null;
     return new Node(this._bus, this.raw.Parent);
   }
 
-  set parent(n: INode|null) {
+  set parent(n: INode | null) {
     const p = this.parent;
     if (p !== null) {
       p.raw.Linked.Children.splice(this.siblingIndex, 1);
@@ -86,7 +86,7 @@ export class Node {
     this.changed();
   }
 
-  get refTo(): INode|null {
+  get refTo(): INode | null {
     const id = this.raw.Attrs["refTo"];
     if (!id) return null;
     const refTo = this._bus.nodes[id];
@@ -94,7 +94,7 @@ export class Node {
     return new Node(this._bus, id);
   }
 
-  set refTo(n: INode|null) {
+  set refTo(n: INode | null) {
     if (!n) {
       delete this.raw.Attrs["refTo"];
       this.changed();
@@ -120,20 +120,20 @@ export class Node {
     p.changed();
   }
 
-  get prevSibling(): INode|null {
+  get prevSibling(): INode | null {
     const p = this.parent;
     if (p === null) return null;
     if (this.siblingIndex === 0) return null;
     let rel = this.raw.Rel || "Children";
-    return p.getLinked(rel)[this.siblingIndex-1];
+    return p.getLinked(rel)[this.siblingIndex - 1];
   }
 
-  get nextSibling(): INode|null {
+  get nextSibling(): INode | null {
     const p = this.parent;
     if (p === null) return null;
-    if (this.siblingIndex === p.children.length-1) return null;
+    if (this.siblingIndex === p.children.length - 1) return null;
     let rel = this.raw.Rel || "Children";
-    return p.getLinked(rel)[this.siblingIndex+1];
+    return p.getLinked(rel)[this.siblingIndex + 1];
   }
 
   get ancestors(): INode[] {
@@ -151,7 +151,7 @@ export class Node {
   }
 
   get path(): string {
-    let cur: INode|null = this;
+    let cur: INode | null = this;
     const path = [];
     while (cur) {
       path.unshift(cur.name);
@@ -240,7 +240,7 @@ export class Node {
     return false;
   }
 
-  getComponent(type: any): any|null {
+  getComponent(type: any): any | null {
     const coms = this.components.filter(n => n.name === componentName(type));
     if (coms.length > 0) {
       return coms[0].value;
@@ -294,7 +294,7 @@ export class Node {
     this.changed();
   }
 
-  find(path: string): INode|null {
+  find(path: string): INode | null {
     return this.bus.find([this.path, path].join("/"));
   }
 

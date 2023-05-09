@@ -2,7 +2,7 @@ import { SearchIndex } from "../backend/mod.ts";
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
 
-function debounce(func, timeout = 1000){
+function debounce(func, timeout = 1000) {
   let timer;
   return (...args) => {
     clearTimeout(timer);

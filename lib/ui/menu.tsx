@@ -1,7 +1,7 @@
 import { bindingSymbols } from "../action/keybinds.ts";
 
 export const Menu: m.Component = {
-  view({attrs: {workbench, x, y, items, align, commands, ctx}}) {
+  view({ attrs: { workbench, x, y, items, align, commands, ctx } }) {
     const onclick = (item, cmd) => (e) => {
       e.stopPropagation();
       if (item.disabled) {
@@ -15,39 +15,39 @@ export const Menu: m.Component = {
       }
       workbench.hideMenu();
     };
-    let posStyle = {left: `${x}px`};
+    let posStyle = { left: `${x}px` };
     if (align === "right") {
-      posStyle = {right: `${x}px`};
+      posStyle = { right: `${x}px` };
     }
     return (
-<ul class="menu" style={Object.assign(posStyle, {
-  margin: "0",
-  position: "absolute",
-  top: `${y}px`,
-  display: "inline-block",
-})}>
-  {items.filter(i => !i.when || i.when()).map(i => {
-    let title = "";
-    let binding = undefined;
-    let cmd = undefined;
-    if (i.command) {
-      cmd = commands.find(c => c.id === i.command);
-      binding = workbench.keybindings.getBinding(cmd.id);
-      title = cmd.title;
-    }
-    if (i.title) {
-      title = i.title();
-    }
-    return (
-      <li onclick={onclick(i, cmd)} class={(i.disabled)?"disabled":""} style={{
-        display: "flex"
-      }}>
-        <div>{title}</div>
-        {binding && <div class="keybindings grow text-right">{bindingSymbols(binding.key).join(" ").toUpperCase()}</div>}
-      </li>
-    )
-  })}
-</ul>
+      <ul class="menu" style={Object.assign(posStyle, {
+        margin: "0",
+        position: "absolute",
+        top: `${y}px`,
+        display: "inline-block",
+      })}>
+        {items.filter(i => !i.when || i.when()).map(i => {
+          let title = "";
+          let binding = undefined;
+          let cmd = undefined;
+          if (i.command) {
+            cmd = commands.find(c => c.id === i.command);
+            binding = workbench.keybindings.getBinding(cmd.id);
+            title = cmd.title;
+          }
+          if (i.title) {
+            title = i.title();
+          }
+          return (
+            <li onclick={onclick(i, cmd)} class={(i.disabled) ? "disabled" : ""} style={{
+              display: "flex"
+            }}>
+              <div>{title}</div>
+              {binding && <div class="keybindings grow text-right">{bindingSymbols(binding.key).join(" ").toUpperCase()}</div>}
+            </li>
+          )
+        })}
+      </ul>
     )  
   }
 };

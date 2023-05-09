@@ -8,12 +8,14 @@ export class Bus {
   observers: ObserverFunc[];
 
   constructor() {
-    this.nodes = {"@root": {
-      ID: "@root",
-      Name: "@root",
-      Linked: {Children: [], Components: []},
-      Attrs: {}
-    }};
+    this.nodes = {
+      "@root": {
+        ID: "@root",
+        Name: "@root",
+        Linked: { Children: [], Components: [] },
+        Attrs: {}
+      }
+    };
     this.observers = [];
   }
 
@@ -69,29 +71,29 @@ export class Bus {
   }
 
   make(name: string, value?: any): INode {
-    let parent: INode|null = null;
+    let parent: INode | null = null;
     if (name.includes("/")) {
       const parts = name.split("/");
       parent = this.root(parts[0]);
-      for (let i = 1; i < parts.length-1; i++) {
+      for (let i = 1; i < parts.length - 1; i++) {
         if (parent === null) {
           throw "unable to get root";
         }
         
         let child = parent.find(parts[i]);
         if (!child) {
-          child = this.make(parts.slice(0, i+1).join("/"));
+          child = this.make(parts.slice(0, i + 1).join("/"));
         }
         parent = child;
       }
-      name = parts[parts.length-1];
+      name = parts[parts.length - 1];
     }
-    const id = (name.startsWith("@"))?name:uniqueId();
+    const id = (name.startsWith("@")) ? name : uniqueId();
     this.nodes[id] = {
       ID: id,
       Name: name,
       Value: value,
-      Linked: {Children: [], Components: []},
+      Linked: { Children: [], Components: [] },
       Attrs: {}
     };
     const node = new Node(this, id);
@@ -120,14 +122,14 @@ export class Bus {
     return Object.values(this.nodes).filter(n => n.Parent === undefined).map(n => new Node(this, n.ID));
   }
 
-  root(name?: string): INode|null {
+  root(name?: string): INode | null {
     name = name || "@root"
     const node = this.roots().find(root => root.name === name);
     if (node === undefined) return null;
     return node;
   }
 
-  find(path:string): INode|null {
+  find(path: string): INode | null {
     const byId = this.nodes[path];
     if (byId) return new Node(this, byId.ID);
     const parts = path.split("/");
@@ -144,7 +146,7 @@ export class Bus {
     if (!cur) {
       return null;
     }
-    const findChild = (n: INode, name: string): INode|undefined => {
+    const findChild = (n: INode, name: string): INode | undefined => {
       if (n.refTo) {
         n = n.refTo;
       }

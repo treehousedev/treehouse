@@ -2,7 +2,7 @@ import { NewNode } from "../ui/node/new.tsx";
 import { OutlineNode } from "../ui/outline.tsx";
 
 export default {
-  view({attrs: {workbench, path}}) {
+  view({ attrs: { workbench, path } }) {
     return (
       <div class="list-view">
         <div class="fields">
@@ -12,8 +12,8 @@ export default {
         </div>
         <div class="children">
           {(path.node.childCount > 0)
-            ?path.node.children.map(n => <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />)
-            :<NewNode workbench={workbench} path={path} />
+            ? path.node.children.map(n => <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />)
+            : <NewNode workbench={workbench} path={path} />
           }
         </div>
       </div>

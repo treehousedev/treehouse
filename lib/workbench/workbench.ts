@@ -40,7 +40,7 @@ export class Workbench {
     this.backend = backend;
     this.workspace = new Workspace(backend.files);
 
-    this.context = {node: null};
+    this.context = { node: null };
     this.panels = [];
     
   }
@@ -171,7 +171,7 @@ export class Workbench {
       this.context.path = path;
       input.focus();
       if (pos !== undefined) {
-        input.setSelectionRange(pos,pos);
+        input.setSelectionRange(pos, pos);
       }
     } else {
       console.warn("unable to find input for", path);
@@ -182,7 +182,7 @@ export class Workbench {
     let id = `input-${path.id}-${path.node.id}`;
     // kludge:
     if (path.node.raw.Rel === "Fields") {
-      id = id+"-value"; 
+      id = id + "-value"; 
     }
     return document.getElementById(id);
   }
@@ -203,15 +203,16 @@ export class Workbench {
     const trigger = event.target.closest("*[data-menu]");
     const rect = trigger.getBoundingClientRect();
     const align = trigger.dataset["align"] || "left";
-    let x = document.body.scrollLeft+rect.x;
+    let x = document.body.scrollLeft + rect.x;
     if (align === "right") {
       x = document.body.offsetWidth - rect.right;
     }
-    const y = document.body.scrollTop+rect.y+rect.height;
+    const y = document.body.scrollTop + rect.y + rect.height;
     const items = this.menus.menus[trigger.dataset["menu"]];
     const cmds = items.filter(i => i.command).map(i => this.commands.commands[i.command]);
     if (!items) return;
-    this.menu = {x, y, 
+    this.menu = {
+      x, y, 
       ctx: this.newContext(ctx), 
       items: items,
       commands: cmds,
@@ -231,7 +232,7 @@ export class Workbench {
   }
 
   showPalette(x: number, y: number, ctx: Context) {
-    this.palette = {x, y, ctx: ctx};
+    this.palette = { x, y, ctx: ctx };
     this.curtain = {
       visible: false,
       onclick: () => this.hidePalette()
@@ -246,7 +247,7 @@ export class Workbench {
   }
 
   showNotice(message, finished) {
-    this.notice = {message, finished};
+    this.notice = { message, finished };
     m.redraw();
   }
 
@@ -263,6 +264,6 @@ function getWeekOfYear(date) {
   var d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   var dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-  var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+  var yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
+  return Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
 }

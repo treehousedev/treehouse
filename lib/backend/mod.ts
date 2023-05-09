@@ -5,7 +5,7 @@
  * 
  * @module
  */
-import {RawNode} from "../model/mod.ts";
+import { RawNode } from "../model/mod.ts";
 
 /**
  * Backend is the adapter object API to be implemented for a working backend.
@@ -13,7 +13,7 @@ import {RawNode} from "../model/mod.ts";
  * implemented on the same object. 
  */
 export interface Backend {
-  auth: Authenticator|null;
+  auth: Authenticator | null;
   index: SearchIndex;
   files: FileStore;
 }
@@ -22,7 +22,7 @@ export interface Backend {
 export interface Authenticator {
   login();
   logout();
-  currentUser(): User|null;
+  currentUser(): User | null;
 }
 
 export interface User {
@@ -39,6 +39,6 @@ export interface SearchIndex {
 
 
 export interface FileStore {
-  async readFile(path: string): string|null;
+  async readFile(path: string): string | null;
   async writeFile(path: string, contents: string);
 }

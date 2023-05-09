@@ -18,7 +18,7 @@ export class GitHubBackend {
   loginURL: string;
   clientFactory: any; // Octokit class
   client: any; // Octokit instance
-  user: User|null;
+  user: User | null;
   shas: Record<string, string>; // path => sha
   
   opts: Options;
@@ -57,7 +57,7 @@ export class GitHubBackend {
         const response = await fetch(this.loginURL, {
           method: "POST",
           mode: "cors",
-          headers: {"content-type": "application/json"},
+          headers: { "content-type": "application/json" },
           body: JSON.stringify({ code })
         });
         
@@ -122,7 +122,7 @@ export class GitHubBackend {
       }
       // create if not
       console.log("Creating repository...");
-      const resp = await this.client.rest.repos.createForAuthenticatedUser({name: this.repo});
+      const resp = await this.client.rest.repos.createForAuthenticatedUser({ name: this.repo });
       if (resp.status !== 201) {
         console.error(resp);
         return;
@@ -227,17 +227,17 @@ export class GitHubBackend {
       return;
     }
 
-    this.client = new this.clientFactory({auth: token});
+    this.client = new this.clientFactory({ auth: token });
     const resp = await this.client.rest.users.getAuthenticated();
     if (!resp || resp.error) {
       return;
     }
     this.user = new User(resp.data);
 
-    if(m)m.redraw();
+    if (m) m.redraw();
   }
 
-  currentUser(): User|null {
+  currentUser(): User | null {
     return this.user;
   }
 
@@ -249,7 +249,7 @@ export class GitHubBackend {
     localStorage.removeItem("treehouse:gh-token");
     this.user = null;
 
-    if(m)m.redraw();
+    if (m) m.redraw();
   }
   
   logout() {
@@ -258,7 +258,7 @@ export class GitHubBackend {
   }
 
 
-  async readFile(path: string): string|null {
+  async readFile(path: string): string | null {
     try {
       const resp = await this.client.rest.repos.getContent({
         owner: this.user?.userID(), 

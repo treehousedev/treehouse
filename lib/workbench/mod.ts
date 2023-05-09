@@ -11,7 +11,7 @@ import { Node } from "../model/mod.ts";
  */
 export interface Context {
   path: Path;
-  node: Node|null;
+  node: Node | null;
   nodes?: Node[];
   event?: Event;
   

@@ -8,7 +8,7 @@ export interface Command {
 }
 
 export class CommandRegistry {
-  commands: {[index: string]: Command}
+  commands: { [index: string]: Command }
 
   constructor() {
     this.commands = {};

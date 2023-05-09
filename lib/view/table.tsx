@@ -2,7 +2,7 @@ import { NodeEditor, TextEditor } from "../ui/node/editor.tsx";
 import { OutlineNode } from "../ui/outline.tsx";
 
 export default {
-  view({attrs: {workbench, path}, state}) {
+  view({ attrs: { workbench, path }, state }) {
     const node = path.node;
     state.fields = (state.fields === undefined) ? new Set() : state.fields;
     node.children.forEach(n => {
@@ -14,7 +14,7 @@ export default {
       return <NodeEditor editValue={true} workbench={workbench} path={path.append(fields[0])} />
     }
     return (
-      <table class="table-view" style={{gridTemplateColumns: `repeat(${state.fields.size+1}, 1fr)`}}>
+      <table class="table-view" style={{ gridTemplateColumns: `repeat(${state.fields.size + 1}, 1fr)` }}>
         <thead>
           <tr>
             <th></th>

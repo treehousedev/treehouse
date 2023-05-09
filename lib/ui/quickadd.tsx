@@ -2,7 +2,7 @@ import { OutlineEditor } from "./outline.tsx";
 import { Path } from "../workbench/mod.ts";
 
 export const QuickAdd = {
-  view({attrs: {workbench}}) {
+  view({ attrs: { workbench } }) {
     const path = new Path(workbench.quickadd, "quickadd");
     return (
       <div style={{

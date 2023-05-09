@@ -28,7 +28,7 @@ export class Path {
     this.nodes.push(node);
   }
 
-  pop(): Node|null {
+  pop(): Node | null {
     return this.nodes.pop() || null;
   }
 
@@ -58,12 +58,12 @@ export class Path {
   }
 
   get node(): Node {
-    return this.nodes[this.nodes.length-1];
+    return this.nodes[this.nodes.length - 1];
   }
 
-  get previous(): Node|null {
+  get previous(): Node | null {
     if (this.nodes.length < 2) return null;
-    return this.nodes[this.nodes.length-2];
+    return this.nodes[this.nodes.length - 2];
   }
 
   get head(): Node {

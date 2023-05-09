@@ -22,7 +22,7 @@ export function bindingSymbols(key?: string): string[] {
 // if key is meta and not on a mac, change it to ctrl,
 // otherwise return the key as is
 function filterKeyForNonMacMeta(key: string): string {
-  return (!isMac && key === "meta") ? "ctrl": key;
+  return (!isMac && key === "meta") ? "ctrl" : key;
 }
 
 export interface Binding {
@@ -43,7 +43,7 @@ export class KeyBindings {
     this.bindings.push(binding);
   }
 
-  getBinding(commandId: string): Binding|null {
+  getBinding(commandId: string): Binding | null {
     for (const b of this.bindings) {
       if (b.command === commandId) {
         return b;
@@ -52,7 +52,7 @@ export class KeyBindings {
     return null;
   }
 
-  evaluateEvent(event: KeyboardEvent): Binding|null {
+  evaluateEvent(event: KeyboardEvent): Binding | null {
     bindings: for (const b of this.bindings) {
       let modifiers = b.key.toLowerCase().split("+");
       let key = modifiers.pop();

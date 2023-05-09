@@ -1,7 +1,7 @@
 import { objectCall, objectHas } from "../../model/hooks.ts";
 
 export const NodeEditor: m.Component = {
-  view ({attrs: {workbench, path, onkeydown, disallowEmpty, editValue}, state}) {
+  view({ attrs: { workbench, path, onkeydown, disallowEmpty, editValue }, state }) {
     const node = path.node;
     let prop = (editValue) ? "value" : "name";
     
@@ -34,9 +34,9 @@ export const NodeEditor: m.Component = {
     
     let id = `input-${path.id}-${node.id}`;
     if (prop === "value") {
-      id = id+"-value";
+      id = id + "-value";
     }
-    return m(TextEditor, {id, getter, setter, display, onkeydown, onfocus});
+    return m(TextEditor, { id, getter, setter, display, onkeydown, onfocus });
   }
 }
 
@@ -58,7 +58,7 @@ interface State {
 }
 
 export const TextEditor: m.Component<Attrs, State> = {
-  oncreate({dom,attrs}) {
+  oncreate({ dom, attrs }) {
     const textarea = dom.querySelector("textarea");
     const initialHeight = textarea.offsetHeight;
     const span = dom.querySelector("span");
@@ -75,7 +75,7 @@ export const TextEditor: m.Component<Attrs, State> = {
   onupdate() {
     this.updateHeight();
   },
-  view ({attrs: {id, onkeydown, onfocus, onblur, getter, setter, display}, state}) {
+  view({ attrs: { id, onkeydown, onfocus, onblur, getter, setter, display }, state }) {
     const value = (state.editing) 
       ? state.buffer 
       : (display) ? display() : getter();
@@ -117,9 +117,9 @@ export const TextEditor: m.Component<Attrs, State> = {
           onfocus={startEdit}
           onblur={finishEdit}
           oninput={edit}
-          onkeydown={onkeydown||defaultKeydown}
+          onkeydown={onkeydown || defaultKeydown}
           value={value}>{value}</textarea>
-        <span style={{visibility: "hidden", position: "fixed"}}></span>
+        <span style={{ visibility: "hidden", position: "fixed" }}></span>
       </div>
     )
   }

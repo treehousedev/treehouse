@@ -26,7 +26,7 @@ export class Clock {
     if (obj.startedAt) {
       this.startedAt = new Date(obj.startedAt);
     }
-    this.log = (obj.log||[]).map(entry => [new Date(entry[0]), new Date(entry[1])]);
+    this.log = (obj.log || []).map(entry => [new Date(entry[0]), new Date(entry[1])]);
     this.showLog = obj.showLog;
   }
 
@@ -39,7 +39,7 @@ export class Clock {
   }
 
   localTotal(): number {
-    return this.log.map(this.entryDuration).reduce((acc, val) => acc+val, 0);
+    return this.log.map(this.entryDuration).reduce((acc, val) => acc + val, 0);
   }
 
   grandTotal(): number {
@@ -63,7 +63,7 @@ export class Clock {
     if (!this.startedAt) return;
     let now = new Date();
     let diff = now.getTime() - this.startedAt.getTime();
-    if (diff/1000 >= 60) {
+    if (diff / 1000 >= 60) {
       // only log if more than a minute
       this.log.push([this.startedAt, now]);
     }
@@ -99,7 +99,7 @@ export class Clock {
     let min = Math.floor(dur % 60);
     dur = dur / 60;
     let hrs = Math.floor(dur % 60);
-    return `${hrs}:${min.toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping: false})}`;
+    return `${hrs}:${min.toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })}`;
   }
 
   afterEditor() {
@@ -125,7 +125,7 @@ export class Clock {
         ctx.node.changed();
       }
     });
-    workbench.keybindings.registerBinding({command: "stop-clock", key: "meta+o" });
+    workbench.keybindings.registerBinding({ command: "stop-clock", key: "meta+o" });
     workbench.commands.registerCommand({
       id: "start-clock",
       title: "Start clock",
@@ -139,7 +139,7 @@ export class Clock {
         ctx.node.changed();
       }
     });
-    workbench.keybindings.registerBinding({command: "start-clock", key: "meta+i" });
+    workbench.keybindings.registerBinding({ command: "start-clock", key: "meta+i" });
     workbench.commands.registerCommand({
       id: "remove-clock",
       title: "Remove clock",
@@ -152,7 +152,7 @@ export class Clock {
 }
 
 const ClockBadge = {
-  view({attrs: {node}}) {
+  view({ attrs: { node } }) {
     const clock = node.getComponent(Clock);
     const toggleLog = () => {
       clock.showLog = !clock.showLog;
@@ -160,15 +160,15 @@ const ClockBadge = {
     }
     if (!clock.showLog && clock.startedAt) {
       return (
-        <div onclick={toggleLog} class="flex flex-row items-center" style={{background: "green", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
-          <svg class="blink" style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <div onclick={toggleLog} class="flex flex-row items-center" style={{ background: "green", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white" }}>
+          <svg class="blink" style={{ width: "1rem", height: "1rem", marginRight: "0.25rem" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           <div>{clock.formatDuration(clock.entryDuration([clock.startedAt]))}</div>
         </div>
       )
     }
     return (
-      <div onclick={toggleLog} class="flex flex-row items-center" style={{background: "gray", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
-        <svg style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+      <div onclick={toggleLog} class="flex flex-row items-center" style={{ background: "gray", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white" }}>
+        <svg style={{ width: "1rem", height: "1rem", marginRight: "0.25rem" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <div>{clock.formatDuration(clock.grandTotal())}</div>
       </div>
     )
@@ -176,7 +176,7 @@ const ClockBadge = {
 }
 
 const ClockLog = {
-  view({attrs: {node}}) {
+  view({ attrs: { node } }) {
     const clock = node.getComponent(Clock);
     if (!clock.showLog) return;
     return (
@@ -184,19 +184,19 @@ const ClockLog = {
         <div class="indent flex"></div>
         <div class="grow">
           {clock.startedAt &&
-            <div class="flex flex-row" style={{marginBottom: "2px"}}>
+            <div class="flex flex-row" style={{ marginBottom: "2px" }}>
               <div class="grow">{clock.formatDate(clock.startedAt)} - ...</div>
-              <div class="flex flex-row items-center" style={{background: "green", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
-                <svg class="blink" style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <div class="flex flex-row items-center" style={{ background: "green", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white" }}>
+                <svg class="blink" style={{ width: "1rem", height: "1rem", marginRight: "0.25rem" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 <div>{clock.formatDuration(clock.entryDuration([clock.startedAt]))}</div>
               </div>
             </div>
           }
           {clock.log.toReversed().map(entry => (
-            <div class="flex flex-row" style={{marginBottom: "2px"}}>
+            <div class="flex flex-row" style={{ marginBottom: "2px" }}>
               <div class="grow">{clock.formatEntry(entry)}</div>
-              <div class="flex flex-row items-center" style={{background: "#aaa", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
-                <svg style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <div class="flex flex-row items-center" style={{ background: "#aaa", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white" }}>
+                <svg style={{ width: "1rem", height: "1rem", marginRight: "0.25rem" }} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                 <div>{clock.formatDuration(clock.entryDuration(entry))}</div>
               </div>
             </div>
