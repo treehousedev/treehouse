@@ -7,8 +7,11 @@ export const CommandPalette: m.Component = {
     }
   },
 
-  oncreate({ dom }) {
+  oncreate({ state, dom }) {
     dom.querySelector("input").focus();
+    if (state.selected === undefined) {
+      state.selected = 0;
+    }
   },
 
   view({ attrs, state }) {
