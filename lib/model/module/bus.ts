@@ -72,7 +72,7 @@ export class Bus {
     let parent: INode|null = null;
     if (name.includes("/")) {
       const parts = name.split("/");
-      parent = this.root(parts[0]);
+      parent = this.find(parts[0]);
       for (let i = 1; i < parts.length-1; i++) {
         if (parent === null) {
           throw "unable to get root";
