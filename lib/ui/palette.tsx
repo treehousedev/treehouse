@@ -7,8 +7,11 @@ export const CommandPalette: m.Component = {
     }
   },
 
-  oncreate({ dom }) {
+  oncreate({ state, dom }) {
     dom.querySelector("input").focus();
+    if (state.selected === undefined) {
+      state.selected = 0;
+    }
   },
 
   view({ attrs, state }) {
@@ -44,6 +47,10 @@ export const CommandPalette: m.Component = {
         return false;
       }
     }
+    const onclick = (cmd) => {
+      workbench.commands.executeCommand(cmd.id, attrs.ctx);
+      workbench.hidePalette();
+    }
     const autocomplete = (e) => {
       state.filter = e.target.value;
       state.selected = 0;
@@ -59,7 +66,7 @@ export const CommandPalette: m.Component = {
           overflowY: "scroll",
           position: "relative"
         }}>
-          {filtered.map((cmd, idx) => <div class={(state.selected === idx) ? "selected" : ""}>{cmd.title || cmd.id}</div>)}
+          {filtered.map((cmd, idx) => <div class={(state.selected === idx) ? "selected" : ""} onclick={() => onclick(cmd)}>{cmd.title || cmd.id}</div>)}
         </div>
       </div>
     )
