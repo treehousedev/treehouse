@@ -18,7 +18,10 @@ export const CommandPalette: m.Component = {
     const workbench = attrs.workbench;
     state.filter = (state.filter === undefined) ? "" : state.filter;
     const cmds = Object.values(workbench.commands.commands);
-    const filtered = cmds.filter(cmd => cmd.id.startsWith(state.filter));
+    const filtered = cmds.filter(cmd => {
+      const value = cmd.title || cmd.id;
+      return value.toLowerCase().startsWith(state.filter.toLowerCase());
+    })
     const onkeydown = (e) => {
       const mod = (a, b) => ((a % b) + b) % b;
       if (e.key === "ArrowDown") {
