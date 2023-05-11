@@ -141,6 +141,10 @@ with their icon for Safari only*/
 .node-container textarea, .panel-back-parent {
   max-width: 768px;
 }
+/*to make theming easier*/
+.node-container textarea {
+  background-color: transparent;
+}
 /*todo: check unused textarea styles in panel.tsx*/
 .node-container > textarea, .node-container > span {
   outline: none;
