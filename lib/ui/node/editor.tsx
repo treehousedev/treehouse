@@ -31,12 +31,17 @@ export const NodeEditor: m.Component = {
         workbench.context.node = null;
       }
     }
+
+    let placeholder;
+    if (node.raw.Rel === "Fields") {
+      placeholder = (editValue) ? "Value" : "Field";
+    }
     
     let id = `input-${path.id}-${node.id}`;
     if (prop === "value") {
       id = id+"-value";
     }
-    return m(TextEditor, {id, getter, setter, display, onkeydown, onfocus});
+    return m(TextEditor, {id, getter, setter, display, onkeydown, onfocus, placeholder});
   }
 }
 
@@ -75,7 +80,7 @@ export const TextEditor: m.Component<Attrs, State> = {
   onupdate() {
     this.updateHeight();
   },
-  view ({attrs: {id, onkeydown, onfocus, onblur, getter, setter, display}, state}) {
+  view ({attrs: {id, onkeydown, onfocus, onblur, getter, setter, display, placeholder}, state}) {
     const value = (state.editing) 
       ? state.buffer 
       : (display) ? display() : getter();
@@ -117,6 +122,7 @@ export const TextEditor: m.Component<Attrs, State> = {
           onfocus={startEdit}
           onblur={finishEdit}
           oninput={edit}
+          placeholder={placeholder}
           onkeydown={onkeydown||defaultKeydown}
           value={value}>{value}</textarea>
         <span style={{visibility: "hidden", position: "fixed"}}></span>
