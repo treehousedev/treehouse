@@ -94,7 +94,15 @@ main {
   align-items: center;
 }
 .topbar-item > div {
-  line-height: 0.1;
+  margin-bottom: -1px;
+}
+/*fun hack to get the top navbar items vertically aligned
+with their icon for Safari only*/
+@supports (-webkit-hyphens:none)
+{
+  .topbar-item > div {
+    margin-bottom: -3px;
+  }
 }
 
 /*------------PANELS------------*/
@@ -371,6 +379,7 @@ svg.node-bullet circle#node-collapsed {
 }
 
 
+
 /*------------MOBILE------------*/
 
 @media (max-width: 600px) {
@@ -394,8 +403,6 @@ the top nav in a more elegant way at some point*/
 
   }
 }
-
-
 
 
 
