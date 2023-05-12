@@ -136,8 +136,8 @@ export class Bus {
       return null;
     }
     let cur = this.root(parts[0]);
-    if (!cur) {
-      cur = this.nodes[parts[0]];
+    if (!cur && this.nodes[parts[0]]) {
+      cur = new Node(this, this.nodes[parts[0]].ID);
     }
     if (cur) {
       parts.shift();
