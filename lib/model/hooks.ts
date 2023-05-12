@@ -41,3 +41,10 @@ export function objectCall(obj: Node, hook: string, ...args: any[]): any {
     }
   }
 }
+
+// shorthand for nodes that have child provider hook.
+// use this to determine if some commands should be
+// prevented since visible children will not be impacted.
+export function objectManaged(obj: Node): boolean {
+  return objectHas(obj, "objectChildren");
+}

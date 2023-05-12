@@ -24,6 +24,7 @@ import { Checkbox } from "./com/checkbox.tsx";
 import { Page } from "./com/page.tsx";
 import { TextField } from "./com/textfield.tsx";
 import { Clock } from "./com/clock.tsx";
+import { objectManaged } from "./model/hooks.ts";
 
 export { BrowserBackend, SearchIndex_MiniSearch } from "./backend/browser.ts";
 export { GitHubBackend } from "./backend/github.ts";
@@ -210,7 +211,10 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (ctx.node.raw.Rel === "Fields") return;
       const node = ctx.node; // redraw seems to unset ctx.node
       const path = ctx.path.clone();
-      const prev = node.prevSibling;
+      let prev = node.prevSibling;
+      if (prev && objectManaged(prev)) {
+        prev = prev.prevSibling;
+      }
       if (prev !== null) {
         path.pop(); // drop node
         path.push(prev);
@@ -263,7 +267,11 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           const p = ctx.path.clone();
           p.pop(); // drop node
           p.pop(); // drop parent
-          const parentSib = parent.prevSibling;
+          let parentSib = parent.prevSibling;
+          if (objectManaged(parentSib)) {
+            parentSib = parentSib.prevSibling;
+            if (!parentSib) return;
+          }
           p.push(parentSib);
           p.push(node);
           node.parent = parentSib;
@@ -299,7 +307,11 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           const p = ctx.path.clone();
           p.pop(); // drop node
           p.pop(); // drop parent
-          const parentSib = parent.nextSibling;
+          let parentSib = parent.nextSibling;
+          if (objectManaged(parentSib)) {
+            parentSib = parentSib.nextSibling;
+            if (!parentSib) return;
+          }
           p.push(parentSib);
           p.push(node);
           node.parent = parentSib;
@@ -323,6 +335,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Insert Child",
     action: (ctx: Context, name: string = "", siblingIndex?: number) => {
       if (!ctx.node) return;
+      if (objectManaged(ctx.node)) return;
       const node = workbench.workspace.new(name);
       node.parent = ctx.node;
       if (siblingIndex !== undefined) {
