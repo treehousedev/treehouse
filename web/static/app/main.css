@@ -177,6 +177,7 @@ with their icon for Safari only*/
 .new-node input {
   border: 0px;
   outline: 0px;
+  background-color: transparent;
 }
 .expanded-node {
   padding-bottom: var(--1);
