@@ -104,13 +104,13 @@ export class Workbench {
     const node = this.workspace.find("@quickadd");
     if (!node) return;
     const today = this.todayNode();
-    node.getChildren().forEach(n => n.setParent(today));
+    node.children.forEach(n => n.parent = today);
   }
 
   clearQuickAdd() {
     const node = this.workspace.find("@quickadd");
     if (!node) return;
-    node.getChildren().forEach(n => n.destroy());
+    node.children.forEach(n => n.destroy());
   }
 
   // TODO: goto workspace
