@@ -135,7 +135,10 @@ export class Bus {
       // did not find @id by ID so return null
       return null;
     }
-    let cur = this.find(parts[0]);
+    let cur = this.root(parts[0]);
+    if (!cur) {
+      cur = this.nodes[parts[0]];
+    }
     if (cur) {
       parts.shift();
     } else {

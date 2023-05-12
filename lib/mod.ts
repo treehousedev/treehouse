@@ -463,12 +463,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     }
   });
   workbench.commands.registerCommand({
-    id: "open",
+    id: "zoom",
     title: "Open",
     action: (ctx: Context) => {
-      ctx.path.push(ctx.node);
       workbench.workspace.lastOpenedID = ctx.node.id;
       workbench.workspace.save();
+      workbench.context.path = ctx.path.append(ctx.node);
+      workbench.panels[0] = workbench.context.path;
       m.redraw();
     }
   });
@@ -486,7 +487,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
 
   workbench.menus.registerMenu("node", [
-    { command: "open" },
+    { command: "zoom" },
     { command: "new-panel" },
     { command: "indent" },
     { command: "outdent" },
