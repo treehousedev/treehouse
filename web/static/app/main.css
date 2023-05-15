@@ -54,6 +54,10 @@ p {
 main {
   background-color: var(--white);
 }
+/*to make theming easier*/
+.node-container textarea, .new-node input, .palette input {
+  background-color: transparent;
+}
 
 /*------------SIDEBAR------------*/
 .sidebar {
@@ -141,10 +145,6 @@ with their icon for Safari only*/
 .node-container textarea, .panel-back-parent {
   max-width: 768px;
 }
-/*to make theming easier*/
-.node-container textarea {
-  background-color: transparent;
-}
 /*todo: check unused textarea styles in panel.tsx*/
 .node-container > textarea, .node-container > span {
   outline: none;
@@ -177,7 +177,6 @@ with their icon for Safari only*/
 .new-node input {
   border: 0px;
   outline: 0px;
-  background-color: transparent;
 }
 .expanded-node {
   padding-bottom: var(--1);
@@ -324,9 +323,6 @@ svg.node-bullet circle#node-collapsed {
 }
 .palette, .palette input {
   font-size: var(--text-small);
-}
-.palette input {
-  background-color: transparent;
 }
 .palette .commands {
   line-height: var(--body-line-height);
