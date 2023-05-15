@@ -325,6 +325,9 @@ svg.node-bullet circle#node-collapsed {
 .palette, .palette input {
   font-size: var(--text-small);
 }
+.palette input {
+  background-color: transparent;
+}
 .palette .commands {
   line-height: var(--body-line-height);
   padding: calc(var(--padding)/2) 0;
