@@ -167,12 +167,10 @@ with their icon for Safari only*/
   height: 1rem;
   margin-right: 0.5rem;
   padding-left: 1px;
+  color: var(--node-icon-color);
 }
 .new-node svg circle {
-  fill: var(--gray-200);
-}
-.new-node svg path {
-  fill: var(--gray-600);
+  fill: var(--node-icon-accent-color);
 }
 .new-node input {
   border: 0px;
@@ -185,10 +183,9 @@ with their icon for Safari only*/
 .expanded-node > .indent {
   width: var(--8);
 }
-/*todo: make common class for shared icon button styles*/
 svg.node-menu {
   cursor: pointer;
-  fill: var(--gray-600);
+  fill: var(--node-icon-color);
   width: 1rem;
   height: 1rem;
   margin-left: -1rem;
@@ -202,12 +199,10 @@ svg.node-menu {
   margin-right: var(--2);
   padding-left: 1px;
   margin-top: var(--1);
+  color: var(--node-icon-color);
 }
-svg.node-bullet {
-  fill: var(--gray-600);
-}
-svg.node-bullet circle#node-collapsed {
-  fill: var(--gray-200);
+svg.node-bullet circle#node-collapsed-handle {
+  fill: var(--node-icon-accent-color);
 }
 
 /*------------TABLE VIEW------------*/

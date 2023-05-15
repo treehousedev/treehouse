@@ -83,6 +83,9 @@
   --body-line-height: 1.5;
   --text-small: 0.875rem;
 
+  --node-icon-color: var(--gray-600);
+  --node-icon-accent-color: var(--gray-200);
+
 }
 
 .h1,h1,.h2,h2,.h3,h3,.h4,h4,.h5,h5 {
