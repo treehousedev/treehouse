@@ -84,7 +84,6 @@ main {
 /*------------TOPBAR------------*/
 .topbar {
   padding: var(--padding) calc(var(--padding)*2);
-  line-height: 1;
   font-size: var(--text-small);
   font-weight: var(--weight-semibold);
   border-bottom: 1px solid var(--border-color-light);
