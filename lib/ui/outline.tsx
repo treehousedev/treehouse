@@ -155,7 +155,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       if (node.id === workbench.context?.node?.id || state.hover) {
         return true;
       }
-      return !!node.name;
+      return node.name.length > 0;
     }
 
     return (
