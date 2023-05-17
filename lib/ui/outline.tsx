@@ -151,6 +151,13 @@ export const OutlineNode: m.Component<Attrs, State> = {
       return n.childCount + n.getLinked("Fields").length;
     }
 
+    const showHandle = () => {
+      if (node.id === workbench.context?.node?.id || state.hover) {
+        return true;
+      }
+      return node.name.length > 0;
+    }
+
     return (
       <div onmouseover={hover} onmouseout={unhover}>
         <div class="node-row-outer-wrapper flex flex-row items-start">
@@ -161,7 +168,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
               viewBox="0 0 16 16">
             {state.hover && <path style={{transform: "translateY(-1px)"}} fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z" />}
           </svg>
-          <div class="node-handle shrink-0" onclick={toggle} ondblclick={open} oncontextmenu={(e) => workbench.showMenu(e, {node: handleNode, path})} data-menu="node" style={{ display: node.name ? 'block' : 'none' }}>
+          <div class="node-handle shrink-0" onclick={toggle} ondblclick={open} oncontextmenu={(e) => workbench.showMenu(e, {node: handleNode, path})} data-menu="node" style={{ display: showHandle() ? 'block' : 'none' }}>
             {(objectHas(node, "handleIcon"))
               ? objectCall(node, "handleIcon")
               : <svg class="node-bullet" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
