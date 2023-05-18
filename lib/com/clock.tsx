@@ -111,7 +111,6 @@ export class Clock {
   }
 
   static initialize(workbench: Workbench) {
-
     workbench.commands.registerCommand({
       id: "stop-clock",
       title: "Stop clock",
