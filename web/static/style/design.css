@@ -26,8 +26,6 @@
   --28: 7rem;
   --32: 8rem;
 
-  --primary: var(--green-500);
-
   --blue-700: #00819E;
   --blue-600: #007C9E;
   --blue-500: #00819E;
@@ -54,6 +52,8 @@
   --gray-300: #D2D5D5;
   --gray-200: #E8EBEB;
   --gray-100: #F6F7F7;
+
+  --primary: var(--green-500);
   
   --white: #fff;
   --black: var(--gray-900);
@@ -77,14 +77,11 @@
   --h3-size: var(--6);
 
   --border-radius: var(--1);
-  --border-color-light: var(--gray-200);
-  --border-color: var(--gray-400);
 
   --body-line-height: 1.5;
   --text-small: 0.875rem;
 
-  --node-icon-color: var(--gray-600);
-  --node-icon-accent-color: var(--gray-200);
+  --padding: 1rem;
 
 }
 
@@ -115,11 +112,6 @@
   font-weight: var(--weight-semibold);
   text-decoration: underline;
   color: var(--blue-600);
-}
-
-::placeholder {
-  color: var(--gray-400) !important;
-  opacity: 1;
 }
 
 /* Treehouse Utilities */
