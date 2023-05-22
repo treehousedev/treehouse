@@ -14,24 +14,6 @@
   --node-handle-secondary-color: var(--gray-200);
   --outline-color: var(--gray-400);
   --secondary-outline-color: var(--gray-200);
-
-  --font: 'Figtree', sans-serif;
-  --font-nav-label: var(--);
-  --font-small-text: var(--);
-  --font-header-text: var(--);
-
-  --primary-color: red;
-  --background-color: orange;
-  --text-color: yellow;
-  --sidebar-background-color: green;
-  --secondary-icon-color: violet;
-  --placeholder-text-color: pink;
-  --secondary-text-color: magenta;
-  --highlight-color: brown;
-  --node-handle-color: lightpurple;
-  --node-handle-secondary-color: coral;
-  --outline-color: crimson;
-  --secondary-outline-color: lightblue;
 }
 
 /*------------GLOBAL APP STYLES------------*/
@@ -216,7 +198,7 @@ with their icon for Safari only*/
 }
 svg.node-menu {
   cursor: pointer;
-  fill: var(--node-handle-color);
+  color: var(--node-handle-color);
   width: 1rem;
   height: 1rem;
   margin-left: -1rem;
