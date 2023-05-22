@@ -1,17 +1,24 @@
 @import url(../style/design.css);
 
 :root {
+  --font: 'Figtree', sans-serif;
 
   --primary-color: var(--primary);
+
   --background-color: var(--white);
-  --text-color: var(--black);
   --sidebar-background-color: var(--gray-100);
+
   --secondary-icon-color: var(--gray-600);
+
+  --text-color: var(--black);
   --placeholder-text-color: var(--gray-400);
   --secondary-text-color: var(--gray-600);
+
   --highlight-color: var(--gray-200);
+
   --node-handle-color: var(--gray-600);
   --node-handle-secondary-color: var(--gray-200);
+
   --outline-color: var(--gray-400);
   --secondary-outline-color: var(--gray-200);
 }
