@@ -3,7 +3,7 @@
 :root {
   --font: 'Figtree', sans-serif;
 
-  --primary-color: var(--primary);
+  --color-primary: var(--primary);
 
   --color-background: var(--white);
   --color-sidebar-background: var(--gray-100);
@@ -48,7 +48,7 @@ button {
 }
 button.primary {
   color: var(--color-background);
-  background-color: var(--primary-color);
+  background-color: var(--color-primary);
   border: none;
 }
 p {
