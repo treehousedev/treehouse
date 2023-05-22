@@ -5,22 +5,22 @@
 
   --primary-color: var(--primary);
 
-  --background-color: var(--white);
-  --sidebar-background-color: var(--gray-100);
+  --color-background: var(--white);
+  --color-sidebar-background: var(--gray-100);
 
-  --secondary-icon-color: var(--gray-600);
+  --color-secondary-icon: var(--gray-600);
 
-  --text-color: var(--black);
-  --placeholder-text-color: var(--gray-400);
-  --secondary-text-color: var(--gray-600);
+  --color-text: var(--black);
+  --color-placeholder-text: var(--gray-400);
+  --color-secondary-text: var(--gray-600);
 
-  --highlight-color: var(--gray-200);
+  --color-highlight: var(--gray-200);
 
-  --node-handle-color: var(--gray-600);
-  --node-handle-secondary-color: var(--gray-200);
+  --color-node-handle: var(--gray-600);
+  --color-secondary-node-handle: var(--gray-200);
 
-  --outline-color: var(--gray-400);
-  --secondary-outline-color: var(--gray-200);
+  --color-outline: var(--gray-400);
+  --color-secondary-outline: var(--gray-200);
 }
 
 /*------------GLOBAL APP STYLES------------*/
@@ -31,7 +31,7 @@ body {
   height: 100%;
 }
 body, input, textarea, button {
-  color: var(--text-color);
+  color: var(--color-text);
   font-size: 1rem;
   font-family: var(--font);
   font-weight: var(--weight-regular);
@@ -40,14 +40,14 @@ button {
   box-sizing: content-box;
   height: 48px;
   font-weight: var(--weight-bold);
-  border: 1px solid var(--outline-color);
+  border: 1px solid var(--color-outline);
   border-radius: var(--border-radius);
-  background-color: var(--background-color);
+  background-color: var(--color-background);
   cursor: pointer; 
   padding: 0 calc(var(--padding)*2);
 }
 button.primary {
-  color: var(--background-color);
+  color: var(--color-background);
   background-color: var(--primary-color);
   border: none;
 }
@@ -67,14 +67,14 @@ p {
 }
 
 ::placeholder {
-  color: var(--placeholder-text-color) !important;
+  color: var(--color-placeholder-text) !important;
   opacity: 1;
 }
 
 /*------------APP------------*/
 
 main {
-  background-color: var(--background-color);
+  background-color: var(--color-background);
 }
 /*to make theming easier*/
 .node-container textarea, .new-node input, .palette input {
@@ -83,12 +83,12 @@ main {
 
 /*------------SIDEBAR------------*/
 .sidebar {
-  background-color: var(--sidebar-background-color);
-  border-right: 1px solid var(--secondary-outline-color);
+  background-color: var(--color-sidebar-background);
+  border-right: 1px solid var(--color-secondary-outline);
 }
 .sidebar-topsection {
   padding: var(--padding);
-  border-bottom: 1px solid var(--secondary-outline-color);
+  border-bottom: 1px solid var(--color-secondary-outline);
 }
 /*TO DO: change logo to SVG and set color instead of opacity*/
 .sidebar-topsection > .logo {
@@ -100,7 +100,7 @@ main {
 }
 .sidebar-bottomsection {
   padding: var(--padding);
-  color: var(--secondary-icon-color);
+  color: var(--color-secondary-icon);
 }
 
 /*------------TOPBAR------------*/
@@ -108,7 +108,7 @@ main {
   padding: var(--padding) calc(var(--padding)*2);
   font-size: var(--text-small);
   font-weight: var(--weight-semibold);
-  border-bottom: 1px solid var(--secondary-outline-color);
+  border-bottom: 1px solid var(--color-secondary-outline);
   height: 56px;
 }
 .topbar > div > svg {
@@ -132,7 +132,7 @@ with their icon for Safari only*/
 
 /*------------PANELS------------*/
 .panels > div {
-  border-right: 1px solid var(--secondary-outline-color);
+  border-right: 1px solid var(--color-secondary-outline);
 }
 .panel {
   margin-top: var(--padding);
@@ -142,7 +142,7 @@ with their icon for Safari only*/
 }
 .panel > .bar {
   font-size: var(--text-small);
-  color: var(--secondary-text-color);
+  color: var(--color-secondary-text);
   gap: var(--padding);
   padding: 0 var(--padding);
   margin-bottom: calc(var(--padding)*1.5);
@@ -150,7 +150,7 @@ with their icon for Safari only*/
 .panel > .bar .panel-icons {
   gap: var(--4);
   z-index: 0;
-  color: var(--secondary-icon-color);
+  color: var(--color-secondary-icon);
 }
 .panel > .body {
   padding: 0 var(--padding);
@@ -188,10 +188,10 @@ with their icon for Safari only*/
   height: 1rem;
   margin-right: 0.5rem;
   padding-left: 1px;
-  color: var(--node-handle-color);
+  color: var(--color-node-handle);
 }
 .new-node svg circle {
-  fill: var(--node-handle-secondary-color);
+  fill: var(--color-secondary-node-handle);
 }
 .new-node input {
   border: 0px;
@@ -205,7 +205,7 @@ with their icon for Safari only*/
 }
 svg.node-menu {
   cursor: pointer;
-  color: var(--node-handle-color);
+  color: var(--color-node-handle);
   width: 1rem;
   height: 1rem;
   margin-left: -1rem;
@@ -219,10 +219,10 @@ svg.node-menu {
   margin-right: var(--2);
   padding-left: 1px;
   margin-top: var(--1);
-  color: var(--node-handle-color);
+  color: var(--color-node-handle);
 }
 svg.node-bullet circle#node-collapsed-handle {
-  fill: var(--node-handle-secondary-color);
+  fill: var(--color-secondary-node-handle);
 }
 
 /*------------TABLE VIEW------------*/
@@ -253,9 +253,9 @@ svg.node-bullet circle#node-collapsed-handle {
   position: absolute;
 }
 .search.active > div {
-  border: 1px solid var(--outline-color);
+  border: 1px solid var(--color-outline);
   border-radius: var(--border-radius);
-  background: var(--background-color);
+  background: var(--color-background);
   z-index: var(--layer-top);
 }
 .search .results {
@@ -274,7 +274,7 @@ svg.node-bullet circle#node-collapsed-handle {
 }
 
 .palette .selected, .search .selected, .menu li:not(.disabled):hover {
-  background: var(--highlight-color);
+  background: var(--color-highlight);
   border-radius: var(--border-radius);
 }
 
@@ -283,7 +283,7 @@ svg.node-bullet circle#node-collapsed-handle {
   border-radius: var(--border-radius);
   width: 40rem;
   padding: calc(var(--padding)*2);
-  background-color: var(--background-color);
+  background-color: var(--color-background);
 }
 .notice h3 {
   margin-bottom: calc(var(--padding)*1.5);
@@ -301,10 +301,10 @@ svg.node-bullet circle#node-collapsed-handle {
 
 /*------------MENU------------*/
 .menu {
-  border: 1px solid var(--outline-color);
+  border: 1px solid var(--color-outline);
   border-radius: var(--border-radius);
   padding: calc(var(--padding)/4);
-  background-color: var(--background-color);
+  background-color: var(--color-background);
   font-size: var(--text-small);
   min-width: 200px;
   z-index: var(--layer-2);
@@ -315,7 +315,7 @@ svg.node-bullet circle#node-collapsed-handle {
   margin: 0px;
 }
 .menu li .keybindings {
-  color: var(--secondary-text-color);
+  color: var(--color-secondary-text);
   margin-left: var(--4);
 }
 .menu li:not(.disabled):hover {
@@ -329,12 +329,12 @@ svg.node-bullet circle#node-collapsed-handle {
 /*------------PALETTE------------*/
 .palette {
   margin: 0;
-  border: 1px solid var(--outline-color);
+  border: 1px solid var(--color-outline);
   border-radius: var(--border-radius);
   padding: var(--padding);
   min-width: 400px;
   z-index: var(--layer-2);
-  background: var(--background-color);
+  background: var(--color-background);
 }
 .palette, .palette input {
   font-size: var(--text-small);
