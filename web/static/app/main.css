@@ -1,8 +1,37 @@
 @import url(../style/design.css);
 
 :root {
-  --padding: 1rem;
+
+  --primary-color: var(--primary);
+  --background-color: var(--white);
+  --text-color: var(--black);
+  --sidebar-background-color: var(--gray-100);
+  --secondary-icon-color: var(--gray-600);
+  --placeholder-text-color: var(--gray-400);
+  --secondary-text-color: var(--gray-600);
+  --highlight-color: var(--gray-200);
+  --node-handle-color: var(--gray-600);
+  --node-handle-secondary-color: var(--gray-200);
+  --outline-color: var(--gray-400);
+  --secondary-outline-color: var(--gray-200);
+
   --font: 'Figtree', sans-serif;
+  --font-nav-label: var(--);
+  --font-small-text: var(--);
+  --font-header-text: var(--);
+
+  --primary-color: red;
+  --background-color: orange;
+  --text-color: yellow;
+  --sidebar-background-color: green;
+  --secondary-icon-color: violet;
+  --placeholder-text-color: pink;
+  --secondary-text-color: magenta;
+  --highlight-color: brown;
+  --node-handle-color: lightpurple;
+  --node-handle-secondary-color: coral;
+  --outline-color: crimson;
+  --secondary-outline-color: lightblue;
 }
 
 /*------------GLOBAL APP STYLES------------*/
@@ -11,10 +40,9 @@ body {
   zoom: 1;
   margin: 0;
   height: 100%;
-  background: var(--gray-100);
 }
 body, input, textarea, button {
-  color: var(--black);
+  color: var(--text-color);
   font-size: 1rem;
   font-family: var(--font);
   font-weight: var(--weight-regular);
@@ -23,15 +51,15 @@ button {
   box-sizing: content-box;
   height: 48px;
   font-weight: var(--weight-bold);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--outline-color);
   border-radius: var(--border-radius);
-  background-color: var(--white);
+  background-color: var(--background-color);
   cursor: pointer; 
   padding: 0 calc(var(--padding)*2);
 }
 button.primary {
-  color: var(--white);
-  background-color: var(--primary);
+  color: var(--background-color);
+  background-color: var(--primary-color);
   border: none;
 }
 p {
@@ -49,10 +77,15 @@ p {
   }
 }
 
+::placeholder {
+  color: var(--placeholder-text-color) !important;
+  opacity: 1;
+}
+
 /*------------APP------------*/
 
 main {
-  background-color: var(--white);
+  background-color: var(--background-color);
 }
 /*to make theming easier*/
 .node-container textarea, .new-node input, .palette input {
@@ -61,12 +94,12 @@ main {
 
 /*------------SIDEBAR------------*/
 .sidebar {
-  background-color: var(--gray-100);
-  border-right: 1px solid var(--border-color-light);
+  background-color: var(--sidebar-background-color);
+  border-right: 1px solid var(--secondary-outline-color);
 }
 .sidebar-topsection {
   padding: var(--padding);
-  border-bottom: 1px solid var(--border-color-light);
+  border-bottom: 1px solid var(--secondary-outline-color);
 }
 /*TO DO: change logo to SVG and set color instead of opacity*/
 .sidebar-topsection > .logo {
@@ -78,7 +111,7 @@ main {
 }
 .sidebar-bottomsection {
   padding: var(--padding);
-  color: var(--gray-500);
+  color: var(--secondary-icon-color);
 }
 
 /*------------TOPBAR------------*/
@@ -86,7 +119,7 @@ main {
   padding: var(--padding) calc(var(--padding)*2);
   font-size: var(--text-small);
   font-weight: var(--weight-semibold);
-  border-bottom: 1px solid var(--border-color-light);
+  border-bottom: 1px solid var(--secondary-outline-color);
   height: 56px;
 }
 .topbar > div > svg {
@@ -110,7 +143,7 @@ with their icon for Safari only*/
 
 /*------------PANELS------------*/
 .panels > div {
-  border-right: 1px solid var(--border-color-light);
+  border-right: 1px solid var(--secondary-outline-color);
 }
 .panel {
   margin-top: var(--padding);
@@ -120,7 +153,7 @@ with their icon for Safari only*/
 }
 .panel > .bar {
   font-size: var(--text-small);
-  color: var(--gray-600);
+  color: var(--secondary-text-color);
   gap: var(--padding);
   padding: 0 var(--padding);
   margin-bottom: calc(var(--padding)*1.5);
@@ -128,7 +161,7 @@ with their icon for Safari only*/
 .panel > .bar .panel-icons {
   gap: var(--4);
   z-index: 0;
-  color: var(--gray-500);
+  color: var(--secondary-icon-color);
 }
 .panel > .body {
   padding: 0 var(--padding);
@@ -166,10 +199,10 @@ with their icon for Safari only*/
   height: 1rem;
   margin-right: 0.5rem;
   padding-left: 1px;
-  color: var(--node-icon-color);
+  color: var(--node-handle-color);
 }
 .new-node svg circle {
-  fill: var(--node-icon-accent-color);
+  fill: var(--node-handle-secondary-color);
 }
 .new-node input {
   border: 0px;
@@ -183,7 +216,7 @@ with their icon for Safari only*/
 }
 svg.node-menu {
   cursor: pointer;
-  fill: var(--node-icon-color);
+  fill: var(--node-handle-color);
   width: 1rem;
   height: 1rem;
   margin-left: -1rem;
@@ -197,10 +230,10 @@ svg.node-menu {
   margin-right: var(--2);
   padding-left: 1px;
   margin-top: var(--1);
-  color: var(--node-icon-color);
+  color: var(--node-handle-color);
 }
 svg.node-bullet circle#node-collapsed-handle {
-  fill: var(--node-icon-accent-color);
+  fill: var(--node-handle-secondary-color);
 }
 
 /*------------TABLE VIEW------------*/
@@ -231,9 +264,9 @@ svg.node-bullet circle#node-collapsed-handle {
   position: absolute;
 }
 .search.active > div {
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--outline-color);
   border-radius: var(--border-radius);
-  background: var(--white);
+  background: var(--background-color);
   z-index: var(--layer-top);
 }
 .search .results {
@@ -251,9 +284,8 @@ svg.node-bullet circle#node-collapsed-handle {
   font-size: var(--text-small);
 }
 
-/*todo: combine common styles for palette/search*/
 .palette .selected, .search .selected, .menu li:not(.disabled):hover {
-  background: var(--gray-200);
+  background: var(--highlight-color);
   border-radius: var(--border-radius);
 }
 
@@ -262,7 +294,7 @@ svg.node-bullet circle#node-collapsed-handle {
   border-radius: var(--border-radius);
   width: 40rem;
   padding: calc(var(--padding)*2);
-  background-color: var(--white);
+  background-color: var(--background-color);
 }
 .notice h3 {
   margin-bottom: calc(var(--padding)*1.5);
@@ -280,10 +312,10 @@ svg.node-bullet circle#node-collapsed-handle {
 
 /*------------MENU------------*/
 .menu {
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--outline-color);
   border-radius: var(--border-radius);
   padding: calc(var(--padding)/4);
-  background-color: var(--white);
+  background-color: var(--background-color);
   font-size: var(--text-small);
   min-width: 200px;
   z-index: var(--layer-2);
@@ -294,7 +326,7 @@ svg.node-bullet circle#node-collapsed-handle {
   margin: 0px;
 }
 .menu li .keybindings {
-  color: var(--gray-500);
+  color: var(--secondary-text-color);
   margin-left: var(--4);
 }
 .menu li:not(.disabled):hover {
@@ -308,12 +340,12 @@ svg.node-bullet circle#node-collapsed-handle {
 /*------------PALETTE------------*/
 .palette {
   margin: 0;
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--outline-color);
   border-radius: var(--border-radius);
   padding: var(--padding);
   min-width: 400px;
   z-index: var(--layer-2);
-  background: var(--white);
+  background: var(--background-color);
 }
 .palette, .palette input {
   font-size: var(--text-small);
@@ -401,16 +433,3 @@ the top nav in a more elegant way at some point*/
 
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
