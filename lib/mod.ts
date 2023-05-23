@@ -75,6 +75,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const search = new SearchNode();
       ctx.node.addComponent(search);
       workbench.workspace.setExpanded(ctx.path.head, ctx.node, true);
+      workbench.focus(ctx.path);
     }
   });
 
