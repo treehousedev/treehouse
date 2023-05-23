@@ -6,21 +6,24 @@
   --color-primary: var(--primary);
 
   --color-background: var(--white);
-  --color-sidebar-background: var(--gray-100);
+  --color-background-sidebar: var(--gray-100);
 
-  --color-secondary-icon: var(--gray-600);
+  --color-icon: var(--black);
+  --color-icon-secondary: var(--gray-600);
+
+  --color-nav-label: var(--black);
 
   --color-text: var(--black);
-  --color-placeholder-text: var(--gray-400);
-  --color-secondary-text: var(--gray-600);
+  --color-text-placeholder: var(--gray-400);
+  --color-text-secondary: var(--gray-600);
 
   --color-highlight: var(--gray-200);
 
   --color-node-handle: var(--gray-600);
-  --color-secondary-node-handle: var(--gray-200);
+  --color-node-handle-secondary: var(--gray-200);
 
   --color-outline: var(--gray-400);
-  --color-secondary-outline: var(--gray-200);
+  --color-outline-secondary: var(--gray-200);
 }
 
 /*------------GLOBAL APP STYLES------------*/
@@ -67,7 +70,7 @@ p {
 }
 
 ::placeholder {
-  color: var(--color-placeholder-text) !important;
+  color: var(--color-text-placeholder) !important;
   opacity: 1;
 }
 
@@ -83,12 +86,12 @@ main {
 
 /*------------SIDEBAR------------*/
 .sidebar {
-  background-color: var(--color-sidebar-background);
-  border-right: 1px solid var(--color-secondary-outline);
+  background-color: var(--color-background-sidebar);
+  border-right: 1px solid var(--color-outline-secondary);
 }
 .sidebar-topsection {
   padding: var(--padding);
-  border-bottom: 1px solid var(--color-secondary-outline);
+  border-bottom: 1px solid var(--color-outline-secondary);
 }
 /*TO DO: change logo to SVG and set color instead of opacity*/
 .sidebar-topsection > .logo {
@@ -97,10 +100,14 @@ main {
 .sidebar-maincontent {
   padding: var(--padding);
   font-weight: var(--weight-semibold);
+  color: var(--color-nav-label);
+}
+.sidebar-maincontent svg {
+  color: var(--color-icon);
 }
 .sidebar-bottomsection {
   padding: var(--padding);
-  color: var(--color-secondary-icon);
+  color: var(--color-icon-secondary);
 }
 
 /*------------TOPBAR------------*/
@@ -108,7 +115,7 @@ main {
   padding: var(--padding) calc(var(--padding)*2);
   font-size: var(--text-small);
   font-weight: var(--weight-semibold);
-  border-bottom: 1px solid var(--color-secondary-outline);
+  border-bottom: 1px solid var(--color-outline-secondary);
   height: 56px;
 }
 .topbar > div > svg {
@@ -117,6 +124,10 @@ main {
 .topbar-item {
   display: flex;
   align-items: center;
+  color: var(--color-nav-label);
+}
+.topbar-item svg, .search svg, div[data-menu="settings"] {
+  color: var(--color-icon);
 }
 .topbar-item > div {
   margin-bottom: -1px;
@@ -132,7 +143,7 @@ with their icon for Safari only*/
 
 /*------------PANELS------------*/
 .panels > div {
-  border-right: 1px solid var(--color-secondary-outline);
+  border-right: 1px solid var(--color-outline-secondary);
 }
 .panel {
   margin-top: var(--padding);
@@ -142,7 +153,7 @@ with their icon for Safari only*/
 }
 .panel > .bar {
   font-size: var(--text-small);
-  color: var(--color-secondary-text);
+  color: var(--color-text-secondary);
   gap: var(--padding);
   padding: 0 var(--padding);
   margin-bottom: calc(var(--padding)*1.5);
@@ -150,7 +161,7 @@ with their icon for Safari only*/
 .panel > .bar .panel-icons {
   gap: var(--4);
   z-index: 0;
-  color: var(--color-secondary-icon);
+  color: var(--color-icon-secondary);
 }
 .panel > .body {
   padding: 0 var(--padding);
@@ -191,7 +202,7 @@ with their icon for Safari only*/
   color: var(--color-node-handle);
 }
 .new-node svg circle {
-  fill: var(--color-secondary-node-handle);
+  fill: var(--color-node-handle-secondary);
 }
 .new-node input {
   border: 0px;
@@ -222,7 +233,7 @@ svg.node-menu {
   color: var(--color-node-handle);
 }
 svg.node-bullet circle#node-collapsed-handle {
-  fill: var(--color-secondary-node-handle);
+  fill: var(--color-node-handle-secondary);
 }
 
 /*------------TABLE VIEW------------*/
@@ -315,7 +326,7 @@ svg.node-bullet circle#node-collapsed-handle {
   margin: 0px;
 }
 .menu li .keybindings {
-  color: var(--color-secondary-text);
+  color: var(--color-icon-secondary);
   margin-left: var(--4);
 }
 .menu li:not(.disabled):hover {
