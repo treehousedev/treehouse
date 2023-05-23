@@ -20,7 +20,7 @@ export const CommandPalette: m.Component = {
     const cmds = Object.values(workbench.commands.commands);
     const filtered = cmds.filter(cmd => {
       const value = cmd.title || cmd.id;
-      return value.toLowerCase().startsWith(state.filter.toLowerCase());
+      return value.toLowerCase().includes(state.filter.toLowerCase());
     })
     const onkeydown = (e) => {
       const mod = (a, b) => ((a % b) + b) % b;
