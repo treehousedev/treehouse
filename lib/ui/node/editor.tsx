@@ -1,7 +1,7 @@
 import { objectCall, objectHas } from "../../model/hooks.ts";
 
 export const NodeEditor: m.Component = {
-  view ({attrs: {workbench, path, onkeydown, disallowEmpty, editValue}, state}) {
+  view ({attrs: {workbench, path, onkeydown, disallowEmpty, editValue, placeholder}, state}) {
     const node = path.node;
     let prop = (editValue) ? "value" : "name";
     
@@ -32,7 +32,6 @@ export const NodeEditor: m.Component = {
       }
     }
 
-    let placeholder;
     if (node.raw.Rel === "Fields") {
       placeholder = (editValue) ? "Value" : "Field";
     }

@@ -38,7 +38,8 @@ export const OutlineNode: m.Component<Attrs, State> = {
       node = handleNode.refTo;
     }
 
-    const expanded = workbench.workspace.getExpanded(path.head, handleNode); 
+    const expanded = workbench.workspace.getExpanded(path.head, handleNode);
+    const placeholder = objectHas(node, "handlePlaceholder") ? objectCall(node, "handlePlaceholder") : '';
 
     const hover = (e) => {
       state.hover = true;
@@ -155,7 +156,8 @@ export const OutlineNode: m.Component<Attrs, State> = {
       if (node.id === workbench.context?.node?.id || state.hover) {
         return true;
       }
-      return node.name.length > 0;
+      if (node.name.length > 0) return true;
+      if (placeholder.length > 0) return true;
     }
 
     return (
@@ -187,7 +189,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
               </div>
             : <div class="flex grow items-start flex-row">
                 {objectHas(node, "beforeEditor") && m(objectCall(node, "beforeEditor"), {node})}
-                <NodeEditor workbench={workbench} path={path} onkeydown={checkCommands} />
+                <NodeEditor workbench={workbench} path={path} onkeydown={checkCommands} placeholder={placeholder} />
                 {objectHas(node, "afterEditor") && m(objectCall(node, "afterEditor"), {node})}
               </div>
           }
