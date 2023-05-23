@@ -8,7 +8,10 @@
   --color-background: var(--white);
   --color-sidebar-background: var(--gray-100);
 
+  --color-icon: var(--black);
   --color-secondary-icon: var(--gray-600);
+
+  --color-nav-label: var(--black);
 
   --color-text: var(--black);
   --color-placeholder-text: var(--gray-400);
@@ -97,6 +100,10 @@ main {
 .sidebar-maincontent {
   padding: var(--padding);
   font-weight: var(--weight-semibold);
+  color: var(--color-nav-label);
+}
+.sidebar-maincontent svg {
+  color: var(--color-icon);
 }
 .sidebar-bottomsection {
   padding: var(--padding);
@@ -117,6 +124,10 @@ main {
 .topbar-item {
   display: flex;
   align-items: center;
+  color: var(--color-nav-label);
+}
+.topbar-item svg, .search svg, div[data-menu="settings"] {
+  color: var(--color-icon);
 }
 .topbar-item > div {
   margin-bottom: -1px;
@@ -315,7 +326,7 @@ svg.node-bullet circle#node-collapsed-handle {
   margin: 0px;
 }
 .menu li .keybindings {
-  color: var(--color-secondary-text);
+  color: var(--color-secondary-icon);
   margin-left: var(--4);
 }
 .menu li:not(.disabled):hover {
