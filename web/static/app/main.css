@@ -333,7 +333,7 @@ svg.node-bullet circle#node-collapsed-handle {
   cursor: pointer;
 }
 .menu li.disabled {
-  color: #bbb;
+  color: var(--color-text-placeholder);
   cursor: pointer;
 }
 
