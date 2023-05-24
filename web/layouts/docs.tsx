@@ -22,6 +22,7 @@ export default {view: ({attrs, children}) => m(layout, Object.assign({
         <li><a href="/docs/user#calendar">Calendar</a></li>
         <li><a href="/docs/user#command-palette">Command Palette</a></li>
         <li><a href="/docs/user#keyboard-shortcuts">Keyboard Shortcuts</a></li>
+        <li><a href="/docs/user#css-theming">CSS Theming</a></li>
         <li><a href="/docs/user#backend-extensions">Backend Extensions</a></li>
       </ul>
       <h5><a href="/docs/dev">Developer Guide</a></h5>
