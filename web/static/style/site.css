@@ -94,6 +94,15 @@ body > section.hero .dropshadow {
     background-size: 50px 50px;
 }
 
+table {
+  border-collapse: collapse;
+}
+th, td {
+  border: 1px solid var(--gray-400);
+  padding: calc(var(--padding)/2);
+  font-size: var(--text-small);
+}
+
 /*------------ARTICLE------------*/
 /*used for blog posts and documentation*/
 
