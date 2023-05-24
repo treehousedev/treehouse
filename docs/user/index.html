@@ -44,6 +44,7 @@
             <li><a href="/docs/user#calendar">Calendar</a></li>
             <li><a href="/docs/user#command-palette">Command Palette</a></li>
             <li><a href="/docs/user#keyboard-shortcuts">Keyboard Shortcuts</a></li>
+            <li><a href="/docs/user#css-theming">CSS Theming</a></li>
             <li><a href="/docs/user#backend-extensions">Backend Extensions</a></li>
           </ul>
           <h5><a href="/docs/dev">Developer Guide</a></h5>
@@ -118,43 +119,149 @@
           <h2 id="command-palette">Command Palette</h2>
           <p>With a node selected, open the command palette (⌘ K) to view all the available actions for that node.</p>
           <h2 id="keyboard-shortcuts">Keyboard shortcuts</h2>
-          <table border="1" cellpadding="8">
-            <tbody>
-              <tr>
-                <td>indent</td>
-                <td>↹</td>
-              </tr>
-              <tr>
-                <td>outdent</td>
-                <td>⇧ ↹</td>
-              </tr>
-              <tr>
-                <td>move node up</td>
-                <td>⇧ ⌘ ↑</td>
-              </tr>
-              <tr>
-                <td>move node down</td>
-                <td>⇧ ⌘ ↓</td>
-              </tr>
-              <tr>
-                <td>delete node</td>
-                <td>⇧ ⌘ ⌫</td>
-              </tr>
-              <tr>
-                <td>add or remove checkbox</td>
-                <td>⌘ ↵</td>
-              </tr>
-              <tr>
-                <td>mark checkbox as done</td>
-                <td>⌘ ↵</td>
-              </tr>
-              <tr>
-                <td>open command palette</td>
-                <td>⌘ K</td>
-              </tr>
-            </tbody>
+          <table>
+            <tr>
+              <td>indent</td>
+              <td>↹</td>
+            </tr>
+            <tr>
+              <td>outdent</td>
+              <td>⇧ ↹</td>
+            </tr>
+            <tr>
+              <td>move node up</td>
+              <td>⇧ ⌘ ↑</td>
+            </tr>
+            <tr>
+              <td>move node down</td>
+              <td>⇧ ⌘ ↓</td>
+            </tr>
+            <tr>
+              <td>delete node</td>
+              <td>⇧ ⌘ ⌫</td>
+            </tr>
+            <tr>
+              <td>add or remove checkbox</td>
+              <td>⌘ ↵</td>
+            </tr>
+            <tr>
+              <td>mark checkbox as done</td>
+              <td>⌘ ↵</td>
+            </tr>
+            <tr>
+              <td>open command palette</td>
+              <td>⌘ K</td>
+            </tr>
           </table>
 
+          <h2 id="css-theming">CSS Theming</h2>
+          <p>You can create your own custom theme for Treehouse using our built-in variables a.k.a. custom properties.</p>
+          <h3 id="create-a-theme">Create a theme</h3>
+
+          <ol>
+            <li>Add a top level folder called &quot;ext&quot; to your treehouse.sh repository</li>
+            <li>Create a CSS file inside the ext folder</li>
+            <li>Use the format below to populate the variables with hex code values. <em>Tip: Create color variables inside the root block to reuse color styles between custom properties.</em></li>
+          </ol>
+
+          <pre><code class="lang-css"><div><div class="shj-numbers"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div><div><span class="shj-syn-var">:root</span> {
+  --<span class="shj-syn-var">font</span>: <span class="shj-syn-str">'Font name'</span>;
+
+  --<span class="shj-syn-var">color-primary</span>: #<span class="shj-syn-num">hex</span>;
+
+  --<span class="shj-syn-var">color-background</span>: #<span class="shj-syn-num">hex</span>;
+  --<span class="shj-syn-var">color-background-sidebar</span>: #<span class="shj-syn-num">hex</span>;
+
+  --<span class="shj-syn-var">color-icon</span>: #<span class="shj-syn-num">hex</span>;
+  --<span class="shj-syn-var">color-icon-secondary</span>: #<span class="shj-syn-num">hex</span>;
+
+  --<span class="shj-syn-var">color-nav-label</span>: #<span class="shj-syn-num">hex</span>;
+
+  --<span class="shj-syn-var">color-text</span>: #<span class="shj-syn-num">hex</span>;
+  --<span class="shj-syn-var">color-text-placeholder</span>: #<span class="shj-syn-num">hex</span>;
+  --<span class="shj-syn-var">color-text-secondary</span>: #<span class="shj-syn-num">hex</span>;
+
+  --<span class="shj-syn-var">color-highlight</span>: #<span class="shj-syn-num">hex</span>;
+
+  --<span class="shj-syn-var">color-node-handle</span>: #<span class="shj-syn-num">hex</span>;
+  --<span class="shj-syn-var">color-node-handle-secondary</span>: #<span class="shj-syn-num">hex</span>;
+
+  --<span class="shj-syn-var">color-outline</span>: #<span class="shj-syn-num">hex</span>;
+  --<span class="shj-syn-var">color-outline-secondary</span>: #<span class="shj-syn-num">hex</span>;
+}</div></div>
+</code></pre>
+          <h3 id="managing-multiple-css-files">Managing multiple CSS files</h3>
+          <p>If you have multiple CSS files you want to swap between, append &quot;.disabled&quot; to the end of the unused CSS filename(s).</p>
+          <h3 id="variable-reference">Variable Reference</h3>
+          <table>
+            <tr>
+              <th>Variable</th>
+              <th>Description</th>
+            </tr>
+            <tr>
+              <td>--font</td>
+              <td>Global font definition. Change the font itself but not sizes or styles with this.</td>
+            </tr>
+            <tr>
+              <td>--color-primary</td>
+              <td>Background color of primary button</td>
+            </tr>
+            <tr>
+              <td>--color-background</td>
+              <td>Background color of main panels, menus, and modals</td>
+            </tr>
+            <tr>
+              <td>--color-background-sidebar</td>
+              <td>Background color of sidebar navigation</td>
+            </tr>
+            <tr>
+              <td>--color-icon</td>
+              <td>High contrast color used for primary icons. For example: icons in the top navigation</td>
+            </tr>
+            <tr>
+              <td>--color-icon-secondary</td>
+              <td>Low-contrast color used for secondary icons</td>
+            </tr>
+            <tr>
+              <td>--color-nav-label</td>
+              <td>Used for top and sidebar navigation labels</td>
+            </tr>
+            <tr>
+              <td>--color-text</td>
+              <td>Default text color used for body text, navigation, and primary icons</td>
+            </tr>
+            <tr>
+              <td>--color-text-placeholder</td>
+              <td>Lower-contrast color used for placeholder text in inputs</td>
+            </tr>
+            <tr>
+              <td>--color-text-secondary</td>
+              <td>Lower-contrast color used for secondary text</td>
+            </tr>
+            <tr>
+              <td>--color-highlight</td>
+              <td>Lowest-contrast color to subtly highlight selected item in the menu, search, and command palette</td>
+            </tr>
+            <tr>
+              <td>--color-node-handle</td>
+              <td>Bullet color for nodes (a.k.a. the node handle)</td>
+            </tr>
+            <tr>
+              <td>--color-node-handle-secondary</td>
+              <td>Lower-contrast accent color on node handles. For instance, the outer filled circle on a node indicating collapsed children.</td>
+            </tr>
+            <tr>
+              <td>--color-outline</td>
+              <td>High contrast border color on pop-over containers like modals and menus.</td>
+            </tr>
+            <tr>
+              <td>--color-outline-secondary</td>
+              <td>Lower contrast border color where less extreme contrast is needed, such as the divider between panels and the navigation.</td>
+            </tr>
+          </table>
+
+          <h3 id="fonts">Fonts</h3>
+          <p>To use a non-system font, you may import a font into your CSS file using either the @import method or the @font-face method.</p>
           <h2 id="backend-extensions">Backend Extensions</h2>
           <p>Backends can change or extend how a Treehouse application behaves and are exposed to the frontend via adapters.</p>
           <h3 id="workspace-storage">Workspace Storage</h3>
