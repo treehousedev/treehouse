@@ -358,6 +358,9 @@ svg.node-bullet circle#node-collapsed-handle {
 .palette .commands > div, .palette input {
   padding: calc(var(--padding)/2);
 }
+.palette .commands .keybindings {
+  color: var(--color-icon-secondary);
+}
 
 /*------------LOADING ANIMATION------------*/
 .lds-ripple {
