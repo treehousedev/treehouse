@@ -72,6 +72,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Create Search Node",
     action: (ctx: Context) => {
       if (!ctx.node) return;
+      if (ctx.node.childCount > 0) return;
       const search = new SearchNode();
       ctx.node.addComponent(search);
       workbench.workspace.setExpanded(ctx.path.head, ctx.node, true);
