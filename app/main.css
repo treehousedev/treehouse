@@ -89,23 +89,25 @@ main {
   background-color: var(--color-background-sidebar);
   border-right: 1px solid var(--color-outline-secondary);
 }
-.sidebar-topsection {
+.sidebar-top {
   padding: var(--padding);
   border-bottom: 1px solid var(--color-outline-secondary);
 }
 /*TO DO: change logo to SVG and set color instead of opacity*/
-.sidebar-topsection > .logo {
-  opacity: 40%;
+.sidebar-top > .logo {
+/*  height: 20px;
+  width: 20px;*/
+  color: var(--color-icon-secondary);
 }
-.sidebar-maincontent {
+.sidebar-main {
   padding: var(--padding);
   font-weight: var(--weight-semibold);
   color: var(--color-nav-label);
 }
-.sidebar-maincontent svg {
+.sidebar-main svg {
   color: var(--color-icon);
 }
-.sidebar-bottomsection {
+.sidebar-bottom {
   padding: var(--padding);
   color: var(--color-icon-secondary);
 }
@@ -427,7 +429,7 @@ svg.node-bullet circle#node-collapsed-handle {
 /*todo: this padding needs to stay to same as desktop 
 for alignment purposes. should probably center
 the top nav in a more elegant way at some point*/
-  .sidebar-topsection, .topbar {
+  .sidebar-top, .topbar {
     padding: calc(var(--padding)*2);
   }
  
