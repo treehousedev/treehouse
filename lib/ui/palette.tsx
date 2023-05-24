@@ -1,3 +1,4 @@
+import { bindingSymbols } from "../action/keybinds.ts";
 
 export const CommandPalette: m.Component = {
   onupdate({ state, dom }) {
@@ -55,6 +56,10 @@ export const CommandPalette: m.Component = {
       state.filter = e.target.value;
       state.selected = 0;
     }
+    const getBindingSymbols = (cmd) => {
+      const binding = workbench.keybindings.getBinding(cmd.id);
+      return binding ? bindingSymbols(binding.key).join(" ").toUpperCase() : "";
+    }
     return (
       <div class="palette" style={{
         position: "absolute",
@@ -66,7 +71,12 @@ export const CommandPalette: m.Component = {
           overflowY: "scroll",
           position: "relative"
         }}>
-          {filtered.map((cmd, idx) => <div class={(state.selected === idx) ? "selected" : ""} onclick={() => onclick(cmd)}>{cmd.title || cmd.id}</div>)}
+          {filtered.map((cmd, idx) => (
+            <div class={(state.selected === idx) ? "selected" : ""} onclick={() => onclick(cmd)} style={{ display: "flex" }}>
+              <div>{cmd.title || cmd.id}</div>
+              <div class="keybindings grow text-right">{getBindingSymbols(cmd)}</div>
+            </div>
+          ))}
         </div>
       </div>
     )
