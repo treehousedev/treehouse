@@ -17,7 +17,7 @@ export default {
         <div class="children">
           {(node.childCount > 0)
             ?node.children.map(n => <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />)
-            :<NewNode workbench={workbench} path={path} />
+            :(node.getLinked("Fields").length === 0 && <NewNode workbench={workbench} path={path} />)
           }
         </div>
       </div>
