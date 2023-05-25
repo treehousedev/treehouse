@@ -390,7 +390,11 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (above) {
         let pos = 0;
         if (ctx.event && ctx.event.key === "Backspace") {
-          pos = above.node.name.length;
+          if (above.node.value) {
+            pos = above.node.value.length;
+          } else {
+            pos = above.node.name.length;
+          }
         }
         if (above.node.childCount === 0) {
           // TODO: use subCount
