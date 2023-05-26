@@ -82,9 +82,9 @@ export default page({title: "Treehouse"}, ({dev}) => (
       <h2 class="header">Simple note-taking out of the box</h2>
       <div class="flex flex-col gap-8 md:gap-16 md:flex-row">
         <div class="flex flex-col flex-1">
-          <img class="bg-gray-400 image h-64 mb-6 object-cover object-left" src="/photos/outline-image.png" />
-          <h3>Friendly Outliner</h3>
-          <p>Get started quickly with a familiar outliner.</p>
+          <img class="bg-gray-400 image h-64 mb-6 object-cover object-left" src="/photos/live-search.png" />
+          <h3>Fields and Live Search</h3>
+          <p>Add metadata, then create a custom search view.</p>
         </div>
 
         <div class="flex flex-col flex-1">
