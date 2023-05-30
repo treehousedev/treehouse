@@ -26,6 +26,8 @@ import { TextField } from "./com/textfield.tsx";
 import { Clock } from "./com/clock.tsx";
 import { objectManaged } from "./model/hooks.ts";
 
+import { LockStolenMessage } from "./ui/notices.tsx";
+
 export { BrowserBackend, SearchIndex_MiniSearch } from "./backend/browser.ts";
 export { GitHubBackend } from "./backend/github.ts";
 
@@ -510,6 +512,18 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       });
     }
   });
+  workbench.commands.registerCommand({
+    id: "toggle-dialog",
+    title: "Toggle Dialog",
+    action: (ctx: Context) => {
+      if (workbench.isDialogOpen()) {
+        workbench.closeDialog();
+      } else {
+        workbench.showDialog(m(LockStolenMessage, {workbench, finished: () => workbench.hideDialog()}), false);
+      }
+      
+    }
+  });
 
 
   workbench.menus.registerMenu("node", [
@@ -559,13 +573,6 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       e.stopPropagation();
       e.preventDefault();
       return;
-    }
-
-    // TODO: find a better way to do this?
-    if (e.key === "Escape") {
-      if (workbench.curtain && workbench.curtain.onclick) {
-        workbench.curtain.onclick(e);
-      }
     }
   });
 

@@ -13,19 +13,13 @@ export const Menu: m.Component = {
       if (cmd) {
         workbench.executeCommand(cmd.id, ctx);
       }
-      workbench.hideMenu();
+      workbench.closeDialog();
     };
-    let posStyle = {left: `${x}px`};
-    if (align === "right") {
-      posStyle = {right: `${x}px`};
-    }
     return (
-<ul class="menu" style={Object.assign(posStyle, {
+<ul class="menu" style={{
   margin: "0",
-  position: "absolute",
-  top: `${y}px`,
-  display: "inline-block",
-})}>
+  display: "inline-block"
+}}>
   {items.filter(i => !i.when || i.when()).map(i => {
     let title = "";
     let binding = undefined;

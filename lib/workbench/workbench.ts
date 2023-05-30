@@ -5,6 +5,11 @@ import { MenuRegistry } from "../action/menus.ts";
 import { Node } from "../model/mod.ts";
 import { objectHas, objectCall } from "../model/hooks.ts";
 
+import { Menu } from "../ui/menu.tsx";
+import { CommandPalette } from "../ui/palette.tsx";
+import { QuickAdd } from "../ui/quickadd.tsx";
+import { FirstTimeMessage, GitHubMessage, LockStolenMessage } from "../ui/notices.tsx";
+
 import { Workspace, Context, Path } from "./mod.ts";
 
 /**
@@ -26,10 +31,7 @@ export class Workbench {
   context: Context;
   panels: Path[];
 
-  menu: any;
-  notice: any;
-  palette: any;
-  quickadd: any;
+  dialog: any;
   curtain: any;
 
   constructor(backend: Backend) {
@@ -42,6 +44,8 @@ export class Workbench {
 
     this.context = {node: null};
     this.panels = [];
+
+    this.dialog = {body: () => null};
     
   }
 
@@ -75,11 +79,6 @@ export class Workbench {
     }
     
     m.redraw();
-
-    // todo: move this out to the demo
-    if (!localStorage.getItem("firsttime")) {
-      this.showNotice('firsttime');
-    }
     
   }
 
@@ -87,17 +86,12 @@ export class Workbench {
     return this.backend.auth && this.backend.auth.currentUser();
   }
 
-  closeQuickAdd() {
-    this.quickadd = null;
-    m.redraw();
-  }
-
   openQuickAdd() {
     let node = this.workspace.find("@quickadd");
     if (!node) {
       node = this.workspace.new("@quickadd");
     }
-    this.quickadd = node;
+    this.showDialog(() => m(QuickAdd, {workbench: this, node}), true);
   }
 
   commitQuickAdd() {
@@ -203,56 +197,56 @@ export class Workbench {
     const trigger = event.target.closest("*[data-menu]");
     const rect = trigger.getBoundingClientRect();
     const align = trigger.dataset["align"] || "left";
-    let x = document.body.scrollLeft+rect.x;
-    if (align === "right") {
-      x = document.body.offsetWidth - rect.right;
+    const pos = {
+      top: `${document.body.scrollTop+rect.y+rect.height}px`
     }
-    const y = document.body.scrollTop+rect.y+rect.height;
+    if (align === "right") {
+      pos.marginLeft = "auto";
+      pos.marginRight = `${document.body.offsetWidth - rect.right}px`;
+    } else {
+      pos.marginLeft = `${document.body.scrollLeft+rect.x}px`;
+      pos.marginRight = "auto";
+    }
     const items = this.menus.menus[trigger.dataset["menu"]];
     const cmds = items.filter(i => i.command).map(i => this.commands.commands[i.command]);
     if (!items) return;
-    this.menu = {x, y, 
+    this.showDialog(() => m(Menu, { 
+      workbench: this,
       ctx: this.newContext(ctx), 
       items: items,
       commands: cmds,
       align: align
-    };
-    this.curtain = {
-      visible: false,
-      onclick: () => this.hideMenu()
-    }
-    m.redraw();
-  }
-
-  hideMenu() {
-    this.menu = null;
-    this.curtain = null;
-    m.redraw();
+    }), false, pos);
   }
 
   showPalette(x: number, y: number, ctx: Context) {
-    this.palette = {x, y, ctx: ctx};
-    this.curtain = {
-      visible: false,
-      onclick: () => this.hidePalette()
-    }
-    m.redraw();
+    this.showDialog(() => m(CommandPalette, {workbench: this, ctx}), false, {left: `${x}px`, top: `${y}px`});
   }
 
-  hidePalette() {
-    this.palette = null;
-    this.curtain = null;
-    m.redraw();
+  showNotice(notice, finished) {
+    this.showDialog(() => m({
+      "firsttime": FirstTimeMessage,
+      "github": GitHubMessage,
+      "lockstolen": LockStolenMessage,
+    }[notice], {workbench: this, finished}), true);
   }
 
-  showNotice(message, finished) {
-    this.notice = {message, finished};
+  showDialog(body: any, backdrop?: boolean, pos?: {}) {
+    this.dialog = {body, backdrop, pos};
     m.redraw();
+    setTimeout(() => {
+      // this next frame timeout is so any current dialog can close before attempting
+      // to showModal on already open dialog, which causes exception.
+      document.querySelector("main > dialog").showModal();
+    }, 0);
   }
 
-  hideNotice() {
-    this.notice = null;
-    m.redraw();
+  isDialogOpen(): boolean {
+    return document.querySelector("main > dialog").hasAttribute("open");
+  }
+
+  closeDialog() {
+    document.querySelector("main > dialog").close();
   }
 
   search(query: string): Node[] {

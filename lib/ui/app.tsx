@@ -58,6 +58,7 @@ export const App: m.Component = {
           </div>
         </div>
         
+        {/* curtain is only used by search, but it will soon be ported to a dialog and we can remove this */}
         {workbench.curtain && 
           <div onclick={workbench.curtain.onclick} style={{
             zIndex: "10",
@@ -67,10 +68,24 @@ export const App: m.Component = {
             width: "100%",
             height: "100%"
           }}></div>}
-        {workbench.menu && <Menu workbench={workbench} {...workbench.menu} />}
-        {workbench.palette && <CommandPalette workbench={workbench} {...workbench.palette} />}
-        {workbench.quickadd && <QuickAdd workbench={workbench} />}
-        {workbench.notice && <Notice workbench={workbench} {...workbench.notice} />}
+        
+        <dialog 
+          class={(workbench.dialog.backdrop) ? "backdrop" : ""} 
+          style={(workbench.dialog.pos) ? {margin: "0", ...workbench.dialog.pos} : {top: "-50%"}}
+          onclick={e => {
+            const dialog = e.target.closest("dialog");
+            const dim = dialog.getBoundingClientRect();
+            if (
+              e.clientX < dim.left ||
+              e.clientX > dim.right ||
+              e.clientY < dim.top ||
+              e.clientY > dim.bottom
+            ) {
+              dialog.close();
+            }
+          }}>
+            {workbench.dialog.body()}
+        </dialog>
       </main>
     )
   }

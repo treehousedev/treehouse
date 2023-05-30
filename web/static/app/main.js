@@ -6,4 +6,8 @@ setup(document, document.body, {
   "github": new GitHubBackend(`${window.backend.url}?scope=repo`, Octokit)
 }[window.backend.name]);
 
-
+setTimeout(() => {
+  if (!localStorage.getItem("firsttime")) {
+    window.workbench.showNotice('firsttime');
+  }
+}, 2000)
