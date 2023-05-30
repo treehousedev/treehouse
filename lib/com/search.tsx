@@ -1,4 +1,4 @@
-import { SearchIndex } from "../backend/mod.ts";
+import { Workbench } from "../workbench/mod.ts";
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
 
@@ -12,7 +12,7 @@ function debounce(func, timeout = 1000){
 
 @component
 export class SearchNode {
-  index: SearchIndex;
+  workbench: Workbench;
   component?: Node;
   object?: Node;
   results?: Node[];
@@ -21,7 +21,7 @@ export class SearchNode {
   lastResultCount?: number;
 
   constructor() {
-    this.index = window.workbench.backend.index;
+    this.workbench = window.workbench;
     this.searchDebounce = debounce(this.search.bind(this));
   }
 
@@ -48,46 +48,12 @@ export class SearchNode {
   }
 
   search() {
-    console.log("searched");
     if (!this.object) return;
 
-    let query = this.object.name;
-    let splitQuery = query.split(/[ ]+/);
-    let textQuery = splitQuery.filter(term => !term.includes(":")).join(" ");
-    let fieldQuery = Object.fromEntries(splitQuery.filter(term => term.includes(":")).map(term => term.toLowerCase().split(":")));
-    if (!textQuery && Object.keys(fieldQuery).length > 0) {
-      // when text query is empty, no results will show up,
-      // but we index field names, so this works for now.
-      textQuery = Object.keys(fieldQuery)[0];
-    }
-    const results = this.index.search(textQuery)
-      .map(id => {
-        let node = window.workbench.workspace.find(id);
-        if (!node) {
-          return undefined;
-        }
-        // if component/field value, get the parent
-        if (node.value) {
-          node = node.parent;
-          // parent might not actually exist
-          if (!node.raw) return undefined;
-        }
-        // kludgy filter on fields
-        if (Object.keys(fieldQuery).length > 0) {
-          const fields = {};
-          for (const f of node.getLinked("Fields")) {
-            fields[f.name.toLowerCase()] = f.value.toLowerCase();
-          }
-          for (const f in fieldQuery) {
-            if (!fields[f] || fields[f] !== fieldQuery[f]) {
-              return undefined;
-            }
-          }
-        }
-        return node;
-      })
-      .filter(n => n !== undefined)
+    const query = this.object.name;
+    const results = this.workbench.search(query)
       .filter(n => n.id !== this.object.id && n.id !== this.component.id);
+    
     if (results.length !== this.lastResultCount || query !== this.lastQuery) {
       if (this.results) {
         // clean up old results
