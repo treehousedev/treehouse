@@ -88,6 +88,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
         if (e.target.value !== "" && e.target.selectionStart === 0 && e.target.selectionEnd === 0) {
           e.preventDefault();
           e.stopPropagation();
+          if (node.childCount > 0) {
+            return;
+          }
           
           // TODO: make this work as a command?
           const above = workbench.workspace.findAbove(path);
