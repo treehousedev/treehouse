@@ -74,6 +74,29 @@ Open the node you want to be in the righthand panel. From its menu, choose “Op
 
 You can close or expand either panel to return to a single panel view.
 
+## Fields
+
+A **field** is a node that can store structured information. Fields provide your data with structure, and allow for special search syntax (see [Live Search](#live-search)).
+
+### Create a field
+
+To add a field to a node:
+1. Indent underneath the node you want to contain the field, and type the field name
+2. Use Command/Control + K to open the command palette, and choose "Create field"
+3. Add your field value in the value section
+
+## Live Search
+
+Live Search allow you to create an auto-updating search of all the nodes in your workspace. Simply type your search term, or use the format "fieldname:valuename" to filter specifically by field values. The Live Search will update automatically as your node content changes. This is a simple but super powerful way to view your data in new configurations.
+
+To create a search node:
+1. Create a new node where you want your search node, and type your search value
+2. Use Command/Control + K to open the command palette, and choose "Create Search Node"
+
+### Tips for using Live Search
+* You can filter on multiple fieldname values (using AND, not OR) like so: "fieldname:valuename fieldname:valuename" etc.
+* Search terms are case-insensitive
+
 ## Calendar
 
 The Calendar is a default node that is automatically generated for every workspace. Nodes inside the calendar are grouped by date, week, then year.
