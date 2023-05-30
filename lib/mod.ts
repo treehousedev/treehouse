@@ -245,7 +245,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
         node.parent = parent.parent;
         path.push(node);
         node.siblingIndex = parent.siblingIndex + 1;
-        if (parent.childCount === 0) {
+        if (parent.childCount === 0 && parent.getLinked("Fields").length === 0) {
           workbench.workspace.setExpanded(ctx.path.head, parent, false);
         }
         m.redraw.sync();
