@@ -146,6 +146,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       if (!ctx.node) return;
       if (ctx.node.childCount > 0) return;
       if (ctx.node.componentCount > 0) return;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
       const path = ctx.path.clone();
       path.pop(); // drop node
       const field = workbench.workspace.new(ctx.node.name, "");
@@ -212,8 +213,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const node = ctx.node; // redraw seems to unset ctx.node
       const path = ctx.path.clone();
       let prev = node.prevSibling;
-      if (prev && objectManaged(prev)) {
+      while (prev && objectManaged(prev)) {
         prev = prev.prevSibling;
+        if (!prev) return;
       }
       if (prev !== null) {
         path.pop(); // drop node
@@ -233,6 +235,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       if (ctx.node.raw.Rel === "Fields") return;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
       const node = ctx.node; // redraw seems to unset ctx.node
       const parent = ctx.path.previous;
       const path = ctx.path.clone();
@@ -268,7 +271,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           p.pop(); // drop node
           p.pop(); // drop parent
           let parentSib = parent.prevSibling;
-          if (objectManaged(parentSib)) {
+          while (parentSib && objectManaged(parentSib)) {
             parentSib = parentSib.prevSibling;
             if (!parentSib) return;
           }
@@ -308,7 +311,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
           p.pop(); // drop node
           p.pop(); // drop parent
           let parentSib = parent.nextSibling;
-          if (objectManaged(parentSib)) {
+          while (parentSib && objectManaged(parentSib)) {
             parentSib = parentSib.nextSibling;
             if (!parentSib) return;
           }
@@ -351,6 +354,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Insert Before",
     action: (ctx: Context) => {
       if (!ctx.node) return;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
       const node = workbench.workspace.new("");
       node.parent = ctx.node.parent;
       node.siblingIndex = ctx.node.siblingIndex;
@@ -365,6 +369,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Insert Node",
     action: (ctx: Context, name: string = "") => {
       if (!ctx.node) return;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
       const node = workbench.workspace.new(name);
       node.parent = ctx.node.parent;
       node.siblingIndex = ctx.node.siblingIndex + 1;
@@ -381,6 +386,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       // TODO: prevent creating reference to reference
       if (!ctx.node) return;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
       const node = workbench.workspace.new("");
       node.parent = ctx.node.parent;
       node.siblingIndex = ctx.node.siblingIndex + 1;
@@ -397,6 +403,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       if (ctx.node.id.startsWith("@")) return;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return; // should probably provide feedback or disable delete
       const above = workbench.workspace.findAbove(ctx.path);
       ctx.node.destroy();
       m.redraw.sync();
