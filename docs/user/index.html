@@ -41,6 +41,8 @@
             <li><a href="/docs/user#what-is-treehouse-">What is Treehouse?</a></li>
             <li><a href="/docs/user#data-storage">Data Storage</a></li>
             <li><a href="/docs/user#nodes">Nodes</a></li>
+            <li><a href="/docs/user#fields">Fields</a></li>
+            <li><a href="/docs/user#live-search">Live Search</a></li>
             <li><a href="/docs/user#calendar">Calendar</a></li>
             <li><a href="/docs/user#command-palette">Command Palette</a></li>
             <li><a href="/docs/user#keyboard-shortcuts">Keyboard Shortcuts</a></li>
@@ -110,6 +112,30 @@
           <p>To view two nodes side-by-side:</p>
           <p>Open the node you want to be in the righthand panel. From its menu, choose “Open in New Panel”.</p>
           <p>You can close or expand either panel to return to a single panel view.</p>
+          <h2 id="fields">Fields</h2>
+          <p>A <strong>field</strong> is a node that can store structured information. Fields provide your data with structure, and allow for special search syntax (see <a href="#live-search">Live Search</a>).</p>
+          <h3 id="create-a-field">Create a field</h3>
+          <p>To add a field to a node:</p>
+
+          <ol>
+            <li>Indent underneath the node you want to contain the field, and type the field name</li>
+            <li>Use Command/Control + K to open the command palette, and choose &quot;Create field&quot;</li>
+            <li>Add your field value in the value section</li>
+          </ol>
+          <h2 id="live-search">Live Search</h2>
+          <p>Live Search allow you to create an auto-updating search of all the nodes in your workspace. Simply type your search term, or use the format &quot;fieldname:valuename&quot; to filter specifically by field values. The Live Search will update automatically as your node content changes. This is a simple but super powerful way to view your data in new configurations.</p>
+          <p>To create a search node:</p>
+
+          <ol>
+            <li>Create a new node where you want your search node, and type your search value</li>
+            <li>Use Command/Control + K to open the command palette, and choose &quot;Create Search Node&quot;</li>
+          </ol>
+          <h3 id="tips-for-using-live-search">Tips for using Live Search</h3>
+
+          <ul>
+            <li>You can filter on multiple fieldname values (using AND, not OR) like so: &quot;fieldname:valuename fieldname:valuename&quot; etc.</li>
+            <li>Search terms are case-insensitive</li>
+          </ul>
           <h2 id="calendar">Calendar</h2>
           <p>The Calendar is a default node that is automatically generated for every workspace. Nodes inside the calendar are grouped by date, week, then year.</p>
           <h3 id="today">Today</h3>

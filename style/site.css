@@ -122,7 +122,7 @@ article h1, article h2, article h3, article h4, article p {
   margin-bottom: var(--3);
 }
 article h2 {
-  margin-top: var(--10);
+  margin-top: var(--14);
 }
 article h3 {
   margin-top: var(--7);
