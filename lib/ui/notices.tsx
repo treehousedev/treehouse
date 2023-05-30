@@ -1,19 +1,19 @@
 
 export const LockStolenMessage = {
-  view({attrs: {workbench, finished}}) {
+  view() {
     return (
-      <div>
+      <form class="notice" method="dialog">
         <h3>Refresh to view latest updates</h3>
         <p>
           Your notes were updated in another browser session. Refresh the page to view the latest version.
         </p>
         <div class="button-bar">
           <button class="primary" onclick={() => {
-            finished();
+            location.reload()
           }}>Refresh Now</button>
           
         </div>
-      </div>
+      </form>
     )
   }
 }
@@ -21,7 +21,7 @@ export const LockStolenMessage = {
 export const FirstTimeMessage = {
   view({attrs: {workbench}}) {
     return (
-      <div>
+      <form class="notice" method="dialog">
         <h3>Treehouse is under active development</h3>
         <p>This is a preview based on our main branch, which is actively being developed.</p>
         <p>If you find a bug, please report it via 
@@ -38,11 +38,11 @@ export const FirstTimeMessage = {
         <div class="button-bar">
           <button class="primary" onclick={() => {
             localStorage.setItem("firsttime", "1");
-            workbench.hideNotice()
+            workbench.closeDialog();
           }}>Got it</button>
           
         </div>
-      </div>
+      </form>
     )
   }
 }
@@ -50,7 +50,7 @@ export const FirstTimeMessage = {
 export const GitHubMessage = {
   view({attrs: {workbench, finished}}) {
     return (
-      <div>
+      <form class="notice" method="dialog">
         <h3>Login with GitHub</h3>
         <p>The GitHub backend is experimental so use at your own risk!</p>
         <p>To store your workbench we will create a public repository called <pre style={{display: "inline"}}>&lt;username&gt;.treehouse.sh</pre> if it doesn't already exist. You can manually make this repository private via GitHub if you want.</p>
@@ -62,52 +62,15 @@ export const GitHubMessage = {
         </p>
         <div class="button-bar">
           <button onclick={() => {
-            workbench.hideNotice();
+            workbench.closeDialog();
           }}>Cancel</button>
           <button class="primary" onclick={() => {
-              workbench.hideNotice();
+              workbench.closeDialog();
               localStorage.setItem("github", "1");
               finished();
             }}>Log in with GitHub</button>
         </div>
-      </div>
-    )
-  }
-}
-
-export const Notice = {
-  view({attrs: {workbench, message, finished}}) {
-    return (
-      <div style={{
-        position: "absolute", 
-        left: "0", 
-        right: "0", 
-        top: "0", 
-        bottom: "0",
-      }}>
-        
-        <div style={{
-          position: "absolute",
-          background: "black",
-          opacity: "50%",
-          width: "100%",
-          height: "100%"
-        }}></div>
-        
-        <div class="notice" style={{
-          position: "relative",
-          marginLeft: "auto", 
-          marginRight: "auto",
-          filter: "drop-shadow(2px 2px 4px #5555)",
-          marginTop: "20vh", 
-        }}>
-          {m({
-            "firsttime": FirstTimeMessage,
-            "github": GitHubMessage,
-            "lockstolen": LockStolenMessage,
-          }[message], {workbench, finished})}
-        </div>
-      </div>
+      </form>
     )
   }
 }

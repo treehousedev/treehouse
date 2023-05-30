@@ -69,6 +69,23 @@ p {
   }
 }
 
+dialog {
+  filter: drop-shadow(2px 2px 4px #5555);
+  outline: none;
+  border: 1px solid var(--color-outline);
+  border-radius: var(--border-radius);
+  padding: 0;
+}
+dialog::backdrop {
+  background: rgba(0,0,0,0);
+}
+dialog.backdrop::backdrop {
+  background: rgba(0,0,0,0.25);
+}
+dialog > form {
+  padding: calc(2 * var(--padding));
+}
+
 ::placeholder {
   color: var(--color-text-placeholder) !important;
   opacity: 1;
@@ -293,9 +310,7 @@ svg.node-bullet circle#node-collapsed-handle {
 
 /*------------NOTICES------------*/
 .notice {
-  border-radius: var(--border-radius);
   width: 40rem;
-  padding: calc(var(--padding)*2);
   background-color: var(--color-background);
 }
 .notice h3 {
@@ -314,13 +329,10 @@ svg.node-bullet circle#node-collapsed-handle {
 
 /*------------MENU------------*/
 .menu {
-  border: 1px solid var(--color-outline);
-  border-radius: var(--border-radius);
   padding: calc(var(--padding)/4);
   background-color: var(--color-background);
   font-size: var(--text-small);
   min-width: 200px;
-  z-index: var(--layer-2);
 }
 .menu li {
   list-style-type: none;
@@ -341,12 +353,8 @@ svg.node-bullet circle#node-collapsed-handle {
 
 /*------------PALETTE------------*/
 .palette {
-  margin: 0;
-  border: 1px solid var(--color-outline);
-  border-radius: var(--border-radius);
   padding: var(--padding);
   min-width: 400px;
-  z-index: var(--layer-2);
   background: var(--color-background);
 }
 .palette, .palette input {
@@ -423,7 +431,7 @@ svg.node-bullet circle#node-collapsed-handle {
     --padding: var(--2);
   }
 
-  .notice {
+  dialog {
     width: 100vw;
   }
 /*todo: this padding needs to stay to same as desktop 

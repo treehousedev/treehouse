@@ -43,14 +43,14 @@ export const CommandPalette: m.Component = {
       if (e.key === "Enter") {
         if (state.selected !== undefined) {
           workbench.commands.executeCommand(filtered[state.selected].id, attrs.ctx);
-          workbench.hidePalette();
+          workbench.closeDialog();
         }
         return false;
       }
     }
     const onclick = (cmd) => {
       workbench.commands.executeCommand(cmd.id, attrs.ctx);
-      workbench.hidePalette();
+      workbench.closeDialog();
     }
     const autocomplete = (e) => {
       state.filter = e.target.value;
@@ -61,18 +61,14 @@ export const CommandPalette: m.Component = {
       return binding ? bindingSymbols(binding.key).join(" ").toUpperCase() : "";
     }
     return (
-      <div class="palette" style={{
-        position: "absolute",
-        left: `${attrs.x}px`,
-        top: `${attrs.y}px`
-      }}>
+      <div class="palette">
         <div><input style={{ width: "98%", outline: "0", border: "0" }} type="text" onkeydown={onkeydown} oninput={autocomplete} placeholder="Enter command..." /></div>
         <div class="commands" style={{
           overflowY: "scroll",
           position: "relative"
         }}>
           {filtered.map((cmd, idx) => (
-            <div class={(state.selected === idx) ? "selected" : ""} onclick={() => onclick(cmd)} style={{ display: "flex" }}>
+            <div class={(state.selected === idx) ? "selected" : ""} onclick={() => onclick(cmd)} style={{ display: "flex", cursor: "pointer" }}>
               <div>{cmd.title || cmd.id}</div>
               <div class="keybindings grow text-right">{getBindingSymbols(cmd)}</div>
             </div>

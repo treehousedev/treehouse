@@ -512,6 +512,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
 
 
+
   workbench.menus.registerMenu("node", [
     { command: "zoom" },
     { command: "new-panel" },
@@ -559,13 +560,6 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       e.stopPropagation();
       e.preventDefault();
       return;
-    }
-
-    // TODO: find a better way to do this?
-    if (e.key === "Escape") {
-      if (workbench.curtain && workbench.curtain.onclick) {
-        workbench.curtain.onclick(e);
-      }
     }
   });
 
