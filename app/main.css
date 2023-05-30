@@ -437,4 +437,12 @@ the top nav in a more elegant way at some point*/
     max-width: 100vw;
 
   }
+  svg.node-menu{
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0;
+  }
+  .menu li {
+    padding: var(--padding);
+  }
 }
