@@ -83,6 +83,10 @@ export const App: m.Component = {
             ) {
               dialog.close();
             }
+          }}
+          onclose={() => {
+            // resets body
+            workbench.dialog.body = () => null;
           }}>
             {workbench.dialog.body()}
         </dialog>
