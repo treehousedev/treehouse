@@ -27,9 +27,9 @@ export class SearchNode {
 
   handleIcon(collapsed: boolean = false): any {
     return (
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="node-bullet" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="node-bullet" width="15" height="15" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
         {collapsed?<circle id="node-collapsed-handle" stroke="none" cx="12" cy="12" r="12"/>:null}
-        <svg xmlns="http://www.w3.org/2000/svg" x="5" y="5" width="14" height="14" viewBox="0 0 24 24">
+        <svg xmlns="http://www.w3.org/2000/svg" x="3" y="3" width="19" height="19" viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
         </svg>
