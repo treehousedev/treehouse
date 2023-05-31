@@ -70,7 +70,7 @@ p {
 }
 
 dialog {
-  filter: drop-shadow(2px 2px 4px #5555);
+  filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.15));
   outline: none;
   border: 1px solid var(--color-outline);
   border-radius: var(--border-radius);
@@ -91,7 +91,7 @@ dialog > form {
   opacity: 1;
 }
 
-/*------------APP------------*/
+/*------------APP------------
 
 main {
   background-color: var(--color-background);
