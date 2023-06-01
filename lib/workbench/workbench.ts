@@ -231,8 +231,8 @@ export class Workbench {
     }[notice], {workbench: this, finished}), true);
   }
 
-  showDialog(body: any, backdrop?: boolean, pos?: {}) {
-    this.dialog = {body, backdrop, pos};
+  showDialog(body: any, backdrop?: boolean, style?: {}) {
+    this.dialog = {body, backdrop, style};
     m.redraw();
     setTimeout(() => {
       // this next frame timeout is so any current dialog can close before attempting
