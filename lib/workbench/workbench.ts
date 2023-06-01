@@ -191,21 +191,23 @@ export class Workbench {
     return Object.assign({}, this.context, ctx);
   }
 
-  showMenu(event: Event, ctx: any) {
+  showMenu(event: Event, ctx: any, style?: {}) {
     event.stopPropagation();
     event.preventDefault();
     const trigger = event.target.closest("*[data-menu]");
     const rect = trigger.getBoundingClientRect();
-    const align = trigger.dataset["align"] || "left";
-    const pos = {
-      top: `${document.body.scrollTop+rect.y+rect.height}px`
-    }
-    if (align === "right") {
-      pos.marginLeft = "auto";
-      pos.marginRight = `${document.body.offsetWidth - rect.right}px`;
-    } else {
-      pos.marginLeft = `${document.body.scrollLeft+rect.x}px`;
-      pos.marginRight = "auto";
+    if (!style) {
+      const align = trigger.dataset["align"] || "left";
+      style = {
+        top: `${document.body.scrollTop+rect.y+rect.height}px`
+      }
+      if (align === "right") {
+        style.marginLeft = "auto";
+        style.marginRight = `${document.body.offsetWidth - rect.right}px`;
+      } else {
+        style.marginLeft = `${document.body.scrollLeft+rect.x}px`;
+        style.marginRight = "auto";
+      }
     }
     const items = this.menus.menus[trigger.dataset["menu"]];
     const cmds = items.filter(i => i.command).map(i => this.commands.commands[i.command]);
@@ -215,8 +217,7 @@ export class Workbench {
       ctx: this.newContext(ctx), 
       items: items,
       commands: cmds,
-      align: align
-    }), false, pos);
+    }), false, style);
   }
 
   showPalette(x: number, y: number, ctx: Context) {
