@@ -44,7 +44,6 @@ export const App: m.Component = {
               <div>Quick Add</div>
             </div>
 
-            {/* <Search workbench={workbench} /> */}
             <div class="searchbar flex grow">
               <div>
                 <div class="flex" style={{margin: "1px"}}>
@@ -53,8 +52,8 @@ export const App: m.Component = {
                     onkeydown={(e) => {
                       if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return;
                       const input = e.target.getBoundingClientRect();
-                      console.log(input.left);
                       workbench.showDialog(() => <Search workbench={workbench} input={e.key} />, false, {
+                        // TODO: make these not so hardcoded offsets
                         left: `${input.left-33}px`,
                         top: `${input.top-9}px`,
                         width: `${input.width+33}px`
