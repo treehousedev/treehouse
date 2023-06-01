@@ -163,6 +163,8 @@ with their icon for Safari only*/
 /*------------PANELS------------*/
 .panels > div {
   border-right: 1px solid var(--color-outline-secondary);
+  overflow: auto;
+  flex: 1 1 auto;
 }
 .panel {
   margin-top: var(--padding);
@@ -427,7 +429,30 @@ svg.node-bullet circle#node-collapsed-handle {
 
 /*------------MOBILE------------*/
 
+.mobile-nav {
+  display: none;
+}
+
 @media (max-width: 600px) {
+  .mobile-nav {
+    display: flex;
+    background-color: var(--color-background-sidebar);
+    height: 100px;
+    z-index: 100;
+    flex: none;
+    border-top: 1px solid var(--color-outline-secondary);
+    justify-content: space-evenly;
+  }
+  .mobile-nav > div {
+    padding: 24px 20px;
+  }
+  .mobile-nav svg {
+    width: 30px;
+    height: 30px;
+  }
+  .notice {
+    width: 100%;
+  }
 
   :root {
     --padding: var(--2);
@@ -435,12 +460,23 @@ svg.node-bullet circle#node-collapsed-handle {
 
   dialog {
     width: 100vw;
+    max-width: 100vw;
   }
 /*todo: this padding needs to stay to same as desktop 
 for alignment purposes. should probably center
 the top nav in a more elegant way at some point*/
   .sidebar-top, .topbar {
     padding: calc(var(--padding)*2);
+  }
+
+  .topbar, .sidebar-top, .sidebar-bottom {
+    display: none;
+  }
+  .sidebar {
+    position: absolute;
+    z-index: 10;
+    height: 100%;
+    display: none;
   }
  
   .search {
