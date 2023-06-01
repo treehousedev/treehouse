@@ -269,45 +269,6 @@ svg.node-bullet circle#node-collapsed-handle {
   display: contents;
 }
 
-/*------------SEARCH------------*/
-.search {
-  border: none;
-  background: none;
-  margin: 0 var(--padding);
-  position: relative;
-}
-.search > div {
-  width: 95%;
-  padding: calc(var(--padding)/2);
-  margin: calc(var(--padding)/-2);
-  position: absolute;
-}
-.search.active > div {
-  border: 1px solid var(--color-outline);
-  border-radius: var(--border-radius);
-  background: var(--color-background);
-  z-index: var(--layer-top);
-}
-.search .results {
-  margin-top: var(--padding);
-  font-weight: var(--weight-regular);
-}
-.search .results > div {
-  padding: calc(var(--padding)/2);
-  line-height: var(--body-line-height);
-}
-.search input {
-  width: 99%;
-  margin: 0 var(--padding) 0 var(--1);
-  font-weight: var(--weight-semibold);
-  font-size: var(--text-small);
-}
-
-.palette .selected, .search .selected, .menu li:not(.disabled):hover {
-  background: var(--color-highlight);
-  border-radius: var(--border-radius);
-}
-
 /*------------NOTICES------------*/
 .notice {
   width: 40rem;
@@ -351,24 +312,65 @@ svg.node-bullet circle#node-collapsed-handle {
   cursor: pointer;
 }
 
-/*------------PALETTE------------*/
-.palette {
-  padding: var(--padding);
+/*------------PICKER------------*/
+
+.picker {
+  padding: calc(var(--padding)/2);
   min-width: 400px;
   background: var(--color-background);
 }
-.palette, .palette input {
-  font-size: var(--text-small);
+.picker input {
+  padding: calc(var(--padding)/2);
+  border: 0;
+  outline: 0;
+  background: transparent;
 }
-.palette .commands {
+.picker .items {
+  overflow-y: auto;
   line-height: var(--body-line-height);
-  padding: calc(var(--padding)/2) 0;
-  max-height: 250px;
+  padding: calc(var(--padding)/2) 0 0 0;
 }
-.palette .commands > div, .palette input {
+.picker .item {
+  cursor: pointer;
   padding: calc(var(--padding)/2);
 }
-.palette .commands .keybindings {
+
+/*------------SEARCH------------*/
+.searchbar {
+  border: none;
+  background: none;
+  margin: 0 var(--padding);
+}
+.searchbar > div {
+  width: 95%;
+  padding: calc(var(--padding)/2);
+  margin: calc(var(--padding)/-2);
+}
+.searchbar input, .search input {
+  width: 99%;
+  margin: 0 var(--padding) 0 var(--1);
+  font-weight: var(--weight-semibold);
+  font-size: var(--text-small);
+}
+.search input {
+  padding: 2px;
+  padding-top: 3px;
+}
+
+.picker .selected, .menu li:not(.disabled):hover {
+  background: var(--color-highlight);
+  border-radius: var(--border-radius);
+}
+
+
+/*------------PALETTE------------*/
+.palette .picker {
+  min-width: 400px;
+}
+.palette .items {
+  max-height: 250px;
+}
+.palette .item .keybindings {
   color: var(--color-icon-secondary);
 }
 

@@ -44,7 +44,31 @@ export const App: m.Component = {
               <div>Quick Add</div>
             </div>
 
-            <Search workbench={workbench} />
+            <div class="searchbar flex grow">
+              <div>
+                <div class="flex" style={{margin: "1px"}}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search shrink-0"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                  <input type="text" placeholder="Search" 
+                    onkeydown={(e) => {
+                      if (e.ctrlKey || e.altKey || e.shiftKey || e.metaKey) return;
+                      const input = e.target.getBoundingClientRect();
+                      workbench.showDialog(() => <Search workbench={workbench} input={e.key} />, false, {
+                        // TODO: make these not so hardcoded offsets
+                        left: `${input.left-33}px`,
+                        top: `${input.top-9}px`,
+                        width: `${input.width+33}px`
+                      });
+                      e.preventDefault();
+                    }} 
+                    style={{
+                      border: "0", 
+                      outline: "0", 
+                      background: "transparent", 
+                      paddingTop: "3px"
+                    }} />
+                </div>
+              </div>
+            </div>
             
             <div onclick={(e) => workbench.showMenu(e)} data-menu="settings" data-align="right" style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)"}}>
               <svg  xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
@@ -58,28 +82,17 @@ export const App: m.Component = {
           </div>
         </div>
         
-        {/* curtain is only used by search, but it will soon be ported to a dialog and we can remove this */}
-        {workbench.curtain && 
-          <div onclick={workbench.curtain.onclick} style={{
-            zIndex: "10",
-            position: "absolute",
-            background: "black",
-            opacity: (workbench.curtain.visible)?"50%":"0%",
-            width: "100%",
-            height: "100%"
-          }}></div>}
-        
         <dialog 
           class={(workbench.dialog.backdrop) ? "backdrop" : ""} 
-          style={(workbench.dialog.pos) ? {margin: "0", ...workbench.dialog.pos} : {top: "-50%"}}
+          style={(workbench.dialog.style) ? {margin: "0", ...workbench.dialog.style} : {top: "-50%"}}
           onclick={e => {
             const dialog = e.target.closest("dialog");
-            const dim = dialog.getBoundingClientRect();
+            const rect = dialog.getBoundingClientRect();
             if (
-              e.clientX < dim.left ||
-              e.clientX > dim.right ||
-              e.clientY < dim.top ||
-              e.clientY > dim.bottom
+              e.clientX < rect.left ||
+              e.clientX > rect.right ||
+              e.clientY < rect.top ||
+              e.clientY > rect.bottom
             ) {
               dialog.close();
             }
