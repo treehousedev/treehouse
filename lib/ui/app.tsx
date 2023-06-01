@@ -17,6 +17,7 @@ export const App: m.Component = {
     }
     return (
       <main class="workbench m-0 flex flex-row absolute inset-0" style={{overflow: "none"}}>
+
         <div class="sidebar flex flex-col" style={{width: (state.open)?"256px":"52px"}}>
           <div class="sidebar-top" style={{height: "56px"}}>
             <svg class="logo" width="20" height="20" fill="currentColor" viewBox="0 0 25 25" xmlns="http://www.w3.org/2000/svg">
@@ -30,6 +31,7 @@ export const App: m.Component = {
             <svg onclick={toggle} xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sidebar"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
           </div>
         </div>
+
         <div class="main flex flex-col grow">
           <div class="topbar flex">
             <div class="topbar-item" onclick={() => workbench.openToday()} style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)", display: "flex", alignItems: "center"}}>
@@ -74,11 +76,9 @@ export const App: m.Component = {
               <svg  xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </div>
           </div>
-          <div class="panels flex flex-row" style={{position: "relative", overflow: "hidden"}}>
-            {workbench.panels.map(path => <div style={{ 
-                flex: "1 1 auto",
-                overflowY: "auto"
-              }}><PanelComponent workbench={workbench} path={path} /></div>)}
+
+          <div class="panels flex flex-row grow" style={{position: "relative", overflow: "hidden"}}>
+            {workbench.panels.map(path => <div><PanelComponent workbench={workbench} path={path} /></div>)}
           </div>
         </div>
         
