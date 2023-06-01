@@ -177,9 +177,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
             {(objectHas(node, "handleIcon"))
               ? objectCall(node, "handleIcon", subCount(node) > 0 && !expanded)
               : <svg class="node-bullet" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-                {(subCount(node) > 0 && !expanded)?<circle id="node-collapsed-handle" cx="8" cy="7" r="7" />:null}
-                <circle cx="8" cy="7" r="3" fill="currentColor" />,
-                {(isRef)?<circle id="node-reference-handle" cx="8" cy="7" r="7" fill="none" stroke-width="1" stroke="currentColor" stroke-dasharray="3,3" />:null}
+                {(subCount(node) > 0 && !expanded)?<circle id="node-collapsed-handle" cx="8" cy="8" r="8" />:null}
+                <circle cx="8" cy="8" r="3" fill="currentColor" />,
+                {(isRef)?<circle id="node-reference-handle" cx="8" cy="8" r="7" fill="none" stroke-width="1" stroke="currentColor" stroke-dasharray="3,3" />:null}
               </svg>
             }
           </div>
