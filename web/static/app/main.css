@@ -32,7 +32,6 @@ body {
   zoom: 1;
   margin: 0;
   height: 100%;
-  background-color: var(--color-background);
 }
 body, input, textarea, button {
   color: var(--color-text);
