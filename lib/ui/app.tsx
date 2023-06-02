@@ -159,8 +159,8 @@ const NavNode: m.Component = {
     }
     return (
       <div>
-        <div style={{display: "flex", paddingBottom: "var(--2)" }}>
-          <svg onclick={toggle} style={{cursor: "pointer", flexShrink: "0", paddingTop: "0px", marginRight: "0.125rem"}} class="feather feather-chevron-right" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">          
+        <div class="sidebar-item flex">
+          <svg onclick={toggle} class="feather feather-chevron-right shrink-0" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">          
             {(expandable)
                 ?(state.expanded)
                   ? <polyline points="6 9 12 15 18 9"></polyline>
@@ -168,12 +168,12 @@ const NavNode: m.Component = {
               :null}
           </svg>
           
-          <div onclick={open} style={{cursor: "pointer", lineHeight: "1.25", fontSize: "0.875rem", flexGrow: "1", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
+          <div class="sidebar-item-label grow" onclick={open} style={{cursor: "pointer", maxWidth: "100%", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap"}}>
             {node.name}
           </div>
         </div>
         {state.expanded && 
-          <div style={{marginLeft: "0.5rem"}}>
+          <div class="sidebar-item-nested">
             {node.children.filter(n => n.name !== "").map(n => <NavNode workbench={workbench} node={n} level={level+1} />)}
           </div>
         }
