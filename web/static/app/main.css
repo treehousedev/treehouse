@@ -35,7 +35,7 @@ body {
 }
 body, input, textarea, button {
   color: var(--color-text);
-  font-size: 1rem;
+  font-size: var(--text-body);
   font-family: var(--font);
   font-weight: var(--weight-regular);
 }
@@ -91,7 +91,7 @@ dialog > form {
   opacity: 1;
 }
 
-/*------------APP------------
+/*------------APP------------*/
 
 main {
   background-color: var(--color-background);
@@ -110,23 +110,32 @@ main {
   padding: var(--padding);
   border-bottom: 1px solid var(--color-outline-secondary);
 }
-/*TO DO: change logo to SVG and set color instead of opacity*/
 .sidebar-top > .logo {
-/*  height: 20px;
-  width: 20px;*/
   color: var(--color-icon-secondary);
 }
 .sidebar-main {
   padding: var(--padding);
   font-weight: var(--weight-semibold);
+  font-size: var(--text-small);
   color: var(--color-nav-label);
 }
 .sidebar-main svg {
   color: var(--color-icon);
 }
+.sidebar-item {
+  padding-bottom: calc(var(--padding)/2);
+}
+.sidebar-item svg {
+  cursor: pointer;
+  padding-top: 0px;
+  margin-right: 0.125rem;
+}
 .sidebar-bottom {
   padding: var(--padding);
   color: var(--color-icon-secondary);
+}
+.sidebar-item-nested {
+  margin-left: 0.5rem;
 }
 
 /*------------TOPBAR------------*/
@@ -456,11 +465,24 @@ svg.node-bullet circle#node-collapsed-handle {
 
   :root {
     --padding: var(--2);
+    --text-small: 1.125rem;
+    --text-body: 1.25rem;
   }
 
+/*to account for small margin on either side of dialog*/
   dialog {
-    width: 100vw;
-    max-width: 100vw;
+    width: 97vw;
+    max-width: 97vw;
+  }
+  dialog:has(> .search) {
+    margin: 0 auto !important;
+  }
+  dialog:has(> .menu) {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+  .menu {
+    width: 100%;
   }
 /*todo: this padding needs to stay to same as desktop 
 for alignment purposes. should probably center
@@ -477,11 +499,20 @@ the top nav in a more elegant way at some point*/
     z-index: 10;
     height: 100%;
     display: none;
+    padding: calc(var(--padding)*2);
+  }
+
+  .sidebar-item {
+    padding-bottom: calc(var(--padding)*2);
   }
  
-  .search {
+/*  .search {
     max-width: 100vw;
+  }*/
 
+  .sidebar, .panel {
+    padding-top: calc(var(--padding)*3);
+    padding-bottom: calc(var(--padding)*3);
   }
   svg.node-menu{
     width: 1.5rem;
