@@ -326,11 +326,13 @@ svg.node-bullet circle#node-collapsed-handle {
   border: 0;
   outline: 0;
   background: transparent;
+  font-size: var(--text-small);
 }
 .picker .items {
   overflow-y: auto;
   line-height: var(--body-line-height);
   padding: calc(var(--padding)/2) 0 0 0;
+  font-size: var(--text-small);
 }
 .picker .item {
   cursor: pointer;
