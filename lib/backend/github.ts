@@ -7,6 +7,7 @@ export interface Options {
   domain: string;           // domain used with username subdomain to produce repo name
   checkDomain: boolean;     // redirect to user domain if it is not current location
   authFallbackURL?: string; // URL to redirect to if auth fails
+  privateRepo?: boolean;    // if the user workspace repo should be created private
 }
 
 export class GitHubBackend {
@@ -32,6 +33,7 @@ export class GitHubBackend {
     this.opts = Object.assign({
       domain: "treehouse.sh",
       checkDomain: false,
+      privateRepo: false
     }, opts || {});
 
     const localbackend = new BrowserBackend();
@@ -122,7 +124,7 @@ export class GitHubBackend {
       }
       // create if not
       console.log("Creating repository...");
-      const resp = await this.client.rest.repos.createForAuthenticatedUser({name: this.repo});
+      const resp = await this.client.rest.repos.createForAuthenticatedUser({name: this.repo, private: this.opts.privateRepo});
       if (resp.status !== 201) {
         console.error(resp);
         return;
