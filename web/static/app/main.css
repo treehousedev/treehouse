@@ -448,7 +448,6 @@ svg.node-bullet circle#node-collapsed-handle {
   .mobile-nav {
     display: flex;
     background-color: var(--color-background-sidebar);
-    height: 100px;
     z-index: 100;
     flex: none;
     border-top: 1px solid var(--color-outline-secondary);
