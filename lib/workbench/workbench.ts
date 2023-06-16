@@ -92,6 +92,9 @@ export class Workbench {
       node = this.workspace.new("@quickadd");
     }
     this.showDialog(() => m(QuickAdd, {workbench: this, node}), true);
+    setTimeout(() => {
+      document.querySelector("main > dialog .new-node input").focus();
+    }, 1);
   }
 
   commitQuickAdd() {

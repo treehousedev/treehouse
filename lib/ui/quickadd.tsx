@@ -7,7 +7,7 @@ export const QuickAdd = {
     return (
       <form class="notice" method="dialog">
           <h3>Quick Add</h3>
-          <OutlineEditor workbench={workbench} path={path} />
+          <OutlineEditor workbench={workbench} path={path} alwaysShowNew={true} />
           <div class="button-bar">
             <button class="primary" onclick={() => {
               workbench.commitQuickAdd();

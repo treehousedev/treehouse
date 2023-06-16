@@ -20,8 +20,8 @@ interface State {
 }
 
 export const OutlineEditor: m.Component<Attrs> = {
-  view ({attrs: {workbench, path}}) {
-    return m(getView(path.node.getAttr("view")||"list"), {workbench, path});
+  view ({attrs: {workbench, path, alwaysShowNew}}) {
+    return m(getView(path.node.getAttr("view")||"list"), {workbench, path, alwaysShowNew});
   }
 }
 

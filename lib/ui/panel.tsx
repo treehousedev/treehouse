@@ -69,7 +69,7 @@ export const Panel = {
             {node.getComponent(Page).markdown}
           </textarea>
           : null}
-        <OutlineEditor workbench={workbench} path={path.sub()} />
+        <OutlineEditor workbench={workbench} path={path.sub()} alwaysShowNew={true} />
       </div>
     </div>
   }

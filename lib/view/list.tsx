@@ -2,10 +2,14 @@ import { NewNode } from "../ui/node/new.tsx";
 import { OutlineNode } from "../ui/outline.tsx";
 
 export default {
-  view({attrs: {workbench, path}}) {
+  view({attrs: {workbench, path, alwaysShowNew}}) {
     let node = path.node;
     if (path.node.refTo) {
       node = path.node.refTo;
+    }
+    let showNew = false;
+    if ((node.childCount === 0 && node.getLinked("Fields").length === 0) || alwaysShowNew) {
+      showNew = true;
     }
     return (
       <div class="list-view">
@@ -15,10 +19,8 @@ export default {
           }
         </div>
         <div class="children">
-          {(node.childCount > 0)
-            ?node.children.map(n => <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />)
-            :(node.getLinked("Fields").length === 0 && <NewNode workbench={workbench} path={path} />)
-          }
+          {(node.childCount > 0) && node.children.map(n => <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />)}
+          {showNew && <NewNode workbench={workbench} path={path} />}
         </div>
       </div>
     )
