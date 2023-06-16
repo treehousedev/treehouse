@@ -176,6 +176,7 @@ export class Workbench {
     let id = `input-${path.id}-${path.node.id}`;
     // kludge:
     if (path.node.raw.Rel === "Fields") {
+      // if path.node.name === "" then not value
       id = id+"-value"; 
     }
     return document.getElementById(id);
@@ -229,11 +230,11 @@ export class Workbench {
       "firsttime": FirstTimeMessage,
       "github": GitHubMessage,
       "lockstolen": LockStolenMessage,
-    }[notice], {workbench: this, finished}), true);
+    }[notice], {workbench: this, finished}), true, undefined, (notice==="lockstolen")?true:false);
   }
 
-  showDialog(body: any, backdrop?: boolean, style?: {}) {
-    this.dialog = {body, backdrop, style};
+  showDialog(body: any, backdrop?: boolean, style?: {}, explicitClose?: boolean) {
+    this.dialog = {body, backdrop, style, explicitClose};
     m.redraw();
     setTimeout(() => {
       // this next frame timeout is so any current dialog can close before attempting

@@ -114,15 +114,20 @@ export const App: m.Component = {
         <dialog 
           class={(workbench.dialog.backdrop) ? "backdrop" : ""} 
           style={(workbench.dialog.style) ? {margin: "0", ...workbench.dialog.style} : {top: "-50%"}}
+          oncancel={e => {
+            if (workbench.dialog.explicitClose === true) {
+              e.preventDefault();
+            }
+          }}
           onclick={e => {
             const dialog = e.target.closest("dialog");
             const rect = dialog.getBoundingClientRect();
-            if (
+            if ((workbench.dialog.explicitClose !== true) && (
               e.clientX < rect.left ||
               e.clientX > rect.right ||
               e.clientY < rect.top ||
               e.clientY > rect.bottom
-            ) {
+            )) {
               dialog.close();
             }
           }}
