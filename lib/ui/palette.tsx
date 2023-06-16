@@ -7,8 +7,8 @@ export const CommandPalette: m.Component = {
     const cmds = Object.values(workbench.commands.commands);
     
     const onpick = (cmd) => {
-      workbench.commands.executeCommand(cmd.id, ctx);
       workbench.closeDialog();
+      workbench.commands.executeCommand(cmd.id, ctx);
     }
     const onchange = (state) => {
       state.items = cmds.filter(cmd => {

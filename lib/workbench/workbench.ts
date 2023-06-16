@@ -176,8 +176,9 @@ export class Workbench {
     let id = `input-${path.id}-${path.node.id}`;
     // kludge:
     if (path.node.raw.Rel === "Fields") {
-      // if path.node.name === "" then not value
-      id = id+"-value"; 
+      if (path.node.name !== "") {
+        id = id+"-value"; 
+      }
     }
     return document.getElementById(id);
   }

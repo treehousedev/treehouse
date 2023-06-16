@@ -7,13 +7,13 @@ export const Menu: m.Component = {
       if (item.disabled) {
         return;
       }
+      workbench.closeDialog();
       if (item.onclick) {
         item.onclick();
       }
       if (cmd) {
         workbench.executeCommand(cmd.id, ctx);
       }
-      workbench.closeDialog();
     };
     return (
 <ul class="menu" style={{

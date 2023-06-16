@@ -5,8 +5,8 @@ export const Search: m.Component = {
   view({ attrs: { input, workbench } }) {
     
     const onpick = (node) => {
-      workbench.open(node);
       workbench.closeDialog();
+      workbench.open(node);
     }
     const onchange = (state) => {
       if (state.input) {
