@@ -18,11 +18,13 @@ export class Workspace {
 
   lastOpenedID: string;
   expanded: { [key: string]: { [key: string]: boolean } }; // [rootid][id]
+  settings: {};
 
   constructor(fs: FileStore) {
     this.fs = fs;
     this.bus = new module.Bus();
     this.expanded = {};
+    this.settings = {};
 
     this.writeDebounce = debounce(async (path, contents) => {
       try {
@@ -48,7 +50,8 @@ export class Workspace {
       version: 1,
       lastopen: this.lastOpenedID,
       expanded: this.expanded,
-      nodes: this.rawNodes
+      nodes: this.rawNodes,
+      settings: this.settings
     }, null, 2));
   }
 
@@ -79,7 +82,9 @@ export class Workspace {
     if (doc.lastopen) {
       this.lastOpenedID = doc.lastopen;
     }
-
+    if (doc.settings) {
+      this.settings = Object.assign(this.settings, doc.settings);
+    }
   }
 
   mainNode(): Node {

@@ -77,7 +77,16 @@ export class Workbench {
     if (this.backend.loadExtensions) {
       await this.backend.loadExtensions();
     }
-    
+  
+    if (this.workspace.settings.theme) {
+      const css = document.createElement("link");
+      // TODO: figure out better way to couple themes than hardcoded hotlinked URL
+      css.setAttribute("href", `https://treehouse.sh/style/themes/${this.workspace.settings.theme}.css`);
+      css.setAttribute("rel", "stylesheet");
+      css.setAttribute("type", "text/css");
+      document.head.appendChild(css);
+    }
+
     m.redraw();
     
   }
