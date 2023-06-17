@@ -112,12 +112,15 @@ export const App: m.Component = {
         
         
         <dialog 
-          class={(workbench.dialog.backdrop) ? "backdrop" : ""} 
+          class={(workbench.dialog.backdrop) ? "modal backdrop" : "modal"} 
           style={(workbench.dialog.style) ? {margin: "0", ...workbench.dialog.style} : {top: "-50%"}}
           oncancel={e => {
             if (workbench.dialog.explicitClose === true) {
               e.preventDefault();
+              return;
             }
+            // resets body
+            workbench.dialog.body = () => null;
           }}
           onclick={e => {
             const dialog = e.target.closest("dialog");
@@ -128,14 +131,30 @@ export const App: m.Component = {
               e.clientY < rect.top ||
               e.clientY > rect.bottom
             )) {
-              dialog.close();
+              workbench.closeDialog();
             }
-          }}
-          onclose={() => {
-            // resets body
-            workbench.dialog.body = () => null;
           }}>
             {workbench.dialog.body()}
+        </dialog>
+
+        <dialog class="menu" 
+          style={{margin: "0", ...workbench.menu.style}}
+          oncancel={e => {
+            // resets body
+            workbench.menu.body = () => null;
+          }}
+          onclick={e => {
+            const dialog = e.target.closest("dialog");
+            const rect = dialog.getBoundingClientRect();
+            if (e.clientX < rect.left ||
+              e.clientX > rect.right ||
+              e.clientY < rect.top ||
+              e.clientY > rect.bottom
+            ) {
+              workbench.closeMenu();
+            }
+          }}>
+            {workbench.menu.body()}
         </dialog>
       </main>
     )

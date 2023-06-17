@@ -8,6 +8,7 @@ import { objectHas, objectCall } from "../model/hooks.ts";
 import { Menu } from "../ui/menu.tsx";
 import { CommandPalette } from "../ui/palette.tsx";
 import { QuickAdd } from "../ui/quickadd.tsx";
+import { Settings } from "../ui/settings.tsx";
 import { FirstTimeMessage, GitHubMessage, LockStolenMessage } from "../ui/notices.tsx";
 
 import { Workspace, Context, Path } from "./mod.ts";
@@ -32,7 +33,7 @@ export class Workbench {
   panels: Path[];
 
   dialog: any;
-  curtain: any;
+  menu: any;
 
   constructor(backend: Backend) {
     this.commands = new CommandRegistry();
@@ -46,6 +47,7 @@ export class Workbench {
     this.panels = [];
 
     this.dialog = {body: () => null};
+    this.menu = {body: () => null};
     
   }
 
@@ -226,12 +228,23 @@ export class Workbench {
     const items = this.menus.menus[trigger.dataset["menu"]];
     const cmds = items.filter(i => i.command).map(i => this.commands.commands[i.command]);
     if (!items) return;
-    this.showDialog(() => m(Menu, { 
+    this.menu = {body: () => m(Menu, { 
       workbench: this,
       ctx: this.newContext(ctx), 
       items: items,
       commands: cmds,
-    }), false, style);
+    }), style};
+    m.redraw();
+    setTimeout(() => {
+      // this next frame timeout is so any current dialog can close before attempting
+      // to showModal on already open dialog, which causes exception.
+      document.querySelector("main > dialog.menu").showModal();
+    }, 0);
+  }
+
+  closeMenu() {
+    document.querySelector("main > dialog.menu").close();
+    workbench.menu.body = () => null;
   }
 
   showPalette(x: number, y: number, ctx: Context) {
@@ -246,22 +259,27 @@ export class Workbench {
     }[notice], {workbench: this, finished}), true, undefined, (notice==="lockstolen")?true:false);
   }
 
+  showSettings() {
+    this.showDialog(() => m(Settings, {workbench: this}), true);
+  }
+
   showDialog(body: any, backdrop?: boolean, style?: {}, explicitClose?: boolean) {
     this.dialog = {body, backdrop, style, explicitClose};
     m.redraw();
     setTimeout(() => {
       // this next frame timeout is so any current dialog can close before attempting
       // to showModal on already open dialog, which causes exception.
-      document.querySelector("main > dialog").showModal();
+      document.querySelector("main > dialog.modal").showModal();
     }, 0);
   }
 
   isDialogOpen(): boolean {
-    return document.querySelector("main > dialog").hasAttribute("open");
+    return document.querySelector("main > dialog.modal").hasAttribute("open");
   }
 
   closeDialog() {
-    document.querySelector("main > dialog").close();
+    document.querySelector("main > dialog.modal").close();
+    workbench.dialog.body = () => null;
   }
 
   search(query: string): Node[] {

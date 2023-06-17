@@ -45,14 +45,19 @@ export class Workspace {
     this.bus.observe(fn);
   }
 
-  save() {
-    this.writeDebounce("workspace.json", JSON.stringify({
+  async save(immediate?: boolean) {
+    const contents = JSON.stringify({
       version: 1,
       lastopen: this.lastOpenedID,
       expanded: this.expanded,
       nodes: this.rawNodes,
       settings: this.settings
-    }, null, 2));
+    }, null, 2);
+    if (immediate) {
+      await this.fs.writeFile("workspace.json", contents);
+    } else {
+      this.writeDebounce("workspace.json", contents);
+    }
   }
 
   async load() {

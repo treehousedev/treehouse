@@ -7,7 +7,7 @@ export const Menu: m.Component = {
       if (item.disabled) {
         return;
       }
-      workbench.closeDialog();
+      workbench.closeMenu();
       if (item.onclick) {
         item.onclick();
       }

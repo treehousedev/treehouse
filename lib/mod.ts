@@ -549,6 +549,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
         location.reload();
       }
     },
+    { title: () => "Settings", onclick: () => workbench.showSettings() },
     { title: () => "Submit Issue", onclick: () => window.open("https://github.com/treehousedev/treehouse/issues", "_blank") },
     { title: () => "Logout", when: () => workbench.authenticated(), onclick: () => workbench.backend.auth.logout() },
   ]);
