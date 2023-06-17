@@ -1,0 +1,36 @@
+:root {
+  --sublime-black: #2B2C26;
+  --sublime-dark-gray: #3F3F3B;
+  --sublime-medium-gray: #878783;
+  --sublime-white: #F9F9F3;
+  --sublime-blue: #72DDF3;
+  --sublime-lime: #ABE700;
+  --sublime-yellow: #E9E076;
+  --sublime-purple: #B889FF;
+  --sublime-orange: #FDA100;
+  --sublime-pink: #FB277F;
+  
+  --font: "Roboto Mono", monospace;
+
+  --color-primary: var(--sublime-purple);
+
+  --color-background: var(--sublime-black);
+  --color-background-sidebar: var(--sublime-dark-gray);
+
+  --color-icon: var(--sublime-pink);
+  --color-icon-secondary: var(--sublime-blue);
+  
+  --color-nav-label: var(--sublime-blue);
+
+  --color-text: var(--white);
+  --color-text-placeholder: var(--sublime-lime);
+  --color-text-secondary: var(--sublime-yellow);
+
+  --color-highlight: var(--sublime-pink);
+
+  --color-node-handle: var(--sublime-white);
+  --color-node-handle-secondary: var(--sublime-purple);
+
+  --color-outline: var(--sublime-orange);
+  --color-outline-secondary: var(--sublime-purple);
+}

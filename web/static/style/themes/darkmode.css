@@ -1,0 +1,26 @@
+
+:root {
+  --font: 'Figtree', sans-serif;
+
+  --color-primary: purple;
+
+  --color-background: var(--black);
+  --color-background-sidebar: var(--gray-800);
+
+  --color-icon: var(--white);
+  --color-icon-secondary: var(--gray-400);
+  
+  --color-nav-label: var(--white);
+
+  --color-text: var(--white);
+  --color-text-placeholder: var(--gray-600);
+  --color-text-secondary: var(--gray-400);
+
+  --color-highlight: var(--gray-700);
+
+  --color-node-handle: var(--gray-400);
+  --color-node-handle-secondary: var(--gray-700);
+
+  --color-outline: var(--gray-600);
+  --color-outline-secondary: var(--gray-700);
+}

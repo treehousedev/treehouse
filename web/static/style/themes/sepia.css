@@ -1,0 +1,32 @@
+:root {
+  --font: 'Figtree', sans-serif;
+  
+  --sepia-900: #362008;
+  --sepia-700: #6F5B49;
+  --sepia-500: #9C8C7D;
+  --sepia-300: #C4AE9C;
+  --sepia-200: #CEBCAB;
+  --sepia-100: #D6C4B3;
+
+  --color-primary: var(--sepia-900);
+
+  --color-background: var(--sepia-100);
+  --color-background-sidebar: var(--sepia-200);
+
+  --color-icon: var(--sepia-900);
+  --color-icon-secondary: var(--sepia-700);
+  
+  --color-nav-label: var(--sepia-900);
+
+  --color-text: var(--sepia-900);
+  --color-text-placeholder: var(--sepia-500);
+  --color-text-secondary: var(--sepia-700);
+
+  --color-highlight: var(--sepia-300);
+
+  --color-node-handle: var(--sepia-700);
+  --color-node-handle-secondary: var(--sepia-300);
+
+  --color-outline: var(--sepia-700);
+  --color-outline-secondary: var(--sepia-300);
+}
