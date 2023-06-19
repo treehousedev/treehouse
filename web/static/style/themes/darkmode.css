@@ -2,7 +2,7 @@
 :root {
   --font: 'Figtree', sans-serif;
 
-  --color-primary: purple;
+  --color-primary: var(--white);
 
   --color-background: var(--black);
   --color-background-sidebar: var(--gray-800);
