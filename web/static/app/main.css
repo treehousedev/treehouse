@@ -39,6 +39,9 @@ body, input, textarea, button {
   font-family: var(--font);
   font-weight: var(--weight-regular);
 }
+dialog {
+  color: var(--color-text);
+}
 button {
   box-sizing: content-box;
   height: 48px;
