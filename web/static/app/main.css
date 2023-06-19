@@ -299,7 +299,7 @@ svg.node-bullet circle#node-collapsed-handle {
 }
 .notice .button-bar {
   text-align: right;
-  margin-top: var(--padding);
+  margin-top: calc(var(--padding)*3);
 }
 
 /*------------MENU------------*/
