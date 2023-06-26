@@ -180,6 +180,15 @@ body.docs > section nav h5 a {
   font-size: 1.125rem;
   line-height: var(--10);
 }
+article h1 > a,
+article h2 > a,
+article h3 > a,
+article h4 > a,
+article h5 > a {
+  text-decoration: none;
+  color: inherit;
+  font-weight: inherit;
+}
 
 a {
   font-weight: var(--weight-semibold);
@@ -240,10 +249,12 @@ code:not(pre > code), pre > code > div {
   padding: var(--2);
 }
 
-pre > code > div {
+pre > code {
   display: flex;
   overflow-x: auto;
 }
+
+
 
 /*code editor color theme (temporarily borrowed from nite owl)*/
 .shj-numbers, .shj-syn-cmnt {
