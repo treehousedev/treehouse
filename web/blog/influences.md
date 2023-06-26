@@ -1,5 +1,5 @@
 ---
-layout: blog
+layout: layouts/blog.tsx
 title: "Treehouse Influences"
 author: "Jeff Lindsay"
 date: "2023-04-20"

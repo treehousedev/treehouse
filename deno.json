@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
-    "jsxFactory": "m",
-    "lib": ["deno.ns", "dom"]
-  },
+    "jsx": "react-jsx",
+    "jsxImportSource": "npm:preact"
+  }
   "tasks": {
-    "bundle": "deno run --unstable -A web/bundle.ts",
-    "generate": "deno run --unstable -A web/generate.ts",
-    "serve": "deno run --unstable -A --watch web/serve.ts",
+    "bundle": "deno run --unstable -A ./bundle.ts",
+    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
+    "build": "deno task lume",
+    "serve": "deno task lume -s"
   },
   "imports": {
+    "lume/": "https://deno.land/x/lume@v1.17.5/",
     "https://deno.land/std/": "https://deno.land/std@0.177.0/"
   }
 }

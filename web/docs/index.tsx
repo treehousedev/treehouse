@@ -1,5 +1,5 @@
-import {m,page} from "../../deps.ts";
-export default page({title: "Treehouse"}, ({dev}) => (
+export const title = "Treehouse";
+export default (data) => (
 <html>
   <head>
     <meta http-equiv="refresh" content="0; url='/docs/quickstart'" />
@@ -7,4 +7,4 @@ export default page({title: "Treehouse"}, ({dev}) => (
   <body>
   </body>
 </html>
-))
+)

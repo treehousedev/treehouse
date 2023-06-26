@@ -1,5 +1,3 @@
-import {m,page} from "../../deps.ts";
-export default page({}, ({attrs: {dev, backend}}) => (
 <html>
   <head>
     <meta charset="UTF-8" />
@@ -16,14 +14,13 @@ export default page({}, ({attrs: {dev, backend}}) => (
     <title>Treehouse</title>
   </head>
   <body>
-    <div style={{textAlign: "center", marginTop: "40vh"}}>
+    <div style="text-align: center; margin-top: 40vh;">
       <div class="lds-ripple"><div></div><div></div></div>
     </div>
     <script>
-      window.backend = {JSON.stringify(backend)};
+      window.backend = {{ backend | safe }};
     </script>
     <script src="/app/main.js" type="module"></script>
     
   </body>
 </html>
-));

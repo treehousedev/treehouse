@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: layouts/docs.tsx
 ---
 # Project Guide
 
