@@ -2,25 +2,25 @@
 <rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" version="2.0">
   <channel>
     <title>Treehouse</title>
-    <link>http://localhost/</link>
-    <atom:link href="http://localhost/blog/feed.rss" rel="self" type="application/rss+xml"/>
+    <link>https://treehouse.sh/</link>
+    <atom:link href="https://treehouse.sh/blog/feed.rss" rel="self" type="application/rss+xml"/>
     <description>An open source note-taking frontend to extend and customize.</description>
-    <lastBuildDate>Mon, 26 Jun 2023 22:16:30 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 26 Jun 2023 22:22:25 GMT</lastBuildDate>
     <language>en</language>
     <generator>Lume v1.17.5</generator>
     <item>
       <title>Release 0.4.0</title>
-      <link>http://localhost/blog/v0-4-0/</link>
-      <guid isPermaLink="false">http://localhost/blog/v0-4-0/</guid>
+      <link>https://treehouse.sh/blog/v0-4-0/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/v0-4-0/</guid>
       <description/>
       <content:encoded>
-        <![CDATA[<h2 id="mobile-support-and-css-themes" tabindex="-1"><a href="http://localhost/blog/v0-4-0/#mobile-support-and-css-themes" class="header-anchor">Mobile support and CSS themes</a></h2>
+        <![CDATA[<h2 id="mobile-support-and-css-themes" tabindex="-1"><a href="https://treehouse.sh/blog/v0-4-0/#mobile-support-and-css-themes" class="header-anchor">Mobile support and CSS themes</a></h2>
         <p>In this release we focused on making Treehouse more powerful and enjoyable to use from more places. Editing text on mobile is always a tricky prospect, but we've taken our first step to being mobile-friendly with customized navigation and easier touch targets.</p>
         <p>White background a bit too bright? We've added several built-in themes (including sepia and dark mode) <em>and</em> we've made it super easy to <a href="https://treehouse.sh/docs/user/#css-theming">create your own CSS themes</a> using our component variables.</p>
         <p>Otherwise, lots of quality of life improvements as usual, especially for fields and live search nodes.</p>
         <p><a href="https://www.youtube.com/watch?v=byZnYzzrP7E"><img src="http://i3.ytimg.com/vi/byZnYzzrP7E/hqdefault.jpg" alt="Watch Demo"></a>
         <a href="https://www.youtube.com/watch?v=byZnYzzrP7E">Demo video</a></p>
-        <h2 id="enhancements-and-chores" tabindex="-1"><a href="http://localhost/blog/v0-4-0/#enhancements-and-chores" class="header-anchor">Enhancements and Chores</a></h2>
+        <h2 id="enhancements-and-chores" tabindex="-1"><a href="https://treehouse.sh/blog/v0-4-0/#enhancements-and-chores" class="header-anchor">Enhancements and Chores</a></h2>
         <ul>
         <li>Support setting a theme in the UI, and custom CSS themes <a href="https://github.com/treehousedev/treehouse/issues/168">#168</a>, <a href="https://github.com/treehousedev/treehouse/issues/122">#122</a></li>
         <li>Mobile improvements: new navigation and improved interactivity <a href="https://github.com/treehousedev/treehouse/issues/114">#114</a>, <a href="https://github.com/treehousedev/treehouse/issues/115">#115</a></li>
@@ -35,7 +35,7 @@
         <li>Consolidate overlays with dialog element <a href="https://github.com/treehousedev/treehouse/issues/158">#158</a></li>
         <li>Support multiple workflows for creating fields<a href="https://github.com/treehousedev/treehouse/issues/152">#152</a></li>
         </ul>
-        <h2 id="bugfixes" tabindex="-1"><a href="http://localhost/blog/v0-4-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
+        <h2 id="bugfixes" tabindex="-1"><a href="https://treehouse.sh/blog/v0-4-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
         <ul>
         <li>Backspace behavior on fields should be predictable <a href="https://github.com/treehousedev/treehouse/issues/130">#130</a></li>
         <li>Don't collapse above node when outdenting <a href="https://github.com/treehousedev/treehouse/issues/131">#131</a></li>
@@ -50,15 +50,15 @@
     </item>
     <item>
       <title>Release 0.3.0</title>
-      <link>http://localhost/blog/v0-3-0/</link>
-      <guid isPermaLink="false">http://localhost/blog/v0-3-0/</guid>
+      <link>https://treehouse.sh/blog/v0-3-0/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/v0-3-0/</guid>
       <description/>
       <content:encoded>
-        <![CDATA[<h2 id="new-node-types%3A-fields%2C-live-search%2C-and-references" tabindex="-1"><a href="http://localhost/blog/v0-3-0/#new-node-types%3A-fields%2C-live-search%2C-and-references" class="header-anchor">New Node Types: Fields, Live Search, and References</a></h2>
+        <![CDATA[<h2 id="new-node-types%3A-fields%2C-live-search%2C-and-references" tabindex="-1"><a href="https://treehouse.sh/blog/v0-3-0/#new-node-types%3A-fields%2C-live-search%2C-and-references" class="header-anchor">New Node Types: Fields, Live Search, and References</a></h2>
         <p>This release we added some exciting new features: Fields, Live Search, and References. These new node types represent our first step into becoming much more than a simple outliner. Quality of live improvements include making the node menu easier to click, initial work towards a mobile view, and improving interactivity of the command palette. We also cleaned up all our UI elements to match our design system, allowing for better custom CSS support.</p>
         <p><a href="https://www.youtube.com/watch?v=PjWibMkKBOE"><img src="http://i3.ytimg.com/vi/PjWibMkKBOE/hqdefault.jpg" alt="Watch Demo"></a>
         <a href="https://www.youtube.com/watch?v=PjWibMkKBOE">Demo video</a></p>
-        <h3 id="new-feature%3A-fields" tabindex="-1"><a href="http://localhost/blog/v0-3-0/#new-feature%3A-fields" class="header-anchor">New Feature: Fields</a></h3>
+        <h3 id="new-feature%3A-fields" tabindex="-1"><a href="https://treehouse.sh/blog/v0-3-0/#new-feature%3A-fields" class="header-anchor">New Feature: Fields</a></h3>
         <p>A field is a node that can store a key-value pair. This introduces structured data to your nodes, letting you create nodes as data records. You can also search for nodes by field. This initial pass supports text values, but we'll soon provide more value types.</p>
         <p>To turn a node into a field:</p>
         <ol>
@@ -66,7 +66,7 @@
         <li>Command/Control + K to open the command palette, and choose &quot;Create Field&quot;</li>
         <li>Add your field value in the value section</li>
         </ol>
-        <h3 id="new-feature%3A-live-search" tabindex="-1"><a href="http://localhost/blog/v0-3-0/#new-feature%3A-live-search" class="header-anchor">New Feature: Live Search</a></h3>
+        <h3 id="new-feature%3A-live-search" tabindex="-1"><a href="https://treehouse.sh/blog/v0-3-0/#new-feature%3A-live-search" class="header-anchor">New Feature: Live Search</a></h3>
         <p>Live Search allows you to create search nodes where the children are auto-updating search results. Simply type a keyword, or use the format &quot;fieldname:value&quot; to filter by fields. The Live Search nodes will update automatically as your workspace content changes. This is a powerful way to view your data in new configurations.</p>
         <p>To create a Live Search:</p>
         <ol>
@@ -74,14 +74,14 @@
         <li>Command/Control + K to open the command palette, and choose &quot;Create Search Node&quot;</li>
         </ol>
         <p>Tips: Search terms are case-insensitive, and you can filter on multiple fields (uses AND, not OR) like so: &quot;fieldname:value fieldname:value&quot;.</p>
-        <h3 id="new-feature%3A-references" tabindex="-1"><a href="http://localhost/blog/v0-3-0/#new-feature%3A-references" class="header-anchor">New Feature: References</a></h3>
+        <h3 id="new-feature%3A-references" tabindex="-1"><a href="https://treehouse.sh/blog/v0-3-0/#new-feature%3A-references" class="header-anchor">New Feature: References</a></h3>
         <p>References are nodes that refer to another node and its children inline. They're sort of like symlinks on the filesystem. This lets you have a node exist in multiple places at once. References are differentiated from normal nodes with a dashed outline around their outline bullet. Deleting a reference node does not delete the node it points to. You may notice that Live Search results are reference nodes!</p>
         <p>To create a reference node:</p>
         <ol>
         <li>Select the node you want to make a reference to</li>
         <li>Command/Control + K to open the command palette, and choose &quot;Create Reference&quot;</li>
         </ol>
-        <h2 id="bugfixes" tabindex="-1"><a href="http://localhost/blog/v0-3-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
+        <h2 id="bugfixes" tabindex="-1"><a href="https://treehouse.sh/blog/v0-3-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
         <ul>
         <li>Command palette now uses normalized title <a href="https://github.com/treehousedev/treehouse/issues/117">#117</a></li>
         <li>Command palette supports mouse interactivity <a href="https://github.com/treehousedev/treehouse/issues/102">#102</a></li>
@@ -91,7 +91,7 @@
         <li>Search nodes no longer production workspace <a href="https://github.com/treehousedev/treehouse/issues/118">#118</a></li>
         <li>Prevent indenting/outdenting a field node <a href="https://github.com/treehousedev/treehouse/issues/116">#116</a></li>
         </ul>
-        <h2 id="enhancements-and-chores" tabindex="-1"><a href="http://localhost/blog/v0-3-0/#enhancements-and-chores" class="header-anchor">Enhancements and Chores</a></h2>
+        <h2 id="enhancements-and-chores" tabindex="-1"><a href="https://treehouse.sh/blog/v0-3-0/#enhancements-and-chores" class="header-anchor">Enhancements and Chores</a></h2>
         <ul>
         <li>New feature: Field nodes</li>
         <li>New feature: Live Search nodes</li>
@@ -111,13 +111,13 @@
     </item>
     <item>
       <title>Treehouse Influences</title>
-      <link>http://localhost/blog/influences/</link>
-      <guid isPermaLink="false">http://localhost/blog/influences/</guid>
+      <link>https://treehouse.sh/blog/influences/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/influences/</guid>
       <description/>
       <content:encoded>
         <![CDATA[<p>Over the past few months, we've built a frontend framework for an elegant, quality outliner that's open source, extensible, and gives you control of your data. I’d like to share some of the design influences for the Treehouse frontend, which should give a sense of the unique direction Treehouse is going from here.</p>
         <p>The biggest influences for Treehouse are Tana, Notion, and Obsidian. These three represent the state of the art of personal and collaborative information management, sometimes simplified as note-taking tools. However, &quot;note-taking tools&quot; sells them short as they go beyond note-taking and information management. For lack of a better descriptor, many consider them <a href="https://www.forthought.tools/">tools for thought</a>.</p>
-        <h2 id="from-notes-to-tools-for-thought" tabindex="-1"><a href="http://localhost/blog/influences/#from-notes-to-tools-for-thought" class="header-anchor">From Notes to Tools for Thought</a></h2>
+        <h2 id="from-notes-to-tools-for-thought" tabindex="-1"><a href="https://treehouse.sh/blog/influences/#from-notes-to-tools-for-thought" class="header-anchor">From Notes to Tools for Thought</a></h2>
         <p>For most, note-taking brings to mind simple apps like Apple Notes and Google Keep, or even just a text file editor. These work well for people because they're already there and focus on quick and easy plain text capture. We could call this casual note-taking.</p>
         <p>Back in the 2000s, hosted and self-hosted wikis became popular for easy, collaborative web publishing and knowledge management. Like Wikipedia, they could be used to build out hyperlinked knowledge repositories. Many wiki-based tools focused on their use as personal notebooks, one of the most influential examples being <a href="https://tiddlywiki.com/">TiddlyWiki</a>. The simple versatility of the wiki laid the groundwork for what we call &quot;tools for thought&quot; today.</p>
         <p><img src="https://treehouse.sh/photos/blog/tiddlywiki.png" alt="TiddlyWiki screenshot"></p>
@@ -129,14 +129,14 @@
         <p><img src="https://treehouse.sh/photos/blog/obsidian.png" alt="Obsidian screenshot"></p>
         <p>Most recently, a tool in early access called <a href="https://tana.inc/">Tana</a> caught my attention. Their key innovation is taking the linked outline model of Workflowy and introducing schemas for nodes, making them into structured data. This gives Tana the embedded database functionality of Notion and Airtable, a step towards bringing the two paradigms of note-taking software together towards powerful, malleable tools for thought.</p>
         <p><img src="https://treehouse.sh/photos/blog/tana.webp" alt="Tana screenshot"></p>
-        <h2 id="how-treehouse-fits-in" tabindex="-1"><a href="http://localhost/blog/influences/#how-treehouse-fits-in" class="header-anchor">How Treehouse Fits In</a></h2>
+        <h2 id="how-treehouse-fits-in" tabindex="-1"><a href="https://treehouse.sh/blog/influences/#how-treehouse-fits-in" class="header-anchor">How Treehouse Fits In</a></h2>
         <p>By now there's no shortage of options in this space, both as SaaS and open source. Take a look at this growing <a href="https://noteapps.info/">encyclopedia of note-taking tools</a>. Like Notion and Tana, many of the apps listed are much more than note-taking tools. Some lean into the framing of &quot;collaborative documents&quot;, and some are just categorized more generally as &quot;productivity tools&quot;. Tana goes so far as to say &quot;the everything OS&quot;.</p>
         <p>Note-taking is just the beginning. It's a tangible gateway for something more powerful inherent to computing. Ever since Engelbart's <a href="https://en.wikipedia.org/wiki/The_Mother_of_All_Demos">mother of all demos</a>, the computing revolution seems to start with powerful tools for thought, which are, at minimum, good note-taking tools.</p>
         <p><img src="https://treehouse.sh/photos/blog/nls.jpeg" alt="Engelbart using NLS"></p>
         <p>Treehouse is a frontend and starter kit for anybody else that wants to explore this space with us. We will release a standalone product based on it soon, but most of the user-facing development will be done in the open source Treehouse project.</p>
         <p><img src="https://treehouse.sh/photos/hero-image.png" alt="Treehouse screenshot"></p>
         <p>Today with Treehouse you can build your own Workflowy equivalent, but soon it will become more comparable to Tana and Notion with the open extensibility of Obsidian. That alone is pretty exciting to have in a minimal open source project, but I can't wait to show you what will come next.</p>
-        <h2 id="coming-soon" tabindex="-1"><a href="http://localhost/blog/influences/#coming-soon" class="header-anchor">Coming Soon</a></h2>
+        <h2 id="coming-soon" tabindex="-1"><a href="https://treehouse.sh/blog/influences/#coming-soon" class="header-anchor">Coming Soon</a></h2>
         <p>In the next post, I'll start getting technical and share details on the Treehouse project stack and architecture. If you can't wait, we do have <a href="https://treehouse.sh/docs/dev/">documentation</a> for you to check out.</p>
         <p>Thanks for reading, and a big thanks to my <a href="https://github.com/sponsors/progrium">sponsors</a> for supporting this kind of open source work. Share your thoughts and favorite note-taking tools in the <a href="https://github.com/treehousedev/treehouse/discussions/95">discussion thread</a> for this post.</p>
         ]]>
@@ -145,15 +145,15 @@
     </item>
     <item>
       <title>Release 0.2.0</title>
-      <link>http://localhost/blog/v0-2-0/</link>
-      <guid isPermaLink="false">http://localhost/blog/v0-2-0/</guid>
+      <link>https://treehouse.sh/blog/v0-2-0/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/v0-2-0/</guid>
       <description/>
       <content:encoded>
-        <![CDATA[<h2 id="new-design-system%2C-github-session-locking%2C-and-documentation" tabindex="-1"><a href="http://localhost/blog/v0-2-0/#new-design-system%2C-github-session-locking%2C-and-documentation" class="header-anchor">New design system, GitHub session locking, and documentation</a></h2>
+        <![CDATA[<h2 id="new-design-system%2C-github-session-locking%2C-and-documentation" tabindex="-1"><a href="https://treehouse.sh/blog/v0-2-0/#new-design-system%2C-github-session-locking%2C-and-documentation" class="header-anchor">New design system, GitHub session locking, and documentation</a></h2>
         <p><a href="https://github.com/treehousedev/treehouse/releases/tag/0.2.0">This release</a> is a refinement of our initial release, fixing a number of bugs and adding interaction improvements. The look and feel of the UI was also updated with the start of a new CSS design system based on custom properties. Session locking was added for the live demo and GitHub backend so multiple devices/browsers/tabs don't clobber changes of each other. Documentation also got an upgrade with the start of a <a href="https://treehouse.sh/docs/quickstart/">full guide</a> on the website.</p>
         <p><a href="https://www.youtube.com/watch?v=wj4uai9yUJ0"><img src="http://i3.ytimg.com/vi/wj4uai9yUJ0/hqdefault.jpg" alt="Watch Demo"></a>
         <a href="https://www.youtube.com/watch?v=wj4uai9yUJ0">Demo video</a></p>
-        <h2 id="bugfixes" tabindex="-1"><a href="http://localhost/blog/v0-2-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
+        <h2 id="bugfixes" tabindex="-1"><a href="https://treehouse.sh/blog/v0-2-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
         <ul>
         <li>Autosave error when switching between devices <a href="https://github.com/treehousedev/treehouse/issues/32">#32</a></li>
         <li>Deleting a node doesn't delete child nodes <a href="https://github.com/treehousedev/treehouse/issues/25">#25</a></li>
@@ -161,7 +161,7 @@
         <li>TypeError exception when switching back from new panel <a href="https://github.com/treehousedev/treehouse/issues/65">#65</a></li>
         <li>Support emojis <a href="https://github.com/treehousedev/treehouse/issues/52">#52</a></li>
         </ul>
-        <h2 id="enhancements-and-chores" tabindex="-1"><a href="http://localhost/blog/v0-2-0/#enhancements-and-chores" class="header-anchor">Enhancements and Chores</a></h2>
+        <h2 id="enhancements-and-chores" tabindex="-1"><a href="https://treehouse.sh/blog/v0-2-0/#enhancements-and-chores" class="header-anchor">Enhancements and Chores</a></h2>
         <ul>
         <li>Typography and layout improvements to application <a href="https://github.com/treehousedev/treehouse/issues/37">#37</a></li>
         <li>Add keyboard shortcut to move nodes up or down <a href="https://github.com/treehousedev/treehouse/issues/28">#28</a></li>
@@ -183,15 +183,15 @@
     </item>
     <item>
       <title>Release 0.1.0</title>
-      <link>http://localhost/blog/v0-1-0/</link>
-      <guid isPermaLink="false">http://localhost/blog/v0-1-0/</guid>
+      <link>https://treehouse.sh/blog/v0-1-0/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/v0-1-0/</guid>
       <description/>
       <content:encoded>
-        <![CDATA[<h2 id="it-begins..." tabindex="-1"><a href="http://localhost/blog/v0-1-0/#it-begins..." class="header-anchor">It begins...</a></h2>
+        <![CDATA[<h2 id="it-begins..." tabindex="-1"><a href="https://treehouse.sh/blog/v0-1-0/#it-begins..." class="header-anchor">It begins...</a></h2>
         <p>This first <a href="https://github.com/treehousedev/treehouse/releases/tag/0.1.0">development release</a> captures core functionality of the frontend to the point of being internally usable in the demo deployment. For developers, the project source layout, architecture, and backend API is defined in broad strokes in the right direction but is by no means stable.</p>
         <p><a href="https://www.youtube.com/watch?v=wtJCYlR2_ys"><img src="http://i3.ytimg.com/vi/wtJCYlR2_ys/hqdefault.jpg" alt="Watch Demo"></a>
         <a href="https://www.youtube.com/watch?v=wtJCYlR2_ys">Demo video</a></p>
-        <h2 id="initial-functionality" tabindex="-1"><a href="http://localhost/blog/v0-1-0/#initial-functionality" class="header-anchor">Initial Functionality</a></h2>
+        <h2 id="initial-functionality" tabindex="-1"><a href="https://treehouse.sh/blog/v0-1-0/#initial-functionality" class="header-anchor">Initial Functionality</a></h2>
         <ul>
         <li>Basic outliner</li>
         <li>Commands, menus, keybindings</li>
@@ -205,7 +205,7 @@
         <li>Localstorage backend</li>
         <li>GitHub backend</li>
         </ul>
-        <h2 id="enhancements" tabindex="-1"><a href="http://localhost/blog/v0-1-0/#enhancements" class="header-anchor">Enhancements</a></h2>
+        <h2 id="enhancements" tabindex="-1"><a href="https://treehouse.sh/blog/v0-1-0/#enhancements" class="header-anchor">Enhancements</a></h2>
         <ul>
         <li>Implemented OS detection for registering different keybindings <a href="https://github.com/treehousedev/treehouse/issues/1">#1</a></li>
         <li>Don't collapse new nested node <a href="https://github.com/treehousedev/treehouse/issues/3">#3</a></li>
@@ -219,7 +219,7 @@
         <li>Remember node expansion state <a href="https://github.com/treehousedev/treehouse/issues/19">#19</a></li>
         <li>Typography updates <a href="https://github.com/treehousedev/treehouse/issues/21">#21</a></li>
         </ul>
-        <h2 id="bugfixes" tabindex="-1"><a href="http://localhost/blog/v0-1-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
+        <h2 id="bugfixes" tabindex="-1"><a href="https://treehouse.sh/blog/v0-1-0/#bugfixes" class="header-anchor">Bugfixes</a></h2>
         <ul>
         <li>Enable text wrapping for nodes <a href="https://github.com/treehousedev/treehouse/issues/2">#2</a></li>
         <li>Highlight to delete for nested node gives a TypeError <a href="https://github.com/treehousedev/treehouse/issues/12">#12</a></li>
@@ -235,8 +235,8 @@
     </item>
     <item>
       <title>Welcome to Treehouse</title>
-      <link>http://localhost/blog/welcome/</link>
-      <guid isPermaLink="false">http://localhost/blog/welcome/</guid>
+      <link>https://treehouse.sh/blog/welcome/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/welcome/</guid>
       <description/>
       <content:encoded>
         <![CDATA[<p>I'm excited to announce the start of a new major project that I'll be sharing the journey of on this fancy new blog. The project is called <a href="https://treehouse.sh/">Treehouse</a>, which is starting as an open source note-taking frontend and will evolve into something much more.</p>
@@ -244,30 +244,30 @@
         <p>We're creating a simple, hackable kernel of a note-taking tool as a web frontend that can be extended and customized by developers. Then we'll use that frontend to build a new kind of note-taking product. Today we have an early preview of our first minimum viable prototype of the frontend, and we'll be finishing up this release in the open on GitHub.</p>
         <p>The <a href="https://github.com/treehousedev/treehouse">open source project</a> is a functional app frontend that you can deploy and back in various ways. For developers, this &quot;bring your own backend&quot; approach makes Treehouse a great starting point to build your own note-taking tool, just as we intend to do. We also have pre-made backends for those who want to use it with little-to-no programming. Either way, you'll always own your data, and now the system presenting it to you as well.</p>
         <p>In this post, I'm going to talk about our minimum viable prototype and the approach we're taking with Treehouse as an open source project.</p>
-        <h2 id="out-of-the-box" tabindex="-1"><a href="http://localhost/blog/welcome/#out-of-the-box" class="header-anchor">Out of the Box</a></h2>
+        <h2 id="out-of-the-box" tabindex="-1"><a href="https://treehouse.sh/blog/welcome/#out-of-the-box" class="header-anchor">Out of the Box</a></h2>
         <p>While inspired by powerful tools like <a href="https://www.notion.so/">Notion</a>, <a href="https://tana.inc/">Tana</a>, and <a href="https://obsidian.md/">Obsidian</a>, we wanted to boil our initial goal down to the essentials while still being usable enough to use ourselves. As we continue to plan our prototype release milestone, we'd love to hear what you think is essential for you to have in a tool and platform like this, but here is what to expect as a baseline.</p>
-        <h3 id="outliner-with-markdown-pages" tabindex="-1"><a href="http://localhost/blog/welcome/#outliner-with-markdown-pages" class="header-anchor">Outliner with Markdown Pages</a></h3>
+        <h3 id="outliner-with-markdown-pages" tabindex="-1"><a href="https://treehouse.sh/blog/welcome/#outliner-with-markdown-pages" class="header-anchor">Outliner with Markdown Pages</a></h3>
         <p>At the heart of Treehouse is a graph-like system I've been developing called Manifold. This will play a big part in the long-term extensibility of Treehouse, which I'll talk more about in the future. For now, this maps very cleanly to the outliner model popularized by Workflowy, Tana, and others.</p>
         <p>However, I'm also a fan of Notion-style pages and Obsidian's commitment to working with plain Markdown files. The Manifold system allows us to make certain nodes into Markdown pages. This hybrid model gets us the best of both worlds with room for even more possibilities later on.</p>
-        <h3 id="quick-add-and-daily-notes" tabindex="-1"><a href="http://localhost/blog/welcome/#quick-add-and-daily-notes" class="header-anchor">Quick Add and Daily Notes</a></h3>
+        <h3 id="quick-add-and-daily-notes" tabindex="-1"><a href="https://treehouse.sh/blog/welcome/#quick-add-and-daily-notes" class="header-anchor">Quick Add and Daily Notes</a></h3>
         <p>Being able to quickly get thoughts and information into the system has been a key aspect of every good note-taking system. This can be exposed a number of ways from browser extensions to desktop shortcuts, but what makes any &quot;quick add&quot; functionality quick is not having to think about where it will be organized.</p>
         <p>Luckily, &quot;daily notes&quot; has become such a common pattern that many recent tools have managed daily notes built-in. This typical gives you a &quot;today&quot; note that is automatically organized into a calendar-like structure. This conveniently becomes the perfect destination for &quot;quick add&quot; notes.</p>
-        <h3 id="full-text-search" tabindex="-1"><a href="http://localhost/blog/welcome/#full-text-search" class="header-anchor">Full-text Search</a></h3>
+        <h3 id="full-text-search" tabindex="-1"><a href="https://treehouse.sh/blog/welcome/#full-text-search" class="header-anchor">Full-text Search</a></h3>
         <p>Whether you are an obsessive organizer or are too busy to take the time, solid full-text search is basically a necessity. It's how we quickly get to our data.</p>
         <p>Out of the box we have a full-text search that doesn't require a backend. However, our pluggable backend will allow you to power search in a number of ways, and also opens up the ability to search into external systems that are important to you.</p>
-        <h3 id="built-in-backends" tabindex="-1"><a href="http://localhost/blog/welcome/#built-in-backends" class="header-anchor">Built-in Backends</a></h3>
+        <h3 id="built-in-backends" tabindex="-1"><a href="https://treehouse.sh/blog/welcome/#built-in-backends" class="header-anchor">Built-in Backends</a></h3>
         <p>&quot;Bring your own backend&quot; is a critical part of the design of this project, but Treehouse also needs to be usable by people who prefer not to <em>build</em> their own backend. Our prototype release is planned to include a handful of built-in backends to get started with.</p>
         <p>Our preview demo is using a localStorage backend, which works for development and special use cases. Of course, we will have a simple local filesystem backend for desktop scenarios, similar to Obsidian.</p>
         <p>However, we're most excited for the GitHub backend. This functions similarly to the local filesystem backend, but it would be versioned in a central repository on your GitHub account and be accessible on any online platform.</p>
         <p>Backends will not only let you extend storage, search, and authentication, but other aspects in the future.</p>
-        <h2 id="project-overview" tabindex="-1"><a href="http://localhost/blog/welcome/#project-overview" class="header-anchor">Project Overview</a></h2>
+        <h2 id="project-overview" tabindex="-1"><a href="https://treehouse.sh/blog/welcome/#project-overview" class="header-anchor">Project Overview</a></h2>
         <p>The Treehouse codebase and open source project is as much the product as its features. The entire user and developer experience is being designed around simplicity and human ergonomics.</p>
         <p>The Treehouse frontend is built with web technologies intended for use across web, mobile, and desktop platforms. The project is written in TypeScript using <a href="https://deno.land/">Deno</a> as its JavaScript toolchain.</p>
         <p>The JavaScript ecosystem is a mess, but Deno provides a forward-looking, self-contained toolchain that's easy to love. We actually have a zero Node.js policy and avoid NPM modules as much as possible.</p>
         <p>With minimal dependencies and an ongoing effort to keep the codebase small, it will always be easy to understand the entire Treehouse system. This will be further supported with a focus on documentation, both API docs and guides.</p>
         <p>We're using a permissive open source license, allowing you to use or change our code as you see fit. Contribution and participation is welcome, but so is simply consuming downstream.</p>
         <p>The project is actively being developed but we keep a <a href="https://treehouse.sh/demo/">preview demo</a> running off the main branch that should always be in working order.</p>
-        <h2 id="coming-soon" tabindex="-1"><a href="http://localhost/blog/welcome/#coming-soon" class="header-anchor">Coming Soon</a></h2>
+        <h2 id="coming-soon" tabindex="-1"><a href="https://treehouse.sh/blog/welcome/#coming-soon" class="header-anchor">Coming Soon</a></h2>
         <p>I'm excited to give you a deeper look at the project stack in a future post. For now, keep an eye out for the next post digging into the influences for Treehouse. We'll also try to answer &quot;why another note-taking tool&quot;, and tease some long-term ideas for the future.</p>
         <p>Lastly, I want to mention the project is being developed in the open, not just with the code on GitHub, but most of my work is streamed and archived on <a href="https://www.twitch.tv/progrium">Twitch</a>. Feel free to come and co-work with me.</p>
         <p>Thanks for reading, and a big thanks to my <a href="https://github.com/sponsors/progrium/">sponsors</a> for supporting this kind of open source work.</p>
