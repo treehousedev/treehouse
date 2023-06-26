@@ -284,7 +284,8 @@ export class Workbench {
 
   search(query: string): Node[] {
     if (!query) return [];
-    let splitQuery = query.split(/[ ]+/);
+    // this regex selects spaces NOT inside quotes
+    let splitQuery = query.split(/\s+(?=(?:[^\'"]*[\'"][^\'"]*[\'"])*[^\'"]*$)/);
     let textQuery = splitQuery.filter(term => !term.includes(":")).join(" ");
     let fieldQuery = Object.fromEntries(splitQuery.filter(term => term.includes(":")).map(term => term.toLowerCase().split(":")));
     if (!textQuery && Object.keys(fieldQuery).length > 0) {
@@ -308,7 +309,7 @@ export class Workbench {
         if (Object.keys(fieldQuery).length > 0) {
           const fields = {};
           for (const f of node.getLinked("Fields")) {
-            fields[f.name.toLowerCase()] = f.value.toLowerCase();
+            fields[f.name.toLowerCase()] = f.value.toLowerCase().replace(/['"]/, "");
           }
           for (const f in fieldQuery) {
             if (!fields[f] || fields[f] !== fieldQuery[f]) {
