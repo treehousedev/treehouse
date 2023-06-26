@@ -13,6 +13,7 @@ import * as esbuild from "https://deno.land/x/esbuild@v0.17.2/mod.js";
 let lastBuild = 0;
 
 const site = lume({
+  location: new URL("https://treehouse.sh"),
   src: "./web",
   dest: "./web/_out",
   server: {
