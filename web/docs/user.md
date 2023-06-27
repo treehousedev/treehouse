@@ -1,9 +1,9 @@
 ---
-layout: docs
+layout: layouts/docs.tsx
 ---
 # User Guide
 
-## What is Treehouse?
+## What is Treehouse? {#what-is-treehouse}
 
 Treehouse is an outline editor, which you can think of as a nested bulleted list. Each bullet item is called a **node**. You can use the nodes to create nested layers of folders and notes.
 
@@ -74,6 +74,7 @@ Open the node you want to be in the righthand panel. From its menu, choose “Op
 
 You can close or expand either panel to return to a single panel view.
 
+
 ## Fields
 
 A **field** is a node that can store structured information. Fields provide your data with structure, and allow for special search syntax (see [Live Search](#live-search)).
@@ -97,7 +98,7 @@ To create a search node:
 * You can filter on multiple fieldname values (using AND, not OR) like so: "fieldname:valuename fieldname:valuename" etc.
 * Search terms are case-insensitive
 
-## Calendar
+## Calendar 
 
 The Calendar is a default node that is automatically generated for every workspace. Nodes inside the calendar are grouped by date, week, then year.
 
@@ -105,15 +106,17 @@ The Calendar is a default node that is automatically generated for every workspa
 
 The Today shortcut allows you to quickly view the node for Today in your Calendar.
 
-### Quick Add
+## Quick Add 
 
 Quick Add in the top navigation is a shortcut that opens a modal in which you can jot a quick note. It will be added to today’s date in your Calendar. 
 
-## Command Palette
+
+## Command Palette 
 
 With a node selected, open the command palette (⌘ K) to view all the available actions for that node.
 
-## Keyboard shortcuts
+
+## Keyboard Shortcuts
 
 <table>
 <tr>
@@ -149,6 +152,7 @@ With a node selected, open the command palette (⌘ K) to view all the available
 <td>⌘ K</td>
 </tr>
 </table>
+
 
 ## CSS Theming
 

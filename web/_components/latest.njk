@@ -1,0 +1,8 @@
+<div>
+{% asyncEach item in nav.menu("/blog").children | sort(true, true, "data.date")  %}
+  <div>
+    <a href="{{item.data.url}}">{{item.data.title}}</a>
+    <div class="date">{{item.data.date | formatDate }}</div>
+  </div>
+{% endeach %}
+</div>

@@ -21,7 +21,7 @@ jobs:
       - name: Build
         run: |
           deno task bundle
-          deno task generate
+          deno task build
         env:
           BACKEND: github
           BACKEND_URL: https://treehouse-demo-login.proteco.workers.dev
@@ -29,4 +29,4 @@ jobs:
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: local/out
+          folder: web/_out

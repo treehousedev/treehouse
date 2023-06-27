@@ -1,5 +1,5 @@
 ---
-layout: docs
+layout: layouts/docs.tsx
 ---
 # Developer Guide
 
@@ -38,6 +38,7 @@ The "document" for Treehouse is the Workspace, which is  mostly a container for 
 
 Most importantly, nodes build a tree-like structure where each node can be extended with components. Components extend the state and functionality of a node. For example, a checkbox component can be added to a node. This gives it a state (checked or not) and allows the UI to render it differently (add a checkbox). 
 
+
 ## User Actions
 
 All user performable actions are modeled as commands and registered with a command system. Commands are  functions with some extra metadata, like a user displayable name and system identifier. They can be called throughout the system by their system identifier, such as when a user clicks a something.
@@ -47,6 +48,7 @@ Menus are often defined upfront, usually by commands. Commands can have keybindi
 Commands can take arguments and usually take at least a single argument called a context. This is a way to represent state of the user’s current context, such as the currently selected node. 
 
 In addition to menus, keyboard shortcuts, and UI event handlers, there is a command palette the user can trigger to show all commands that can be run in the current context. 
+
 
 ## Workbench UI
 
@@ -63,6 +65,7 @@ Most components are explicitly passed a reference to the Workbench, which they c
 ### Design System
 
 Our design system is inspired by projects like [Pollen](https://www.pollen.style/), where instead of generating CSS classes from JavaScript like Tailwind (which requires a compile step and Node.js based tooling), we simply use and override CSS custom properties. This means they can be used in inline styles as well. We also have a subset of common Tailwind utility classes defined, though using the custom properties. 
+
 
 ## Backend Adapters
 

@@ -1,5 +1,5 @@
-import {m,page} from "../deps.ts";
-export default page({title: "Treehouse"}, ({dev}) => (
+export const title = "Treehouse";
+export default (data) => (
 <html>
 <head>
   <meta charset="UTF-8" />
@@ -32,7 +32,7 @@ export default page({title: "Treehouse"}, ({dev}) => (
         </svg>
         <span>GitHub</span>
       </a>
-      <a class="button hidden primary lg:flex" href="https://treehouse.sh/demo/">
+      <a class="button hidden primary lg:flex" href="/demo/">
         <span>Try the Demo</span>
       </a>
     </nav>
@@ -231,7 +231,6 @@ export default page({title: "Treehouse"}, ({dev}) => (
       </a>
     </div>
   </footer>
-  {(dev)?<script src="https://deno.land/x/refresh/client.js"></script>:null}
 </body>
 </html>
-));
+);

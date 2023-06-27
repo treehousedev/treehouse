@@ -1,0 +1,7 @@
+{% if toc.length %}  
+<ul>
+  {% for item in toc %}
+  <li><a href="#{{ item.slug }}">{{ item.text }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
