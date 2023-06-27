@@ -1,5 +1,5 @@
 
-interface Attrs {
+export interface Attrs {
   input: string;
   inputview: (onkeydown: Function, oninput: Function) => any;
   itemview: (item: any, idx: number) => any;
@@ -7,7 +7,7 @@ interface Attrs {
   onchange: (State) => void;
 }
 
-interface State {
+export interface State {
   selected: number;
   input: string;
   items: any[];
