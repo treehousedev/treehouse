@@ -5,7 +5,7 @@ export const QuickAdd = {
   view({attrs: {workbench, node}}) {
     const path = new Path(node, "quickadd");
     return (
-      <form class="notice" method="dialog">
+      <div class="notice" method="dialog">
           <h3>Quick Add</h3>
           <OutlineEditor workbench={workbench} path={path} alwaysShowNew={true} />
           <div class="button-bar">
@@ -15,7 +15,7 @@ export const QuickAdd = {
             }}>Add to Today</button>
             
           </div>
-      </form>
+      </div>
     )
   }
 }
