@@ -59,7 +59,10 @@ site.use(feed({
     title: "=title",
   },
 })); 
-site.use(toc({ level: 2 }));
+site.use(toc({ 
+  level: 2,
+  anchor: false
+}));
 site.use(nav());
 site.use(jsx());
 site.use(codeHighlight({
