@@ -109,6 +109,7 @@ th, td {
 /*add extra height for readibility*/
 article {
   line-height: 1.7;
+  max-width: 768px;
 }
 article .author {
   font-weight: var(--weight-semibold);
@@ -240,7 +241,7 @@ input[type="text"] {
   background-color: var(--primary);
 }
 
-code:not(pre > code), pre > code > div {
+code:not(pre > code), pre > code > div, .hljs {
   background-color: var(--gray-900);
   color: var(--white);
   font-size: smaller;
@@ -252,32 +253,26 @@ code:not(pre > code), pre > code > div {
 pre > code {
   display: flex;
   overflow-x: auto;
+  max-width: 100%;
 }
-
-
 
 /*code editor color theme (temporarily borrowed from nite owl)*/
-.shj-numbers, .shj-syn-cmnt {
-  color: var(--gray-100);
+.hljs-name {
+  color: #AEDB67; /*green*/
 }
-.shj-syn-insert, .shj-syn-str {
-  color: #AEDB67;
+.hljs-attr {
+  color: #55A3E2; /*blue*/
 }
-.shj-syn-deleted, .shj-syn-var {
-  color: #55A3E2;
+.hljs-string {
+  color: #80DBCA; /*teal*/
 }
-.shj-syn-oper {
-  color: #ED524D;
+.hljs-doctag, .hljs-keyword, .hljs-meta .hljs-keyword, .hljs-template-tag, .hljs-template-variable, .hljs-type, .hljs-variable.language_ {
+  color: #C792EA; /*purple*/
 }
-.shj-syn-class {
-  color: #C792EA;
+.hljs-title, .hljs-title.class_, .hljs-title.class_.inherited__, .hljs-title.function_ {
+  color: #FEEB95; /*yellow*/
 }
-.shj-syn-kwd {
-  color: #80DBCA;
-}
-.shj-syn-section, .shj-syn-func {
-  color: #FEEB95
-}
+
 
 /* Responsive */
 
