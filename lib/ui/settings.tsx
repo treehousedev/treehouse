@@ -3,7 +3,7 @@ export const Settings = {
   view({attrs: {workbench}}) {
     const currentTheme = workbench.workspace.settings.theme;
     return (
-      <form class="notice" method="dialog">
+      <div class="notice" method="dialog">
           <h3>Settings</h3>
           <div class="flex flex-row">
             <div class="grow">Theme</div>
@@ -31,7 +31,7 @@ export const Settings = {
               }
             }}>Save Changes</button>
           </div>
-      </form>
+      </div>
     )
   }
 }
