@@ -97,6 +97,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       ctx.node.setAttr("view", "table");
+      ctx.node.children.forEach(child => {
+        workbench.workspace.setExpanded(ctx.path.head, child, false);
+      });
     }
   });
 
