@@ -68,7 +68,9 @@ export interface Node {
   find(path: string): Node|null;
   walk(fn: WalkFunc, opts?: WalkOptions): boolean;
   destroy(): void;
+  duplicate(): Node;
   changed(): void;
+
 
 }
 

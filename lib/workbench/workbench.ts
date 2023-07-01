@@ -12,6 +12,7 @@ import { Settings } from "../ui/settings.tsx";
 import { FirstTimeMessage, GitHubMessage, LockStolenMessage } from "../ui/notices.tsx";
 
 import { Workspace, Context, Path } from "./mod.ts";
+import { Tag } from "../com/tag.tsx";
 
 /**
  * Workbench is the top-level controller for the Treehouse frontend.
@@ -32,6 +33,7 @@ export class Workbench {
   context: Context;
   panels: Path[];
 
+  popover: any;
   dialog: any;
   menu: any;
 
@@ -263,6 +265,16 @@ export class Workbench {
     this.showDialog(() => m(Settings, {workbench: this}), true);
   }
 
+  showPopover(body: any, style?: {}) {
+    this.popover = {body, style};
+    m.redraw();
+  }
+
+  closePopover() {
+    this.popover = null;
+    m.redraw();
+  }
+
   showDialog(body: any, backdrop?: boolean, style?: {}, explicitClose?: boolean) {
     this.dialog = {body, backdrop, style, explicitClose};
     m.redraw();
@@ -293,6 +305,25 @@ export class Workbench {
       // but we index field names, so this works for now.
       textQuery = Object.keys(fieldQuery)[0];
     }
+    const passFieldQuery = (node: Node): boolean => {
+      // kludgy filter on fields
+      if (Object.keys(fieldQuery).length > 0) {
+        const fields = {};
+        for (const f of node.getLinked("Fields")) {
+          fields[f.name.toLowerCase()] = f.value.toLowerCase();
+        }
+        for (const f in fieldQuery) {
+          if (!fields[f] || fields[f] !== fieldQuery[f].replace(/['"]/g, "")) {
+            return false;
+          }
+        }
+      }
+      return true;
+    }
+    // simple, limited search for tag implementation
+    if (textQuery.startsWith("#")) {
+      return Tag.findTagged(this.workspace, textQuery.replace("#", "")).filter(passFieldQuery);
+    }
     return this.backend.index.search(textQuery)
       .map(id => {
         let node = window.workbench.workspace.find(id);
@@ -305,17 +336,8 @@ export class Workbench {
           // parent might not actually exist
           if (!node.raw) return undefined;
         }
-        // kludgy filter on fields
-        if (Object.keys(fieldQuery).length > 0) {
-          const fields = {};
-          for (const f of node.getLinked("Fields")) {
-            fields[f.name.toLowerCase()] = f.value.toLowerCase();
-          }
-          for (const f in fieldQuery) {
-            if (!fields[f] || fields[f] !== fieldQuery[f].replace(/['"]/g, "")) {
-              return undefined;
-            }
-          }
+        if (!passFieldQuery(node)) {
+          return undefined;
         }
         return node;
       })

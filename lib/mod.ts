@@ -24,6 +24,8 @@ import { Checkbox } from "./com/checkbox.tsx";
 import { Page } from "./com/page.tsx";
 import { TextField } from "./com/textfield.tsx";
 import { Clock } from "./com/clock.tsx";
+import { Tag } from "./com/tag.tsx";
+import { Template } from "./com/template.tsx";
 import { objectManaged } from "./model/hooks.ts";
 
 export { BrowserBackend, SearchIndex_MiniSearch } from "./backend/browser.ts";
@@ -54,6 +56,8 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     TextField,
     Page,
     Checkbox,
+    Tag,
+    Template,
   ].forEach(com => {
     if (com.initialize) {
       com.initialize(workbench);
@@ -457,6 +461,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       let path = ctx.path;
       let posBelow = false;
       if (!node) {
+        // no node is selected, use panel node
         node = ctx.path.head;
         path = new Path(ctx.path.head, ctx.path.name);
         posBelow = true;

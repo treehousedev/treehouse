@@ -42,7 +42,7 @@ body, input, textarea, button {
 dialog {
   color: var(--color-text);
 }
-button {
+button:not(.badge) {
   box-sizing: content-box;
   height: 48px;
   font-weight: var(--weight-bold);
@@ -56,6 +56,13 @@ button.primary {
   color: var(--color-background);
   background-color: var(--color-primary);
   border: none;
+}
+button.badge {
+  padding: 0;
+  border: 1px solid gray;
+}
+button.badge:focus {
+  border: 1px solid blue;
 }
 p {
   margin-block-start: var(--padding);
@@ -72,11 +79,16 @@ p {
   }
 }
 
-dialog {
+.popover {
   filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.15));
   outline: none;
   border: 1px solid var(--color-outline);
   border-radius: var(--border-radius);
+}
+.popover > div {
+  border-radius: var(--border-radius);
+}
+dialog {
   padding: 0;
 }
 dialog::backdrop {

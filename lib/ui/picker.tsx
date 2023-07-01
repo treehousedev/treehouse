@@ -21,8 +21,10 @@ export const Picker: m.Component<Attrs, State> = {
     }
   },
 
-  oncreate({ state, dom }) {
-    dom.querySelector("input").focus();
+  oncreate({ attrs, state, dom }) {
+    if (attrs.inputview) {
+      dom.querySelector("input")?.focus();
+    }
     if (state.selected === undefined) {
       state.selected = 0;
     }
@@ -42,7 +44,7 @@ export const Picker: m.Component<Attrs, State> = {
       if (e.key === "ArrowDown") {
         if (state.selected === undefined) {
           state.selected = 0;
-          return;
+          return false;
         }
         state.selected = mod(state.selected + 1, state.items.length);
         return false;

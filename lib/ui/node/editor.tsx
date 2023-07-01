@@ -1,7 +1,7 @@
 import { objectCall, objectHas } from "../../model/hooks.ts";
 
 export const NodeEditor: m.Component = {
-  view ({attrs: {workbench, path, onkeydown, disallowEmpty, editValue, placeholder}, state}) {
+  view ({attrs: {workbench, path, onkeydown, oninput, disallowEmpty, editValue, placeholder}, state}) {
     const node = path.node;
     let prop = (editValue) ? "value" : "name";
     
@@ -40,7 +40,7 @@ export const NodeEditor: m.Component = {
     if (prop === "value") {
       id = id+"-value";
     }
-    return m(TextEditor, {id, getter, setter, display, onkeydown, onfocus, placeholder});
+    return m(TextEditor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder});
   }
 }
 
@@ -79,7 +79,7 @@ export const TextEditor: m.Component<Attrs, State> = {
   onupdate() {
     this.updateHeight();
   },
-  view ({attrs: {id, onkeydown, onfocus, onblur, getter, setter, display, placeholder}, state}) {
+  view ({attrs: {id, onkeydown, onfocus, onblur, oninput, getter, setter, display, placeholder}, state}) {
     const value = (state.editing) 
       ? state.buffer 
       : (display) ? display() : getter();
@@ -110,6 +110,9 @@ export const TextEditor: m.Component<Attrs, State> = {
     const edit = (e) => {
       state.buffer = e.target.value;
       setter(state.buffer, false);
+      if (oninput) {
+        oninput(e);
+      }
     }
     
     // TODO: node-container => text-editor

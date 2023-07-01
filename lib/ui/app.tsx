@@ -110,9 +110,15 @@ export const App: m.Component = {
         </div>
 
         
-        
+        {workbench.popover && 
+          <div class="popover" style={{position: "absolute", ...workbench.popover.style}}>
+            {workbench.popover.body()}
+          </div>
+        }
+
+
         <dialog 
-          class={(workbench.dialog.backdrop) ? "modal backdrop" : "modal"} 
+          class={(workbench.dialog.backdrop) ? "popover modal backdrop" : "popover modal"} 
           style={(workbench.dialog.style) ? {margin: "0", ...workbench.dialog.style} : {top: "-50%"}}
           oncancel={e => {
             if (workbench.dialog.explicitClose === true) {
@@ -137,7 +143,7 @@ export const App: m.Component = {
             {workbench.dialog.body()}
         </dialog>
 
-        <dialog class="menu" 
+        <dialog class="menu popover" 
           style={{margin: "0", ...workbench.menu.style}}
           oncancel={e => {
             // resets body

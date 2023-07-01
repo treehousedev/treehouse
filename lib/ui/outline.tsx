@@ -1,22 +1,27 @@
 
 import { Workbench, Path } from "../workbench/mod.ts";
-import { objectCall, objectHas } from "../model/hooks.ts";
-import { NewNode } from "./node/new.tsx";
+import { objectCall, componentsWith, objectHas } from "../model/hooks.ts";
 import { NodeEditor } from "./node/editor.tsx";
 
 import { Checkbox } from "../com/checkbox.tsx";
 import { Clock } from "../com/clock.tsx";
 import { getView } from "../view/views.ts";
 
-interface Attrs {
+import { Tag } from "../com/tag.tsx";
+
+export interface Attrs {
   path: Path;
   workbench: Workbench;
 }
 
-interface State {
+export interface State {
   hover: boolean;
-  editing: boolean;
-  buffer?: string;
+  tagPopover?: Popover;
+}
+
+interface Popover {
+  onkeydown: Function;
+  oninput: Function;
 }
 
 export const OutlineEditor: m.Component<Attrs> = {
@@ -60,7 +65,42 @@ export const OutlineNode: m.Component<Attrs, State> = {
       e.stopPropagation();
     }
     
-    const checkCommands = (e) => {
+
+    const cancelTagPopover = () => {
+      if (state.tagPopover) {
+        workbench.closePopover();
+        state.tagPopover = undefined;
+      }
+    }
+
+    const oninput = (e) => {
+      if (state.tagPopover) {
+        state.tagPopover.oninput(e);
+        if (!e.target.value.includes("#")) {
+          cancelTagPopover();
+        }
+      } else {
+        if (e.target.value.includes("#")) {
+          state.tagPopover = {};
+          // Don't love that we're hard depending on Tag
+          Tag.showPopover(workbench, path, node, (onkeydown, oninput) => {
+            state.tagPopover = {onkeydown, oninput};
+          }, cancelTagPopover);
+        }
+      }
+    }
+
+    const onkeydown = (e) => {
+      if (state.tagPopover) {
+        if (e.key === "Escape") {
+          cancelTagPopover();
+          return;
+        }
+        if (state.tagPopover.onkeydown(e) === false) {
+          e.stopPropagation();
+          return false;
+        }
+      }
       const anyModifiers = e.shiftKey || e.metaKey || e.altKey || e.ctrlKey;
       switch (e.key) {
       case "ArrowUp":
@@ -186,14 +226,14 @@ export const OutlineNode: m.Component<Attrs, State> = {
           {(node.raw.Rel === "Fields") 
             ? <div class="flex grow items-start flex-row">
                 <div>
-                  <NodeEditor workbench={workbench} path={path} onkeydown={checkCommands} />
+                  <NodeEditor workbench={workbench} path={path} onkeydown={onkeydown} oninput={oninput} />
                 </div>
-                <NodeEditor editValue={true} workbench={workbench} path={path} onkeydown={checkCommands} />
+                <NodeEditor editValue={true} workbench={workbench} path={path} onkeydown={onkeydown} oninput={oninput} />
               </div>
-            : <div class="flex grow items-start flex-row">
-                {objectHas(node, "beforeEditor") && m(objectCall(node, "beforeEditor"), {node})}
-                <NodeEditor workbench={workbench} path={path} onkeydown={checkCommands} placeholder={placeholder} />
-                {objectHas(node, "afterEditor") && m(objectCall(node, "afterEditor"), {node})}
+            : <div class="flex grow items-start flex-row" style={{gap: "0.5rem"}}>
+                {objectHas(node, "beforeEditor") && componentsWith(node, "beforeEditor").map(component => m(component.beforeEditor(), {node, component}))}
+                <NodeEditor workbench={workbench} path={path} onkeydown={onkeydown} oninput={oninput} placeholder={placeholder} />
+                {objectHas(node, "afterEditor") && componentsWith(node, "afterEditor").map(component => m(component.afterEditor(), {node, component}))}
               </div>
           }
         </div>

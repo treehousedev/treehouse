@@ -21,6 +21,6 @@ const CheckboxEditor = {
       checkbox.checked = !checkbox.checked;
       node.changed();
     }
-    return <input type="checkbox" style={{marginTop: "0.3rem", marginRight: "0.5rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />
+    return <input type="checkbox" style={{marginTop: "0.3rem"}} onclick={toggleCheckbox} checked={node.getComponent(Checkbox).checked} />
   }
 }

@@ -1,5 +1,5 @@
 import { RawNode, Node as INode, Bus as IBus, WalkFunc, WalkOptions } from "../mod.ts";
-import { componentName } from "../components.ts";
+import { componentName, duplicate } from "../components.ts";
 import { triggerHook, hasHook } from "../hooks.ts";
 import { Bus } from "./mod.ts";
 
@@ -204,6 +204,15 @@ export class Node {
     this.changed();
   }
 
+  get fields(): INode[] {
+    if (!this.raw.Linked.Fields) return [];
+    return this.raw.Linked.Fields.map(id => new Node(this._bus, id));
+  }
+
+  get fieldCount(): number {
+    if (!this.raw.Linked.Fields) return 0;
+    return this.raw.Linked.Fields.length;
+  }
 
   get components(): INode[] {
     if (!this.raw.Linked.Components) return [];
@@ -224,8 +233,13 @@ export class Node {
     this.changed();
   } 
 
-  removeComponent(type: any) {
-    const coms = this.components.filter(n => n.name === componentName(type));
+  removeComponent(obj: any) {
+    let coms;
+    if (obj instanceof String) {
+      coms = this.components.filter(n => n.name === componentName(obj));
+    } else {
+      coms = this.components.filter(n => n.value === obj);
+    }
     if (coms.length > 0) {
       coms[0].destroy();
     }
@@ -339,6 +353,24 @@ export class Node {
       includeComponents: true
     });
     nodes.reverse().forEach(n => this._bus.destroy(n));
+  }
+
+  duplicate(): INode {
+    const n = this._bus.make(this.name, duplicate(this.value));
+    n.raw.Rel = this.raw.Rel;
+    this.fields.map(f => f.duplicate()).forEach(f => {
+      n.addLinked("Fields", f);
+      f.raw.Parent = n.raw.ID;
+    });
+    this.components.map(c => c.duplicate()).forEach(c => {
+      n.addLinked("Components", c);
+      c.raw.Parent = n.raw.ID;
+    });
+    this.children.map(c => c.duplicate()).forEach(c => {
+      n.addChild(c);
+      c.raw.Parent = n.raw.ID;
+    });
+    return n;
   }
 
   changed() {

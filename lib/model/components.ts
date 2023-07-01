@@ -35,3 +35,21 @@ export function inflateToComponent(com: any, obj: any): any {
   }
   return o;
 }
+
+export function duplicate(obj: any): any {
+  if (obj === undefined) {
+    return undefined;
+  }
+  const com = getComponent(obj);
+  if (!com) {
+    return structuredClone(obj);
+  }
+  const src = JSON.parse(JSON.stringify(obj)||"");
+  const dst = new obj.constructor();
+  if (dst["fromJSON"] instanceof Function) {
+    dst.fromJSON(src);
+  } else {
+    Object.defineProperties(dst, Object.getOwnPropertyDescriptors(src));
+  }
+  return dst;
+}
