@@ -10,7 +10,7 @@
   
 </ul>
 </div><h5><a href="/docs/user">User Guide</a></h5><h5><a href="/docs/dev">Developer Guide</a></h5><h5><a href="/docs/project">Project Guide</a></h5></nav><article class="grow"><div><h1>Quickstart</h1>
-<h2 id="using-from-cdn" tabindex="-1"><a href="#using-from-cdn" class="header-anchor">Using from CDN</a></h2>
+<h2 id="using-from-cdn" tabindex="-1">Using from CDN</h2>
 <p>First, you have to directly include Mithril and MiniSearch for now:</p>
 <pre><code class="language-html hljs language-xml"><span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdnjs.cloudflare.com/ajax/libs/mithril/2.0.3/mithril.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://cdn.jsdelivr.net/npm/minisearch@6.0.1/dist/umd/index.min.js"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
@@ -25,7 +25,7 @@
   <span class="hljs-title function_">setup</span>(<span class="hljs-variable language_">document</span>, <span class="hljs-variable language_">document</span>.<span class="hljs-property">body</span>, <span class="hljs-keyword">new</span> <span class="hljs-title class_">BrowserBackend</span>());
 </span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
 </code></pre>
-<h2 id="building-from-source" tabindex="-1"><a href="#building-from-source" class="header-anchor">Building from Source</a></h2>
+<h2 id="building-from-source" tabindex="-1">Building from Source</h2>
 <p>You can build from source by cloning or forking the project and installing <a href="https://deno.land/">Deno</a>. Then you can run:</p>
 <p><code>deno task bundle</code></p>
 <p>This will produce a JS file you can use at <code>web/static/lib/treehouse.min.js</code>.</p>
@@ -33,7 +33,7 @@
 <p><code>deno task serve</code></p>
 <p>This will build and serve this website locally, including the live demo site at <code>localhost:9000/demo</code>, which will use
 and watch for changes in the <code>lib</code> source.</p>
-<h2 id="customizing-the-frontend" tabindex="-1"><a href="#customizing-the-frontend" class="header-anchor">Customizing the Frontend</a></h2>
+<h2 id="customizing-the-frontend" tabindex="-1">Customizing the Frontend</h2>
 <p>The easiest aspect to customize is the look and feel, which you can do with custom CSS. Our CSS design system is built with
 custom properties, so you can include your own CSS and just override them with basic CSS.</p>
 <p>Further customization might require you to fork and change the source. The source code is very straight forward, but learn

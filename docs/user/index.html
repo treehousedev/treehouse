@@ -26,79 +26,79 @@
   
 </ul>
 </div><h5><a href="/docs/dev">Developer Guide</a></h5><h5><a href="/docs/project">Project Guide</a></h5></nav><article class="grow"><div><h1>User Guide</h1>
-<h2 id="what-is-treehouse" tabindex="-1"><a href="#what-is-treehouse" class="header-anchor">What is Treehouse?</a></h2>
+<h2 id="what-is-treehouse" tabindex="-1">What is Treehouse?</h2>
 <p>Treehouse is an outline editor, which you can think of as a nested bulleted list. Each bullet item is called a <strong>node</strong>. You can use the nodes to create nested layers of folders and notes.</p>
-<h2 id="data-storage" tabindex="-1"><a href="#data-storage" class="header-anchor">Data storage</a></h2>
-<h3 id="localstorage" tabindex="-1"><a href="#localstorage" class="header-anchor">Localstorage</a></h3>
+<h2 id="data-storage" tabindex="-1">Data storage</h2>
+<h3 id="localstorage" tabindex="-1">Localstorage</h3>
 <p>By default, data is stored in your browser’s local storage. That means that the data is linked to your specific browser and device. If you clear your browser cache, the data will be wiped.</p>
-<h3 id="github" tabindex="-1"><a href="#github" class="header-anchor">GitHub</a></h3>
+<h3 id="github" tabindex="-1">GitHub</h3>
 <p>If you choose to log in with GitHub, we’ll create a repository and store your data there.</p>
 <p>To store your workspace, we will create a public repository called <username>.treehouse.sh if it doesn’t already exist. If you want to make the repository private, you can do so in GitHub.</username></p>
 <p>To switch back to the local storage backend, log out from the Options menu.</p>
-<h4 id="multiple-sessions" tabindex="-1"><a href="#multiple-sessions" class="header-anchor">Multiple sessions</a></h4>
+<h4 id="multiple-sessions" tabindex="-1">Multiple sessions</h4>
 <p>If you log in to Treehouse from multiple devices, the most recent device will have edit and save access. Other sessions will be prompted to refresh the page; if/when you do so, that session becomes the new active session.</p>
-<h2 id="nodes" tabindex="-1"><a href="#nodes" class="header-anchor">Nodes</a></h2>
+<h2 id="nodes" tabindex="-1">Nodes</h2>
 <p>Your <strong>Workspace</strong> is your top level node, which all other nodes are nested under.</p>
 <p>Learn how to manage and edit your nodes.</p>
-<h3 id="add" tabindex="-1"><a href="#add" class="header-anchor">Add</a></h3>
+<h3 id="add" tabindex="-1">Add</h3>
 <p>You can add a new node in a few ways.</p>
 <ol>
 <li>Hit ENTER on your keyboard and start typing.</li>
 <li>Click into the blank area next to the plus symbol and start typing.</li>
 </ol>
-<h3 id="indent" tabindex="-1"><a href="#indent" class="header-anchor">Indent</a></h3>
+<h3 id="indent" tabindex="-1">Indent</h3>
 <ul>
 <li>Indent a node using TAB ↹</li>
 <li>Outdent a node using SHIFT + TAB ⇧ ↹</li>
 </ul>
-<h3 id="move" tabindex="-1"><a href="#move" class="header-anchor">Move</a></h3>
+<h3 id="move" tabindex="-1">Move</h3>
 <ul>
 <li>Move a node up with SHIFT + COMMAND + UP ARROW ⇧ <strong>⌘ ↑</strong></li>
 <li>Move a node down with SHIFT + COMMAND + DOWN ARROW ⇧ <strong>⌘</strong> ↓</li>
 </ul>
-<h3 id="expand-or-collapse-a-node" tabindex="-1"><a href="#expand-or-collapse-a-node" class="header-anchor">Expand or collapse a node</a></h3>
+<h3 id="expand-or-collapse-a-node" tabindex="-1">Expand or collapse a node</h3>
 <p>If a node bullet has an outline around it, that’s an indication that it has nested content that is currently hidden. Click the node to expand it.</p>
 <p>Click an expanded node once to collapse it.</p>
-<h3 id="node-menu" tabindex="-1"><a href="#node-menu" class="header-anchor">Node menu</a></h3>
+<h3 id="node-menu" tabindex="-1">Node menu</h3>
 <p>When you hover over a node, you’ll see a menu to the left of the node bullet. Click it to access node options, such as indent/outdent, open in a panel, etc.</p>
-<h3 id="node-formatting" tabindex="-1"><a href="#node-formatting" class="header-anchor">Node formatting</a></h3>
+<h3 id="node-formatting" tabindex="-1">Node formatting</h3>
 <p>Currently, all nodes are formatted as plain text. You can, however, add a checkbox to a node. With a node selected, open the command palette (⌘ K) and select "Add checkbox".</p>
-<h3 id="view" tabindex="-1"><a href="#view" class="header-anchor">View</a></h3>
+<h3 id="view" tabindex="-1">View</h3>
 <p>Double click a node to zoom in.</p>
-<h3 id="side-by-side-(panel)-view" tabindex="-1"><a href="#side-by-side-(panel)-view" class="header-anchor">Side-by-side (Panel) view</a></h3>
+<h3 id="side-by-side-(panel)-view" tabindex="-1">Side-by-side (Panel) view</h3>
 <p>To view two nodes side-by-side:</p>
 <p>Open the node you want to be in the righthand panel. From its menu, choose “Open in New Panel”.</p>
 <p>You can close or expand either panel to return to a single panel view.</p>
-<h2 id="fields" tabindex="-1"><a href="#fields" class="header-anchor">Fields</a></h2>
+<h2 id="fields" tabindex="-1">Fields</h2>
 <p>A <strong>field</strong> is a node that can store structured information. Fields provide your data with structure, and allow for special search syntax (see <a href="#live-search">Live Search</a>).</p>
-<h3 id="create-a-field" tabindex="-1"><a href="#create-a-field" class="header-anchor">Create a field</a></h3>
+<h3 id="create-a-field" tabindex="-1">Create a field</h3>
 <p>To add a field to a node:</p>
 <ol>
 <li>Indent underneath the node you want to contain the field, and type the field name</li>
 <li>Use Command/Control + K to open the command palette, and choose "Create field"</li>
 <li>Add your field value in the value section</li>
 </ol>
-<h2 id="live-search" tabindex="-1"><a href="#live-search" class="header-anchor">Live Search</a></h2>
+<h2 id="live-search" tabindex="-1">Live Search</h2>
 <p>Live Search allow you to create an auto-updating search of all the nodes in your workspace. Simply type your search term, or use the format "fieldname:valuename" to filter specifically by field values. The Live Search will update automatically as your node content changes. This is a simple but super powerful way to view your data in new configurations.</p>
 <p>To create a search node:</p>
 <ol>
 <li>Create a new node where you want your search node, and type your search value</li>
 <li>Use Command/Control + K to open the command palette, and choose "Create Search Node"</li>
 </ol>
-<h3 id="tips-for-using-live-search" tabindex="-1"><a href="#tips-for-using-live-search" class="header-anchor">Tips for using Live Search</a></h3>
+<h3 id="tips-for-using-live-search" tabindex="-1">Tips for using Live Search</h3>
 <ul>
 <li>You can filter on multiple fieldname values (using AND, not OR) like so: "fieldname:valuename fieldname:valuename" etc.</li>
 <li>Search terms are case-insensitive</li>
 </ul>
-<h2 id="calendar" tabindex="-1"><a href="#calendar" class="header-anchor">Calendar</a></h2>
+<h2 id="calendar" tabindex="-1">Calendar</h2>
 <p>The Calendar is a default node that is automatically generated for every workspace. Nodes inside the calendar are grouped by date, week, then year.</p>
-<h3 id="today" tabindex="-1"><a href="#today" class="header-anchor">Today</a></h3>
+<h3 id="today" tabindex="-1">Today</h3>
 <p>The Today shortcut allows you to quickly view the node for Today in your Calendar.</p>
-<h2 id="quick-add" tabindex="-1"><a href="#quick-add" class="header-anchor">Quick Add</a></h2>
+<h2 id="quick-add" tabindex="-1">Quick Add</h2>
 <p>Quick Add in the top navigation is a shortcut that opens a modal in which you can jot a quick note. It will be added to today’s date in your Calendar.</p>
-<h2 id="command-palette" tabindex="-1"><a href="#command-palette" class="header-anchor">Command Palette</a></h2>
+<h2 id="command-palette" tabindex="-1">Command Palette</h2>
 <p>With a node selected, open the command palette (⌘ K) to view all the available actions for that node.</p>
-<h2 id="keyboard-shortcuts" tabindex="-1"><a href="#keyboard-shortcuts" class="header-anchor">Keyboard Shortcuts</a></h2>
+<h2 id="keyboard-shortcuts" tabindex="-1">Keyboard Shortcuts</h2>
 <table>
 <tbody><tr>
 <td>indent</td>
@@ -133,9 +133,9 @@
 <td>⌘ K</td>
 </tr>
 </tbody></table>
-<h2 id="css-theming" tabindex="-1"><a href="#css-theming" class="header-anchor">CSS Theming</a></h2>
+<h2 id="css-theming" tabindex="-1">CSS Theming</h2>
 <p>You can create your own custom theme for Treehouse using our built-in variables a.k.a. custom properties.</p>
-<h3 id="create-a-theme" tabindex="-1"><a href="#create-a-theme" class="header-anchor">Create a theme</a></h3>
+<h3 id="create-a-theme" tabindex="-1">Create a theme</h3>
 <ol>
 <li>Add a top level folder called "ext" to your treehouse.sh repository</li>
 <li>Create a CSS file inside the ext folder</li>
@@ -167,9 +167,9 @@
   <span class="hljs-attr">--color-outline-secondary</span>: #hex;
 }
 </code></pre>
-<h3 id="managing-multiple-css-files" tabindex="-1"><a href="#managing-multiple-css-files" class="header-anchor">Managing multiple CSS files</a></h3>
+<h3 id="managing-multiple-css-files" tabindex="-1">Managing multiple CSS files</h3>
 <p>If you have multiple CSS files you want to swap between, append ".disabled" to the end of the unused CSS filename(s).</p>
-<h3 id="variable-reference" tabindex="-1"><a href="#variable-reference" class="header-anchor">Variable Reference</a></h3>
+<h3 id="variable-reference" tabindex="-1">Variable Reference</h3>
 <table>
 	<tbody><tr><th>Variable</th><th>Description</th></tr>
 	<tr>
@@ -233,15 +233,15 @@
 		<td>Lower contrast border color where less extreme contrast is needed, such as the divider between panels and the navigation.</td>
 	</tr>
 </tbody></table>
-<h3 id="fonts" tabindex="-1"><a href="#fonts" class="header-anchor">Fonts</a></h3>
+<h3 id="fonts" tabindex="-1">Fonts</h3>
 <p>To use a non-system font, you may import a font into your CSS file using either the @import method or the @font-face method.</p>
-<h2 id="backend-extensions" tabindex="-1"><a href="#backend-extensions" class="header-anchor">Backend Extensions</a></h2>
+<h2 id="backend-extensions" tabindex="-1">Backend Extensions</h2>
 <p>Backends can change or extend how a Treehouse application behaves and are exposed to the frontend via adapters.</p>
-<h3 id="workspace-storage" tabindex="-1"><a href="#workspace-storage" class="header-anchor">Workspace Storage</a></h3>
+<h3 id="workspace-storage" tabindex="-1">Workspace Storage</h3>
 <p>The Treehouse frontend uses its backend adapter to store the state of your workspace into a JSON document. The backend can decide where and how that JSON document is stored. For example, the Browser backend adapter will store the JSON into localStorage.</p>
-<h3 id="user-authentication" tabindex="-1"><a href="#user-authentication" class="header-anchor">User Authentication</a></h3>
+<h3 id="user-authentication" tabindex="-1">User Authentication</h3>
 <p>An optional capability of the frontend is to know whether a particular user is authenticated. You typically want user authentication for cloud or web-based deployments, but not necessarily for a local desktop app.</p>
-<h3 id="search-indexing" tabindex="-1"><a href="#search-indexing" class="header-anchor">Search Indexing</a></h3>
+<h3 id="search-indexing" tabindex="-1">Search Indexing</h3>
 <p>Out of the box, Treehouse will index your workspace for full-text search using <a href="https://lucaong.github.io/minisearch/">Minisearch</a>,
 which will be good enough for many cases. However, a backend adapter can choose to hook into the index and searching
 so that you could have a more powerful search index such as ElasticSearch.</p>
