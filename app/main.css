@@ -42,7 +42,7 @@ body, input, textarea, button {
 dialog {
   color: var(--color-text);
 }
-button:not(.badge) {
+button {
   box-sizing: content-box;
   height: 48px;
   font-weight: var(--weight-bold);
@@ -57,11 +57,11 @@ button.primary {
   background-color: var(--color-primary);
   border: none;
 }
-button.badge {
+.badge {
   padding: 0;
   border: 1px solid gray;
 }
-button.badge:focus {
+.badge:focus {
   border: 1px solid blue;
 }
 p {
