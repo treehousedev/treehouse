@@ -42,14 +42,17 @@ body, input, textarea, button {
 dialog {
   color: var(--color-text);
 }
+
+button, .badge {
+  cursor: pointer; 
+  border-radius: var(--border-radius);
+}
 button {
   box-sizing: content-box;
   height: 48px;
   font-weight: var(--weight-bold);
   border: 1px solid var(--color-outline);
-  border-radius: var(--border-radius);
   background-color: var(--color-background);
-  cursor: pointer; 
   padding: 0 calc(var(--padding)*2);
 }
 button.primary {
@@ -58,12 +61,15 @@ button.primary {
   border: none;
 }
 .badge {
-  padding: 0;
-  border: 1px solid gray;
+  padding: 0 var(--1);
+  border: 1px solid var(--color-background);
+  background: var(--color-highlight);
+  line-height: var(--body-line-height);
 }
 .badge:focus {
-  border: 1px solid blue;
+  border: 1px solid var(--color-outline);
 }
+
 p {
   margin-block-start: var(--padding);
   margin-block-end: var(--padding);
