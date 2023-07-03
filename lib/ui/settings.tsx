@@ -4,7 +4,7 @@ export const Settings = {
     const currentTheme = workbench.workspace.settings.theme;
     return (
       <div class="notice">
-        <form>
+        <form method="dialog">
           <h3>Settings</h3>
           <div class="flex flex-row">
             <div class="grow">Theme</div>
