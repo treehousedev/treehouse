@@ -159,17 +159,17 @@ const ClockBadge = {
     }
     if (!clock.showLog && clock.startedAt) {
       return (
-        <button onclick={toggleLog} class="badge flex flex-row items-center" style={{background: "green", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
+        <div tabindex="1" onclick={toggleLog} class="badge flex flex-row items-center" style={{background: "green", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
           <svg class="blink" style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
           <div>{clock.formatDuration(clock.entryDuration([clock.startedAt]))}</div>
-        </button>
+        </div>
       )
     }
     return (
-      <button onclick={toggleLog} class="badge flex flex-row items-center" style={{background: "gray", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
+      <div tabindex="1" onclick={toggleLog} class="badge flex flex-row items-center" style={{background: "gray", lineHeight: "var(--body-line-height)", paddingLeft: "0.25rem", paddingRight: "0.25rem", borderRadius: "4px", color: "white"}}>
         <svg style={{width: "1rem", height: "1rem", marginRight: "0.25rem"}} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
         <div>{clock.formatDuration(clock.grandTotal())}</div>
-      </button>
+      </div>
     )
   }
 }
