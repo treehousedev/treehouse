@@ -25,7 +25,7 @@ const site = lume({
             await esbuild.build({
               entryPoints: ["lib/mod.ts"],
               bundle: true,
-              outfile: "web/static/lib/treehouse.js",
+              outfile: "web/_out/lib/treehouse.js",
               jsxFactory: "m",
               sourcemap: true,
               format: "esm",
