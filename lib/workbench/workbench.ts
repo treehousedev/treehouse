@@ -291,7 +291,7 @@ export class Workbench {
 
   closeDialog() {
     document.querySelector("main > dialog.modal").close();
-    workbench.dialog.body = () => null;
+    this.dialog.body = () => null;
   }
 
   search(query: string): Node[] {
