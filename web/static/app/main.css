@@ -42,12 +42,12 @@ body, input, textarea, button {
 dialog {
   color: var(--color-text);
 }
-/*shared button styles including tags (badges)*/
-button {
+
+button, .badge {
   cursor: pointer; 
   border-radius: var(--border-radius);
 }
-button:not(.badge) {
+button {
   box-sizing: content-box;
   height: 48px;
   font-weight: var(--weight-bold);
@@ -60,15 +60,16 @@ button.primary {
   background-color: var(--color-primary);
   border: none;
 }
-button.badge {
+.badge {
   padding: 0 var(--1);
   border: 1px solid var(--color-background);
   background: var(--color-highlight);
   line-height: var(--body-line-height);
 }
-button.badge:focus {
+.badge:focus {
   border: 1px solid var(--color-outline);
 }
+
 p {
   margin-block-start: var(--padding);
   margin-block-end: var(--padding);
