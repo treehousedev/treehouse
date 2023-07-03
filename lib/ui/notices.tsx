@@ -2,7 +2,7 @@
 export const LockStolenMessage = {
   view() {
     return (
-      <div class="notice" method="dialog">
+      <div class="notice">
         <h3>Refresh to view latest updates</h3>
         <p>
           Your notes were updated in another browser session. Refresh the page to view the latest version.
@@ -21,7 +21,7 @@ export const LockStolenMessage = {
 export const FirstTimeMessage = {
   view({attrs: {workbench}}) {
     return (
-      <div class="notice" method="dialog">
+      <div class="notice">
         <h3>Treehouse is under active development</h3>
         <p>This is a preview based on our main branch, which is actively being developed.</p>
         <p>If you find a bug, please report it via 
@@ -50,7 +50,7 @@ export const FirstTimeMessage = {
 export const GitHubMessage = {
   view({attrs: {workbench, finished}}) {
     return (
-      <div class="notice" method="dialog">
+      <div class="notice">
         <h3>Login with GitHub</h3>
         <p>The GitHub backend is experimental so use at your own risk!</p>
         <p>To store your workbench we will create a public repository called <pre style={{display: "inline"}}>&lt;username&gt;.treehouse.sh</pre> if it doesn't already exist. You can manually make this repository private via GitHub if you want.</p>
