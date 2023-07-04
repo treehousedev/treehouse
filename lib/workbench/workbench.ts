@@ -135,7 +135,7 @@ export class Workbench {
     const dayNode = today.toUTCString().split(today.getFullYear())[0];
     const weekNode = `Week ${String(getWeekOfYear(today)).padStart(2, "0")}`;
     const yearNode = `${today.getFullYear()}`;
-    const todayPath = ["@workspace", "Calendar", yearNode, weekNode, dayNode].join("/");
+    const todayPath = ["@calendar", yearNode, weekNode, dayNode].join("/");
     let todayNode = this.workspace.find(todayPath);
     if (!todayNode) {
       todayNode = this.workspace.new(todayPath);
