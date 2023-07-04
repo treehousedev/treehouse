@@ -1,5 +1,5 @@
 import { RawNode, Node as INode, Bus as IBus, WalkFunc, WalkOptions } from "../mod.ts";
-import { componentName, duplicate } from "../components.ts";
+import { componentName, getComponent, duplicate } from "../components.ts";
 import { triggerHook, hasHook } from "../hooks.ts";
 import { Bus } from "./mod.ts";
 
@@ -235,7 +235,7 @@ export class Node {
 
   removeComponent(obj: any) {
     let coms;
-    if (obj instanceof String) {
+    if (obj.name && getComponent(obj)) {
       coms = this.components.filter(n => n.name === componentName(obj));
     } else {
       coms = this.components.filter(n => n.value === obj);
