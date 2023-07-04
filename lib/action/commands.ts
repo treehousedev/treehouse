@@ -5,6 +5,7 @@ export interface Command {
   category?: string;
   icon?: string;
   action: Function;
+  when?: Function;
 }
 
 export class CommandRegistry {
@@ -16,6 +17,16 @@ export class CommandRegistry {
 
   registerCommand(cmd: Command) {
     this.commands[cmd.id] = cmd;
+  }
+
+  canExecuteCommand(id: string, ...rest: any): boolean {
+    if (this.commands[id]) {
+      if (this.commands[id].when && !this.commands[id].when(...rest)) {
+        return false;
+      }
+      return true;
+    }
+    return false;
   }
 
   executeCommand<T>(id: string, ...rest: any): Promise<T> {

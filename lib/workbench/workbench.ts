@@ -14,6 +14,11 @@ import { FirstTimeMessage, GitHubMessage, LockStolenMessage } from "../ui/notice
 import { Workspace, Context, Path } from "./mod.ts";
 import { Tag } from "../com/tag.tsx";
 
+export interface Clipboard {
+  op: "cut"|"copy"|"copyref";
+  node: Node;
+}
+
 /**
  * Workbench is the top-level controller for the Treehouse frontend.
  * 
@@ -32,6 +37,7 @@ export class Workbench {
   
   context: Context;
   panels: Path[];
+  clipboard?: Clipboard; 
 
   popover: any;
   dialog: any;
@@ -199,10 +205,15 @@ export class Workbench {
     return document.getElementById(id);
   }
 
+  canExecuteCommand(id: string, ctx: any, ...rest: any): boolean {
+    ctx = this.newContext(ctx);
+    return this.commands.canExecuteCommand(id, ctx, ...rest);
+  }
+  
   executeCommand<T>(id: string, ctx: any, ...rest: any): Promise<T> {
     ctx = this.newContext(ctx);
     console.log(id, ctx, ...rest);
-    return this.commands.executeCommand(id, this.newContext(ctx), ...rest);
+    return this.commands.executeCommand(id, ctx, ...rest);
   }
 
   newContext(ctx: any): Context {

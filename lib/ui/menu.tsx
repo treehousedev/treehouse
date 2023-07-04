@@ -1,10 +1,17 @@
 import { bindingSymbols } from "../action/keybinds.ts";
 
+function isDisabled(workbench, item, cmd, ctx) {
+  if (cmd) {
+    return item.disabled || !workbench.canExecuteCommand(cmd.id, ctx);
+  }
+  return item.disabled;
+}
+
 export const Menu: m.Component = {
   view({attrs: {workbench, x, y, items, align, commands, ctx}}) {
     const onclick = (item, cmd) => (e) => {
       e.stopPropagation();
-      if (item.disabled) {
+      if (isDisabled(workbench, item, cmd, ctx)) {
         return;
       }
       workbench.closeMenu();
@@ -33,7 +40,7 @@ export const Menu: m.Component = {
       title = i.title();
     }
     return (
-      <li onclick={onclick(i, cmd)} class={(i.disabled)?"disabled":""} style={{
+      <li onclick={onclick(i, cmd)} class={(isDisabled(workbench, i, cmd, ctx))?"disabled":""} style={{
         display: "flex"
       }}>
         <div>{title}</div>

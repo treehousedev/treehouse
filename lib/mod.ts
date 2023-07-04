@@ -73,6 +73,115 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
 
   workbench.commands.registerCommand({
+    id: "cut",
+    title: "Cut",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      
+      // no text is selected
+      const input = workbench.getInput(ctx.path);
+      if (input && input.selectionStart === input.selectionEnd) {
+        return true;
+      }
+
+      // builtin copy is being performed,
+      // clear clipboard so it doesn't override on paste
+      workbench.clipboard = undefined;
+
+      return false;
+    },
+    action: (ctx: Context) => {
+      workbench.clipboard = {op: "cut", node: ctx.node};
+    }
+  });
+  workbench.keybindings.registerBinding({ command: "cut", key: "meta+x" });
+
+  workbench.commands.registerCommand({
+    id: "copy",
+    title: "Copy",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+
+      // no text is selected
+      const input = workbench.getInput(ctx.path);
+      if (input && input.selectionStart === input.selectionEnd) {
+        return true;
+      }
+
+      // builtin copy is being performed,
+      // clear clipboard so it doesn't override on paste
+      workbench.clipboard = undefined;
+
+      return false;
+    },
+    action: (ctx: Context) => {
+      workbench.clipboard = {op: "copy", node: ctx.node};
+    }
+  });
+  workbench.keybindings.registerBinding({ command: "copy", key: "meta+c" });
+
+  workbench.commands.registerCommand({
+    id: "copy-reference",
+    title: "Copy as Reference",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      
+      // no text is selected
+      const input = workbench.getInput(ctx.path);
+      if (input && input.selectionStart === input.selectionEnd) {
+        return true;
+      }
+
+      // builtin copy is being performed,
+      // clear clipboard so it doesn't override on paste
+      workbench.clipboard = undefined;
+
+      return false;
+    },
+    action: (ctx: Context) => {
+      workbench.clipboard = {op: "copyref", node: ctx.node};
+    }
+  });
+  workbench.keybindings.registerBinding({ command: "copy-reference", key: "shift+ctrl+c" });
+
+  workbench.commands.registerCommand({
+    id: "paste",
+    title: "Paste",
+    when: (ctx: Context) => {
+      if (workbench.clipboard) {
+        return true;
+      }
+      return false;
+    },
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
+      switch (workbench.clipboard.op) {
+        case "copy":
+          workbench.clipboard.node = workbench.clipboard.node.duplicate();
+          break;
+        case "copyref":
+          const ref = workbench.workspace.new("");
+          ref.refTo = workbench.clipboard.node;
+          workbench.clipboard.node = ref;
+          break;
+      }
+      if (workbench.clipboard.node.raw.Rel === "Fields") {
+        workbench.clipboard.node.raw.Parent = ctx.node.parent.id;
+        ctx.node.parent.addLinked("Fields", workbench.clipboard.node);
+      } else {
+        workbench.clipboard.node.parent = ctx.node.parent;
+        workbench.clipboard.node.siblingIndex = ctx.node.siblingIndex;    
+      }
+      m.redraw.sync();
+      const p = ctx.path.clone();
+      p.pop();
+      workbench.focus(p.append(workbench.clipboard.node));
+    }
+  });
+  workbench.keybindings.registerBinding({ command: "paste", key: "meta+v" });
+
+  workbench.commands.registerCommand({
     id: "create-search",
     title: "Create Search Node",
     action: (ctx: Context) => {
@@ -524,6 +633,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.menus.registerMenu("node", [
     { command: "zoom" },
     { command: "new-panel" },
+    { command: "cut" },
+    { command: "copy" },
+    { command: "paste" },
     { command: "indent" },
     { command: "outdent" },
     { command: "move-up" },
@@ -565,7 +677,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
   document.addEventListener("keydown", (e) => {
     const binding = workbench.keybindings.evaluateEvent(e);
-    if (binding) {
+    if (binding && workbench.canExecuteCommand(binding.command, workbench.context)) {
       workbench.executeCommand(binding.command, workbench.context);
       e.stopPropagation();
       e.preventDefault();
