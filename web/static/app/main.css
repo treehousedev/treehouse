@@ -295,14 +295,21 @@ svg.node-bullet circle#node-collapsed-handle {
 
 .table-view {
   display: grid;
+  margin-bottom: calc(var(--padding)/4);
 }
 .table-view th {
+  border-bottom: solid 1px var(--color-outline-secondary);
+  margin-bottom: calc(var(--padding)/2);
+  padding-bottom: calc(var(--padding)/2);
   text-align: left;
 }
 .table-view thead,
 .table-view tbody,
 .table-view tr {
   display: contents;
+}
+.table-view thead th:first-child {
+  padding-left: 24px;
 }
 
 /*------------NOTICES------------*/
