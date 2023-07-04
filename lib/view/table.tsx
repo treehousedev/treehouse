@@ -17,7 +17,7 @@ export default {
       <table class="table-view" style={{gridTemplateColumns: `repeat(${state.fields.size+1}, 1fr)`}}>
         <thead>
           <tr>
-            <th></th>
+            <th>Title</th>
             {[...state.fields].map(f => <th>{f}</th>)}
           </tr>
         </thead>
