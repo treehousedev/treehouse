@@ -5,9 +5,43 @@
     <link>https://treehouse.sh/</link>
     <atom:link href="https://treehouse.sh/blog/feed.rss" rel="self" type="application/rss+xml"/>
     <description>An open source note-taking frontend to extend and customize.</description>
-    <lastBuildDate>Thu, 06 Jul 2023 02:38:40 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 06 Jul 2023 18:56:46 GMT</lastBuildDate>
     <language>en</language>
     <generator>Lume v1.17.5</generator>
+    <item>
+      <title>Release 0.5.0</title>
+      <link>https://treehouse.sh/blog/v0-5-0/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/v0-5-0/</guid>
+      <description/>
+      <content:encoded>
+        <![CDATA[<h2 id="tags%2C-templates%2C-and-table-view" tabindex="-1">Tags, templates, and table view</h2>
+        <p>Treehouse now supports tags and templates! For example, you can now create a template node with children and fields, name it &quot;book&quot;, then any node tagged with #book will automatically get those fields and children. To turn a node into a template, select &quot;Make Template&quot; from the Command Palette. You can also tag nodes without an equivalent template. Tagging is done by simply adding hashtags to a node's text.</p>
+        <p>You can search for tagged nodes in the search bar using the hashtag notation (#book), however there is a known issue preventing you from searching for nodes by tag in Live Search. This will be resolved in the next release, and in <code>main</code> much sooner.</p>
+        <p>You can now take a list of nodes with fields and turn them into an easy-to-scan table. Simply go to the parent node of the rows, open the Command Palette with Command+K, and choose &quot;View as Table&quot;. We'll be adding more features to the table view in coming releases.</p>
+        <p>Double-quoted search terms now allow spaces and search results are a little tighter now. Last but not least we've added cut, copy, and paste commands for nodes, making it easier to duplicate and move nodes around.</p>
+        <p><a href="https://www.youtube.com/watch?v=qzsGuO6sfC0"><img src="http://i3.ytimg.com/vi/qzsGuO6sfC0/hqdefault.jpg" alt="Watch Demo"></a>
+        <a href="https://www.youtube.com/watch?v=qzsGuO6sfC0">Demo video</a></p>
+        <h2 id="enhancements-and-chores" tabindex="-1">Enhancements and Chores</h2>
+        <ul>
+        <li>Tags and templates <a href="https://github.com/treehousedev/treehouse/issues/206">#206</a></li>
+        <li>Cut/copy/paste nodes <a href="https://github.com/treehousedev/treehouse/issues/194">#194</a></li>
+        <li>Table view for nodes <a href="https://github.com/treehousedev/treehouse/issues/106">#106</a>, <a href="https://github.com/treehousedev/treehouse/issues/210">#120</a></li>
+        <li>Support field search terms containing spaces <a href="https://github.com/treehousedev/treehouse/issues/153">#153</a></li>
+        <li>Link to documentation from within Treehouse <a href="https://github.com/treehousedev/treehouse/issues/175">#175</a></li>
+        </ul>
+        <h2 id="bugfixes" tabindex="-1">Bugfixes</h2>
+        <ul>
+        <li>Search bug when capitalizing search term <a href="https://github.com/treehousedev/treehouse/issues/217">#217</a></li>
+        <li>Search is behaving too broadly when matching <a href="https://github.com/treehousedev/treehouse/issues/197">#197</a></li>
+        <li>Support multiple concurrent dialogs <a href="https://github.com/treehousedev/treehouse/issues/203">#203</a></li>
+        <li>Support editing &quot;Calendar&quot; node without Today making a new one <a href="https://github.com/treehousedev/treehouse/issues/232">#232</a></li>
+        </ul>
+        <hr>
+        <p><a href="https://github.com/treehousedev/treehouse/discussions/244"><em>Discuss on GitHub</em></a></p>
+        ]]>
+      </content:encoded>
+      <pubDate>Thu, 06 Jul 2023 00:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Release 0.4.0</title>
       <link>https://treehouse.sh/blog/v0-4-0/</link>
