@@ -73,7 +73,7 @@ export default (data) => (
 
   <div class="text-white text-center" style={{backgroundColor: "#1F842A"}}>
     <div class="mx-auto py-4">
-      <p style={{marginTop: "0px !important"}}>Treehouse is in early development. <a class="underline" href="/blog/v0.4.0">View release 0.4.0 &rarr;</a></p>
+      <p style={{marginTop: "0px !important"}}>Treehouse is in early development. <a class="underline" href="/blog/v0-5-0">View release 0.5.0 &rarr;</a></p>
     </div>
   </div>
 
