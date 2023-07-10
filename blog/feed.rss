@@ -5,7 +5,7 @@
     <link>https://treehouse.sh/</link>
     <atom:link href="https://treehouse.sh/blog/feed.rss" rel="self" type="application/rss+xml"/>
     <description>An open source note-taking frontend to extend and customize.</description>
-    <lastBuildDate>Mon, 10 Jul 2023 19:16:40 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 10 Jul 2023 19:17:20 GMT</lastBuildDate>
     <language>en</language>
     <generator>Lume v1.17.5</generator>
     <item>
@@ -16,7 +16,7 @@
       <content:encoded>
         <![CDATA[<h2 id="tags%2C-templates%2C-and-table-view" tabindex="-1">Tags, templates, and table view</h2>
         <p>Treehouse now supports tags and templates! For example, you can now create a template node with children and fields, name it &quot;book&quot;, then any node tagged with #book will automatically get those fields and children. To turn a node into a template, select &quot;Make Template&quot; from the Command Palette. You can also tag nodes without an equivalent template. Tagging is done by simply adding hashtags to a node's text.</p>
-        <p>You can search for tagged nodes in the search bar using the hashtag notation (#book), however there is a known issue preventing you from searching for nodes by tag in Live Search. This will be resolved in the next release, and in <code>main</code> much sooner.</p>
+        <p>You can search for tagged nodes in the search bar using the hashtag notation (#book), however there is a known issue preventing you from searching for nodes by tag in Smart Nodes. This will be resolved in the next release, and in <code>main</code> much sooner.</p>
         <p>You can now take a list of nodes with fields and turn them into an easy-to-scan table. Simply go to the parent node of the rows, open the Command Palette with Command+K, and choose &quot;View as Table&quot;. We'll be adding more features to the table view in coming releases.</p>
         <p>Double-quoted search terms now allow spaces and search results are a little tighter now. Last but not least we've added cut, copy, and paste commands for nodes, making it easier to duplicate and move nodes around.</p>
         <p><a href="https://www.youtube.com/watch?v=qzsGuO6sfC0"><img src="http://i3.ytimg.com/vi/qzsGuO6sfC0/hqdefault.jpg" alt="Watch Demo"></a>
@@ -51,7 +51,7 @@
         <![CDATA[<h2 id="mobile-support-and-css-themes" tabindex="-1">Mobile support and CSS themes</h2>
         <p>In this release we focused on making Treehouse more powerful and enjoyable to use from more places. Editing text on mobile is always a tricky prospect, but we've taken our first step to being mobile-friendly with customized navigation and easier touch targets.</p>
         <p>White background a bit too bright? We've added several built-in themes (including sepia and dark mode) <em>and</em> we've made it super easy to <a href="https://treehouse.sh/docs/user/#css-theming">create your own CSS themes</a> using our component variables.</p>
-        <p>Otherwise, lots of quality of life improvements as usual, especially for fields and live search nodes.</p>
+        <p>Otherwise, lots of quality of life improvements as usual, especially for fields and Smart Nodes.</p>
         <p><a href="https://www.youtube.com/watch?v=byZnYzzrP7E"><img src="http://i3.ytimg.com/vi/byZnYzzrP7E/hqdefault.jpg" alt="Watch Demo"></a>
         <a href="https://www.youtube.com/watch?v=byZnYzzrP7E">Demo video</a></p>
         <h2 id="enhancements-and-chores" tabindex="-1">Enhancements and Chores</h2>
@@ -90,6 +90,7 @@
       <content:encoded>
         <![CDATA[<h2 id="new-node-types%3A-fields%2C-live-search%2C-and-references" tabindex="-1">New Node Types: Fields, Live Search, and References</h2>
         <p>This release we added some exciting new features: Fields, Live Search, and References. These new node types represent our first step into becoming much more than a simple outliner. Quality of live improvements include making the node menu easier to click, initial work towards a mobile view, and improving interactivity of the command palette. We also cleaned up all our UI elements to match our design system, allowing for better custom CSS support.</p>
+        <p><em>Update 7/10/2023: Live Search is now called Smart Nodes</em></p>
         <p><a href="https://www.youtube.com/watch?v=PjWibMkKBOE"><img src="http://i3.ytimg.com/vi/PjWibMkKBOE/hqdefault.jpg" alt="Watch Demo"></a>
         <a href="https://www.youtube.com/watch?v=PjWibMkKBOE">Demo video</a></p>
         <h3 id="new-feature%3A-fields" tabindex="-1">New Feature: Fields</h3>
