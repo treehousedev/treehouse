@@ -83,7 +83,7 @@ export default (data) => (
       <div class="flex flex-col gap-8 md:gap-16 md:flex-row">
         <div class="flex flex-col flex-1">
           <img class="bg-gray-400 image h-64 mb-6 object-cover object-left" src="/photos/live-search.png" />
-          <h3>Fields and Live Search</h3>
+          <h3>Fields and Smart Nodes</h3>
           <p>Add metadata, then create a custom search view.</p>
         </div>
 

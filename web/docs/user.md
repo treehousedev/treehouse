@@ -77,7 +77,7 @@ You can close or expand either panel to return to a single panel view.
 
 ## Fields
 
-A **field** is a node that can store structured information. Fields provide your data with structure, and allow for special search syntax (see [Live Search](#live-search)).
+A **field** is a node that can store structured information. Fields provide your data with structure, and allow for special search syntax (see [Smart Nodes](#smart-nodes)).
 
 ### Create a field
 
@@ -86,16 +86,17 @@ To add a field to a node:
 2. Use Command/Control + K to open the command palette, and choose "Create field"
 3. Add your field value in the value section
 
-## Live Search
+## Smart Nodes
 
-Live Search allow you to create an auto-updating search of all the nodes in your workspace. Simply type your search term, or use the format "fieldname:valuename" to filter specifically by field values. The Live Search will update automatically as your node content changes. This is a simple but super powerful way to view your data in new configurations.
+Smart Nodes allow you to create an auto-updating search of all the nodes in your workspace. Simply type your search term, or use the format "fieldname:valuename" to filter specifically by field values. The Smart Node will update automatically as your node content changes. This is a simple but super powerful way to view your data in new configurations.
 
-To create a search node:
-1. Create a new node where you want your search node, and type your search value
-2. Use Command/Control + K to open the command palette, and choose "Create Search Node"
+To create a Smart Node:
+1. Create a new node where you want your Smart Node, and type your search value
+2. Use Command/Control + K to open the command palette, and choose "Create Smart Node"
 
-### Tips for using Live Search
+### Tips for using Smart Nodes
 * You can filter on multiple fieldname values (using AND, not OR) like so: "fieldname:valuename fieldname:valuename" etc.
+* If your fieldname has spaces, put quotes around it (fieldname:"Value name")
 * Search terms are case-insensitive
 
 ## Calendar 
