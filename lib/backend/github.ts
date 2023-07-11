@@ -43,8 +43,8 @@ export class GitHubBackend {
     
   }
 
-  get repo(): string {
-    return `${this.user?.userID()}.${this.opts.domain}`;
+  get repoName(): string {
+    return `${this.user?.userID().toLowerCase()}.${this.opts.domain}`;
   }
 
   async initialize() {
@@ -107,8 +107,8 @@ export class GitHubBackend {
     }
     
     // check domain if set to
-    if (this.opts.checkDomain && this.repo !== location.hostname) {
-      location.hostname = this.repo;
+    if (this.opts.checkDomain && this.repoName !== location.hostname.toLowerCase()) {
+      location.hostname = this.repoName;
       return;
     }
 
@@ -116,7 +116,7 @@ export class GitHubBackend {
     try {
       await this.client.rest.repos.get({
         owner: this.user.userID(), 
-        repo: this.repo
+        repo: this.repoName
       });
     } catch (e: Error) {
       if (e.message !== "Not Found") {
@@ -124,7 +124,7 @@ export class GitHubBackend {
       }
       // create if not
       console.log("Creating repository...");
-      const resp = await this.client.rest.repos.createForAuthenticatedUser({name: this.repo, private: this.opts.privateRepo});
+      const resp = await this.client.rest.repos.createForAuthenticatedUser({name: this.repoName, private: this.opts.privateRepo});
       if (resp.status !== 201) {
         console.error(resp);
         return;
@@ -135,7 +135,7 @@ export class GitHubBackend {
     try {
       await this.client.rest.repos.getContent({
         owner: this.user.userID(), 
-        repo: this.repo,
+        repo: this.repoName,
         path: "workspace.json"
       });
     } catch (e: Error) {
@@ -146,7 +146,7 @@ export class GitHubBackend {
       console.log("Creating workspace.json...");
       const resp = await this.client.rest.repos.createOrUpdateFileContents({
         owner: this.user.userID(), 
-        repo: this.repo,
+        repo: this.repoName,
         path: "workspace.json", 
         message: "initial commit", 
         content: btoa(JSON.stringify([]))
@@ -178,14 +178,14 @@ export class GitHubBackend {
     try {
       const dirCheck = await this.client.rest.repos.getContent({
         owner: this.user?.userID(), 
-        repo: this.repo, 
+        repo: this.repoName, 
         path: "",
         random: Math.random().toString(36).substring(2)
       });
       if (dirCheck.data.find(o => o.type === "dir" && o.name === "ext")) {
         const dirList = await this.client.rest.repos.getContent({
           owner: this.user?.userID(), 
-          repo: this.repo, 
+          repo: this.repoName, 
           path: "ext",
           random: Math.random().toString(36).substring(2)
         });
@@ -194,7 +194,7 @@ export class GitHubBackend {
             // Load CSS 
             const resp = await this.client.rest.repos.getContent({
               owner: this.user?.userID(), 
-              repo: this.repo, 
+              repo: this.repoName, 
               path: file.path,
               random: Math.random().toString(36).substring(2)
             });
@@ -207,7 +207,7 @@ export class GitHubBackend {
             // Load JavaScript
             const resp = await this.client.rest.repos.getContent({
               owner: this.user?.userID(), 
-              repo: this.repo, 
+              repo: this.repoName, 
               path: file.path,
               random: Math.random().toString(36).substring(2)
             });
@@ -264,7 +264,7 @@ export class GitHubBackend {
     try {
       const resp = await this.client.rest.repos.getContent({
         owner: this.user?.userID(), 
-        repo: this.repo, 
+        repo: this.repoName, 
         path: path,
         random: Math.random().toString(36).substring(2)
       });
@@ -281,7 +281,7 @@ export class GitHubBackend {
   async writeFile(path: string, contents: string) {
     const resp = await this.client.rest.repos.createOrUpdateFileContents({
       owner: this.user?.userID(), 
-      repo: this.repo, 
+      repo: this.repoName, 
       path: path, 
       message: "autosave", 
       content: encode(contents), 
