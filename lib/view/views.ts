@@ -1,10 +1,12 @@
 import empty from "./empty.tsx";
 import list from "./list.tsx";
 import table from "./table.tsx";
+import tabs from "./tabs.tsx";
 
 export const views = {
   list,
-  table
+  table,
+  tabs,
 }
 
 export function getView(name) {
