@@ -178,7 +178,12 @@ export class Workbench {
   }
 
   defocus() {
+    const input = this.getInput(this.context.path);
+    if (input) {
+      input.blur();
+    }
     this.context.node = null;
+    this.context.path = null;
   }
 
   focus(path: Path, pos?: number = 0) {
@@ -335,24 +340,24 @@ export class Workbench {
     if (textQuery.startsWith("#")) {
       return Tag.findTagged(this.workspace, textQuery.replace("#", "")).filter(passFieldQuery);
     }
-    return this.backend.index.search(textQuery)
-      .map(id => {
-        let node = window.workbench.workspace.find(id);
-        if (!node) {
-          return undefined;
-        }
-        // if component/field value, get the parent
-        if (node.value) {
-          node = node.parent;
-          // parent might not actually exist
-          if (!node.raw) return undefined;
-        }
-        if (!passFieldQuery(node)) {
-          return undefined;
-        }
-        return node;
-      })
-      .filter(n => n !== undefined);
+    let resultCache = {};
+    this.backend.index.search(textQuery).forEach(id => {
+      let node = window.workbench.workspace.find(id);
+      if (!node) {
+        return;
+      }
+      // if component/field value, get the parent
+      if (node.value) {
+        node = node.parent;
+        // parent might not actually exist
+        if (!node.raw) return;
+      }
+      if (!passFieldQuery(node)) {
+        return;
+      }
+      resultCache[node.id] = node;
+    });
+    return Object.values(resultCache);
   }
 
 

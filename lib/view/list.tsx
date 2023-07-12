@@ -1,5 +1,6 @@
 import { NewNode } from "../ui/node/new.tsx";
 import { OutlineNode } from "../ui/outline.tsx";
+import { SmartNode } from "../com/smartnode.tsx";
 
 export default {
   view({attrs: {workbench, path, alwaysShowNew}}) {
@@ -10,6 +11,10 @@ export default {
     let showNew = false;
     if ((node.childCount === 0 && node.getLinked("Fields").length === 0) || alwaysShowNew) {
       showNew = true;
+    }
+    // TODO: find some way to not hardcode this rule
+    if (node.hasComponent(SmartNode)) {
+      showNew = false;
     }
     return (
       <div class="list-view">

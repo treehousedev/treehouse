@@ -62,12 +62,13 @@ export class Workspace {
 
   async load() {
     let doc = JSON.parse(await this.fs.readFile("workspace.json") || "{}");
-    if (Array.isArray(doc)) {
-      doc = {
-        version: 0,
-        nodes: doc
+    doc.nodes = doc.nodes.map(n => {
+      // any node migrations:
+      if (n.Name === "treehouse.SearchNode") {
+        n.Name = "treehouse.SmartNode";
       }
-    }
+      return n;
+    })
     if (doc.nodes) {
       this.bus.import(doc.nodes);
       console.log(`Loaded ${doc.nodes.length} nodes.`);
@@ -166,6 +167,10 @@ export class Workspace {
         const lastField = p.node.getLinked("Fields")[fieldCount - 1];
         // if expanded, no children, has fields, return last field or its last sub if expanded
         return lastSubIfExpanded(p.append(lastField));
+      }
+      if (p.node.childCount === 0) {
+        // expanded, no fields, no children
+        return p;
       }
       const lastChild = p.node.children[p.node.childCount - 1];
       // return last child or its last sub if expanded

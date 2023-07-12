@@ -19,7 +19,7 @@
 import { Path, Workbench } from "./workbench/mod.ts";
 import { App } from "./ui/app.tsx";
 import { Backend } from "./backend/mod.ts";
-import { SearchNode } from "./com/search.tsx";
+import { SmartNode } from "./com/smartnode.tsx";
 import { Checkbox } from "./com/checkbox.tsx";
 import { Page } from "./com/page.tsx";
 import { TextField } from "./com/textfield.tsx";
@@ -60,6 +60,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     Checkbox,
     Tag,
     Template,
+    SmartNode,
   ].forEach(com => {
     if (com.initialize) {
       com.initialize(workbench);
@@ -183,18 +184,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
   workbench.keybindings.registerBinding({ command: "paste", key: "meta+v" });
 
-  workbench.commands.registerCommand({
-    id: "create-search",
-    title: "Create Search Node",
-    action: (ctx: Context) => {
-      if (!ctx.node) return;
-      if (ctx.node.childCount > 0) return;
-      const search = new SearchNode();
-      ctx.node.addComponent(search);
-      workbench.workspace.setExpanded(ctx.path.head, ctx.node, true);
-      workbench.focus(ctx.path);
-    }
-  });
+
 
   workbench.commands.registerCommand({
     id: "view-list",

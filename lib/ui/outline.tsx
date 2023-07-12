@@ -209,7 +209,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
 
     return (
-      <div onmouseover={hover} onmouseout={unhover}>
+      <div onmouseover={hover} onmouseout={unhover} id={`node-${path.id}-${handleNode.id}`}>
         <div class="node-row-outer-wrapper flex flex-row items-start">
           <svg class="node-menu shrink-0" xmlns="http://www.w3.org/2000/svg"
               onclick={(e) => workbench.showMenu(e, {node: handleNode, path})}
@@ -242,7 +242,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
               </div>
           }
         </div>
-        {objectHas(node, "belowEditor") && m(objectCall(node, "belowEditor"), {node})}
+        {objectHas(node, "belowEditor") && componentsWith(node, "belowEditor").map(component => m(component.belowEditor(), {node, component, expanded}))}
         {(expanded === true) &&
           <div class="expanded-node flex flex-row">
             <div class="indent flex" onclick={toggle}></div>
