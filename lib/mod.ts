@@ -26,6 +26,7 @@ import { TextField } from "./com/textfield.tsx";
 import { Clock } from "./com/clock.tsx";
 import { Tag } from "./com/tag.tsx";
 import { Template } from "./com/template.tsx";
+import { Document } from "./com/document.tsx";
 import { objectManaged } from "./model/hooks.ts";
 
 export { BrowserBackend, SearchIndex_MiniSearch } from "./backend/browser.ts";
@@ -55,6 +56,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     Clock,
     TextField,
     Page,
+    Document,
     Checkbox,
     Tag,
     Template,
@@ -193,7 +195,6 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       workbench.focus(ctx.path);
     }
   });
-
 
   workbench.commands.registerCommand({
     id: "view-list",

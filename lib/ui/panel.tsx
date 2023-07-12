@@ -29,7 +29,11 @@ export const Panel = {
       let newHeight = 20 + numberOfLineBreaks * 20;
       return newHeight;
     }
-    return <div class="panel flex flex-col grow">
+    let viewClass = "";
+    if (node.getAttr("view")) {
+      viewClass = `${node.getAttr("view")}-panel`
+    }
+    return <div class={`panel flex flex-col grow ${viewClass}`}>
       <div class="bar flex">
         {(path.length > 1) ?
           <div class="panel-back" style={{ rightPadding: "var(--padding)" }}>

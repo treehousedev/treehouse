@@ -132,6 +132,9 @@ export class Workspace {
 
   // TODO: take single Path
   setExpanded(head: Node, n: Node, b: boolean) {
+    if (!this.expanded[head.id]) {
+      this.expanded[head.id] = {};
+    }
     this.expanded[head.id][n.id] = b;
     this.save();
   }

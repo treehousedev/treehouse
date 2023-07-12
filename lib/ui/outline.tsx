@@ -4,7 +4,7 @@ import { objectCall, componentsWith, objectHas } from "../model/hooks.ts";
 import { NodeEditor } from "./node/editor.tsx";
 
 import { Checkbox } from "../com/checkbox.tsx";
-import { Clock } from "../com/clock.tsx";
+import { Document } from "../com/document.tsx";
 import { getView } from "../view/views.ts";
 
 import { Tag } from "../com/tag.tsx";
@@ -55,16 +55,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       state.hover = false;
       e.stopPropagation();
     }
-    
-    const toggle = (e) => {
-      if (expanded) {
-        workbench.executeCommand("collapse", {node: handleNode, path});
-      } else {
-        workbench.executeCommand("expand", {node: handleNode, path});
-      }
-      e.stopPropagation();
-    }
-    
+        
 
     const cancelTagPopover = () => {
       if (state.tagPopover) {
@@ -181,7 +172,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
       e.preventDefault();
       e.stopPropagation();
       
-      workbench.executeCommand("open", {node, path});
+      workbench.executeCommand("zoom", {node, path});
       
       // clear text selection that happens after from double click
       if (document.selection && document.selection.empty) {
@@ -189,6 +180,20 @@ export const OutlineNode: m.Component<Attrs, State> = {
       } else if (window.getSelection) {
         window.getSelection().removeAllRanges();
       }
+    }
+
+    const toggle = (e) => {
+      // TODO: hook or something so to not hardcode
+      if (node.hasComponent(Document)) {
+        open(e);
+        return;
+      }
+      if (expanded) {
+        workbench.executeCommand("collapse", {node: handleNode, path});
+      } else {
+        workbench.executeCommand("expand", {node: handleNode, path});
+      }
+      e.stopPropagation();
     }
 
     const subCount = (n) => {
