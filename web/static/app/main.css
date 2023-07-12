@@ -316,6 +316,26 @@ svg.node-bullet circle#node-collapsed-handle {
   padding-left: 24px;
 }
 
+/*------------TAB VIEW--------------*/
+
+.tabs-view .tabs {
+  display: flex;
+  overflow-x: scroll;
+  width: 100%;
+  max-width: 80vw;
+}
+.tabs-view .tabs div {
+  border-bottom: solid 1px var(--color-outline-secondary);
+  cursor: pointer;
+  margin-bottom: calc(var(--padding)/2);
+  padding: 0 var(--padding);
+  padding-bottom: calc(var(--padding)/2);
+}
+.tabs-view .tabs div.active {
+  border-bottom: solid 2px var(--color-outline);
+  font-weight: bold;
+}
+
 /*------------NOTICES------------*/
 .notice {
   width: 40rem;
