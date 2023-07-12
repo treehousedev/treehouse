@@ -19,9 +19,10 @@ export default {
           <div style={{ flexGrow: 1 }}></div>
         </div>
         <div class="tab-content">
-          {node.children.filter(n => n.id === state.selectedTab).map(n => (
-            <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />
-          ))}
+          {node.children.filter(n => n.id === state.selectedTab).map(selected => {
+            path = path.append(selected);
+            return selected.children.map(child => <OutlineNode key={child.id} workbench={workbench} path={path.append(child)} />)
+          })}
         </div>
       </div>
     )
