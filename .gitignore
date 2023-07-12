@@ -3,5 +3,8 @@
 /web/static/lib/treehouse.js.map
 /web/static/lib/treehouse.min.js
 /web/static/lib/treehouse.min.js.map
+/web/_vendor/**/node_modules
+/web/_vendor/**/package-lock.json
+/web/_vendor/**/package.json
 /local
 .DS_Store

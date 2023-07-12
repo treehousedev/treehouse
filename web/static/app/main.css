@@ -65,9 +65,13 @@ button.primary {
   border: 1px solid var(--color-background);
   background: var(--color-highlight);
   line-height: var(--body-line-height);
+  font-size: var(--text-small);
 }
 .badge:focus {
   border: 1px solid var(--color-outline);
+}
+.badge span {
+  color: var(--color-icon-secondary);
 }
 
 p {

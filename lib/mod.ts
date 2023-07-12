@@ -679,7 +679,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       }
     },
     { title: () => "Settings", onclick: () => workbench.showSettings() },
-    { title: () => "Documentation", onclick: () => window.open("https://treehouse.sh/docs", "_blank") },
+    { title: () => "Documentation", onclick: () => window.open("https://treehouse.sh/docs/user", "_blank") },
     { title: () => "Submit Issue", onclick: () => window.open("https://github.com/treehousedev/treehouse/issues", "_blank") },
     { title: () => "Logout", when: () => workbench.authenticated(), onclick: () => workbench.backend.auth.logout() },
   ]);

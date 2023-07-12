@@ -1,4 +1,4 @@
-import { Octokit } from "https://cdn.skypack.dev/@octokit/rest";
+import { Octokit } from "/vnd/octokit-18.12.0.min.js";
 import {setup, BrowserBackend, GitHubBackend} from "/lib/treehouse.min.js";
 
 setup(document, document.body, {
