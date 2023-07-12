@@ -217,6 +217,15 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     }
   });
 
+  workbench.commands.registerCommand({
+    id: "view-tabs",
+    title: "View as Tabs",
+    action: (ctx: Context) => {
+      if (!ctx.node) return;
+      ctx.node.setAttr("view", "tabs");
+    }
+  });
+
 
   workbench.commands.registerCommand({
     id: "add-page",
