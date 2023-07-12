@@ -474,6 +474,18 @@ svg.node-bullet circle#node-collapsed-handle {
 }
 
 
+/*------------DOCUMENT------------*/
+.document-view, .document-panel .title-node {
+  width: 900px;
+  padding-left: var(--24);
+  padding-right: var(--24);
+  margin-left: auto;
+  margin-right: auto;
+}
+.document-view .node-handle {
+  display: none !important;
+}
+
 
 /*------------MOBILE------------*/
 
