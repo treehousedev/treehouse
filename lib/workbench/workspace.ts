@@ -62,14 +62,14 @@ export class Workspace {
 
   async load() {
     let doc = JSON.parse(await this.fs.readFile("workspace.json") || "{}");
-    doc.nodes = doc.nodes.map(n => {
-      // any node migrations:
-      if (n.Name === "treehouse.SearchNode") {
-        n.Name = "treehouse.SmartNode";
-      }
-      return n;
-    })
     if (doc.nodes) {
+      doc.nodes = doc.nodes.map(n => {
+        // any node migrations:
+        if (n.Name === "treehouse.SearchNode") {
+          n.Name = "treehouse.SmartNode";
+        }
+        return n;
+      })
       this.bus.import(doc.nodes);
       console.log(`Loaded ${doc.nodes.length} nodes.`);
     }
