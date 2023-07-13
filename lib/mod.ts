@@ -355,7 +355,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const node = ctx.node; // redraw seems to unset ctx.node
       const parent = ctx.path.previous;
       const path = ctx.path.clone();
-      if (parent !== null && parent.id !== "@root") {
+      if (parent !== null && parent.id !== "@root" && parent.id !== workbench.workspace.lastOpenedID) {
         path.pop(); // drop node
         path.pop(); // drop parent
         node.parent = parent.parent;
