@@ -115,9 +115,8 @@ export const TextEditor: m.Component<Attrs, State> = {
       }
     }
     
-    // TODO: node-container => text-editor
     return (
-      <div class="node-container">
+      <div class="text-editor">
         <textarea
           id={id}
           rows="1"
