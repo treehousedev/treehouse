@@ -122,7 +122,7 @@ main {
   background-color: var(--color-background);
 }
 /*to make theming easier*/
-.node-container textarea, .new-node input, .palette input {
+.text-editor textarea, .new-node input, .palette input {
   background-color: transparent;
 }
 
@@ -229,15 +229,15 @@ with their icon for Safari only*/
 
 /*------------NODES------------*/
 /*keep max line length from getting too long for readibility*/
-.node-container {
+.text-editor {
   width: 100%;
   margin-bottom: var(--2);
 }
-.node-container textarea, .panel-back-parent {
+.text-editor textarea, .panel-back-parent {
   max-width: 768px;
 }
 /*todo: check unused textarea styles in panel.tsx*/
-.node-container > textarea, .node-container > span {
+.text-editor > textarea, .text-editor > span {
   outline: none;
   padding: 0;
   width: 100%;
@@ -248,7 +248,7 @@ with their icon for Safari only*/
   line-height: var(--body-line-height);
   border: none;
 }
-.title-node textarea, .title-node > .node-container > span {
+.title-node textarea, .title-node > .text-editor > span {
   font-size: var(--6);
   font-weight: var(--weight-bold);
 }
