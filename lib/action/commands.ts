@@ -4,6 +4,7 @@ export interface Command {
   title?: string;
   category?: string;
   icon?: string;
+  hidden?: boolean;
   action: Function;
   when?: Function;
 }

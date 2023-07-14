@@ -4,8 +4,13 @@ import { Picker } from "./picker.tsx";
 export const CommandPalette: m.Component = {
 
   view({ attrs: { workbench, ctx } }) {
-    const cmds = Object.values(workbench.commands.commands);
-    
+    const getTitle = (cmd) => {
+      const title = cmd.title || cmd.id;
+      return title.replace('-', ' ').replace(/(^|\s)\S/g, t => t.toUpperCase());
+    }
+    const sort = (a, b) => {
+      return getTitle(a).localeCompare(getTitle(b));
+    }
     const onpick = (cmd) => {
       workbench.closeDialog();
       workbench.commands.executeCommand(cmd.id, ctx);
@@ -20,6 +25,9 @@ export const CommandPalette: m.Component = {
       const binding = workbench.keybindings.getBinding(cmd.id);
       return binding ? bindingSymbols(binding.key).join(" ").toUpperCase() : "";
     }
+
+    const cmds = Object.values(workbench.commands.commands).filter(cmd => !cmd.hidden).sort(sort);
+
     return (
       <div class="palette">
         <Picker onpick={onpick} onchange={onchange}
@@ -30,7 +38,7 @@ export const CommandPalette: m.Component = {
           }
           itemview={(cmd) => 
             <div class="flex">
-              <div>{cmd.title || cmd.id}</div>
+              <div>{getTitle(cmd)}</div>
               <div class="keybindings grow text-right">{getBindingSymbols(cmd)}</div>
             </div>
           } />

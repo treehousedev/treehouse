@@ -21,6 +21,7 @@ export class Tag {
     workbench.commands.registerCommand({
       id: "add-tag",
       title: "Add tag",
+      hidden: true,
       action: (ctx: Context, name: string) => {
         if (!ctx.node) return;
         const tag = new Tag(name);

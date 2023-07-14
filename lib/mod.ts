@@ -565,6 +565,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.keybindings.registerBinding({ command: "next", key: "arrowdown" });
   workbench.commands.registerCommand({
     id: "pick-command",
+    hidden: true,
     action: (ctx: Context) => {
       let node = ctx.node;
       let path = ctx.path;
