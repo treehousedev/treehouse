@@ -316,11 +316,11 @@ svg.node-bullet circle#node-collapsed-handle {
   padding-left: 24px;
 }
 
-/*------------TAB VIEW--------------*/
+/*------------TABS VIEW--------------*/
 
 .tabs-view .tabs {
   display: flex;
-  overflow-x: scroll;
+  overflow-x: auto;
   width: 100%;
   max-width: 80vw;
 }
