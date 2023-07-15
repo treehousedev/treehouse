@@ -1,4 +1,5 @@
 import { objectCall, objectHas } from "../../model/hooks.ts";
+import { Document } from "../../com/document.tsx";
 
 export const NodeEditor: m.Component = {
   view ({attrs: {workbench, path, onkeydown, oninput, disallowEmpty, editValue, placeholder}, state}) {
@@ -40,7 +41,11 @@ export const NodeEditor: m.Component = {
     if (prop === "value") {
       id = id+"-value";
     }
-    return m(TextEditor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder});
+    let editor = TextAreaEditor;
+    if (node.parent.hasComponent(Document) && window.Editor) {
+      editor = CodeMirrorEditor;
+    }
+    return m(editor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder});
   }
 }
 
@@ -61,7 +66,64 @@ interface State {
   buffer: string;
 }
 
-export const TextEditor: m.Component<Attrs, State> = {
+export const CodeMirrorEditor: m.Component<Attrs, State> = {
+  oncreate({dom,state,attrs: {id, onkeydown, onfocus, onblur, oninput, getter, setter, display, placeholder}}) {
+    const value = (state.editing) 
+      ? state.buffer 
+      : (display) ? display() : getter();
+
+    const defaultKeydown = (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        e.stopPropagation();
+      }
+    }
+    const startEdit = (e) => {
+      if (onfocus) onfocus(e);
+      state.editing = true;
+      state.buffer = getter();
+    }
+    const finishEdit = (e) => {
+      // safari can trigger blur more than once
+      // for a given element, namely when clicking
+      // into devtools. this prevents the second 
+      // blur setting node name to undefined/empty.
+      if (state.editing) {
+        state.editing = false;
+        setter(state.buffer, true);
+        state.buffer = undefined;
+      }
+      if (onblur) onblur(e);
+    }
+    const edit = (e) => {
+      state.buffer = e.target.value;
+      setter(state.buffer, false);
+      if (oninput) {
+        oninput(e);
+      }
+    }
+
+    state.editor = new window.Editor(dom, value, placeholder);
+    state.editor.onblur = finishEdit;
+    state.editor.onfocus = startEdit;
+    state.editor.oninput = edit;
+    state.editor.onkeydown = onkeydown||defaultKeydown;
+    dom.editor = state.editor;
+    dom.id = id;
+  },
+  onupdate({dom,state,attrs: {getter, display}}) {
+    state.editor.value = (state.editing) 
+      ? state.buffer 
+      : (display) ? display() : getter();
+  },
+  view () {
+    return (
+      <div class="text-editor"></div>
+    )
+  }
+}
+
+export const TextAreaEditor: m.Component<Attrs, State> = {
   oncreate({dom,attrs}) {
     const textarea = dom.querySelector("textarea");
     const initialHeight = textarea.offsetHeight;

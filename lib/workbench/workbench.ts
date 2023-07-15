@@ -199,7 +199,7 @@ export class Workbench {
     }
   }
 
-  getInput(path: Path): HTMLElement {
+  getInput(path: Path): any {
     let id = `input-${path.id}-${path.node.id}`;
     // kludge:
     if (path.node.raw.Rel === "Fields") {
@@ -207,7 +207,11 @@ export class Workbench {
         id = id+"-value"; 
       }
     }
-    return document.getElementById(id);
+    const el = document.getElementById(id);
+    if (el.editor) {
+      return el.editor;
+    }
+    return el;
   }
 
   canExecuteCommand(id: string, ctx: any, ...rest: any): boolean {

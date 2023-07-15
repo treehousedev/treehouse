@@ -1,4 +1,4 @@
-import { NodeEditor, TextEditor } from "../ui/node/editor.tsx";
+import { NodeEditor, TextAreaEditor } from "../ui/node/editor.tsx";
 import { OutlineNode } from "../ui/outline.tsx";
 
 export default {
