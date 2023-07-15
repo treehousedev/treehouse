@@ -17,7 +17,9 @@
     <div style="text-align: center; margin-top: 40vh;">
       <div class="lds-ripple"><div></div><div></div></div>
     </div>
-    <script>
+    <script type="module">
+      import { Editor } from "/vnd/codemirror-6.0.1.min.js";
+      window.Editor = Editor;
       window.backend = {"name":"github","url":"https://treehouse-demo-login.proteco.workers.dev"};
     </script>
     <script src="/app/main.js" type="module"></script>

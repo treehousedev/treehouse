@@ -506,6 +506,17 @@ svg.node-bullet circle#node-collapsed-handle {
   display: none !important;
 }
 
+.cm-scroller {
+  font-family: var(--font) !important;
+}
+.cm-focused {
+  outline: none !important;
+}
+.cm-content, .cm-line {
+  padding: 0 !important;
+}
+
+
 
 /*------------MOBILE------------*/
 
