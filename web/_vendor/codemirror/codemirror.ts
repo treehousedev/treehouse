@@ -1,5 +1,5 @@
 import { EditorState } from "@codemirror/state"
-import { placeholder as placeholderPlugin, EditorView } from "@codemirror/view"
+import { placeholder as placeholderPlugin, EditorView, ViewUpdate } from "@codemirror/view"
 import { markdown, markdownLanguage } from "@codemirror/lang-markdown"
 import { javascript } from "@codemirror/lang-javascript"
 import { defaultHighlightStyle, syntaxHighlighting} from "@codemirror/language"
@@ -41,13 +41,19 @@ export class Editor {
             defaultCodeLanguage: javascript(),
             base: markdownLanguage
           }),
+          EditorView.updateListener.of((v: ViewUpdate) => {
+            if (v.docChanged && this.oninput) {
+              this.oninput(proxyMerge(new CustomEvent("UpdateEvent"), {target: this}));
+              if (m) m.redraw();
+            }
+          }),
           EditorView.domEventHandlers({
-            input: (event, view) => {
-              if (this.oninput) {
-                this.oninput(proxyMerge(event, {target: this}));
-                if (m) m.redraw();
-              }
-            },
+            // input: (event, view) => {
+            //   if (this.oninput) {
+            //     this.oninput(proxyMerge(event, {target: this}));
+            //     if (m) m.redraw();
+            //   }
+            // },
             blur: (event, view) => {
               if (this.onblur) {
                 this.onblur(proxyMerge(event, {target: this}));
