@@ -508,14 +508,18 @@ svg.node-bullet circle#node-collapsed-handle {
 
 .cm-scroller {
   font-family: var(--font) !important;
+  line-height: var(--body-line-height) !important;
 }
 .cm-focused {
   outline: none !important;
 }
 .cm-content, .cm-line {
   padding: 0 !important;
+  caret-color: var(--color-text) !important;
 }
-
+.cm-line .tok-meta {
+  color: var(--color-text-placeholder) !important;
+}
 
 
 /*------------MOBILE------------*/
