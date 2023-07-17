@@ -114,8 +114,13 @@ export class Clock {
     workbench.commands.registerCommand({
       id: "stop-clock",
       title: "Stop clock",
+      when: (ctx: Context) => {
+        if (!ctx.node) return false;
+        if (ctx.node.raw.Rel === "Fields") return false;
+        if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+        return true;
+      },
       action: (ctx: Context) => {
-        if (!ctx.node) return;
         if (!ctx.node.hasComponent(Clock)) {
           const clock = new Clock();
           ctx.node.addComponent(clock);
@@ -128,8 +133,13 @@ export class Clock {
     workbench.commands.registerCommand({
       id: "start-clock",
       title: "Start clock",
+      when: (ctx: Context) => {
+        if (!ctx.node) return false;
+        if (ctx.node.raw.Rel === "Fields") return false;
+        if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+        return true;
+      },
       action: (ctx: Context) => {
-        if (!ctx.node) return;
         if (!ctx.node.hasComponent(Clock)) {
           const clock = new Clock();
           ctx.node.addComponent(clock);
@@ -142,8 +152,14 @@ export class Clock {
     workbench.commands.registerCommand({
       id: "remove-clock",
       title: "Remove clock",
+      when: (ctx: Context) => {
+        if (!ctx.node) return false;
+        if (ctx.node.raw.Rel === "Fields") return false;
+        if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+        if (ctx.node.hasComponent(Clock)) return true;
+        return false;
+      },
       action: (ctx: Context) => {
-        if (!ctx.node) return;
         ctx.node.removeComponent(Clock);
       }
     });

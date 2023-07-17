@@ -104,9 +104,14 @@ export class SmartNode {
     workbench.commands.registerCommand({
       id: "make-smart-node",
       title: "Make Smart Node",
+      when: (ctx: Context) => {
+        if (!ctx.node) return false;
+        if (ctx.node.raw.Rel === "Fields") return false;
+        if (ctx.node.childCount > 0) return false;
+        if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+        return true;
+      },
       action: (ctx: Context) => {
-        if (!ctx.node) return;
-        if (ctx.node.childCount > 0) return;
         workbench.defocus();
         const search = new SmartNode();
         ctx.node.addComponent(search);

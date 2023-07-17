@@ -30,8 +30,13 @@ export class Template {
     workbench.commands.registerCommand({
       id: "make-template",
       title: "Make Template",
+      when: (ctx: Context) => {
+        if (!ctx.node) return false;
+        if (ctx.node.raw.Rel === "Fields") return false;
+        if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+        return true;
+      },
       action: (ctx: Context) => {
-        if (!ctx.node) return;
         const tmpl = new Template();
         ctx.node.addComponent(tmpl);
         ctx.node.changed();

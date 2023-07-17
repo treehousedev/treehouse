@@ -189,8 +189,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "view-list",
     title: "View as List",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
     action: (ctx: Context) => {
-      if (!ctx.node) return;
       ctx.node.setAttr("view", "list");
     }
   });
@@ -198,8 +203,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "view-table",
     title: "View as Table",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
     action: (ctx: Context) => {
-      if (!ctx.node) return;
       ctx.node.setAttr("view", "table");
       ctx.node.children.forEach(child => {
         workbench.workspace.setExpanded(ctx.path.head, child, false);
@@ -210,8 +220,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "view-tabs",
     title: "View as Tabs",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
     action: (ctx: Context) => {
-      if (!ctx.node) return;
       ctx.node.setAttr("view", "tabs");
     }
   });
@@ -220,8 +235,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "add-checkbox",
     title: "Add checkbox",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
     action: (ctx: Context) => {
-      if (!ctx.node) return;
       const checkbox = new Checkbox();
       ctx.node.addComponent(checkbox);
     }
@@ -230,8 +250,14 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "remove-checkbox",
     title: "Remove checkbox",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      if (ctx.node.hasComponent(Checkbox)) return true;
+      return false;
+    },
     action: (ctx: Context) => {
-      if (!ctx.node) return;
       ctx.node.removeComponent(Checkbox);
     }
   });
@@ -261,6 +287,12 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "mark-done",
     title: "Mark done",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
     action: (ctx: Context) => {
       if (!ctx.node) return;
       if (ctx.node.hasComponent(Checkbox)) {
@@ -304,9 +336,13 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "indent",
     title: "Indent",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
     action: (ctx: Context) => {
-      if (!ctx.node) return;
-      if (ctx.node.raw.Rel === "Fields") return;
       const node = ctx.node; // redraw seems to unset ctx.node
       const path = ctx.path.clone();
       let prev = node.prevSibling;
@@ -329,10 +365,14 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "outdent",
     title: "Outdent",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.path.previous && objectManaged(ctx.path.previous)) return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
     action: (ctx: Context) => {
-      if (!ctx.node) return;
-      if (ctx.node.raw.Rel === "Fields") return;
-      if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
       const node = ctx.node; // redraw seems to unset ctx.node
       const parent = ctx.path.previous;
       const path = ctx.path.clone();
