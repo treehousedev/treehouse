@@ -587,6 +587,10 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.commands.registerCommand({
     id: "pick-command",
     hidden: true,
+    when: (ctx: Context) => {
+      if (workbench.isDialogOpen()) return false;
+      return true;
+    },
     action: (ctx: Context) => {
       let node = ctx.node;
       let path = ctx.path;
