@@ -600,6 +600,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
   workbench.commands.registerCommand({
     id: "generate-random",
+    hidden: true,
     title: "Generate Random Children",
     action: (ctx: Context) => {
       if (!ctx.node) return;
