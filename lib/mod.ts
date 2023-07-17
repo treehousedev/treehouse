@@ -218,25 +218,6 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
 
   workbench.commands.registerCommand({
-    id: "add-page",
-    title: "Add page",
-    action: (ctx: Context) => {
-      if (!ctx.node) return;
-      const page = new Page();
-      ctx.node.addComponent(page);
-    }
-  });
-
-  workbench.commands.registerCommand({
-    id: "remove-page",
-    title: "Remove page",
-    action: (ctx: Context) => {
-      if (!ctx.node) return;
-      ctx.node.removeComponent(Page);
-    }
-  });
-
-  workbench.commands.registerCommand({
     id: "add-checkbox",
     title: "Add checkbox",
     action: (ctx: Context) => {
