@@ -103,6 +103,10 @@ export class Editor {
    return this.view.state.selection.main.head; 
   }
 
+  get coordsAtCursor(): any {
+    return this.view.coordsAtPos(this.view.state.selection.main.head);
+  }
+
   focus() {
     this.view.focus();
   }

@@ -605,6 +605,10 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const rect = trigger.getBoundingClientRect();
       let x = document.body.scrollLeft + rect.x + (trigger.selectionStart * 10) + 20;
       let y = document.body.scrollTop + rect.y - 8;
+      if (trigger.coordsAtCursor) {
+        x = trigger.coordsAtCursor.left-17;
+        y = trigger.coordsAtCursor.top-16;
+      }
       if (posBelow) {
         x = document.body.scrollLeft + rect.x;
         y = document.body.scrollTop + rect.y + rect.height;
