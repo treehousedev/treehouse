@@ -1,38 +1,39 @@
 
 export const Settings = {
-  view({attrs: {workbench}}) {
+  view({attrs: {workbench}, state}) {
     const currentTheme = workbench.workspace.settings.theme;
+    state.selectedTheme = (state.selectedTheme === undefined) ? currentTheme : state.selectedTheme;
+    const oninput = (e) => {
+      state.selectedTheme = e.target.value;
+    }
     return (
       <div class="notice">
-        <form method="dialog">
-          <h3>Settings</h3>
-          <div class="flex flex-row">
-            <div class="grow">Theme</div>
-            <div>
-              <select name="theme">
-                <option selected={currentTheme===""} value="">Light</option>
-                <option selected={currentTheme==="darkmode"} value="darkmode">Dark</option>
-                <option selected={currentTheme==="sepia"} value="sepia">Sepia</option>
-                <option selected={currentTheme==="sublime"} value="sublime">Sublime</option>
-              </select>
-            </div>
+        <h3>Settings</h3>
+        <div class="flex flex-row">
+          <div class="grow">Theme</div>
+          <div>
+            <select name="theme" oninput={oninput}>
+              <option selected={state.selectedTheme===""} value="">Light</option>
+              <option selected={state.selectedTheme==="darkmode"} value="darkmode">Dark</option>
+              <option selected={state.selectedTheme==="sepia"} value="sepia">Sepia</option>
+              <option selected={state.selectedTheme==="sublime"} value="sublime">Sublime</option>
+            </select>
           </div>
-          <div class="button-bar">
-            <button onclick={() => {
+        </div>
+        <div class="button-bar">
+          <button onclick={() => {
+            workbench.closeDialog();
+          }}>Cancel</button>
+          <button class="primary" onclick={async (e) => {
+            if (currentTheme !== state.selectedTheme) {
+              workbench.workspace.settings.theme = state.selectedTheme;
+              await workbench.workspace.save(true);
+              location.reload();
+            }  else {
               workbench.closeDialog();
-            }}>Cancel</button>
-            <button class="primary" onclick={async (e) => {
-              let newTheme = e.target.closest("form").elements[0].value;
-              if (currentTheme !== newTheme) {
-                workbench.workspace.settings.theme = newTheme;
-                await workbench.workspace.save(true);
-                location.reload();
-              }  else {
-                workbench.closeDialog();
-              }
-            }}>Save Changes</button>
-          </div>
-        </form>
+            }
+          }}>Save Changes</button>
+        </div>
       </div>
     )
   }
