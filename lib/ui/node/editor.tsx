@@ -131,7 +131,11 @@ export const TextAreaEditor: m.Component<Attrs, State> = {
     this.updateHeight = () => {
       span.style.width = `${Math.max(textarea.offsetWidth, 100)}px`;
       span.innerHTML = textarea.value.replace("\n", "<br/>");
-      textarea.style.height = (span.offsetHeight > 0) ? `${span.offsetHeight}px` : `${initialHeight}px`;
+      let height = span.offsetHeight;
+      if (height === 0 && initialHeight > 0) {
+        height = initialHeight;
+      }
+      textarea.style.height = (height > 0) ? `${height}px` : `var(--body-line-height)`;
     }
     textarea.addEventListener("input", () => this.updateHeight());
     textarea.addEventListener("blur", () => span.innerHTML = "");
