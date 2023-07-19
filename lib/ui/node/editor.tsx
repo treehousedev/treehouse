@@ -42,7 +42,7 @@ export const NodeEditor: m.Component = {
       id = id+"-value";
     }
     let editor = TextAreaEditor;
-    if (node.parent.hasComponent(Document) && window.Editor) {
+    if (node.parent && node.parent.hasComponent(Document) && window.Editor) {
       editor = CodeMirrorEditor;
     }
     return m(editor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder});
