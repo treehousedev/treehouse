@@ -5,9 +5,44 @@
     <link>https://treehouse.sh/</link>
     <atom:link href="https://treehouse.sh/blog/feed.rss" rel="self" type="application/rss+xml"/>
     <description>An open source note-taking frontend to extend and customize.</description>
-    <lastBuildDate>Thu, 20 Jul 2023 22:16:43 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 20 Jul 2023 22:43:36 GMT</lastBuildDate>
     <language>en</language>
     <generator>Lume v1.17.5</generator>
+    <item>
+      <title>Release 0.6.0</title>
+      <link>https://treehouse.sh/blog/v0-6-0/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/v0-6-0/</guid>
+      <description/>
+      <content:encoded>
+        <![CDATA[<h2 id="new-document-and-tab-views" tabindex="-1">New Document and Tab Views</h2>
+        <p>In this release we're introducing two new views: Document view, and Tab view. Views are a powerful idea in Treehouse that can either be used to create embedded mini-apps or act as building blocks for you to make your own. These new views are an example of each.</p>
+        <p>Document view gives you a more conventional note-taking experience. In Document view each child node is rendered as a paragraph in the center of the panel. Documents support simple Markdown formatting like bold, italic, strikethrough, and ordered and unordered lists. Turn a node into a document by choosing &quot;Make Document&quot; from the Command Palette. Unlike other views, changing to Document view is a one-way action and nodes can't be converted back to other views.</p>
+        <p>Tab view renders each child node as a tab. Their children (grandchild nodes) are shown beneath when the tab is selected. These nodes will retain their view, so you can combine Tab view with others to create a more complex larger view of your data. In general, Tab view is useful for saving vertical space across several categories. Turn nodes into tabs by selecting the parent node and choose &quot;View as Tabs&quot; from the Command Palette. Since Tab view is read-only, you can modify tabs by switching back to List view.</p>
+        <p>We've also renamed Live Search Nodes to Smart Nodes, which can now be named separate from their query. This also resolves an issue where previously you couldn't use them for tag searches.</p>
+        <p><a href="https://www.youtube.com/watch?v=-CsRlyJx2cU"><img src="http://i3.ytimg.com/vi/-CsRlyJx2cU/hqdefault.jpg" alt="Watch Demo"></a>
+        <a href="https://www.youtube.com/watch?v=-CsRlyJx2cU">Demo video</a></p>
+        <h2 id="enhancements-and-chores" tabindex="-1">Enhancements and Chores</h2>
+        <ul>
+        <li>Tabs view <a href="https://github.com/treehousedev/treehouse/issues/126">#126</a></li>
+        <li>Document view <a href="https://github.com/treehousedev/treehouse/issues/246">#246</a></li>
+        <li>Support setting a name for a Smart Node <a href="https://github.com/treehousedev/treehouse/issues/235">#235</a></li>
+        <li>Clean up command palette commands <a href="https://github.com/treehousedev/treehouse/issues/242">#242</a></li>
+        <li>Rename live search/search node to Smart Node <a href="https://github.com/treehousedev/treehouse/issues/248">#248</a></li>
+        </ul>
+        <h2 id="bugfixes" tabindex="-1">Bugfixes</h2>
+        <ul>
+        <li>Range error when turning a tag into a search node <a href="https://github.com/treehousedev/treehouse/issues/236">#236</a></li>
+        <li>Don't allow outdenting a top-level node <a href="https://github.com/treehousedev/treehouse/issues/234">#234</a></li>
+        <li>Can't interact with an empty node in Quick Add (mobile) <a href="https://github.com/treehousedev/treehouse/issues/204">#204</a></li>
+        <li>Capital letters in GitHub username prevent login <a href="https://github.com/treehousedev/treehouse/issues/245">#245</a></li>
+        <li>Can't select a theme in Chrome <a href="https://github.com/treehousedev/treehouse/issues/266">#266</a></li>
+        </ul>
+        <hr>
+        <p><a href="https://github.com/treehousedev/treehouse/discussions/273"><em>Discuss on GitHub</em></a></p>
+        ]]>
+      </content:encoded>
+      <pubDate>Thu, 20 Jul 2023 00:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Release 0.5.0</title>
       <link>https://treehouse.sh/blog/v0-5-0/</link>
