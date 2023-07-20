@@ -1,4 +1,5 @@
-import { OutlineNode } from "../ui/outline.tsx";
+
+import { getView } from "../view/views.ts";
 
 export default {
   view({ attrs: { workbench, path }, state }) {
@@ -12,6 +13,7 @@ export default {
     const handleTabClick = (id) => {
       state.selectedTab = id;
     };
+    const selectedNode = node.children.find(n => n.id === state.selectedTab);
     return (
       <div class="tabs-view">
         <div class="tabs">
@@ -19,10 +21,7 @@ export default {
           <div style={{ flexGrow: 1 }}></div>
         </div>
         <div class="tab-content">
-          {node.children.filter(n => n.id === state.selectedTab).map(selected => {
-            path = path.append(selected);
-            return selected.children.map(child => <OutlineNode key={child.id} workbench={workbench} path={path.append(child)} />)
-          })}
+          {m(getView(selectedNode.getAttr("view")||"list"), {workbench, path: path.append(selectedNode)})}
         </div>
       </div>
     )
