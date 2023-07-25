@@ -356,6 +356,48 @@ svg.node-bullet circle#node-collapsed-handle {
   margin-top: calc(var(--padding)*3);
 }
 
+/*------------DRAWER------------*/
+.drawer {
+  width: 20rem;
+  background-color: var(--color-highlight);
+  border-left: 1px solid var(--color-outline-secondary);
+  padding: var(--padding);
+  position: absolute;
+  bottom: 0;
+  right: -20rem;
+  top: 0;
+  z-index: 10;
+  transition: right 0.8s;
+  transition-timing-function: ease-out;
+}
+.drawer.open {
+  right: 0;
+}
+.drawer.closed {
+  right: -20rem;
+}
+
+/*------KEYBOARD REFERENCE-------*/
+.reference .item {
+  font-size: var(--text-small);
+  margin-bottom: calc(var(--padding)/1.5);
+}
+.reference .item .keybindings {
+  color: var(--color-icon-secondary);
+  width: 5rem;
+}
+.reference h2 {
+  font-size: var(--text-body);
+  font-weight: var(--weight-bold);
+  margin-bottom: calc(var(--padding)*2);
+}
+.reference h3 {
+  font-size: var(--text-small);
+  font-weight: var(--weight-bold);
+  margin-bottom: var(--padding);
+  margin-top: calc(var(--padding)*1.5);
+}
+
 /*------------MENU------------*/
 .menu {
   padding: calc(var(--padding)/4);
