@@ -564,6 +564,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.keybindings.registerBinding({ command: "delete", key: "shift+meta+backspace" });
   workbench.commands.registerCommand({
     id: "prev",
+    title: "Previous Node",
     action: (ctx: Context) => {
       if (!ctx.node) return;
       const above = workbench.workspace.findAbove(ctx.path);
@@ -575,6 +576,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.keybindings.registerBinding({ command: "prev", key: "arrowup" });
   workbench.commands.registerCommand({
     id: "next",
+    title: "Next Node",
     action: (ctx: Context) => {
       if (!ctx.node) return;
       const below = workbench.workspace.findBelow(ctx.path);
@@ -586,6 +588,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.keybindings.registerBinding({ command: "next", key: "arrowdown" });
   workbench.commands.registerCommand({
     id: "pick-command",
+    title: "Open Command Palette",
     hidden: true,
     when: (ctx: Context) => {
       if (workbench.isDialogOpen()) return false;
