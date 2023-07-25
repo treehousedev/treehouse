@@ -154,12 +154,13 @@ export const App: m.Component = {
           onclick={e => {
             const dialog = e.target.closest("dialog");
             const rect = dialog.getBoundingClientRect();
+            const zeroClick = (e.clientX == 0 && e.clientY == 0); // clicking select dropdown gives 0,0
             if ((workbench.dialog.explicitClose !== true) && (
               e.clientX < rect.left ||
               e.clientX > rect.right ||
               e.clientY < rect.top ||
               e.clientY > rect.bottom
-            )) {
+            ) && !zeroClick) {
               workbench.closeDialog();
             }
           }}>
