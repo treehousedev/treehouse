@@ -12,6 +12,10 @@
   
   <li><a href="#smart-nodes">Smart Nodes</a></li>
   
+  <li><a href="#tags">Tags</a></li>
+  
+  <li><a href="#templates">Templates</a></li>
+  
   <li><a href="#calendar">Calendar</a></li>
   
   <li><a href="#quick-add">Quick Add</a></li>
@@ -91,6 +95,28 @@
 <li>If your fieldname has spaces, put quotes around it (fieldname:"Value name")</li>
 <li>Search terms are case-insensitive</li>
 </ul>
+<h2 id="tags" tabindex="-1">Tags</h2>
+<p>Tags are versatile metadata. Here are some of the ways you can use them:</p>
+<ul>
+<li>Conduct a keyword search in the searchbar</li>
+<li>Use in Smart Nodes to create custom views</li>
+<li>Use to add a template to a node</li>
+</ul>
+<h3 id="create-a-tag" tabindex="-1">Create a tag</h3>
+<p>On any node, with your cursor at the end of the text, type "#" then the tag name to create a tag. Any tags you have already created will show up in an autocomplete list when you type "#".</p>
+<h3 id="delete-a-tag" tabindex="-1">Delete a tag</h3>
+<p>Click on the tag and press Backspace on your keyboard to delete it.</p>
+<h2 id="templates" tabindex="-1">Templates</h2>
+<p>Templates allow you to add a set of predefined fields and other child nodes to a node simply by adding a tag to that node.</p>
+<h3 id="create-and-use-a-template" tabindex="-1">Create and use a template</h3>
+<p>In this example, we'll create a template called "book" with child fields Author and Release Date.</p>
+<ol>
+<li>Wherever you want to store your template, type "book" in the node.</li>
+<li>Add child fields Author and Release Date, and leave the value fields empty. (To turn a regular node into a Field: Command Palette &gt; Create field)</li>
+<li>With your cursor in the parent "book" node, open the Command Palette (Command/Control+K) and choose Make Template.</li>
+<li>Create a list of books wherever you'd like, if you haven't already. With your cursor on one if the individual books, type "#book" and hit ENTER to create the tag.</li>
+<li>Check out one of your book nodes—it should have the child fields Author and Release Date that you set up in your template.</li>
+</ol>
 <h2 id="calendar" tabindex="-1">Calendar</h2>
 <p>The Calendar is a default node that is automatically generated for every workspace. Nodes inside the calendar are grouped by date, week, then year.</p>
 <h3 id="today" tabindex="-1">Today</h3>
