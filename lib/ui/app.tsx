@@ -1,7 +1,6 @@
-import { Menu } from "./menu.tsx";
-import { CommandPalette } from "./palette.tsx";
+import { Drawer as DrawerComponent } from "./drawer.tsx";
 import { Panel as PanelComponent } from "./panel.tsx";
-import { QuickAdd } from "./quickadd.tsx";
+import { KeyboardReference } from './reference.tsx';
 import { Search } from "./search.tsx";
 import { Notice } from "./notices.tsx";
 
@@ -70,13 +69,39 @@ export const App: m.Component = {
               </div>
             </div>
             
+            <div onclick={() => workbench.toggleDrawer()} data-menu="keyboard-reference" data-align="right" style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)", marginTop: "-2px"}}>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_442_8012)">
+                  <path d="M20 6H4C2.89543 6 2 6.76751 2 7.71429V16.2857C2 17.2325 2.89543 18 4 18H20C21.1046 18 22 17.2325 22 16.2857V7.71429C22 6.76751 21.1046 6 20 6Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M6 10H6.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M7.5 12H7.51" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M10.5 12H10.51" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M13.5 12H13.51" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M16.5 12H16.51" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M9 10H9.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M12 10H12.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M15 10H15.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M18 10H18.01" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M5 15H19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+                <defs>
+                  <clipPath id="clip0_442_8012">
+                    <rect width="22" height="14" fill="white" transform="translate(1 5)"/>
+                  </clipPath>
+                </defs>
+              </svg>
+            </div>
+
             <div onclick={(e) => workbench.showMenu(e)} data-menu="settings" data-align="right" style={{cursor: "pointer", marginLeft: "var(--padding)", marginRight: "var(--padding)"}}>
-              <svg  xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
             </div>
           </div>
 
           <div class="panels flex flex-row grow" style={{position: "relative", overflow: "hidden"}}>
             {workbench.panels.map(path => <div><PanelComponent workbench={workbench} path={path} /></div>)}
+            <DrawerComponent open={workbench.drawer.open}>
+              <KeyboardReference workbench={workbench} />
+            </DrawerComponent>
           </div>
 
           <div class="mobile-nav flex-row">

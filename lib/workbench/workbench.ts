@@ -19,6 +19,10 @@ export interface Clipboard {
   node: Node;
 }
 
+export interface Drawer {
+  open: boolean;
+}
+
 /**
  * Workbench is the top-level controller for the Treehouse frontend.
  * 
@@ -37,7 +41,8 @@ export class Workbench {
   
   context: Context;
   panels: Path[];
-  clipboard?: Clipboard; 
+  clipboard?: Clipboard;
+  drawer: Drawer;
 
   popover: any;
   dialog: any;
@@ -53,6 +58,7 @@ export class Workbench {
 
     this.context = {node: null};
     this.panels = [];
+    this.drawer = { open: false };
 
     this.dialog = {body: () => null};
     this.menu = {body: () => null};
@@ -279,6 +285,11 @@ export class Workbench {
       "github": GitHubMessage,
       "lockstolen": LockStolenMessage,
     }[notice], {workbench: this, finished}), true, undefined, (notice==="lockstolen")?true:false);
+  }
+
+  toggleDrawer() {
+    this.drawer.open = !this.drawer.open;
+    m.redraw();
   }
 
   showSettings() {
