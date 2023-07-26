@@ -357,34 +357,35 @@ svg.node-bullet circle#node-collapsed-handle {
 }
 
 /*------------DRAWER------------*/
+
 .drawer {
-  width: 20rem;
+  width: 256px; /* same width as sidebar*/
   background-color: var(--color-highlight);
-  border-left: 1px solid var(--color-outline-secondary);
   padding: var(--padding);
   position: absolute;
   bottom: 0;
-  right: -20rem;
+  right: -256px;
   top: 0;
   z-index: 10;
-  transition: right 0.8s;
-  transition-timing-function: ease-out;
+  transition: right 0.1s;
+  transition-timing-function: cubic-bezier(0,-0.04,1,.52)
 }
 .drawer.open {
   right: 0;
 }
 .drawer.closed {
-  right: -20rem;
+  right: -256px;
 }
 
 /*------KEYBOARD REFERENCE-------*/
 .reference .item {
   font-size: var(--text-small);
   margin-bottom: calc(var(--padding)/1.5);
+  gap: var(--padding);
 }
 .reference .item .keybindings {
   color: var(--color-icon-secondary);
-  width: 5rem;
+  width: var(--15);
 }
 .reference h2 {
   font-size: var(--text-body);
@@ -393,7 +394,7 @@ svg.node-bullet circle#node-collapsed-handle {
 }
 .reference h3 {
   font-size: var(--text-small);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-semibold);
   margin-bottom: var(--padding);
   margin-top: calc(var(--padding)*1.5);
 }

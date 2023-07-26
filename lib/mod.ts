@@ -286,7 +286,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
 
   workbench.commands.registerCommand({
     id: "mark-done",
-    title: "Mark done",
+    title: "Mark Done",
     when: (ctx: Context) => {
       if (!ctx.node) return false;
       if (ctx.node.raw.Rel === "Fields") return false;
@@ -536,7 +536,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   });
   workbench.commands.registerCommand({
     id: "delete",
-    title: "Delete node",
+    title: "Delete Node",
     action: (ctx: Context) => {
       if (!ctx.node) return;
       if (ctx.node.id.startsWith("@")) return;
@@ -588,7 +588,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   workbench.keybindings.registerBinding({ command: "next", key: "arrowdown" });
   workbench.commands.registerCommand({
     id: "pick-command",
-    title: "Open Command Palette",
+    title: "Command Palette",
     hidden: true,
     when: (ctx: Context) => {
       if (workbench.isDialogOpen()) return false;
