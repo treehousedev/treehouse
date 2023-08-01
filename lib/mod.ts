@@ -94,6 +94,10 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       return false;
     },
     action: (ctx: Context) => {
+      ctx.node.setAttr("cut", "true");
+      if (workbench.clipboard && workbench.clipboard.node) {
+        workbench.clipboard.node.setAttr("cut", "false");
+      }
       workbench.clipboard = {op: "cut", node: ctx.node};
     }
   });
@@ -118,6 +122,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       return false;
     },
     action: (ctx: Context) => {
+      if (workbench.clipboard && workbench.clipboard.node) {
+        workbench.clipboard.node.setAttr("cut", "false");
+      }
       workbench.clipboard = {op: "copy", node: ctx.node};
     }
   });
@@ -142,6 +149,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       return false;
     },
     action: (ctx: Context) => {
+      if (workbench.clipboard && workbench.clipboard.node) {
+        workbench.clipboard.node.setAttr("cut", "false");
+      }
       workbench.clipboard = {op: "copyref", node: ctx.node};
     }
   });
@@ -159,6 +169,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     action: (ctx: Context) => {
       if (!ctx.node) return;
       if (ctx.path.previous && objectManaged(ctx.path.previous)) return;
+      if (workbench.clipboard && workbench.clipboard.node) {
+        workbench.clipboard.node.setAttr("cut", "false");
+      }
       switch (workbench.clipboard.op) {
         case "copy":
           workbench.clipboard.node = workbench.clipboard.node.duplicate();

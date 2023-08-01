@@ -35,6 +35,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
     let {path, workbench} = attrs;
     let node = path.node;
+    let isCut = node.getAttr("cut") === "true";
 
     let isRef = false;
     let handleNode = node;
@@ -209,7 +210,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
 
     return (
-      <div onmouseover={hover} onmouseout={unhover} id={`node-${path.id}-${handleNode.id}`}>
+      <div onmouseover={hover} onmouseout={unhover} id={`node-${path.id}-${handleNode.id}`} class={isCut ? "cut-node" : ""}>
         <div class="node-row-outer-wrapper flex flex-row items-start">
           <svg class="node-menu shrink-0" xmlns="http://www.w3.org/2000/svg"
               onclick={(e) => workbench.showMenu(e, {node: handleNode, path})}

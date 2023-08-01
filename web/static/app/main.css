@@ -274,6 +274,9 @@ with their icon for Safari only*/
 .expanded-node > .indent {
   width: var(--8);
 }
+.cut-node {
+  display: none;
+}
 svg.node-menu {
   cursor: pointer;
   color: var(--color-node-handle);
