@@ -2,7 +2,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "jsxImportSource": "npm:preact"
-  }
+  },
   "tasks": {
     "bundle": "deno run --unstable -A ./bundle.ts",
     "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
