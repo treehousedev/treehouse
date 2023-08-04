@@ -1,10 +1,7 @@
 
 export const NewNode = {
   view({attrs: {workbench, path}}) {
-    const startNew = (e) => {
-      workbench.executeCommand("insert-child", {node: path.node, path}, e.target.value);
-    }
-    const tabNew = (e) => {
+    const keydown = (e) => {
       if (e.key === "Tab") {
         e.stopPropagation();
         e.preventDefault();
@@ -12,6 +9,8 @@ export const NewNode = {
           const lastchild = path.node.children[path.node.childCount-1];
           workbench.executeCommand("insert-child", {node: lastchild, path});
         }
+      } else {
+        workbench.executeCommand("insert-child", {node: path.node, path}, e.target.value);
       }
     }
     return (
@@ -23,8 +22,7 @@ export const NewNode = {
         <div class="flex grow">
           <input class="grow"
             type="text"
-            oninput={startNew}
-            onkeydown={tabNew}
+            onkeydown={keydown}
             value={""}
           />
         </div>
