@@ -43,6 +43,13 @@ export const OutlineNode: m.Component<Attrs, State> = {
       node = handleNode.refTo;
     }
 
+    let isCut = false;
+    if (workbench.clipboard && workbench.clipboard.op === "cut") {
+      if (workbench.clipboard.node.id === node.id) {
+        isCut = true;
+      }
+    }
+
     const expanded = workbench.workspace.getExpanded(path.head, handleNode);
     const placeholder = objectHas(node, "handlePlaceholder") ? objectCall(node, "handlePlaceholder") : '';
 
@@ -209,7 +216,7 @@ export const OutlineNode: m.Component<Attrs, State> = {
     }
 
     return (
-      <div onmouseover={hover} onmouseout={unhover} id={`node-${path.id}-${handleNode.id}`}>
+      <div onmouseover={hover} onmouseout={unhover} id={`node-${path.id}-${handleNode.id}`} class={isCut ? "cut-node" : ""}>
         <div class="node-row-outer-wrapper flex flex-row items-start">
           <svg class="node-menu shrink-0" xmlns="http://www.w3.org/2000/svg"
               onclick={(e) => workbench.showMenu(e, {node: handleNode, path})}
