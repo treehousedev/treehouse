@@ -35,13 +35,19 @@ export const OutlineNode: m.Component<Attrs, State> = {
   view ({attrs, state, children}) {
     let {path, workbench} = attrs;
     let node = path.node;
-    let isCut = node.getAttr("cut") === "true";
 
     let isRef = false;
     let handleNode = node;
     if (node.refTo) {
       isRef = true;
       node = handleNode.refTo;
+    }
+
+    let isCut = false;
+    if (workbench.clipboard && workbench.clipboard.op === "cut") {
+      if (workbench.clipboard.node.id === node.id) {
+        isCut = true;
+      }
     }
 
     const expanded = workbench.workspace.getExpanded(path.head, handleNode);
