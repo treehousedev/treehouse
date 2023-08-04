@@ -12,7 +12,12 @@ export const Panel = {
       workbench.executeCommand("close-panel", {}, path);
     }
     const goBack = (e) => {
-      path.pop();
+      let node = path.pop();
+      // if there was a duplicate id in the path,
+      // pop again
+      if (node === path.node) {
+        path.pop();
+      }
     }
     const maximize = (e) => {
       // todo: should be a command
