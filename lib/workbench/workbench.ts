@@ -344,7 +344,8 @@ export class Workbench {
           fields[f.name.toLowerCase()] = f.value.toLowerCase();
         }
         for (const f in fieldQuery) {
-          if (!fields[f] || fields[f] !== fieldQuery[f].replace(/['"]/g, "")) {
+          const field = fields[f.replace(/['"]/g, "")];
+          if (!field || field !== fieldQuery[f].replace(/['"]/g, "")) {
             return false;
           }
         }
