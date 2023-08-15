@@ -45,7 +45,7 @@ export const NodeEditor: m.Component = {
     if (node.parent && node.parent.hasComponent(Document) && window.Editor) {
       editor = CodeMirrorEditor;
     }
-    return m(editor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder});
+    return m(editor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder, workbench, path});
   }
 }
 
@@ -145,7 +145,7 @@ export const TextAreaEditor: m.Component<Attrs, State> = {
   onupdate() {
     this.updateHeight();
   },
-  view ({attrs: {id, onkeydown, onfocus, onblur, oninput, getter, setter, display, placeholder}, state}) {
+  view ({attrs: {id, onkeydown, onfocus, onblur, oninput, getter, setter, display, placeholder, path, workbench}, state}) {
     const value = (state.editing) 
       ? state.buffer 
       : (display) ? display() : getter();
@@ -180,6 +180,29 @@ export const TextAreaEditor: m.Component<Attrs, State> = {
         oninput(e);
       }
     }
+    const handlePaste = (e) => {
+      const textData = e.clipboardData.getData('Text');
+      if (textData.length > 0) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const lines = textData.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        state.buffer = lines.shift();
+        setter(state.buffer, true);
+
+        let node = path.node;
+        for (const line of lines) {
+          const newNode = workbench.workspace.new(line);
+          newNode.parent = node.parent;
+          newNode.siblingIndex = node.siblingIndex + 1;
+          m.redraw.sync();
+          const p = path.clone();
+          p.pop();
+          workbench.focus(p.append(newNode));
+          node = newNode;
+        }
+      }
+    }
     
     return (
       <div class="text-editor">
@@ -189,6 +212,7 @@ export const TextAreaEditor: m.Component<Attrs, State> = {
           onfocus={startEdit}
           onblur={finishEdit}
           oninput={edit}
+          onpaste={handlePaste}
           placeholder={placeholder}
           onkeydown={onkeydown||defaultKeydown}
           value={value}>{value}</textarea>
