@@ -180,7 +180,9 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
       const p = ctx.path.clone();
       p.pop();
       workbench.focus(p.append(workbench.clipboard.node));
-      workbench.clipboard = undefined;
+      if (workbench.clipboard.op === "cut") {
+        workbench.clipboard = undefined;
+      }
     }
   });
   workbench.keybindings.registerBinding({ command: "paste", key: "meta+v" });
