@@ -230,12 +230,20 @@ with their icon for Safari only*/
 
 /*------------NODES------------*/
 /*keep max line length from getting too long for readibility*/
-.text-editor {
+.node-editor {
   width: 100%;
   margin-bottom: var(--2);
 }
 .text-editor textarea, .panel-back-parent {
   max-width: 768px;
+}
+.node-description {
+  padding: 0;
+  color: var(--color-text-secondary);
+  line-height: 150%;
+  font-size: 13px;
+  border: 0;
+  outline: 0;
 }
 /*todo: check unused textarea styles in panel.tsx*/
 .text-editor > textarea, .text-editor > span {
@@ -249,7 +257,7 @@ with their icon for Safari only*/
   line-height: var(--body-line-height);
   border: none;
 }
-.title-node textarea, .title-node > .text-editor > span {
+.title-node .text-editor > textarea, .title-node .text-editor > span {
   font-size: var(--6);
   font-weight: var(--weight-bold);
 }

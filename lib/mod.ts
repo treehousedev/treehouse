@@ -27,6 +27,7 @@ import { Clock } from "./com/clock.tsx";
 import { Tag } from "./com/tag.tsx";
 import { Template } from "./com/template.tsx";
 import { Document } from "./com/document.tsx";
+import { Description } from "./com/description.tsx";
 import { objectManaged } from "./model/hooks.ts";
 
 export { BrowserBackend, SearchIndex_MiniSearch } from "./backend/browser.ts";
@@ -61,6 +62,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     Tag,
     Template,
     SmartNode,
+    Description,
   ].forEach(com => {
     if (com.initialize) {
       com.initialize(workbench);
@@ -240,6 +242,7 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     title: "Add checkbox",
     when: (ctx: Context) => {
       if (!ctx.node) return false;
+      if (ctx.node.hasComponent(Checkbox)) return false;
       if (ctx.node.raw.Rel === "Fields") return false;
       if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
       return true;
