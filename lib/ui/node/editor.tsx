@@ -1,5 +1,6 @@
 import { objectCall, objectHas } from "../../model/hooks.ts";
 import { Document } from "../../com/document.tsx";
+import { Description } from "../../com/description.tsx";
 
 export const NodeEditor: m.Component = {
   view ({attrs: {workbench, path, onkeydown, oninput, disallowEmpty, editValue, placeholder}, state}) {
@@ -45,7 +46,16 @@ export const NodeEditor: m.Component = {
     if (node.parent && node.parent.hasComponent(Document) && window.Editor) {
       editor = CodeMirrorEditor;
     }
-    return m(editor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder, workbench, path});
+    let desc = undefined;
+    if (node.hasComponent(Description)) {
+      desc = node.getComponent(Description);
+    }
+    return (
+      <div class="node-editor flex flex-col">
+        {m(editor, {id, getter, setter, display, onkeydown, onfocus, oninput, placeholder, workbench, path})}    
+        {(desc) ? m(desc.editor(), {node}) :null}
+      </div>
+    )
   }
 }
 
