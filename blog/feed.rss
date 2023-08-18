@@ -5,9 +5,45 @@
     <link>https://treehouse.sh/</link>
     <atom:link href="https://treehouse.sh/blog/feed.rss" rel="self" type="application/rss+xml"/>
     <description>An open source note-taking frontend to extend and customize.</description>
-    <lastBuildDate>Fri, 18 Aug 2023 18:18:55 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 18 Aug 2023 18:22:40 GMT</lastBuildDate>
     <language>en</language>
     <generator>Lume v1.17.5</generator>
+    <item>
+      <title>Release 0.7.0</title>
+      <link>https://treehouse.sh/blog/v0-7-0/</link>
+      <guid isPermaLink="false">https://treehouse.sh/blog/v0-7-0/</guid>
+      <description/>
+      <content:encoded>
+        <![CDATA[<h2 id="descriptions%2C-better-paste%2C-shortcut-drawer" tabindex="-1">Descriptions, better paste, shortcut drawer</h2>
+        <p>We're excited to be adding a handful of minor enhancements in this release. The first is node descriptions, which allow you to add small text below your node content, as part of the same node. Use it to add context or any kind of secondary information. To use, select your node, open the Command Palette with Command/Control + K, and select &quot;Add Description&quot;.</p>
+        <p>We've made several improvements related to cut/copy/pasting text. Now if you paste text containing new lines, we'll convert each newline to a separate node. We've also fixed some bugs and UX flows.</p>
+        <p>Lastly, check out the keyboard shortcut drawer! We want it to be super easy to learn and use keyboard shortcuts and hope this helps.</p>
+        <h2 id="enhancements-and-chores" tabindex="-1">Enhancements and Chores</h2>
+        <ul>
+        <li>Node descriptions <a href="https://github.com/treehousedev/treehouse/issues/295">#295</a></li>
+        <li>Support searching for field keys containing spaces <a href="https://github.com/treehousedev/treehouse/issues/277">#277</a></li>
+        <li>Newlines should be translated as new nodes when pasting from outside sources <a href="https://github.com/treehousedev/treehouse/issues/250">#250</a></li>
+        <li>When multiple panels, all panels should be equal width <a href="https://github.com/treehousedev/treehouse/issues/259">#259</a></li>
+        <li>Keyboard shortcut reference drawer <a href="https://github.com/treehousedev/treehouse/issues/264">#264</a></li>
+        <li>Sublime theme - adjust pink to improve contrast <a href="https://github.com/treehousedev/treehouse/issues/284">#284</a></li>
+        <li>Use real italics/bold font variant for Codemirror (treehouse) <a href="https://github.com/treehousedev/treehouse/issues/272">#272</a></li>
+        </ul>
+        <h2 id="bugs" tabindex="-1">Bugs</h2>
+        <ul>
+        <li>Can't paste into (+) node <a href="https://github.com/treehousedev/treehouse/issues/275">#275</a></li>
+        <li>Prevent multiple checkboxes <a href="https://github.com/treehousedev/treehouse/issues/299">#299</a></li>
+        <li>Cut node pastes when you select cut, not paste <a href="https://github.com/treehousedev/treehouse/issues/293">#293</a></li>
+        <li>&quot;Back&quot; link should not require two clicks <a href="https://github.com/treehousedev/treehouse/issues/257">#257</a></li>
+        <li>Cutting the node should remove it from view <a href="https://github.com/treehousedev/treehouse/issues/274">#274</a></li>
+        <li>TypeError when smart node returns results <a href="https://github.com/treehousedev/treehouse/issues/269">#269</a></li>
+        <li>TypeError related to command palette + tags <a href="https://github.com/treehousedev/treehouse/issues/258">#258</a></li>
+        </ul>
+        <hr>
+        <p><a href="https://github.com/treehousedev/treehouse/discussions/302"><em>Discuss on GitHub</em></a></p>
+        ]]>
+      </content:encoded>
+      <pubDate>Fri, 18 Aug 2023 00:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Release 0.6.0</title>
       <link>https://treehouse.sh/blog/v0-6-0/</link>
