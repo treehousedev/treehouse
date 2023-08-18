@@ -244,6 +244,7 @@ with their icon for Safari only*/
   font-size: 13px;
   border: 0;
   outline: 0;
+  background: transparent;
 }
 /*todo: check unused textarea styles in panel.tsx*/
 .text-editor > textarea, .text-editor > span {

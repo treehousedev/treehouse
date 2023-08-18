@@ -30,6 +30,20 @@ export class Description {
         ctx.node.changed();
       }
     });
+    workbench.commands.registerCommand({
+      id: "remove-description",
+      title: "Remove Description",
+      when: (ctx: Context) => {
+        if (!ctx.node) return false;
+        if (ctx.path.previous && objectManaged(ctx.path.previous)) return false;
+        if (ctx.node.hasComponent(Description)) return true;
+        return false;
+      },
+      action: (ctx: Context, name: string) => {
+        ctx.node.removeComponent(Description);
+        ctx.node.changed();
+      }
+    });
   }
 }
 
