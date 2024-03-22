@@ -6,7 +6,7 @@ import feed from "lume/plugins/feed.ts";
 import codeHighlight from "lume/plugins/code_highlight.ts";
 import lang_javascript from "https://unpkg.com/@highlightjs/cdn-assets@11.6.0/es/languages/javascript.min.js";
 import lang_bash from "https://unpkg.com/@highlightjs/cdn-assets@11.6.0/es/languages/bash.min.js";
-import toc from "https://deno.land/x/lume_markdown_plugins/toc.ts";
+import toc from "https://deno.land/x/lume_markdown_plugins@v0.5.1/toc.ts";
 
 import * as esbuild from "https://deno.land/x/esbuild@v0.17.2/mod.js";
 
