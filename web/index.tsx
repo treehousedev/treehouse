@@ -64,7 +64,7 @@ export default (data) => (
         </div>
         <div class="relative" style={{minWidth: "640px"}}>
           <div class="dropshadow">&nbsp;</div>
-          <img class="bg-gray-400 image z-10 relative" width="640" height="420" src="/photos/hero-image.png" />
+          <img class="bg-gray-400 image z-10 relative" width="640" height="420" src="/photos/hero-image.png" alt="Treehouse UI preview" />
         </div>
       </div>
       
