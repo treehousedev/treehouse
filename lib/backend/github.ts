@@ -1,5 +1,5 @@
 
-import { Authenticator, SearchIndex, FileStore } from "./mod.ts";
+import { Authenticator, SearchIndex, FileStore, ChangeNotifier } from "./mod.ts";
 import { BrowserBackend } from "./browser.ts";
 import { encode, decode } from 'https://cdn.jsdelivr.net/npm/js-base64@3.7.5/base64.mjs';
 
@@ -15,6 +15,7 @@ export class GitHubBackend {
 
   index: SearchIndex;
   files: FileStore;
+  changes?: ChangeNotifier;
 
   loginURL: string;
   clientFactory: any; // Octokit class
@@ -36,6 +37,7 @@ export class GitHubBackend {
       privateRepo: false
     }, opts || {});
 
+    // fallbacks
     const localbackend = new BrowserBackend();
     this.index = localbackend.index;
     this.files = localbackend.files;
@@ -157,10 +159,10 @@ export class GitHubBackend {
       }
     }
     
+    // satisfy filestore interface with methods on this
     this.files = this;
-
     
-    
+    // create and regularly check a session lockfile
     const sessID = uniqueID();
     await this.readFile("treehouse.lock");
     await this.writeFile("treehouse.lock", sessID);

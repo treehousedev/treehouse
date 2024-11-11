@@ -16,6 +16,7 @@ export interface Backend {
   auth: Authenticator|null;
   index: SearchIndex;
   files: FileStore;
+  changes?: ChangeNotifier;
 }
 
 
@@ -37,8 +38,11 @@ export interface SearchIndex {
   search(query: string): string[];
 }
 
-
 export interface FileStore {
   async readFile(path: string): string|null;
   async writeFile(path: string, contents: string);
+}
+
+export interface ChangeNotifier {
+  onNodeChange(cb: (nodeIDs: string[]) => void);
 }
