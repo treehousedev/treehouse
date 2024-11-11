@@ -6,7 +6,9 @@
     <link href="/app/main.css" rel="stylesheet">
     <link rel="icon" href="/icon.png" type="image/x-icon">
     <link rel="manifest" href="/app/main.webmanifest">
-    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400&amp;family=Source+Code+Pro&amp;display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/highlight.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.18.1/styles/railscasts.min.css" rel="stylesheet">
     <script src="/vnd/mithril-2.0.3.min.js"></script>
     <script src="/vnd/minisearch-6.0.1.min.js"></script>
     <script src="/analytics.js"></script>
@@ -19,6 +21,10 @@
     <script type="module">
       import { Editor } from "/vnd/codemirror-6.0.1.min.js";
       window.Editor = Editor;
+      
+      import { CodeJar } from "https://cdn.jsdelivr.net/npm/codejar@4.2.0/+esm";
+      window.CodeJar = CodeJar;
+
       window.backend = {"name":"github","url":"https://treehouse-demo-login.proteco.workers.dev"};
     </script>
     <script src="/app/main.js" type="module"></script>

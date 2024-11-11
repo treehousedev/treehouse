@@ -664,3 +664,23 @@ the top nav in a more elegant way at some point*/
     padding: var(--padding);
   }
 }
+
+/*------------CODE EDITOR------------*/
+
+.code-editor {
+  border-radius: 6px;
+  font-family: 'Source Code Pro', monospace;
+  font-size: 14px;
+  font-weight: 400;
+  height: 340px;
+  letter-spacing: normal;
+  line-height: 20px;
+  padding: 10px;
+  resize: none !important;
+  tab-size: 4;
+  margin-left: -0.5rem;
+}
+
+.code-editor.hljs {
+  padding: 10px;
+}
