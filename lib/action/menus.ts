@@ -1,6 +1,6 @@
 
 export interface MenuItem {
-  command: string;
+  command?: string;
   //alt?: string;
   when?: Function;
   title?: Function;
