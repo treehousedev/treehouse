@@ -5,7 +5,9 @@ import { Node } from "../model/mod.ts";
 export interface CodeExecutor {
   // executes the source and returns an output string.
   // exceptions in execution should be caught and returned as a string.
-  execute(source: string, options: ExecuteOptions): string;
+  async execute(source: string, options: ExecuteOptions): string;
+
+  canExecute(options: ExecuteOptions): boolean;
 }
 
 export interface ExecuteOptions {
@@ -14,11 +16,18 @@ export interface ExecuteOptions {
 
 // defaultExecutor can be replaced with an external service, etc
 export let defaultExecutor: CodeExecutor = {
-  execute: (source: string, options: ExecuteOptions): string => {
+  async execute(source: string, options: ExecuteOptions): Promise<string> {
     if (options.language !== "javascript") {
       return `Unsupported language: ${options.language}`;
     }
     return JSON.stringify(window.eval(source));
+  },
+
+  canExecute(options: ExecuteOptions): boolean {
+    if (options.language === "javascript") {
+      return true;
+    }
+    return false;
   }
 }
 
@@ -27,9 +36,11 @@ export let defaultExecutor: CodeExecutor = {
 @component
 export class CodeBlock {
   code: string;
+  language: string;
 
   constructor() {
     this.code = "";
+    this.language = "";
   }
 
   childrenView() {
@@ -75,6 +86,7 @@ const CodeEditor = {
       // let's do it by this hack.
       editor.textContent = editor.textContent;
       window.hljs.highlightBlock(editor);
+      snippet.language = window.hljs.highlightAuto(editor.textContent).language || "";
     });
     dom.jarEditor.updateCode(snippet.code);
     dom.jarEditor.onUpdate(code => {
