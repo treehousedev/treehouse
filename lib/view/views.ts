@@ -11,8 +11,13 @@ export const views = {
   document,
 }
 
+// deprecated. use getNodeView
 export function getView(name) {
   return views[name] || empty;
+}
+
+export function getNodeView(node) {
+  return views[node.getAttr("view") || "list"] || empty;
 }
 
 window.registerView = (name, view) => {

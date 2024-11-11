@@ -5,7 +5,7 @@ import { NodeEditor } from "./node/editor.tsx";
 
 import { Checkbox } from "../com/checkbox.tsx";
 import { Document } from "../com/document.tsx";
-import { getView } from "../view/views.ts";
+import { getNodeView } from "../view/views.ts";
 
 import { Tag } from "../com/tag.tsx";
 
@@ -26,7 +26,9 @@ interface Popover {
 
 export const OutlineEditor: m.Component<Attrs> = {
   view ({attrs: {workbench, path, alwaysShowNew}}) {
-    return m(getView(path.node.getAttr("view")||"list"), {workbench, path, alwaysShowNew});
+    return objectHas(path.node, "childrenView")
+      ? m(componentsWith(path.node, "childrenView")[0].childrenView(), {workbench, path})
+      : m(getNodeView(path.node), {workbench, path, alwaysShowNew});
   }
 }
 
@@ -254,7 +256,9 @@ export const OutlineNode: m.Component<Attrs, State> = {
           <div class="expanded-node flex flex-row">
             <div class="indent flex" onclick={toggle}></div>
             <div class="view grow">
-              {m(getView(node.getAttr("view")||"list"), {workbench, path})}
+              {objectHas(node, "childrenView")
+                ? m(componentsWith(node, "childrenView")[0].childrenView(), {workbench, path})
+                : m(getNodeView(node), {workbench, path})}
             </div>
           </div>
         }

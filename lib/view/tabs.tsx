@@ -1,5 +1,5 @@
 
-import { getView } from "../view/views.ts";
+import { getNodeView } from "../view/views.ts";
 
 export default {
   view({ attrs: { workbench, path }, state }) {
@@ -21,7 +21,7 @@ export default {
           <div style={{ flexGrow: 1 }}></div>
         </div>
         <div class="tab-content">
-          {m(getView(selectedNode.getAttr("view")||"list"), {workbench, path: path.append(selectedNode)})}
+          {m(getNodeView(selectedNode), {workbench, path: path.append(selectedNode)})}
         </div>
       </div>
     )
