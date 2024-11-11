@@ -19,9 +19,10 @@
 import { Path, Workbench } from "./workbench/mod.ts";
 import { App } from "./ui/app.tsx";
 import { Backend } from "./backend/mod.ts";
+import { CodeBlock } from "./com/codeblock.tsx";
+import { InlineFrame } from "./com/iframe.tsx";
 import { SmartNode } from "./com/smartnode.tsx";
 import { Checkbox } from "./com/checkbox.tsx";
-import { Page } from "./com/page.tsx";
 import { TextField } from "./com/textfield.tsx";
 import { Clock } from "./com/clock.tsx";
 import { Tag } from "./com/tag.tsx";
@@ -56,13 +57,14 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
   [
     Clock,
     TextField,
-    Page,
     Document,
     Checkbox,
     Tag,
     Template,
     SmartNode,
     Description,
+    InlineFrame,
+    CodeBlock,
   ].forEach(com => {
     if (com.initialize) {
       com.initialize(workbench);

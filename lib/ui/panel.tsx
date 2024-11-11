@@ -1,6 +1,5 @@
 import { OutlineEditor } from "./outline.tsx";
 import { NodeEditor } from "./node/editor.tsx";
-import { Page } from "../com/page.tsx";
 
 export const Panel = {
   view({ attrs }) {
@@ -23,10 +22,6 @@ export const Panel = {
       // todo: should be a command
       workbench.panels = [path];
       workbench.context.path = path;
-    }
-    const editMarkdown = (e) => {
-      node.getComponent(Page).markdown = e.target.value;
-      node.changed();
     }
     function calcHeight(value = "") {
       let numberOfLineBreaks = (value.match(/\n/g) || []).length;
@@ -64,20 +59,6 @@ export const Panel = {
         <div class="title-node" oncontextmenu={(e) => workbench.showMenu(e, { node, path })} data-menu="node">
           <NodeEditor workbench={workbench} path={path} disallowEmpty={true} />
         </div>
-        {(node.hasComponent(Page)) ?
-          <textarea oninput={editMarkdown}
-            value={node.getComponent(Page).markdown}
-            placeholder="Enter Markdown text here"
-            style={{
-              marginLeft: "var(--padding)",
-              padding: "var(--padding)",
-              outline: "0",
-              height: `${calcHeight(node.getComponent(Page).markdown)}px`,
-              border: "0",
-            }}>
-            {node.getComponent(Page).markdown}
-          </textarea>
-          : null}
         <OutlineEditor workbench={workbench} path={path.sub()} alwaysShowNew={true} />
       </div>
     </div>
