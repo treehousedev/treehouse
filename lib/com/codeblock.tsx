@@ -51,9 +51,13 @@ export class CodeBlock {
     return {
       view: (vnode) => {
         return [
-          m(CodeEditor),
+          m(CodeEditor, {
+            path: vnode.attrs.path,
+            workbench: vnode.attrs.workbench,
+          }),
           m(CodeEditorOutput, {
             output: this.output,
+            path: vnode.attrs.path,
           }),
         ];
       },
@@ -149,18 +153,13 @@ const CodeEditorOutput = {
       attrs: { path },
     } = vnode;
     const snippet = path.node.getComponent(CodeBlock);
-    window.hljs.highlightBlock(
-      dom.querySelector(".code-editor-output")
-    );
+
+    window.hljs.highlightBlock(dom);
 
     dom
       .querySelector("button")
       .addEventListener("click", async () => {
-        snippet.output = await defaultExecutor.execute(snippet.code, {
-          language: snippet.language,
-        });
-        console.log(snippet.output);
-        vnode.state.output = snippet.output;
+        console.log(snippet);
       });
   },
 
