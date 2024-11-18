@@ -131,27 +131,25 @@ const CodeEditor = {
 };
 
 const Output = {
-  output: "",
-
-  view({ dom, attrs: { path } }) {
+  view({ dom, state, attrs: { path } }) {
     const snippet = path.node.getComponent(CodeBlock);
 
     let handleClick = async () => {
-      this.output = "Running...";
+      state.output = "Running...";
       try {
         const res = await defaultExecutor.execute(snippet.code, {
           language: snippet.language,
         });
 
         // Update output using m.prop to ensure it's persistent across re-renders
-        this.output = res; // Call m.prop with the new value
+        state.output = res; // Call m.prop with the new value
       } catch (error) {
-        this.output = error.toString();
+        state.output = error.toString();
       }
     };
     return (
       <div className="code-editor-output">
-        <p>{this.output ? "Output: " + this.output : ""}</p>
+        <p>{state.output ? "Output: " + state.output : ""}</p>
         <button type="button" onclick={handleClick}>
           Run
         </button>
