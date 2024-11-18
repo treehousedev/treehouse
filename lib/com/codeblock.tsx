@@ -39,14 +39,25 @@ export let defaultExecutor: CodeExecutor = {
 export class CodeBlock {
   code: string;
   language: string;
+  output: string;
 
   constructor() {
     this.code = "";
     this.language = "";
+    this.output = "";
   }
 
   childrenView() {
-    return CodeEditorOutput;
+    return {
+      view: (vnode) => {
+        return [
+          m(CodeEditor),
+          m(CodeEditorOutput, {
+            output: this.output,
+          }),
+        ];
+      },
+    };
   }
 
   handleIcon(collapsed: boolean = false): any {
@@ -97,7 +108,11 @@ export class CodeBlock {
 }
 
 const CodeEditor = {
-  oncreate({ dom, attrs: { path } }) {
+  oncreate(vnode) {
+    const {
+      dom,
+      attrs: { path },
+    } = vnode;
     const snippet = path.node.getComponent(CodeBlock);
     //@ts-ignore
     dom.jarEditor = new window.CodeJar(dom, (editor) => {
@@ -126,12 +141,10 @@ const CodeEditor = {
   },
 };
 
-
 const CodeEditorOutput = {
   output: "",
   oncreate(vnode) {
     const {
-      state,
       dom,
       attrs: { path },
     } = vnode;
@@ -152,16 +165,12 @@ const CodeEditorOutput = {
   },
 
   view: (vnode) => {
-    const output = vnode.state?.output
-      ? `Output: ${vnode.state.output}`
-      : "";
-
-    return m("div", [
-      m(CodeEditor, { path: vnode.attrs.path }),
-      m("div", { class: "code-editor-output" }, [
-        m("p", "Output: " + vnode.state.output),
-        m("button", "Run"),
-      ]),
+    return m("div", { class: "code-editor-output" }, [
+      m(
+        "p",
+        vnode.state.output ? "Output: " + vnode.state.output : ""
+      ),
+      m("button", "Run"),
     ]);
   },
 };
