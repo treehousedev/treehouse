@@ -22,7 +22,9 @@ export let defaultExecutor: CodeExecutor = {
     if (options.language !== "javascript") {
       return `Unsupported language: ${options.language}`;
     }
-    return JSON.stringify(window.eval(source));
+    let output = window.eval(source);
+    //return JSON.stringify(output);
+    return "j";
   },
 
   canExecute(options: ExecuteOptions): boolean {
@@ -124,31 +126,40 @@ const CodeEditor = {
   },
 };
 
+
 const CodeEditorOutput = {
-  oncreate({ dom, attrs: { path } }) {
+  output: "",
+  oncreate(vnode) {
+    const {
+      state,
+      dom,
+      attrs: { path },
+    } = vnode;
     const snippet = path.node.getComponent(CodeBlock);
     window.hljs.highlightBlock(
       dom.querySelector(".code-editor-output")
     );
 
-    const output = snippet.output;
-    if (output) {
-      dom.querySelector("p").innerText = "Output: " + output;
-    }
     dom
       .querySelector("button")
       .addEventListener("click", async () => {
         snippet.output = await defaultExecutor.execute(snippet.code, {
           language: snippet.language,
         });
+        console.log(snippet.output);
+        vnode.state.output = snippet.output;
       });
   },
 
   view: (vnode) => {
+    const output = vnode.state?.output
+      ? `Output: ${vnode.state.output}`
+      : "";
+
     return m("div", [
       m(CodeEditor, { path: vnode.attrs.path }),
       m("div", { class: "code-editor-output" }, [
-        m("p"),
+        m("p", "Output: " + vnode.state.output),
         m("button", "Run"),
       ]),
     ]);

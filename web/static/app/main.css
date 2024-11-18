@@ -675,12 +675,12 @@ the top nav in a more elegant way at some point*/
   line-height: 20px;
   padding: 10px;
   tab-size: 4;
+  margin-left: -0.5rem;
 }
 
 .code-editor {
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
-  margin-left: -0.5rem;
   height: 340px;
   resize: none !important; 
 
@@ -693,6 +693,10 @@ the top nav in a more elegant way at some point*/
 .code-editor-output{
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
-  margin-left: -8px;
   border-top: 1px solid white;
+  display: flex !important;
+  justify-content: space-between;
+  p {
+    margin: 0;
+  }
 }
