@@ -23,7 +23,7 @@ export let defaultExecutor: CodeExecutor = {
     }
     let output = window.eval(source);
     //return JSON.stringify(output);
-    return Math.random().toString();
+    return output.toString();
   },
 
   canExecute(options: ExecuteOptions): boolean {
@@ -38,16 +38,10 @@ export let defaultExecutor: CodeExecutor = {
 export class CodeBlock {
   code: string;
   language: string;
-  output: string;
-  updateOutput: (output: string) => void;
 
   constructor() {
     this.code = "";
     this.language = "";
-    this.output = "";
-    this.updateOutput = (output: string) => {
-      this.output = output;
-    };
   }
 
   childrenView() {
@@ -108,6 +102,7 @@ const CodeEditor = {
       attrs: { path },
     } = vnode;
     const snippet = path.node.getComponent(CodeBlock);
+
     //@ts-ignore
     dom.jarEditor = new window.CodeJar(dom, (editor) => {
       // highlight.js does not trim old tags,
@@ -135,67 +130,35 @@ const CodeEditor = {
   },
 };
 
-class Output {
-  constructor(vnode) {
-    // Initialize output with m.prop() to preserve state across re-renders
-    this.output = vnode.attrs.output || "";
-    this.updateOutput = vnode.attrs.updateOutput || (() => {});
-  }
+const Output = {
+  output: "",
 
-  oncreate(vnode) {
-    const {
-      dom,
-      attrs: { path },
-    } = vnode;
-
+  view({ dom, attrs: { path } }) {
     const snippet = path.node.getComponent(CodeBlock);
 
-    // Apply syntax highlighting
-    window.hljs.highlightBlock(dom);
+    let handleClick = async () => {
+      this.output = "Running...";
+      try {
+        const res = await defaultExecutor.execute(snippet.code, {
+          language: snippet.language,
+        });
 
-    // Find the button element and add event listener
-    const button = dom.querySelector("button");
-    if (button) {
-      button.addEventListener("click", async () => {
-        console.log("Button clicked");
-        console.log(snippet);
-
-        try {
-          const res = await defaultExecutor.execute(snippet.code, {
-            language: snippet.language,
-          });
-          console.log("Execution result:", res);
-
-          // Update output using m.prop to ensure it's persistent across re-renders
-          this.output = res; // Call m.prop with the new value
-          console.log("Updated output:", this.output);
-          this.updateOutput(this.output); // Call the updateOutput function passed as a prop
-          // Trigger re-render
-          m.redraw.sync();
-        } catch (error) {
-          console.error("Execution error:", error);
-          this.output = error.toString();
-        }
-      });
-    } else {
-      console.warn("Button not found");
-    }
-  }
-
-  onupdate() {
-    console.log("Component updated. Current output:", this.output); // Log the updated output
-  }
-
-  view() {
-    return m("div", { class: "code-editor-output" }, [
-      m(
-        "p",
-        this.output ? "Output: " + this.output : "No output yet."
-      ),
-      m("button", "Run"),
-    ]);
-  }
-}
+        // Update output using m.prop to ensure it's persistent across re-renders
+        this.output = res; // Call m.prop with the new value
+      } catch (error) {
+        this.output = error.toString();
+      }
+    };
+    return (
+      <div className="code-editor-output">
+        <p>{this.output ? "Output: " + this.output : ""}</p>
+        <button type="button" onclick={handleClick}>
+          Run
+        </button>
+      </div>
+    );
+  },
+};
 
 class CodeEditorWithOutput {
   view(vnode) {

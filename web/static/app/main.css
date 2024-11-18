@@ -691,6 +691,8 @@ the top nav in a more elegant way at some point*/
 }
 
 .code-editor-output{
+  background: #232323;
+  color: #e6e1dc;
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   border-top: 1px solid white;
