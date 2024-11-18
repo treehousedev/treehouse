@@ -44,7 +44,7 @@ export class CodeBlock {
   }
 
   childrenView() {
-    return CodeEditor;
+    return CodeEditorOutput;
   }
 
   handleIcon(collapsed: boolean = false): any {
@@ -121,5 +121,36 @@ const CodeEditor = {
     const onkeydown = (e) => e.stopPropagation();
 
     return <div class="code-editor" onkeydown={onkeydown}></div>;
+  },
+};
+
+const CodeEditorOutput = {
+  oncreate({ dom, attrs: { path } }) {
+    const snippet = path.node.getComponent(CodeBlock);
+    window.hljs.highlightBlock(
+      dom.querySelector(".code-editor-output")
+    );
+
+    const output = snippet.output;
+    if (output) {
+      dom.querySelector("p").innerText = "Output: " + output;
+    }
+    dom
+      .querySelector("button")
+      .addEventListener("click", async () => {
+        snippet.output = await defaultExecutor.execute(snippet.code, {
+          language: snippet.language,
+        });
+      });
+  },
+
+  view: (vnode) => {
+    return m("div", [
+      m(CodeEditor, { path: vnode.attrs.path }),
+      m("div", { class: "code-editor-output" }, [
+        m("p"),
+        m("button", "Run"),
+      ]),
+    ]);
   },
 };
