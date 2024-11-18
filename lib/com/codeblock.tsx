@@ -51,21 +51,7 @@ export class CodeBlock {
   }
 
   childrenView() {
-    return {
-      view: (vnode) => {
-        return [
-          m(CodeEditor, {
-            path: vnode.attrs.path,
-            workbench: vnode.attrs.workbench,
-          }),
-          m(CodeEditorOutput, {
-            output: this.output,
-            updateOutput: this.updateOutput,
-            path: vnode.attrs.path,
-          }),
-        ];
-      },
-    };
+    return CodeEditorWithOutput;
   }
 
   handleIcon(collapsed: boolean = false): any {
@@ -149,7 +135,7 @@ const CodeEditor = {
   },
 };
 
-class CodeEditorOutput {
+class Output {
   constructor(vnode) {
     // Initialize output with m.prop() to preserve state across re-renders
     this.output = vnode.attrs.output || "";
@@ -188,6 +174,7 @@ class CodeEditorOutput {
           m.redraw.sync();
         } catch (error) {
           console.error("Execution error:", error);
+          this.output = error.toString();
         }
       });
     } else {
@@ -207,5 +194,11 @@ class CodeEditorOutput {
       ),
       m("button", "Run"),
     ]);
+  }
+}
+
+class CodeEditorWithOutput {
+  view(vnode) {
+    return [m(CodeEditor, vnode.attrs), m(Output, vnode.attrs)];
   }
 }
