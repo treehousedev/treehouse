@@ -667,20 +667,38 @@ the top nav in a more elegant way at some point*/
 
 /*------------CODE EDITOR------------*/
 
-.code-editor {
-  border-radius: 6px;
+.code-editor, .code-editor-output {
   font-family: 'Source Code Pro', monospace;
   font-size: 14px;
   font-weight: 400;
-  height: 340px;
   letter-spacing: normal;
   line-height: 20px;
   padding: 10px;
-  resize: none !important;
   tab-size: 4;
   margin-left: -0.5rem;
 }
 
+.code-editor {
+  border-top-left-radius: 6px;
+  border-top-right-radius: 6px;
+  height: 340px;
+  resize: none !important; 
+
+}
+
 .code-editor.hljs {
   padding: 10px;
+}
+
+.code-editor-output{
+  background: #232323;
+  color: #e6e1dc;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top: 1px solid white;
+  display: flex !important;
+  justify-content: space-between;
+  p {
+    margin: 0;
+  }
 }
