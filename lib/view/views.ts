@@ -3,12 +3,14 @@ import list from "./list.tsx";
 import table from "./table.tsx";
 import tabs from "./tabs.tsx";
 import document from "./document.tsx";
+import cards from "./cards.tsx";
 
 export const views = {
   list,
   table,
   tabs,
   document,
+  cards
 }
 
 // deprecated. use getNodeView

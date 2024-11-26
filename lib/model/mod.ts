@@ -62,6 +62,8 @@ export interface Node {
   removeLinked(rel: string, node: Node): void;
   moveLinked(rel: string, node: Node, idx: number): void;
 
+  componentField(name: string): any|null;
+
   getAttr(name: string): string;
   setAttr(name: string, value: string): void;
 

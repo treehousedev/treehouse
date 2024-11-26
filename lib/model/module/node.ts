@@ -224,6 +224,15 @@ export class Node {
     return this.raw.Linked.Components.length;
   }
 
+  componentField(name: string): any|null {
+    for (const com of this.components) {
+      if (Object.keys(com.value||{}).includes(name)) {
+        return com.value[name];
+      }
+    }
+    return null;
+  }
+
   addComponent(obj: any) {
     const node = this.bus.make(componentName(obj), obj);
     node.raw.Parent = this.id;

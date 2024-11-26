@@ -238,6 +238,20 @@ export async function setup(document: Document, target: HTMLElement, backend: Ba
     }
   });
 
+  workbench.commands.registerCommand({
+    id: "view-cards",
+    title: "View as Cards",
+    when: (ctx: Context) => {
+      if (!ctx.node) return false;
+      if (ctx.node.raw.Rel === "Fields") return false;
+      if (ctx.node.parent && ctx.node.parent.hasComponent(Document)) return false;
+      return true;
+    },
+    action: (ctx: Context) => {
+      ctx.node.setAttr("view", "cards");
+    }
+  });
+
 
   workbench.commands.registerCommand({
     id: "add-checkbox",
