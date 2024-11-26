@@ -3,11 +3,13 @@ import { Workbench, Path } from "../workbench/mod.ts";
 import { objectCall, componentsWith, objectHas } from "../model/hooks.ts";
 import { NodeEditor } from "./node/editor.tsx";
 
+// bunch of components I wish weren't direct dependencies
 import { Checkbox } from "../com/checkbox.tsx";
 import { Document } from "../com/document.tsx";
-import { getNodeView } from "../view/views.ts";
-
 import { Tag } from "../com/tag.tsx";
+import { CodeBlock } from "../com/codeblock.tsx";
+
+import { getNodeView } from "../view/views.ts";
 
 export interface Attrs {
   path: Path;
@@ -149,6 +151,18 @@ export const OutlineNode: m.Component<Attrs, State> = {
       case "Enter":
         e.preventDefault();
         if (e.ctrlKey || e.shiftKey || e.metaKey || e.altKey) return;
+        
+        // first check if node should become a code block
+        // todo: this should be a hook or some loose coupled system
+        if (e.target.value.startsWith("```") && !node.hasComponent(CodeBlock)) {
+          const lang = e.target.value.slice(3);
+          if (lang) {
+            workbench.executeCommand("make-code-block", {node, path}, lang);
+            e.stopPropagation();
+            return;
+          }
+        }
+
         // cursor at end of text
         if (e.target.selectionStart === e.target.value.length) {
           if (node.childCount > 0 && workbench.workspace.getExpanded(path.head, node)) {

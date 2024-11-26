@@ -38,10 +38,17 @@ export let defaultExecutor: CodeExecutor = {
 export class CodeBlock {
   code: string;
   language: string;
+  detectLanguage: boolean;
 
-  constructor() {
+  constructor(language?: string) {
     this.code = "";
     this.language = "";
+    this.detectLanguage = true;
+
+    if (language) {
+      this.language = language;
+      this.detectLanguage = false;
+    }
   }
 
   childrenView() {
@@ -70,8 +77,8 @@ export class CodeBlock {
 
   static initialize(workbench: Workbench) {
     workbench.commands.registerCommand({
-      id: "make-code-snippet",
-      title: "Make Code Snippet",
+      id: "make-code-block",
+      title: "Make Code Block",
       when: (ctx: Context) => {
         if (!ctx.node) return false;
         if (ctx.node.raw.Rel === "Fields") return false;
@@ -79,8 +86,8 @@ export class CodeBlock {
           return false;
         return true;
       },
-      action: (ctx: Context) => {
-        const com = new CodeBlock();
+      action: (ctx: Context, language?: string) => {
+        const com = new CodeBlock(language);
         if (ctx?.node) {
           ctx.node.addComponent(com);
           ctx.node.changed();
@@ -110,9 +117,12 @@ const CodeEditor = {
       editor.textContent = editor.textContent;
       //@ts-ignore
       window.hljs.highlightBlock(editor);
-      snippet.language =
+
+      if (snippet.detectLanguage) {
         //@ts-ignore
-        window.hljs.highlightAuto(editor.textContent).language || "";
+        snippet.language = window.hljs.highlightAuto(editor.textContent).language || "";
+      }
+      
     });
     dom.jarEditor.updateCode(snippet.code);
     dom.jarEditor.onUpdate((code) => {
