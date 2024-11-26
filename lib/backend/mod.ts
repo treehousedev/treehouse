@@ -44,5 +44,5 @@ export interface FileStore {
 }
 
 export interface ChangeNotifier {
-  onNodeChange(cb: (nodeIDs: string[]) => void);
+  registerNotifier(cb: (nodeIDs: string[]) => void);
 }

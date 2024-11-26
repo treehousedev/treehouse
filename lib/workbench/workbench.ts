@@ -54,7 +54,7 @@ export class Workbench {
     this.menus = new MenuRegistry();
 
     this.backend = backend;
-    this.workspace = new Workspace(backend.files);
+    this.workspace = new Workspace(backend.files, backend.changes);
 
     this.context = {node: null};
     this.panels = [];

@@ -262,7 +262,7 @@ export class GitHubBackend {
   }
 
 
-  async readFile(path: string): string|null {
+  async readFile(path: string): Promise<string|null> {
     try {
       const resp = await this.client.rest.repos.getContent({
         owner: this.user?.userID(), 

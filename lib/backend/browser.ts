@@ -1,19 +1,25 @@
 import {RawNode} from "../model/mod.ts";
-
+import { SearchIndex, FileStore, ChangeNotifier } from "./mod.ts";
 
 export class BrowserBackend {
   auth: null;
   index: SearchIndex;
   files: FileStore;
+  changes?: ChangeNotifier;
 
   constructor() {
     this.auth = null;
-    this.files = new FileStore();
+    this.files = new LocalStorageFileStore();
     if (window.MiniSearch) {
       this.index = new SearchIndex_MiniSearch();
     } else {
       this.index = new SearchIndex_Dumb();
     }
+    this.changes = {
+      registerNotifier(cb: (nodeIDs: string[]) => void) {
+        window.reloadNodes = cb;
+      }
+    };
   }
 }
 
@@ -84,8 +90,8 @@ export class SearchIndex_Dumb {
 
 
 
-export class FileStore {
-  async readFile(path: string): string|null {
+export class LocalStorageFileStore {
+  async readFile(path: string): Promise<string|null> {
     return localStorage.getItem(`treehouse:${path}`);
   }
 

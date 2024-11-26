@@ -1,4 +1,4 @@
-import { FileStore } from "../backend/mod.ts";
+import { FileStore, ChangeNotifier } from "../backend/mod.ts";
 import { Bus, Node, RawNode } from "../model/mod.ts";
 import { Path } from "./mod.ts";
 import * as module from "../model/module/mod.ts";
@@ -20,11 +20,15 @@ export class Workspace {
   expanded: { [key: string]: { [key: string]: boolean } }; // [rootid][id]
   settings: {};
 
-  constructor(fs: FileStore) {
+  constructor(fs: FileStore, changes?: ChangeNotifier) {
     this.fs = fs;
     this.bus = new module.Bus();
     this.expanded = {};
     this.settings = {};
+
+    if (changes) {
+      changes.registerNotifier(this.reload.bind(this));
+    }
 
     this.writeDebounce = debounce(async (path, contents) => {
       try {
@@ -60,16 +64,28 @@ export class Workspace {
     }
   }
 
+  migrateRawNode(n: RawNode): RawNode {
+    if (n.Name === "treehouse.SearchNode") {
+      n.Name = "treehouse.SmartNode";
+    }
+    return n;
+  }
+
+  async reload(nodeIDs: string[]) {
+    let doc = JSON.parse(await this.fs.readFile("workspace.json") || "{}");
+    if (doc.nodes) {
+      doc.nodes = doc.nodes.filter(n => nodeIDs.includes(n.ID));
+      doc.nodes = doc.nodes.map(this.migrateRawNode);
+      this.bus.import(doc.nodes);
+      m.redraw();
+      console.log(`Reloaded ${doc.nodes.length} nodes.`);
+    }
+  }
+
   async load() {
     let doc = JSON.parse(await this.fs.readFile("workspace.json") || "{}");
     if (doc.nodes) {
-      doc.nodes = doc.nodes.map(n => {
-        // any node migrations:
-        if (n.Name === "treehouse.SearchNode") {
-          n.Name = "treehouse.SmartNode";
-        }
-        return n;
-      })
+      doc.nodes = doc.nodes.map(this.migrateRawNode);
       this.bus.import(doc.nodes);
       console.log(`Loaded ${doc.nodes.length} nodes.`);
     }
