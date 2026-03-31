@@ -1,5 +1,6 @@
 import { component } from "../model/components.ts";
 import { Workbench, Context } from "../workbench/mod.ts";
+import { Document } from "./document.tsx";
 export interface CodeExecutor {
   // executes the source and returns an output string.
   // exceptions in execution should be caught and returned as a string.

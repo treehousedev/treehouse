@@ -20,7 +20,7 @@ export default {
         </div>
         <div class="children">
           {(node.childCount > 0) && node.children.map(n => <OutlineNode key={n.id} workbench={workbench} path={path.append(n)} />)}
-          {showNew && <NewNode workbench={workbench} path={path} />}
+          {showNew && m(NewNode, {workbench, path})}
         </div>
       </div>
     )

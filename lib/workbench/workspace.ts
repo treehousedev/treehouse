@@ -18,7 +18,10 @@ export class Workspace {
 
   lastOpenedID: string;
   expanded: { [key: string]: { [key: string]: boolean } }; // [rootid][id]
-  settings: {};
+  settings: {
+    theme?: string;
+  };
+  writeDebounce: (path: string, contents: string) => void;
 
   constructor(fs: FileStore, changes?: ChangeNotifier) {
     this.fs = fs;
@@ -34,7 +37,7 @@ export class Workspace {
       try {
         await this.fs.writeFile(path, contents);
         console.log("Saved workspace.");
-      } catch (e: Error) {
+      } catch (e) {
         console.error(e);
         document.dispatchEvent(new CustomEvent("BackendError"));
       }

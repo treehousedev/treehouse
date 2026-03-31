@@ -10,6 +10,20 @@ export interface Options {
   privateRepo?: boolean;    // if the user workspace repo should be created private
 }
 
+function errorName(error: unknown): string | undefined {
+  if (typeof error !== "object" || error === null || !("name" in error)) {
+    return undefined;
+  }
+  return typeof error.name === "string" ? error.name : undefined;
+}
+
+function errorMessage(error: unknown): string | undefined {
+  if (typeof error !== "object" || error === null || !("message" in error)) {
+    return undefined;
+  }
+  return typeof error.message === "string" ? error.message : undefined;
+}
+
 export class GitHubBackend {
   auth: Authenticator;
 
@@ -72,7 +86,7 @@ export class GitHubBackend {
         
         localStorage.setItem("treehouse:gh-token", result.token);
   
-      } catch (e: Error) {
+      } catch (e: unknown) {
         this.reset();
         console.error(e);
         return;
@@ -88,7 +102,7 @@ export class GitHubBackend {
         history.pushState({}, "", `${location.pathname}${querystring}`);
         
         localStorage.setItem("treehouse:gh-token", token);
-      } catch (e: Error) {
+      } catch (e: unknown) {
         this.reset();
         console.error(e);
         return;
@@ -100,7 +114,7 @@ export class GitHubBackend {
       if (!this.user) {
         throw "authentication failed";
       }
-    } catch (e: Error) {
+    } catch (e: unknown) {
       console.error(e);
       if (this.opts.authFallbackURL) {
         location.href = this.opts.authFallbackURL;
@@ -120,8 +134,8 @@ export class GitHubBackend {
         owner: this.user.userID(), 
         repo: this.repoName
       });
-    } catch (e: Error) {
-      if (e.message !== "Not Found") {
+    } catch (e: unknown) {
+      if (errorMessage(e) !== "Not Found") {
         throw e;
       }
       // create if not
@@ -140,8 +154,8 @@ export class GitHubBackend {
         repo: this.repoName,
         path: "workspace.json"
       });
-    } catch (e: Error) {
-      if (e.name !== "HttpError") {
+    } catch (e: unknown) {
+      if (errorName(e) !== "HttpError") {
         throw e;
       }
       // create empty if not
@@ -221,7 +235,7 @@ export class GitHubBackend {
         }
       }
       
-    } catch (e: Error) {}
+    } catch (_e: unknown) {}
     
   }
   
@@ -272,8 +286,8 @@ export class GitHubBackend {
       });
       this.shas[path] = resp.data.sha;
       return decode(resp.data.content);
-    } catch (e: Error) {
-      if (e.name !== "HttpError") {
+    } catch (e: unknown) {
+      if (errorName(e) !== "HttpError") {
         console.error(e);
       }
       return null;

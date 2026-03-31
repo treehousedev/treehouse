@@ -199,7 +199,7 @@ export class Node {
       this.refTo.removeChild(node);
       return;
     }
-    const children = this.raw.Linked.Children.filter(id => id === node.id);
+    const children = this.raw.Linked.Children.filter(id => id !== node.id);
     this.raw.Linked.Children = children;
     this.changed();
   }
@@ -291,7 +291,7 @@ export class Node {
     if (!this.raw.Linked[rel]) {
       this.raw.Linked[rel] = [];
     }
-    const linked = this.raw.Linked[rel].filter(id => id === node.id);
+    const linked = this.raw.Linked[rel].filter(id => id !== node.id);
     this.raw.Linked[rel] = linked;
     this.changed();
   }

@@ -23,6 +23,17 @@ export interface Drawer {
   open: boolean;
 }
 
+type DialogElement = Element & {
+  close(): void;
+  hasAttribute(name: string): boolean;
+  showModal(): void;
+};
+
+type MenuTrigger = Element & {
+  dataset: Record<string, string>;
+  getBoundingClientRect(): DOMRect;
+};
+
 /**
  * Workbench is the top-level controller for the Treehouse frontend.
  * 
@@ -56,7 +67,7 @@ export class Workbench {
     this.backend = backend;
     this.workspace = new Workspace(backend.files, backend.changes);
 
-    this.context = {node: null};
+    this.context = {node: null, path: null};
     this.panels = [];
     this.drawer = { open: false };
 
@@ -96,8 +107,7 @@ export class Workbench {
   
     if (this.workspace.settings.theme) {
       const css = document.createElement("link");
-      // TODO: figure out better way to couple themes than hardcoded hotlinked URL
-      css.setAttribute("href", `https://treehouse.sh/style/themes/${this.workspace.settings.theme}.css`);
+      css.setAttribute("href", `/style/themes/${this.workspace.settings.theme}.css`);
       css.setAttribute("rel", "stylesheet");
       css.setAttribute("type", "text/css");
       document.head.appendChild(css);
@@ -108,7 +118,7 @@ export class Workbench {
   }
 
   authenticated(): boolean {
-    return this.backend.auth && this.backend.auth.currentUser();
+    return Boolean(this.backend.auth && this.backend.auth.currentUser());
   }
 
   openQuickAdd() {
@@ -118,7 +128,8 @@ export class Workbench {
     }
     this.showDialog(() => m(QuickAdd, {workbench: this, node}), true);
     setTimeout(() => {
-      document.querySelector("main > dialog .new-node input").focus();
+      const input = document.querySelector("main > dialog .new-node input");
+      input?.focus?.();
     }, 1);
   }
 
@@ -138,7 +149,7 @@ export class Workbench {
   // TODO: goto workspace
   todayNode(): Node {
     const today = new Date();
-    const dayNode = today.toUTCString().split(today.getFullYear())[0];
+    const dayNode = today.toUTCString().split(String(today.getFullYear()))[0].trimEnd();
     const weekNode = `Week ${String(getWeekOfYear(today)).padStart(2, "0")}`;
     const yearNode = `${today.getFullYear()}`;
     const todayPath = ["@calendar", yearNode, weekNode, dayNode].join("/");
@@ -192,7 +203,7 @@ export class Workbench {
     this.context.path = null;
   }
 
-  focus(path: Path, pos?: number = 0) {
+  focus(path: Path, pos: number = 0) {
     const input = this.getInput(path);
     if (input) {
       this.context.path = path;
@@ -214,7 +225,7 @@ export class Workbench {
       }
     }
     const el = document.getElementById(id);
-    if (el.editor) {
+    if (el?.editor) {
       return el.editor;
     }
     return el;
@@ -235,16 +246,17 @@ export class Workbench {
     return Object.assign({}, this.context, ctx);
   }
 
-  showMenu(event: Event, ctx: any, style?: {}) {
+  showMenu(event: Event, ctx: any, style?: Record<string, string>) {
     event.stopPropagation();
     event.preventDefault();
-    const trigger = event.target.closest("*[data-menu]");
+    const trigger = event.target?.closest?.("*[data-menu]") as MenuTrigger | null;
+    if (!trigger) return;
     const rect = trigger.getBoundingClientRect();
     if (!style) {
       const align = trigger.dataset["align"] || "left";
       style = {
         top: `${document.body.scrollTop+rect.y+rect.height}px`
-      }
+      } as Record<string, string>;
       if (align === "right") {
         style.marginLeft = "auto";
         style.marginRight = `${document.body.offsetWidth - rect.right}px`;
@@ -254,8 +266,8 @@ export class Workbench {
       }
     }
     const items = this.menus.menus[trigger.dataset["menu"]];
-    const cmds = items.filter(i => i.command).map(i => this.commands.commands[i.command]);
     if (!items) return;
+    const cmds = items.filter(i => i.command).map(i => this.commands.commands[i.command!]);
     this.menu = {body: () => m(Menu, { 
       workbench: this,
       ctx: this.newContext(ctx), 
@@ -266,13 +278,15 @@ export class Workbench {
     setTimeout(() => {
       // this next frame timeout is so any current dialog can close before attempting
       // to showModal on already open dialog, which causes exception.
-      document.querySelector("main > dialog.menu").showModal();
+      const dialog = document.querySelector("main > dialog.menu") as DialogElement | null;
+      dialog?.showModal?.();
     }, 0);
   }
 
   closeMenu() {
-    document.querySelector("main > dialog.menu").close();
-    workbench.menu.body = () => null;
+    const dialog = document.querySelector("main > dialog.menu") as DialogElement | null;
+    dialog?.close?.();
+    this.menu.body = () => null;
   }
 
   showPalette(x: number, y: number, ctx: Context) {
@@ -296,7 +310,7 @@ export class Workbench {
     this.showDialog(() => m(Settings, {workbench: this}), true);
   }
 
-  showPopover(body: any, style?: {}) {
+  showPopover(body: any, style?: Record<string, string>) {
     this.popover = {body, style};
     m.redraw();
   }
@@ -306,22 +320,25 @@ export class Workbench {
     m.redraw();
   }
 
-  showDialog(body: any, backdrop?: boolean, style?: {}, explicitClose?: boolean) {
+  showDialog(body: any, backdrop?: boolean, style?: Record<string, string>, explicitClose?: boolean) {
     this.dialog = {body, backdrop, style, explicitClose};
     m.redraw();
     setTimeout(() => {
       // this next frame timeout is so any current dialog can close before attempting
       // to showModal on already open dialog, which causes exception.
-      document.querySelector("main > dialog.modal").showModal();
+      const dialog = document.querySelector("main > dialog.modal") as DialogElement | null;
+      dialog?.showModal?.();
     }, 0);
   }
 
   isDialogOpen(): boolean {
-    return document.querySelector("main > dialog.modal").hasAttribute("open");
+    const dialog = document.querySelector("main > dialog.modal") as DialogElement | null;
+    return Boolean(dialog?.hasAttribute("open"));
   }
 
   closeDialog() {
-    document.querySelector("main > dialog.modal").close();
+    const dialog = document.querySelector("main > dialog.modal") as DialogElement | null;
+    dialog?.close?.();
     this.dialog.body = () => null;
   }
 
@@ -339,7 +356,7 @@ export class Workbench {
     const passFieldQuery = (node: Node): boolean => {
       // kludgy filter on fields
       if (Object.keys(fieldQuery).length > 0) {
-        const fields = {};
+        const fields: Record<string, string> = {};
         for (const f of node.getLinked("Fields")) {
           fields[f.name.toLowerCase()] = f.value.toLowerCase();
         }
@@ -358,7 +375,7 @@ export class Workbench {
     }
     let resultCache = {};
     this.backend.index.search(textQuery).forEach(id => {
-      let node = window.workbench.workspace.find(id);
+      let node = this.workspace.find(id);
       if (!node) {
         return;
       }
@@ -385,5 +402,5 @@ function getWeekOfYear(date) {
   var dayNum = d.getUTCDay() || 7;
   d.setUTCDate(d.getUTCDate() + 4 - dayNum);
   var yearStart = new Date(Date.UTC(d.getUTCFullYear(),0,1));
-  return Math.ceil((((d - yearStart) / 86400000) + 1)/7);
+  return Math.ceil((((d.getTime() - yearStart.getTime()) / 86400000) + 1)/7);
 }

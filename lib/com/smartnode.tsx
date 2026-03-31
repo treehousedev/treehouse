@@ -1,6 +1,7 @@
-import { Workbench } from "../workbench/mod.ts";
+import { Workbench, Context } from "../workbench/mod.ts";
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
+import { Document } from "./document.tsx";
 
 function debounce(func, timeout = 1000){
   let timer;
@@ -17,6 +18,7 @@ export class SmartNode {
   object?: Node;
   results?: Node[];
   query: string;
+  searchDebounce: (...args: any[]) => void;
 
   lastQuery?: string;
   lastResultCount?: number;

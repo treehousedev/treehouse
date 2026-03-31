@@ -1,9 +1,14 @@
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
-import { Workbench, Workspace } from "../workbench/mod.ts";
+import { Workbench, Workspace, Context } from "../workbench/mod.ts";
 import { Path } from "../workbench/path.ts";
 import { Template } from "./template.tsx";
 import { Picker } from "../ui/picker.tsx";
+
+interface TagItem {
+  name: string;
+  prefix?: string;
+}
 
 @component
 export class Tag {
@@ -43,7 +48,7 @@ export class Tag {
   }
 
   static findAll(ws: Workspace): string[] {
-    const tags = new Set();
+    const tags = new Set<string>();
     ws.mainNode().walk((n) => {
       if (n.value instanceof Tag) {
         tags.add(n.value.name);
@@ -54,7 +59,7 @@ export class Tag {
   }
 
   static findTagged(ws: Workspace, name: string): Node[] {
-    const nodes = [];
+    const nodes: Node[] = [];
     ws.mainNode().walk((n) => {
       if (n.value instanceof Tag && n.value.name === name) {
         nodes.push(n.parent);
@@ -84,7 +89,7 @@ export class Tag {
           } else {
             state.input = "";
           }
-          const filtered = [...tags]
+          const filtered: TagItem[] = [...tags]
             .filter(t => t.toLowerCase().startsWith(state.input.toLowerCase()))
             .map(t => {return {name: t}});
           if ((filtered[0] && filtered[0].name != state.input && state.input != "") || filtered.length === 0) {

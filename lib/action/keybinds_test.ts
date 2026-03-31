@@ -12,3 +12,21 @@ Deno.test("binding registration", async () => {
 
   assertEquals(ret?.key, "shift+a");
 });
+
+Deno.test("binding evaluation matches meta bindings through ctrl on non-mac runtimes", async () => {
+  const bindings = new KeyBindings();
+  bindings.registerBinding({
+    command: "pick-command",
+    key: "meta+k"
+  });
+
+  const ret = bindings.evaluateEvent({
+    key: "k",
+    shiftKey: false,
+    ctrlKey: true,
+    altKey: false,
+    metaKey: false
+  } as KeyboardEvent);
+
+  assertEquals(ret?.command, "pick-command");
+});

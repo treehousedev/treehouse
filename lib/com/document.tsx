@@ -1,5 +1,6 @@
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
+import { Workbench, Context } from "../workbench/mod.ts";
 
 @component
 export class Document {

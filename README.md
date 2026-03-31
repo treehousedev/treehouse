@@ -16,7 +16,7 @@ based on the current state of the main branch.
 
 ## Development
 
-Contribute by [installing Deno](https://deno.land/manual@v1.30.0/getting_started/installation), 
+Contribute by [installing Deno](https://deno.land/), 
 cloning the repo, and running:
 
 ```
@@ -25,6 +25,12 @@ deno task serve
 
 This will run a development server for the project site that includes the
 demo, which you can use for development.
+
+To generate the static site plus the demo bundle used by `/demo`, run:
+
+```
+deno task build
+```
 
 ## Community
 

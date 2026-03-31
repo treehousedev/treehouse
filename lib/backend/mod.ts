@@ -17,12 +17,14 @@ export interface Backend {
   index: SearchIndex;
   files: FileStore;
   changes?: ChangeNotifier;
+  initialize?(): Promise<void>|void;
+  loadExtensions?(): Promise<void>|void;
 }
 
 
 export interface Authenticator {
-  login();
-  logout();
+  login(): void;
+  logout(): void;
   currentUser(): User|null;
 }
 
@@ -33,8 +35,8 @@ export interface User {
 }
 
 export interface SearchIndex {
-  index(node: RawNode);
-  remove(id: string);
+  index(node: RawNode): void;
+  remove(id: string): void;
   search(query: string): string[];
 }
 
@@ -44,5 +46,5 @@ export interface FileStore {
 }
 
 export interface ChangeNotifier {
-  registerNotifier(cb: (nodeIDs: string[]) => void);
+  registerNotifier(cb: (nodeIDs: string[]) => void): void;
 }

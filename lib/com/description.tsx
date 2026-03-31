@@ -1,6 +1,7 @@
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
 import { objectManaged } from "../model/hooks.ts";
+import { Workbench, Context } from "../workbench/mod.ts";
 
 @component
 export class Description {

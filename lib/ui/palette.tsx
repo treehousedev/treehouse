@@ -26,7 +26,7 @@ export const CommandPalette: m.Component = {
       return binding ? bindingSymbols(binding.key).join(" ").toUpperCase() : "";
     }
 
-    const cmds = Object.values(workbench.commands.commands)
+    const cmds = Object.values(workbench.commands.commands as Record<string, any>)
       .filter(cmd => !cmd.hidden)
       .filter(cmd => workbench.canExecuteCommand(cmd.id, ctx))
       .sort(sort);
@@ -49,4 +49,3 @@ export const CommandPalette: m.Component = {
     )
   }
 }
-

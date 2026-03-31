@@ -1,12 +1,15 @@
 {
   "compilerOptions": {
+    "lib": ["dom", "dom.iterable", "esnext", "deno.ns"],
+    "strict": false,
     "jsx": "react-jsx",
-    "jsxImportSource": "npm:preact"
+    "jsxImportSource": "npm:preact",
+    "types": ["./lib/globals.d.ts"]
   },
   "tasks": {
-    "bundle": "deno run --unstable -A ./bundle.ts",
-    "lume": "echo \"import 'lume/cli.ts'\" | deno run --unstable -A -",
-    "build": "deno task lume",
+    "bundle": "deno run -A ./bundle.ts",
+    "lume": "deno run -A lume/cli.ts",
+    "build": "deno task bundle && deno task lume",
     "serve": "deno task lume -s"
   },
   "imports": {

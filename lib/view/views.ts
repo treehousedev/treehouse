@@ -4,6 +4,7 @@ import table from "./table.tsx";
 import tabs from "./tabs.tsx";
 import document from "./document.tsx";
 import cards from "./cards.tsx";
+import { Context } from "../workbench/mod.ts";
 
 export const views = {
   list,
@@ -24,7 +25,7 @@ export function getNodeView(node) {
 
 window.registerView = (name, view) => {
   views[name] = view;
-  workbench.commands.registerCommand({
+  window.workbench.commands.registerCommand({
     id: `view-${name}`,
     title: `View as ${toTitleCase(name)}`,
     action: (ctx: Context) => {

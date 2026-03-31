@@ -1,5 +1,7 @@
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
+import { Workbench, Context } from "../workbench/mod.ts";
+import { Document } from "./document.tsx";
 
 @component
 export class InlineFrame {
@@ -40,7 +42,7 @@ export class InlineFrame {
           frame.url = ctx.node.name;
           ctx.node.addComponent(frame);
           workbench.defocus();
-          ctx.node.name = ctx.node.name.replaceAll("https://", "").replaceAll("http://");
+          ctx.node.name = ctx.node.name.replaceAll("https://", "").replaceAll("http://", "");
           workbench.workspace.setExpanded(ctx.path.head, ctx.node, true);
           workbench.focus(ctx.path);
         }

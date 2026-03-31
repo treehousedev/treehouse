@@ -94,3 +94,34 @@ Deno.test("references", () => {
   });
 
 });
+
+Deno.test("remove child removes the targeted child only", () => {
+  const bus = new module.Bus();
+  const parent = bus.make("Parent");
+  const childA = bus.make("Parent/ChildA");
+  const childB = bus.make("Parent/ChildB");
+
+  assertEquals(parent.children.map(n => n.name), ["ChildA", "ChildB"]);
+
+  parent.removeChild(childA);
+
+  assertEquals(parent.children.map(n => n.name), ["ChildB"]);
+});
+
+Deno.test("remove linked removes the targeted linked node only", () => {
+  const bus = new module.Bus();
+  const parent = bus.make("Parent");
+  const fieldA = bus.make("FieldA");
+  const fieldB = bus.make("FieldB");
+
+  fieldA.raw.Parent = parent.id;
+  fieldB.raw.Parent = parent.id;
+  parent.addLinked("Fields", fieldA);
+  parent.addLinked("Fields", fieldB);
+
+  assertEquals(parent.getLinked("Fields").map(n => n.name), ["FieldA", "FieldB"]);
+
+  parent.removeLinked("Fields", fieldA);
+
+  assertEquals(parent.getLinked("Fields").map(n => n.name), ["FieldB"]);
+});

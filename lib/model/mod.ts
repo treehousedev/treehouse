@@ -9,8 +9,8 @@ export type WalkFunc = (node: Node) => boolean;
 export type ObserverFunc = (node: Node) => void;
 
 export interface WalkOptions {
-  followRefs: boolean;
-  includeComponents: boolean;
+  followRefs?: boolean;
+  includeComponents?: boolean;
 }
 
 export interface RawNode {
@@ -47,6 +47,9 @@ export interface Node {
   readonly childCount: number;
   addChild(node: Node): void;
   removeChild(node: Node): void;
+
+  readonly fields: Node[];
+  readonly fieldCount: number;
 
   readonly components: Node[];
   readonly componentCount: number;
@@ -88,6 +91,5 @@ export interface Bus {
   walk(fn: WalkFunc, opts?: WalkOptions): void;
   observe(fn: ObserverFunc): void;
 }
-
 
 

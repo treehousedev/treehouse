@@ -1,5 +1,7 @@
 import { component } from "../model/components.ts";
 import { Node } from "../model/mod.ts";
+import { Workbench, Context, Workspace } from "../workbench/mod.ts";
+import { Document } from "./document.tsx";
 
 @component
 export class Template {

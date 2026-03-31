@@ -1,6 +1,7 @@
 
 export const NewNode = {
   view({attrs: {workbench, path}}) {
+    const node = path.node;
     const keydown = (e) => {
       if (e.key === "Tab") {
         e.stopPropagation();
